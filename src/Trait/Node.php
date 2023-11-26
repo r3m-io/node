@@ -5,6 +5,7 @@ use R3m\Io\App;
 
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\File;
+use R3m\Io\Module\Sort;
 
 use R3m\Io\Node\Service\Security;
 
@@ -78,22 +79,37 @@ trait Node {
         }
         $data = $object->data_read($data_url);
         $mtime = File::mtime($data_url);
-        d($mtime);
-        ddd($data);
-        /*
         $object_url = $object->config('project.dir.node') .
             'Object' .
             $object->config('ds') .
             $name .
             $object->config('extension.json')
         ;
-        if(!File::exist($object_url)){
-            throw new Exception('Object ' . $name . ' not found (' . $object_url .')');
-        }
         $object_data = $object->data_read($object_url);
-        */
-        ddd($object_data);
+        if($data){
+            $relation = [];
+            if($object_data){
+                $relation = $object_data->get('relation');
+            }
+            if(!empty($relation) && is_array($relation)){
+                ddd('has relation');
+            }
+            ddd($options);
+            /*
+            $sort = Sort::list($data)->with([
+                $properties[0] => 'ASC',
+                $properties[1] => 'ASC'
+            ], [
+                'output' => 'raw'
+            ]);
+            $index = 0;
+            $binary_tree = [];
+            $connect_property_uuid = [];
+            $connect_uuid_property = []; //ksort at the end
+            foreach ($sort as $key1 => $subList) {
+                foreach($subList as $key2 => $subSubList){
+                    foreach ($subSubList as $nr => $node) {
+            */
+        }
     }
-
-
 }
