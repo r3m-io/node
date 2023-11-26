@@ -128,8 +128,13 @@ trait Node {
                     )
                 ){
                     $options['where'] = $this->where_convert($options['where']);
-                    d($options);
-                    ddd('where');
+                    foreach($list as $nr => $record){
+                        $record = $this->where($record, $options['where'], $options);
+                        if(!$record){
+                            unset($list[$nr]);
+                        }
+                    }
+                    $list = array_values($list);
                 }
                 if(!empty($options['sort']) && is_array($options['sort'])){
                     $list = Sort::list($list)->with(
