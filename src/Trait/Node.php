@@ -111,7 +111,8 @@ trait Node {
                     }
                     $list[$nr] = $record;
                 }
-                d($list);
+                $data->data($name, $list);
+                $data->write($data_url);
                 ddd($options);
             }
 
