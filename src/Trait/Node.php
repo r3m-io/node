@@ -15,6 +15,7 @@ use Exception;
 trait Node {
 
     use Filter;
+    use Tree;
     use Where;
 
     /**
