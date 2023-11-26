@@ -111,12 +111,13 @@ trait Node {
                         $options['filter']) &&
                         is_array($options['filter'])
                 ){
-                    d($options);
                     foreach($list as $nr => $record){
                         $record = $this->filter($record, $options['filter'], $options);
-                        d($record);
+                        if(!$record){
+                            unset($list[$nr]);
+                        }
                     }
-                    ddd('filter');
+                    $list = array_values($list);
                 }
                 elseif(
                     !empty($options['where']) &&
@@ -136,12 +137,6 @@ trait Node {
                             'key_reset' => true,
                         ]
                     );
-                    /*
-                    $sort_count = count($options['sort']);
-                    if($sort_count === 2){
-
-                    }
-                    */
                 }
                 if(!empty($options['limit']) && $options['limit'] === '*'){
                     $list_count = count($list);
