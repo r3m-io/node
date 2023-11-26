@@ -4,6 +4,7 @@ namespace R3m\Io\Node\Trait;
 use R3m\Io\App;
 
 use R3m\Io\Module\Controller;
+use R3m\Io\Module\Core;
 use R3m\Io\Module\File;
 use R3m\Io\Module\Sort;
 
@@ -87,14 +88,33 @@ trait Node {
         ;
         $object_data = $object->data_read($object_url);
         if($data){
-            $relation = [];
-            if($object_data){
-                $relation = $object_data->get('relation');
+            $list = $data->data($name);
+            if(
+                !empty($list) &&
+                is_array($list)
+            ){
+                $relation = [];
+                if($object_data){
+                    $relation = $object_data->get('relation');
+                }
+                if(!empty($relation) && is_array($relation)){
+                    ddd('has relation');
+                }
+                foreach($list as $nr => $record){
+                    if(is_array($record)){
+                        $record['uuid'] = Core::uuid();
+                        $record['#class'] = $name;
+                    }
+                    elseif(is_object($record)){
+                        $record->uuid = Core::uuid();
+                        $record->{'#class'} = $name;
+                    }
+                    $list[$nr] = $record;
+                }
+                d($list);
+                ddd($options);
             }
-            if(!empty($relation) && is_array($relation)){
-                ddd('has relation');
-            }
-            ddd($options);
+
             /*
             $sort = Sort::list($data)->with([
                 $properties[0] => 'ASC',
