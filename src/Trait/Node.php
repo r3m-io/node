@@ -156,25 +156,20 @@ trait Node {
                         unset($list[$index]);
                     }
                 }
-                $list_page = array_values($list);
-                ddd($list_page);
+                $list = array_values($list);
+                $list_count = count($list);
+                $result = [];
+                $result['page'] = $page;
+                $result['limit'] = $limit;
+                $result['count'] = $list_count;
+                $result['list'] = $list;
+                $result['sort'] = $options['sort'] ?? [];
+                $result['filter'] = $options['filter'] ?? [];
+                $result['relation'] = $options['relation'] ?? true;
+                $result['parse'] = $options['parse'] ?? false;
+                $result['mtime'] = $mtime;
+                return $result;
             }
-
-            /*
-            $sort = Sort::list($data)->with([
-                $properties[0] => 'ASC',
-                $properties[1] => 'ASC'
-            ], [
-                'output' => 'raw'
-            ]);
-            $index = 0;
-            $binary_tree = [];
-            $connect_property_uuid = [];
-            $connect_uuid_property = []; //ksort at the end
-            foreach ($sort as $key1 => $subList) {
-                foreach($subList as $key2 => $subSubList){
-                    foreach ($subSubList as $nr => $node) {
-            */
         }
     }
 }
