@@ -93,6 +93,7 @@ trait Node {
                 !empty($list) &&
                 is_array($list)
             ){
+                $max = count($list);
                 $relation = [];
                 if($object_data){
                     $relation = $object_data->get('relation');
@@ -162,6 +163,7 @@ trait Node {
                 $result['page'] = $page;
                 $result['limit'] = $limit;
                 $result['count'] = $list_count;
+                $result['max'] = $max;
                 $result['list'] = $list;
                 $result['sort'] = $options['sort'] ?? [];
                 $result['filter'] = $options['filter'] ?? [];
