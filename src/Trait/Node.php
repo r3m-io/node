@@ -145,6 +145,7 @@ trait Node {
                     $result['list'] = $list;
                     $result['sort'] = $options['sort'] ?? [];
                     $result['filter'] = $options['filter'] ?? [];
+                    $result['where'] = $options['where'] ?? [];
                     $result['relation'] = $options['relation'] ?? true;
                     $result['parse'] = $options['parse'] ?? false;
                     $result['mtime'] = $mtime;
@@ -170,6 +171,7 @@ trait Node {
                 $result['list'] = $list;
                 $result['sort'] = $options['sort'] ?? [];
                 $result['filter'] = $options['filter'] ?? [];
+                $result['where'] = $options['where'] ?? [];
                 $result['relation'] = $options['relation'] ?? true;
                 $result['parse'] = $options['parse'] ?? false;
                 $result['mtime'] = $mtime;
