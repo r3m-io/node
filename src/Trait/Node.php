@@ -137,6 +137,7 @@ trait Node {
                     $list = array_values($list);
                 }
                 $limit = $options['limit'] ?? 4096;
+                d($limit);
                 if(
                     !empty($options['sort']) &&
                     is_array($options['sort']) &&
