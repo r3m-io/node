@@ -102,7 +102,10 @@ trait Node {
                 }
                 if(!empty($options['sort']) && is_array($options['sort'])){
                     $sort_list = Sort::list($list)->with(
-                        $options['sort']
+                        $options['sort'],
+                        [
+                            'key_reset' => true,
+                        ]
                     );
                     /*
                     $sort_count = count($options['sort']);
