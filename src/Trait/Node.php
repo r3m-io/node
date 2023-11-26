@@ -100,8 +100,26 @@ trait Node {
                 if(!empty($relation) && is_array($relation)){
                     ddd('has relation');
                 }
+                if(
+                    !empty(
+                        $options['filter']) &&
+                        is_array($options['filter'])
+                ){
+                    d($options);
+                    ddd('filter');
+                }
+                elseif(
+                    !empty($options['where']) &&
+                    (
+                        is_string($options['where']) ||
+                        is_array($options['where'])
+                    )
+                ){
+                    d($options);
+                    ddd('where');
+                }
                 if(!empty($options['sort']) && is_array($options['sort'])){
-                    $sort_list = Sort::list($list)->with(
+                    $list = Sort::list($list)->with(
                         $options['sort'],
                         [
                             'key_reset' => true,
@@ -113,9 +131,33 @@ trait Node {
 
                     }
                     */
-                    ddd($sort_list);
                 }
-                ddd($options);
+                if(!empty($options['limit']) && $options['limit'] === '*'){
+                    $list_count = count($list);
+                    $result = [];
+                    $result['page'] = 1;
+                    $result['limit'] = $list_count;
+                    $result['count'] = $list_count;
+                    $result['list'] = $list;
+                    $result['sort'] = $options['sort'] ?? [];
+                    $result['filter'] = $options['filter'] ?? [];
+                    $result['relation'] = $options['relation'] ?? true;
+                    $result['parse'] = $options['parse'] ?? false;
+                    $result['mtime'] = $mtime;
+                    return $result;
+                }
+                $page = $options['page'] ?? 1;
+                $limit = $options['limit'] ?? 4096;
+                foreach($list as $index => $record){
+                    if(
+                        $index < ($page - 1) * $limit ||
+                        $index >= $page * $limit
+                    ){
+                        unset($list[$index]);
+                    }
+                }
+                $list_page = array_values($list);
+                ddd($list_page);
             }
 
             /*
