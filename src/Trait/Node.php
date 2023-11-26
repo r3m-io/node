@@ -16,7 +16,7 @@ trait Node {
      * @throws Exception
      */
     public function list($class, $role, $options=[]){
-        $mtime = time();
+        $mtime = false;
         $name = Controller::name($class);
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
@@ -51,6 +51,36 @@ trait Node {
             return $result;
         }
         $object = $this->object();
+        $data_url = $object->config('project.dir.node') .
+            'Data' .
+            $object->config('ds') .
+            $name .
+            $object->config('extension.json')
+        ;
+        if(!File::exist($data_url)){
+            $list = [];
+            $result = [];
+            $result['page'] = $options['page'] ?? 1;
+            $result['limit'] = $options['limit'] ?? 1000;
+            $result['count'] = 0;
+            $result['list'] = $list;
+            $result['sort'] = $options['sort'];
+            if(!empty($options['filter'])) {
+                $result['filter'] = $options['filter'];
+            }
+            if(!empty($options['where'])) {
+                $result['where'] = $options['where'];
+            }
+            $result['relation'] = $options['relation'];
+            $result['parse'] = $options['parse'];
+            $result['mtime'] = $mtime;
+            return $result;
+        }
+        $data = $object->data_read($data_url);
+        $mtime = File::mtime($data_url);
+        d($mtime);
+        ddd($data);
+        /*
         $object_url = $object->config('project.dir.node') .
             'Object' .
             $object->config('ds') .
@@ -61,6 +91,7 @@ trait Node {
             throw new Exception('Object ' . $name . ' not found (' . $object_url .')');
         }
         $object_data = $object->data_read($object_url);
+        */
         ddd($object_data);
     }
 
