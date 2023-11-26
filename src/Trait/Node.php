@@ -14,6 +14,9 @@ use Exception;
 
 trait Node {
 
+    use Filter;
+    use Where;
+
     /**
      * @throws Exception
      */
@@ -109,6 +112,10 @@ trait Node {
                         is_array($options['filter'])
                 ){
                     d($options);
+                    foreach($list as $nr => $record){
+                        $record = $this->filter($record, $options['filter'], $options);
+                        d($record);
+                    }
                     ddd('filter');
                 }
                 elseif(
@@ -118,6 +125,7 @@ trait Node {
                         is_array($options['where'])
                     )
                 ){
+                    $options['where'] = $this->where_convert($options['where']);
                     d($options);
                     ddd('where');
                 }
