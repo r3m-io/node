@@ -39,6 +39,7 @@ trait Node {
             $result['page'] = $options['page'] ?? 1;
             $result['limit'] = $options['limit'] ?? 1000;
             $result['count'] = 0;
+            $result['max'] = 0;
             $result['list'] = $list;
             $result['sort'] = $options['sort'];
             if(!empty($options['filter'])) {
@@ -65,6 +66,7 @@ trait Node {
             $result['page'] = $options['page'] ?? 1;
             $result['limit'] = $options['limit'] ?? 1000;
             $result['count'] = 0;
+            $result['max'] = 0;
             $result['list'] = $list;
             $result['sort'] = $options['sort'];
             if(!empty($options['filter'])) {
@@ -139,6 +141,7 @@ trait Node {
                     $result['page'] = 1;
                     $result['limit'] = $list_count;
                     $result['count'] = $list_count;
+                    $result['max'] = $max;
                     $result['list'] = $list;
                     $result['sort'] = $options['sort'] ?? [];
                     $result['filter'] = $options['filter'] ?? [];
