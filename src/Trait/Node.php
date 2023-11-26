@@ -136,7 +136,12 @@ trait Node {
                     }
                     $list = array_values($list);
                 }
-                if(!empty($options['sort']) && is_array($options['sort'])){
+                $limit = $options['limit'] ?? 4096;
+                if(
+                    !empty($options['sort']) &&
+                    is_array($options['sort']) &&
+                    $limit !== 1
+                ){
                     $list = Sort::list($list)->with(
                         $options['sort'],
                         [
