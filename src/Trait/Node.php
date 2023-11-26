@@ -100,19 +100,15 @@ trait Node {
                 if(!empty($relation) && is_array($relation)){
                     ddd('has relation');
                 }
-                foreach($list as $nr => $record){
-                    if(is_array($record)){
-                        $record['uuid'] = Core::uuid();
-                        $record['#class'] = $name;
-                    }
-                    elseif(is_object($record)){
-                        $record->uuid = Core::uuid();
-                        $record->{'#class'} = $name;
-                    }
-                    $list[$nr] = $record;
+                if(!empty($options['sort']) && is_array($options['sort'])){
+                    $sort_list = Sort::list($list)->with(
+                        $options['sort'],
+                        [
+                            'output' => 'raw'
+                        ]
+                    );
+                    ddd($sort_list);
                 }
-                $data->data($name, $list);
-                $data->write($data_url);
                 ddd($options);
             }
 
