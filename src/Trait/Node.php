@@ -58,7 +58,7 @@ trait Node {
             $object->config('extension.json')
         ;
         if(!File::exist($object_url)){
-            throw new Exception('Object ' . $name . ' not found');
+            throw new Exception('Object ' . $name . ' not found (' . $object_url .')');
         }
         $object_data = $object->data_read($object_url);
         ddd($object_data);
