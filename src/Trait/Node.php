@@ -14,6 +14,7 @@ trait Node {
      * @throws Exception
      */
     public function list($class, $role, $options=[]){
+        $mtime = time();
         $name = Controller::name($class);
 
         if(!array_key_exists('relation', $options)){
@@ -23,7 +24,7 @@ trait Node {
             $options['parse'] = false;
         }
         if(!Security::is_granted(
-            $class,
+            $name,
             $role,
             $options
         )){
