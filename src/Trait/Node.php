@@ -102,11 +102,14 @@ trait Node {
                 }
                 if(!empty($options['sort']) && is_array($options['sort'])){
                     $sort_list = Sort::list($list)->with(
-                        $options['sort'],
-                        [
-                            'output' => 'raw'
-                        ]
+                        $options['sort']
                     );
+                    /*
+                    $sort_count = count($options['sort']);
+                    if($sort_count === 2){
+
+                    }
+                    */
                     ddd($sort_list);
                 }
                 ddd($options);
