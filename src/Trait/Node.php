@@ -5,6 +5,7 @@ use R3m\Io\App;
 
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
+use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\File;
 use R3m\Io\Module\Sort;
 
@@ -14,6 +15,7 @@ use Exception;
 
 trait Node {
 
+    use Expose;
     use Filter;
     use Tree;
     use Where;
@@ -107,18 +109,14 @@ trait Node {
                 if(!empty($relation) && is_array($relation)){
                     ddd('has relation');
                 }
+                $is_filter = false;
+                $is_where = false;
                 if(
                     !empty(
-                        $options['filter']) &&
-                        is_array($options['filter'])
+                    $options['filter']) &&
+                    is_array($options['filter'])
                 ){
-                    foreach($list as $nr => $record){
-                        $record = $this->filter($record, $options['filter'], $options);
-                        if(!$record){
-                            unset($list[$nr]);
-                        }
-                    }
-                    $list = array_values($list);
+                    $is_filter = true;
                 }
                 elseif(
                     !empty($options['where']) &&
@@ -128,16 +126,38 @@ trait Node {
                     )
                 ){
                     $options['where'] = $this->where_convert($options['where']);
-                    foreach($list as $nr => $record){
+                    $is_where = true;
+                }
+                foreach($list as $nr => $record) {
+                    $expose = $this->expose_get(
+                        $object,
+                        $record->{'#class'},
+                        $record->{'#class'} . '.' . $options['function'] . '.expose'
+                    );
+                    $node = new Storage($record);
+                    $record = $this->expose(
+                        $node,
+                        $expose,
+                        $record->{'#class'},
+                        $options['function'],
+                        $role
+                    );
+                    ddd($record);
+                    if($is_filter){
+                        $record = $this->filter($record, $options['filter'], $options);
+                        if(!$record){
+                            unset($list[$nr]);
+                        }
+                    }
+                    elseif($is_where){
                         $record = $this->where($record, $options['where'], $options);
                         if(!$record){
                             unset($list[$nr]);
                         }
                     }
-                    $list = array_values($list);
                 }
+                $list = array_values($list);
                 $limit = $options['limit'] ?? 4096;
-                d($limit);
                 if(
                     !empty($options['sort']) &&
                     is_array($options['sort']) &&
