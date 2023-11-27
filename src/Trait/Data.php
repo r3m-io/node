@@ -13,7 +13,7 @@ use R3m\Io\Node\Service\Security;
 
 use Exception;
 
-trait Node {
+trait Data {
 
     use Expose;
     use Filter;
