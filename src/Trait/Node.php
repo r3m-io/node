@@ -135,14 +135,14 @@ trait Node {
                         $record->{'#class'} . '.' . $options['function'] . '.expose'
                     );
                     $node = new Storage($record);
-                    $record = $this->expose(
+                    $node = $this->expose(
                         $node,
                         $expose,
                         $record->{'#class'},
                         $options['function'],
                         $role
                     );
-                    ddd($record);
+                    $record = $node->data();
                     if($is_filter){
                         $record = $this->filter($record, $options['filter'], $options);
                         if(!$record){
@@ -188,16 +188,23 @@ trait Node {
                 }
                 $page = $options['page'] ?? 1;
                 $limit = $options['limit'] ?? 4096;
+                $list_temp = [];
+                $list_count = 0;
                 foreach($list as $index => $record){
                     if(
-                        $index < ($page - 1) * $limit ||
-                        $index >= $page * $limit
+                        $index < ($page - 1) * $limit
                     ){
-                        unset($list[$index]);
+                        //nothing
+                    }
+                    elseif($index >= $page * $limit){
+                        break;
+                    }
+                    else {
+                        $list_temp[] = $record;
+                        $list_count++;
                     }
                 }
-                $list = array_values($list);
-                $list_count = count($list);
+                $list = $list_temp;
                 $result = [];
                 $result['page'] = $page;
                 $result['limit'] = $limit;
