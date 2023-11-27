@@ -2,9 +2,10 @@
 
 namespace R3m\Io\Node\Trait;
 
-use Exception;
 use R3m\Io\Module\Filter;
 use R3m\Io\Module\Parse\Token;
+
+use Exception;
 
 Trait Where {
 

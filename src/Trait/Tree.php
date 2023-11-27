@@ -2,10 +2,11 @@
 
 namespace R3m\Io\Node\Trait;
 
-use R3m\Io\Exception\FileWriteException;
-use R3m\Io\Exception\ObjectException;
 use R3m\Io\Module\Parse;
 use R3m\Io\Module\Parse\Token;
+
+use R3m\Io\Exception\FileWriteException;
+use R3m\Io\Exception\ObjectException;
 
 Trait Tree {
 
