@@ -129,20 +129,23 @@ trait Node {
                     $is_where = true;
                 }
                 foreach($list as $nr => $record) {
-                    $expose = $this->expose_get(
-                        $object,
-                        $record->{'#class'},
-                        $record->{'#class'} . '.' . $options['function'] . '.expose'
-                    );
-                    $node = new Storage($record);
-                    $node = $this->expose(
-                        $node,
-                        $expose,
-                        $record->{'#class'},
-                        $options['function'],
-                        $role
-                    );
-                    $record = $node->data();
+                    if(is_object($record)){
+                        $expose = $this->expose_get(
+                            $object,
+                            $record->{'#class'},
+                            $record->{'#class'} . '.' . $options['function'] . '.expose'
+                        );
+                        $node = new Storage($record);
+                        $node = $this->expose(
+                            $node,
+                            $expose,
+                            $record->{'#class'},
+                            $options['function'],
+                            $role
+                        );
+                        $record = $node->data();
+                    }
+                    //parse the record if parse is enabled
                     if($is_filter){
                         $record = $this->filter($record, $options['filter'], $options);
                         if(!$record){
@@ -171,7 +174,13 @@ trait Node {
                     );
                 }
                 if(!empty($options['limit']) && $options['limit'] === '*'){
-                    $list_count = count($list);
+                    $list_count = 0;
+                    foreach($list as $index => $record){
+                        if(is_object($record)){
+                            $record->{'#index'} = $index;
+                        }
+                        $list_count++;
+                    }
                     $result = [];
                     $result['page'] = 1;
                     $result['limit'] = $list_count;
@@ -200,6 +209,9 @@ trait Node {
                         break;
                     }
                     else {
+                        if(is_object($record)){
+                            $record->{'#index'} = $index;
+                        }
                         $list_temp[] = $record;
                         $list_count++;
                     }
