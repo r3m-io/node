@@ -62,7 +62,7 @@ Trait Expose {
                 $permission = [];
                 $permission['uuid'] = Core::uuid();
                 $permission['name'] = $class . '.' . $function;
-                $permission['attribute'] = [];
+                $permission['property'] = [];
                 $permission['role'] = $role->uuid;
                 $role->permission = [];
                 $role->permission[] = (object) $permission;
@@ -97,21 +97,21 @@ Trait Expose {
                         ) {
                             $is_expose = true;
                             if (
-                                property_exists($action, 'attributes') &&
-                                is_array($action->attributes)
+                                property_exists($action, 'property') &&
+                                is_array($action->property)
                             ) {
 
-                                foreach ($action->attributes as $attribute) {
+                                foreach ($action->property as $property) {
                                     $is_optional = false;
-                                    if(substr($attribute, 0, 1) === '?'){
+                                    if(substr($property, 0, 1) === '?'){
                                         $is_optional = true;
-                                        $attribute = substr($attribute, 1);
+                                        $property = substr($property, 1);
                                     }
-                                    $assertion = $attribute;
-                                    $explode = explode(':', $attribute, 2);
+                                    $assertion = $property;
+                                    $explode = explode(':', $property, 2);
                                     $compare = null;
                                     if (array_key_exists(1, $explode)) {
-                                        $record_attribute = $node->get($explode[0]);
+                                        $record_property = $node->get($explode[0]);
                                         $compare = $explode[1];
                                         $attribute = $explode[0];
                                         if ($compare) {
@@ -119,95 +119,95 @@ Trait Expose {
                                             $compare = $parse->compile($compare, $object->data());
                                             d($node);
                                             ddd($compare);
-                                            if ($record_attribute !== $compare) {
-                                                throw new Exception('Assertion failed: ' . $assertion . ' values [' . $record_attribute . ', ' . $compare . ']');
+                                            if ($record_property !== $compare) {
+                                                throw new Exception('Assertion failed: ' . $assertion . ' values [' . $record_property . ', ' . $compare . ']');
                                             }
                                         }
                                     }
                                     if (
-                                        property_exists($action, 'objects') &&
-                                        property_exists($action->objects, $attribute) &&
-                                        property_exists($action->objects->$attribute, 'expose')
+                                        property_exists($action, 'object') &&
+                                        property_exists($action->object, $property) &&
+                                        property_exists($action->object->$property, 'expose')
                                     ) {
                                         if (
-                                            property_exists($action->objects->$attribute, 'multiple') &&
-                                            $action->objects->$attribute->multiple === true &&
-                                            $node->has($attribute)
+                                            property_exists($action->object->$property, 'multiple') &&
+                                            $action->object->$property->multiple === true &&
+                                            $node->has($property)
                                         ) {
-                                            $array = $node->get($attribute);
+                                            $array = $node->get($property);
 
                                             if(is_array($array) || is_object($array)){
-                                                $record[$attribute] = [];
+                                                $record[$property] = [];
                                                 foreach ($array as $child) {
                                                     $child = new Storage($child);
                                                     $child_expose =[];
                                                     if(
-                                                        property_exists($action->objects->$attribute, 'objects')
+                                                        property_exists($action->object->$property, 'object')
                                                     ){
                                                         $child_expose[] = (object) [
-                                                            'attributes' => $action->objects->$attribute->expose,
-                                                            'objects' => $action->objects->$attribute->objects,
+                                                            'property' => $action->object->$property->expose,
+                                                            'object' => $action->object->$property->object,
                                                             'role' => $action->role,
                                                         ];
                                                     }  else {
                                                         $child_expose[] = (object) [
-                                                            'attributes' => $action->objects->$attribute->expose,
+                                                            'property' => $action->object->$property->expose,
                                                             'role' => $action->role,
                                                         ];
                                                     }
                                                     $child = $this->expose(
                                                         $child,
                                                         $child_expose,
-                                                        $attribute,
+                                                        $property,
                                                         'child',
                                                         $role,
                                                         $action->role
                                                     );
-                                                    $record[$attribute][] = $child->data();
+                                                    $record[$property][] = $child->data();
                                                 }
                                             } else {
                                                 //leave intact for read without parse
-                                                $record[$attribute] = $array;
+                                                $record[$property] = $array;
                                             }
                                         } elseif (
-                                            $node->has($attribute)
+                                            $node->has($property)
                                         ) {
-                                            $child = $node->get($attribute);
+                                            $child = $node->get($property);
                                             if (!empty($child)) {
-                                                $record[$attribute] = null;
+                                                $record[$property] = null;
                                                 $child = new Storage($child);
                                                 $child_expose =[];
                                                 if(
-                                                    property_exists($action->objects->$attribute, 'objects')
+                                                    property_exists($action->object->$property, 'objects')
                                                 ){
                                                     $child_expose[] = (object) [
-                                                        'attributes' => $action->objects->$attribute->expose,
-                                                        'objects' => $action->objects->$attribute->objects,
+                                                        'property' => $action->object->$property->expose,
+                                                        'object' => $action->object->$property->objects,
                                                         'role' => $action->role,
                                                     ];
                                                 }  else {
                                                     $child_expose[] = (object) [
-                                                        'attributes' => $action->objects->$attribute->expose,
+                                                        'property' => $action->object->$property->expose,
                                                         'role' => $action->role,
                                                     ];
                                                 }
                                                 $child = $this->expose(
                                                     $child,
                                                     $child_expose,
-                                                    $attribute,
+                                                    $property,
                                                     'child',
                                                     $role,
                                                     $action->role
                                                 );
-                                                $record[$attribute] = $child->data();
+                                                $record[$property] = $child->data();
                                             }
-                                            if (empty($record[$attribute])) {
-                                                $record[$attribute] = null;
+                                            if (empty($record[$property])) {
+                                                $record[$property] = null;
                                             }
                                         }
                                     } else {
-                                        if ($node->has($attribute)) {
-                                            $record[$attribute] = $node->get($attribute);
+                                        if ($node->has($property)) {
+                                            $record[$property] = $node->get($property);
                                         }
                                     }
                                 }
@@ -511,7 +511,7 @@ Trait Expose {
     /**
      * @throws ObjectException
      */
-    private function expose_objects_create_cli($depth=0){
+    private function expose_object_create_cli($depth=0){
 
         $result = [];
         $attribute = Cli::read('input', 'Object name (depth (' . $depth . ')): ');
@@ -541,17 +541,17 @@ Trait Expose {
             ) {
                 $multiple = false;
             }
-            $expose = Cli::read('input', 'Expose (attribute): ');
+            $expose = Cli::read('input', 'Expose (property): ');
             while(!empty($expose)){
                 $attributes[] = $expose;
-                $expose = Cli::read('input', 'Expose (attribute): ');
+                $expose = Cli::read('input', 'Expose (property): ');
             }
             $object = [];
             $object['multiple'] = $multiple;
             $object['expose'] = $attributes;
-            $object['objects'] = $this->expose_objects_create_cli(++$depth);
-            if(empty($object['objects'])){
-                unset($object['objects']);
+            $object['object'] = $this->expose_object_create_cli(++$depth);
+            if(empty($object['object'])){
+                unset($object['object']);
             }
             $result[$attribute] = $object;
             $attribute = Cli::read('input', 'Object name (depth (' . --$depth . ')): ');
@@ -581,13 +581,13 @@ Trait Expose {
         $expose = $object->data_read($url);
         $action = Cli::read('input', 'Action: ');
         $role = Cli::read('input', 'Role: ');
-        $attribute = Cli::read('input', 'Attribute: ');
-        $attributes = [];
-        while(!empty($attribute)){
-            $attributes[] = $attribute;
-            $attribute = Cli::read('input', 'Attribute: ');
+        $property = Cli::read('input', 'Property: ');
+        $properties = [];
+        while(!empty($property)){
+            $properties[] = $property;
+            $property = Cli::read('input', 'Property: ');
         }
-        $objects = $this->expose_objects_create_cli();
+        $objects = $this->expose_object_create_cli();
         if(!$expose){
             $expose = new Storage();
         }
@@ -626,8 +626,8 @@ Trait Expose {
         }
         $record = [];
         $record['role'] = $role;
-        $record['attributes'] = $attributes;
-        $record['objects'] = $objects;
+        $record['property'] = $properties;
+        $record['object'] = $objects;
         $list[] = $record;
         $result = [];
         foreach ($list as $record){
