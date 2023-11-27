@@ -41,6 +41,11 @@ Trait Record {
         ){
             $record = $list;
             $record['node'] = $list['list'][0];
+            if(property_exists($record['node'], '#index')){
+                unset($record['node']->{'#index'});
+            }
+            unset($record['max']);
+            unset($record['sort']);
             unset($record['list']);
             unset($record['page']);
             unset($record['limit']);
