@@ -8,4 +8,5 @@ trait Data {
     use Tree;
     use Where;
     use Data\NodeList;
+    use Data\Record;
 }
