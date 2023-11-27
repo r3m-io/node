@@ -22,6 +22,7 @@ trait NodeList {
     public function list($class, $role, $options=[]){
         $mtime = false;
         $name = Controller::name($class);
+        $options = Core::object($options, Core::OBJECT_ARRAY);
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
