@@ -487,11 +487,7 @@ Trait Expose {
      * @throws Exception
      */
     public function expose_get(App $object, $name='', $attribute=''){
-        $dir_node = $object->config('project.dir.data') .
-            'Node' .
-            $object->config('ds')
-        ;
-        $dir_expose = $dir_node .
+        $dir_expose = $object->config('project.dir.node') .
             'Expose' .
             $object->config('ds')
         ;
@@ -500,13 +496,13 @@ Trait Expose {
             $object->config('extension.json')
         ;
         if(!File::exist($url)){
-            throw new Exception('Data url (' . $url . ') not found for class: ' . $name);
+            throw new Exception('Expose: url (' . $url . ') not found for class: ' . $name);
         }
         $data = $object->data_read($url);
         if($data){
             $get = $data->get($attribute);
             if(empty($get)){
-                throw new Exception('Cannot find attribute (' . $attribute .') in class: ' . $name);
+                throw new Exception('Expose: cannot find attribute (' . $attribute .') in class: ' . $name);
             }
             return $get;
         }
