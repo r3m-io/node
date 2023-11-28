@@ -77,6 +77,8 @@ Trait Expose {
                         ddd($permission);
                     }
                     foreach ($expose as $action) {
+                        d($action);
+                        ddd($role);
                         if (
                             (
                                 property_exists($permission, 'name') &&
