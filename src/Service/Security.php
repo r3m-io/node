@@ -19,36 +19,38 @@ class Security extends Main
             throw new Exception('Function is missing in options');
         }
         $name = Controller::name($class);
+        $name_permission = str_replace('.', ':', $name);
+        $function_permission = str_replace('_', '.', $options['function']);
         $role = new Data($role);
         $is_permission = false;
         $is_permission_relation = false;
         $is_permission_parse = false;
         $permissions = [];
-        $permissions[] = $name . '.' . $options['function'];
+        $permissions[] = $name_permission . '.' . $function_permission;
         if(
             array_key_exists('relation', $options) &&
             $options['relation'] === true
         ){
-            $permissions[] = $name . '.' . $options['function'] . '.' . 'relation';
+            $permissions[] = $name_permission . '.' . $function_permission . '.' . 'relation';
         }
         if(
             array_key_exists('parse', $options) &&
             $options['parse'] === true
         ){
-            $permissions[] = $name . '.' . $options['function'] . '.' . 'parse';
+            $permissions[] = $name_permission . '.' . $function_permission . '.' . 'parse';
         }
         $role_permissions = $role->get('permission');
         if(is_array($role_permissions)){
             foreach($role->get('permission') as $permission){
                 $permission = new Data($permission);
-                if($permission->get('name') === $name . '.' . $options['function']){
+                if($permission->get('name') === $name_permission . '.' .$function_permission){
                     $is_permission = true;
                 }
                 if(
                     array_key_exists('relation', $options) &&
                     $options['relation'] === true
                 ){
-                    if($permission->get('name') === $name . '.' . $options['function'] . '.' . 'relation'){
+                    if($permission->get('name') === $name_permission . '.' .$function_permission . '.' . 'relation'){
                         $is_permission_relation = true;
                     }
                 } else {
@@ -58,7 +60,7 @@ class Security extends Main
                     array_key_exists('parse', $options) &&
                     $options['parse'] === true
                 ) {
-                    if($permission->get('name') === $name . '.' . $options['function'] . '.' . 'parse'){
+                    if($permission->get('name') === $name_permission . '.' . $function_permission . '.' . 'parse'){
                         $is_permission_parse = true;
                     }
                 } else {
@@ -72,18 +74,7 @@ class Security extends Main
                     return true;
                 }
             }
-        } else {
-            $debug = debug_backtrace(true);
-            d($debug[0]['file'] . ' (' . $debug[0]['line'] . ')' . ' ' . $debug[0]['function'] . ' ' . $debug[0]['class']);
-            d($debug[1]['file'] . ' (' . $debug[1]['line'] . ')' . ' ' . $debug[1]['function'] . ' ' . $debug[1]['class']);
-            d($debug[2]['file'] . ' (' . $debug[2]['line'] . ')' . ' ' . $debug[2]['function'] . ' ' . $debug[2]['class']);
-            d($debug[3]['file'] . ' (' . $debug[3]['line'] . ')' . ' ' . $debug[3]['function'] . ' ' . $debug[3]['class']);
-            d($name);
-            d($role);
-            d($permissions);
-            ddd($role_permissions);
         }
-
         throw new Exception('Security: permission denied... (' . implode(', ', $permissions) . ')');
     }
 }
