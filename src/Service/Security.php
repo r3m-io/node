@@ -26,7 +26,7 @@ class Security extends Main
         $is_permission_relation = false;
         $is_permission_parse = false;
         $permissions = [];
-        $permissions[] = $name_permission . '.' . $function_permission;
+        $permissions[] = $name_permission . ':' . $function_permission;
         if(
             array_key_exists('relation', $options) &&
             $options['relation'] === true
@@ -40,10 +40,12 @@ class Security extends Main
             $permissions[] = $name_permission . ':' . $function_permission . '.' . 'parse';
         }
         $role_permissions = $role->get('permission');
+        d($permissions);
+        ddd($role_permissions);
         if(is_array($role_permissions)){
             foreach($role->get('permission') as $permission){
                 $permission = new Data($permission);
-                if($permission->get('name') === $name_permission . '.' .$function_permission){
+                if($permission->get('name') === $name_permission . ':' .$function_permission){
                     $is_permission = true;
                 }
                 if(
