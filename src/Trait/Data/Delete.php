@@ -7,6 +7,7 @@ use R3m\Io\Config;
 
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
+use R3m\Io\Module\File;
 
 use R3m\Io\Node\Service\Security;
 
@@ -59,8 +60,13 @@ Trait Delete {
             ){
                 if($record->uuid === $options['uuid']){
                     unset($list[$nr]);
-                    $data->data($name, $list);
-                    $data->write($url);
+                    if(empty($list)){
+                        File::delete($url);
+                    } else {
+                        $data->data($name, $list);
+                        $data->write($url);
+                    }
+
                     return true;
                 }
             }
