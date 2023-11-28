@@ -20,6 +20,7 @@ Trait Create {
         $name = Controller::name($class);
         $object = $this->object();
         $object->request('node', (object) $node);
+        $object->request('node.uuid', Core::uuid());
         $object->request('node.#class', $name);
 
         if(!array_key_exists('function', $options)){
