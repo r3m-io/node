@@ -48,16 +48,18 @@ Trait Delete {
         if(!$data){
             return true;
         }
-        if(!is_array($data)){
-            throw new Exception('Data corrupted?');
+        $list = $data->data($name);
+        if(!$list){
+            return true;
         }
-        foreach($data as $nr => $record){
+        foreach($list as $nr => $record){
             if(
                 is_object($record) &&
                 property_exists($record, 'uuid')
             ){
                 if($record->uuid === $options['uuid']){
-                    unset($data[$nr]);
+                    unset($list[$nr]);
+                    $data->data($name, $list);
                     $data->write($url);
                     return true;
                 }
