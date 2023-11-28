@@ -89,7 +89,11 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
     }
     $node = new Node($object);
     $response = $node->record($name, $node->role_system(), $options);
-    if(array_key_exists('node', $response)){
+    if(
+        !empty($response) &&
+        is_array($response) &&
+        array_key_exists('node', $response)
+    ){
         $record = $response['node'];
         if(
             is_object($record) &&
