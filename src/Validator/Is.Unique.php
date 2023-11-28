@@ -95,58 +95,18 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
     }
     $node = new Node($object);
     $response = $node->record($name, $node->role_system(), $options);
-    d($response);
-    d($name);
-    d($url);
-    d($attribute);
-    d($options);
-    ddd($value);
-    /*
-    if($url === false){
-        throw new Exception('Url not set for Is.Unique');
-    }
-    if(File::exist($url) === false){
-        if($object->config('project.log.node')){
-            $object->logger($object->config('project.log.node'))->info('R3m-io/Node/Validator/Is.Unique: ' . $url . ' doesn\'t exist (new class) ?');
+    if(array_key_exists('node', $response)){
+        $record = $response['node'];
+        if(
+            is_object($record) &&
+            property_exists($record, 'uuid') &&
+            !empty($record->uuid)
+        ){
+            return false;
+        } else {
+            return true;
         }
+    } else {
         return true;
     }
-    if($class === false){
-        if($object->config('project.log.node')){
-            $object->logger($object->config('project.log.node'))->info('R3m-io/Node/Validator/Is.Unique: Class not set for Is.Unique');
-        }
-        throw new Exception('Class not set for Is.Unique');
-    }
-    $unique = $object->data('Is.Unique');
-    if (empty($unique)) {
-        $unique = new Node($object);
-        $object->data('Is.Unique', $unique);
-    }
-    $node_ramdisk = $object->config('package.r3m-io/node.ramdisk');
-    if(empty($node_ramdisk)){
-        $node_ramdisk = [];
-    }
-    if(
-        in_array(
-            $class,
-            $node_ramdisk,
-            true
-        )
-    ){
-        $options['ramdisk'] = true;
-    }
-    $response = $unique->record($class, $unique->role_system(), $options);
-    if (empty($response)) {
-        return true;
-    }
-    $uuid = $object->request('node.uuid');
-    if(
-        array_key_exists('node', $response) &&
-        property_exists($response['node'], 'uuid') &&
-        $uuid === $response['node']->uuid
-    ){
-        return true;
-    }
-    return false;
-    */
 }
