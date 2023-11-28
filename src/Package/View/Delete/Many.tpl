@@ -22,9 +22,7 @@ $class,
 R3m.Io.Node:Role:role_system(),
 $options
 )}}
-{{if($response !== true)}}
 {{$response|json.encode:'JSON_PRETTY_PRINT'}}
-{{/if}}
-{{/if}}
-{{/if}}
 
+{{/if}}
+{{/if}}
