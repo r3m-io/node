@@ -92,6 +92,7 @@ Trait Create {
                     $list[] = $record->data();
                     $data->set($name, $list);
                     $data->write($url);
+                    $response['node'] = $record->data();
                 }
             } else {
                 $response['error'] = $validate->test;
