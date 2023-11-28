@@ -8,7 +8,7 @@ use R3m\Io\Module\Parse\Token;
 use R3m\Io\Exception\FileWriteException;
 use R3m\Io\Exception\ObjectException;
 
-Trait Tree {
+trait Tree {
 
     private function tree_max_depth($tree=[]){
         $depth = 0;

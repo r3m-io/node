@@ -7,7 +7,7 @@ use R3m\Io\Module\Parse\Token;
 
 use Exception;
 
-Trait Where {
+trait Where {
 
     /**
      * @throws Exception

@@ -4,6 +4,9 @@ namespace R3m\Io\Node\Trait\Data;
 
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
+use R3m\Io\Module\Data as Storage;
+
+use R3m\Io\Node\Service\Security;
 
 use Exception;
 
@@ -14,30 +17,66 @@ Trait Create {
      */
     public function create($class, $role, $node=[], $options=[]): false|array
     {
-        d($node);
-        ddd($options);
-
-        /*
-        $options = Core::object($options, Core::OBJECT_ARRAY);
-        $count = 0;
         $name = Controller::name($class);
+        $object = $this->object();
+        $object->request('node', (object) $node);
+        $object->request('node.#class', $name);
+
         if(!array_key_exists('function', $options)){
-            $options['function'] = 'count';
+            $options['function'] = __FUNCTION__;
         }
-        if(!array_key_exists('limit', $options)){
-            $options['limit'] = '*';
+        $options['relation'] = false;
+        if(!Security::is_granted(
+            $class,
+            $role,
+            $options
+        )){
+            return false;
         }
-        unset($options['page']);
-        $response = $this->list($class, $role, $options);
+        $dir_validate = $object->config('project.dir.node') .
+            'Validate'.
+            $object->config('ds')
+        ;
+        $validate_url =
+            $dir_validate .
+            $name .
+            $object->config('extension.json');
+
         if(
-            !empty($response) &&
-            is_array($response) &&
-            array_key_exists('count', $response)
+            array_key_exists('validation', $options) &&
+            $options['validation'] === false
         ){
-            $count = $response['count'];
+            $validate = (object) ['success' => true];
+        } else {
+            $validate = $this->validate($object, $validate_url,  $name . '.create');
         }
-        return $count;
-        */
+        $response = [];
+        if($validate) {
+            if ($validate->success === true) {
+                $expose = $this->expose_get(
+                    $object,
+                    $name,
+                    $name . '.' . __FUNCTION__ . '.expose'
+                );
+                d($expose);
+                ddd($object->request());
+                $node = new Storage();
+                $node->data($object->request('node'));
+                $node->set('#class', $name);
+                if (
+                    $expose &&
+                    $role
+                ) {
+                    $record = $this->expose(
+                        $node,
+                        $expose,
+                        $name,
+                        __FUNCTION__,
+                        $role
+                    );
+                }
+            }
+        }
         return false;
     }
 }

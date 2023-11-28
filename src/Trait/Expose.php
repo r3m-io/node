@@ -19,7 +19,7 @@ use Exception;
 use R3m\Io\Exception\FileWriteException;
 use R3m\Io\Exception\ObjectException;
 
-Trait Expose {
+trait Expose {
 
     /**
      * @throws ObjectException
