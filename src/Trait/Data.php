@@ -8,6 +8,7 @@ trait Data {
     use Tree;
     use Where;
     use Data\Count;
+    use Data\Create;
     use Data\Delete;
     use Data\NodeList;
     use Data\Read;
