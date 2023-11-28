@@ -61,7 +61,7 @@ Trait Expose {
             ) {
                 $permission = [];
                 $permission['uuid'] = Core::uuid();
-                $permission['name'] = $class . '.' . $function;
+                $permission['name'] = str_replace('.', ':', Controller::name($class)) . '.' . $function;
                 $permission['property'] = [];
                 $permission['role'] = $role->uuid;
                 $role->permission = [];
@@ -80,7 +80,7 @@ Trait Expose {
                         if (
                             (
                                 property_exists($permission, 'name') &&
-                                $permission->name === $class . '.' . $function &&
+                                $permission->name === str_replace('.', ':', Controller::name($class)) . '.' . $function &&
                                 property_exists($action, 'role') &&
                                 $action->role === $role->name
                             )
