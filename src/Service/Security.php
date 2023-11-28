@@ -26,18 +26,18 @@ class Security extends Main
         $is_permission_relation = false;
         $is_permission_parse = false;
         $permissions = [];
-        $permissions[] = $name_permission . ':' . $function_permission;
+        $permissions[] = $name_permission . '.' . $function_permission;
         if(
             array_key_exists('relation', $options) &&
             $options['relation'] === true
         ){
-            $permissions[] = $name_permission . ':' . $function_permission . '.' . 'relation';
+            $permissions[] = $name_permission . '.' . $function_permission . '.' . 'relation';
         }
         if(
             array_key_exists('parse', $options) &&
             $options['parse'] === true
         ){
-            $permissions[] = $name_permission . ':' . $function_permission . '.' . 'parse';
+            $permissions[] = $name_permission . '.' . $function_permission . '.' . 'parse';
         }
         $role_permissions = $role->get('permission');
         d($permissions);
@@ -45,14 +45,14 @@ class Security extends Main
         if(is_array($role_permissions)){
             foreach($role->get('permission') as $permission){
                 $permission = new Data($permission);
-                if($permission->get('name') === $name_permission . ':' .$function_permission){
+                if($permission->get('name') === $name_permission . '.' .$function_permission){
                     $is_permission = true;
                 }
                 if(
                     array_key_exists('relation', $options) &&
                     $options['relation'] === true
                 ){
-                    if($permission->get('name') === $name_permission . ':' .$function_permission . '.' . 'relation'){
+                    if($permission->get('name') === $name_permission . '.' .$function_permission . '.' . 'relation'){
                         $is_permission_relation = true;
                     }
                 } else {
@@ -62,7 +62,7 @@ class Security extends Main
                     array_key_exists('parse', $options) &&
                     $options['parse'] === true
                 ) {
-                    if($permission->get('name') === $name_permission . ':' . $function_permission . '.' . 'parse'){
+                    if($permission->get('name') === $name_permission . '.' . $function_permission . '.' . 'parse'){
                         $is_permission_parse = true;
                     }
                 } else {
