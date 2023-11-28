@@ -5,7 +5,7 @@
 {{if(is.empty($class))}}
 You need to provide the option class.
 Available classes:
-{{$read = dir.read(config('project.dir.data') + 'Node/Object/')}}
+{{$read = dir.read(config('project.dir.node') + 'Object/')}}
 {{if(is.array($read))}}
 {{$read = data.sort($read, ['name' => 'ASC'])}}
 {{for.each($read as $file)}}
@@ -20,5 +20,5 @@ R3m.Io.Node:Role:role_system(),
 $options
 )}}
 {{$response}}
-{{/if}}
 
+{{/if}}
