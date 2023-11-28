@@ -33,13 +33,14 @@ Trait Count {
         }
         $options['limit'] = '*';
         unset($options['page']);
-        d($options);
         $response = $this->list($class, $role, $options);
-        if(array_key_exists('count', $response)){
+        if(
+            !empty($response) &&
+            is_array($response) &&
+            array_key_exists('count', $response)
+        ){
             $count = $response['count'];
         }
         return $count;
-
-
     }
 }
