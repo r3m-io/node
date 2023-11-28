@@ -39,13 +39,30 @@ Trait Delete {
             return false;
         }
         $object = $this->object();
-
         $dir_data = $object->config('project.dir.node') .
             'Data' .
             $object->config('ds')
         ;
         $url = $dir_data . $name . $object->config('extension.json');
-        ddd($url);
+        $data = $object->data_read($url);
+        if(!$data){
+            return true;
+        }
+        if(!is_array($data)){
+            throw new Exception('Data corrupted?');
+        }
+        foreach($data as $nr => $record){
+            if(
+                is_object($record) &&
+                property_exists($record, 'uuid')
+            ){
+                if($record->uuid === $options['uuid']){
+                    unset($data[$nr]);
+                    $data->write($url);
+                    return true;
+                }
+            }
+        }
         return false;
     }
 }
