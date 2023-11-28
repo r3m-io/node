@@ -21,6 +21,7 @@ Trait Record {
     public function record($class, $role, $options=[]): ?array
     {
         $name = Controller::name($class);
+        $options = Core::object($options, Core::OBJECT_ARRAY);
         $options['limit'] = 1;
         $options['page'] = 1;
         if(!array_key_exists('function', $options)){

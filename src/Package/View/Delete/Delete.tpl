@@ -20,9 +20,8 @@ You can use list to get the uuid.
 {{$response = R3m.Io.Node:Data:delete(
 $class,
 R3m.Io.Node:Role:role_system(),
-[
-'uuid' => $options.uuid
-])}}
+$options
+)}}
 {{if($response !== true)}}
 {{$response|json.encode:'JSON_PRETTY_PRINT'}}
 {{/if}}
