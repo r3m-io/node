@@ -59,14 +59,22 @@ Trait Delete {
                 property_exists($record, 'uuid')
             ){
                 if($record->uuid === $options['uuid']){
-                    unset($list[$nr]);
+                    if(is_array($list)){
+                        unset($list[$nr]);
+                    }
+                    elseif(is_object($list)){
+                        unset($list->{$nr});
+                    }
                     if(empty($list)){
                         File::delete($url);
                     } else {
+                        if(is_object($list)){
+                            $list = (array) $list;
+                        }
+                        $list = array_values($list);
                         $data->data($name, $list);
                         $data->write($url);
                     }
-
                     return true;
                 }
             }
