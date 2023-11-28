@@ -221,7 +221,7 @@ Trait Expose {
             }
         }
         if($is_expose === false){
-            throw new Exception('No permission found for ' . $class . '.' . $function);
+            throw new Exception('No permission found for ' . str_replace('.', ':', Controller::name($class)) . '.' . $function);
         }
         return new Storage((object) $record);
     }
