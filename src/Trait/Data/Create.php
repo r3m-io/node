@@ -59,8 +59,6 @@ Trait Create {
                     $name,
                     $name . '.' . __FUNCTION__ . '.expose'
                 );
-                d($expose);
-                ddd($object->request());
                 $node = new Storage();
                 $node->data($object->request('node'));
                 $node->set('#class', $name);
@@ -75,6 +73,7 @@ Trait Create {
                         __FUNCTION__,
                         $role
                     );
+                    ddd($record);
                 }
             } else {
                 $response['error'] = $validate->test;
