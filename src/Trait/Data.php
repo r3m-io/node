@@ -1,11 +1,6 @@
 <?php
 namespace R3m\Io\Node\Trait;
 
-use R3m\Io\App;
-use R3m\Io\Exception\FileWriteException;
-use R3m\Io\Exception\ObjectException;
-use R3m\Io\Module\Validate;
-
 trait Data {
 
     use Expose;
