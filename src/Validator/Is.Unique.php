@@ -13,10 +13,10 @@
 
 use R3m\Io\App;
 
+use R3m\Io\Module\Controller;
 use R3m\Io\Module\Dir;
 use R3m\Io\Module\File;
 use R3m\Io\Module\Filter;
-use R3m\Io\Node\Model\Node;
 use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\Parse;
 
@@ -57,10 +57,6 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
         is_array($attribute) &&
         is_array($value)
     ) {
-        d($name);
-        d($url);
-        d($attribute);
-        ddd($value);
         $options = [
             'filter' => [],
             'sort' => []
@@ -95,6 +91,12 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
             ]
         ];
     }
+    d($name);
+    d($url);
+    d($attribute);
+    d($options);
+    ddd($value);
+    /*
     if($url === false){
         throw new Exception('Url not set for Is.Unique');
     }
@@ -141,4 +143,5 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
         return true;
     }
     return false;
+    */
 }
