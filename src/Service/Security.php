@@ -40,8 +40,6 @@ class Security extends Main
             $permissions[] = $name_permission . ':' . $function_permission . '.' . 'parse';
         }
         $role_permissions = $role->get('permission');
-        d($permissions);
-        ddd($role_permissions);
         if(is_array($role_permissions)){
             foreach($role->get('permission') as $permission){
                 $permission = new Data($permission);
