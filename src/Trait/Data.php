@@ -7,6 +7,7 @@ trait Data {
     use Filter;
     use Tree;
     use Where;
+    use Data\Delete;
     use Data\NodeList;
     use Data\Read;
     use Data\Record;
