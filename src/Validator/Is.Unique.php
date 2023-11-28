@@ -20,6 +20,8 @@ use R3m\Io\Module\Filter;
 use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\Parse;
 
+use R3m\Io\Node\Model\Node;
+
 /**
  * @throws Exception
  */
@@ -91,6 +93,9 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
             ]
         ];
     }
+    $node = new Node();
+    $response = $node->record($name, $node->role_system(), $options);
+    d($response);
     d($name);
     d($url);
     d($attribute);
