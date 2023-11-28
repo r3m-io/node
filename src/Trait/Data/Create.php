@@ -75,9 +75,10 @@ Trait Create {
                         $role
                     );
                 }
+            } else {
+                $response['error'] = $validate->test;
             }
         }
-        d($validate);
-        return false;
+        return $response;
     }
 }
