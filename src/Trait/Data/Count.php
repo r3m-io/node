@@ -20,7 +20,9 @@ Trait Count {
         if(!array_key_exists('function', $options)){
             $options['function'] = 'count';
         }
-        $options['limit'] = '*';
+        if(!array_key_exists('limit', $options)){
+            $options['limit'] = '*';
+        }
         unset($options['page']);
         $response = $this->list($class, $role, $options);
         if(
