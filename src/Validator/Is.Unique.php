@@ -60,8 +60,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
         is_array($value)
     ) {
         $options = [
-            'filter' => [],
-            'sort' => []
+            'filter' => []
         ];
         foreach ($attribute as $nr => $record) {
             if (array_key_exists($nr, $value)) {
@@ -72,11 +71,9 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
                 if(array_key_exists(1, $explode)){
                     $options['filter'][$explode[1]]['operator'] = Filter::OPERATOR_STRICTLY_EXACT;
                     $options['filter'][$explode[1]]['value'] = $value[$nr];
-                    $options['sort'][$explode[1]] = 'ASC';
                 } else {
                     $options['filter'][$explode[0]]['operator'] = Filter::OPERATOR_STRICTLY_EXACT;
                     $options['filter'][$explode[0]]['value'] = $value[$nr];
-                    $options['sort'][$explode[0]] = 'ASC';
                 }
             }
         }
@@ -87,9 +84,6 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
                     'operator' => Filter::OPERATOR_STRICTLY_EXACT,
                     'value' => $value
                 ]
-            ],
-            'sort' => [
-                $attribute => 'ASC'
             ]
         ];
     }
