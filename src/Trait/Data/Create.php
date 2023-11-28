@@ -77,6 +77,7 @@ Trait Create {
                 }
             }
         }
+        d($validate);
         return false;
     }
 }
