@@ -34,6 +34,14 @@ Trait Create {
         )){
             return false;
         }
+        $dir_data = $object->config('project.dir.node') .
+            'Data' .
+            $object->config('ds')
+        ;
+        $url = $dir_data .
+            $name .
+            $object->config('extension.json')
+        ;
         $dir_validate = $object->config('project.dir.node') .
             'Validate'.
             $object->config('ds')
@@ -73,7 +81,17 @@ Trait Create {
                         __FUNCTION__,
                         $role
                     );
-                    ddd($record);
+                    $data = $object->data_read($url);
+                    if(!$data){
+                        $data = new Storage();
+                    }
+                    $list = $data->get($name);
+                    if(empty($list)){
+                        $list = [];
+                    }
+                    $list[] = $record->data();
+                    $data->set($name, $list);
+                    $data->write($url);
                 }
             } else {
                 $response['error'] = $validate->test;
