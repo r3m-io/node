@@ -14,6 +14,4 @@ trait Data {
     use Data\NodeList;
     use Data\Read;
     use Data\Record;
-
-
 }
