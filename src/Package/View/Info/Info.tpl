@@ -1,5 +1,6 @@
 {{R3M}}
 {{$request = request()}}
+{{d($request)}}
 Package: {{$request.package}}
 
 Module: {{$request.module|uppercase.first}}
