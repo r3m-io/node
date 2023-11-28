@@ -93,7 +93,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
             ]
         ];
     }
-    $node = new Node();
+    $node = new Node($object);
     $response = $node->record($name, $node->role_system(), $options);
     d($response);
     d($name);
