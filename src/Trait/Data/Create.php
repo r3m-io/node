@@ -74,7 +74,6 @@ Trait Create {
                     $expose &&
                     $role
                 ) {
-                    d($node);
                     $node = $this->expose(
                         $node,
                         $expose,
@@ -82,8 +81,6 @@ Trait Create {
                         __FUNCTION__,
                         $role
                     );
-                    d($object->request());
-                    ddd($node);
                     $data = $object->data_read($url);
                     if(!$data){
                         $data = new Storage();
@@ -97,6 +94,7 @@ Trait Create {
                     $data->write($url);
                     $response['node'] = $node->data();
                     $this->sync_file([
+                        'dir_data' => $dir_data,
                         'url' => $url,
                     ]);
                 }
