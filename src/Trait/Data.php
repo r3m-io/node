@@ -108,7 +108,7 @@ trait Data {
             Dir::create($dir_expose, Dir::CHMOD);
             File::write($url_object, Core::object($item, Core::OBJECT_JSON));
             echo 'Written to:' . PHP_EOL;
-            echo '- ' . $url . PHP_EOL;
+            echo '- ' . $url_object . PHP_EOL;
             $expose = $this->object_create_expose($object, $name, $item);
             File::write($url_expose, Core::object($expose, Core::OBJECT_JSON));
             echo '- ' . $url_expose . PHP_EOL;
