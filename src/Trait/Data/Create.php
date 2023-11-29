@@ -74,6 +74,7 @@ Trait Create {
                     $expose &&
                     $role
                 ) {
+                    d($node);
                     $node = $this->expose(
                         $node,
                         $expose,
@@ -95,6 +96,9 @@ Trait Create {
                     $data->set($name, $list);
                     $data->write($url);
                     $response['node'] = $node->data();
+                    $this->sync_file([
+                        'url' => $url,
+                    ]);
                 }
             } else {
                 $response['error'] = $validate->test;
