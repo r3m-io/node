@@ -22,6 +22,8 @@ Trait Put {
         $object->request('node', (object) $node);
         $object->request('node.#class', $name);
 
+
+
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
