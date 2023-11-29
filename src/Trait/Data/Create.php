@@ -17,6 +17,7 @@ Trait Create {
      */
     public function create($class, $role, $node=[], $options=[]): false|array
     {
+        ddd($class);
         $name = Controller::name($class);
         $object = $this->object();
         $object->request('node', (object) $node);
