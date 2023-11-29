@@ -104,6 +104,16 @@ trait Data {
             $item['Node']['#class'] = $name;
             $item['Node']['type'] = 'object';
             $item['Node']['property'] = $this->object_create_property($object, $name);
+            if(!empty($item['Node']['property'])){
+                $item['Node']['property'][] = (object) [
+                    'name' => 'uuid',
+                    'type' => 'uuid'
+                ];
+                $item['Node']['property'][] = (object) [
+                    'name' => '#class',
+                    'type' => 'string'
+                ];
+            }
             $item['is.unique'] = $this->object_create_is_unique($object, $name);
             $item = (object) $item;
             Dir::create($dir_data, Dir::CHMOD);
