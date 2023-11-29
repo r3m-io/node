@@ -125,8 +125,12 @@ trait NodeList {
                     $options['where'] = $this->where_convert($options['where']);
                     $is_where = true;
                 }
+                ddd($list);
                 foreach($list as $nr => $record) {
-                    if(is_object($record)){
+                    if(
+                        is_object($record) &&
+                        property_exists($record, '#class')
+                    ){
                         $expose = $this->expose_get(
                             $object,
                             $record->{'#class'},
