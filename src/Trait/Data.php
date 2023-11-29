@@ -12,6 +12,7 @@ trait Data {
     use Data\Create;
     use Data\Delete;
     use Data\NodeList;
+    use Data\Patch;
     use Data\Put;
     use Data\Read;
     use Data\Record;
