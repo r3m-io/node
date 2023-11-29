@@ -22,8 +22,6 @@ Trait Put {
         $object->request('node', (object) $node);
         $object->request('node.#class', $name);
 
-        ddd($object->request());
-
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
@@ -52,6 +50,28 @@ Trait Put {
             $name .
             $object->config('extension.json');
 
+        $data = $object->data_read($url);
+        if(!$data){
+            return false;
+        }
+        $list = $data->get($name);
+        if(empty($list)){
+            return false;
+        }
+        $is_found = false;
+        foreach($list as $nr => $record){
+            if(
+                is_object($record) &&
+                property_exists($record, 'uuid') &&
+                $record->uuid === $object->request('node.uuid')
+            ){
+                $is_found = $nr;
+                break;
+            }
+        }
+        if($is_found === false){
+            return false;
+        }
         if(
             array_key_exists('validation', $options) &&
             $options['validation'] === false
@@ -82,15 +102,7 @@ Trait Put {
                         __FUNCTION__,
                         $role
                     );
-                    $data = $object->data_read($url);
-                    if(!$data){
-                        $data = new Storage();
-                    }
-                    $list = $data->get($name);
-                    if(empty($list)){
-                        $list = [];
-                    }
-                    $list[] = $record->data();
+                    $list[$is_found] = $record->data();
                     $data->set($name, $list);
                     $data->write($url);
                     $response['node'] = $record->data();
