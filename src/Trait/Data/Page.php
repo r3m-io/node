@@ -31,6 +31,9 @@ trait Page {
         if(!array_key_exists('parse', $options)){
             $options['parse'] = false;
         }
+        if(!array_key_exists('uuid', $options)){
+            return false;
+        }
         if(!Security::is_granted(
             $name,
             $role,
@@ -139,6 +142,13 @@ trait Page {
                 $counter = 0;
                 $page = 1;
                 foreach($list as $index => $record){
+                    if(
+                        is_object($record) &&
+                        property_exists($record, 'uuid') &&
+                        $record->uuid === $options['uuid']
+                    ){
+                        break;
+                    }
                     if($counter >= $limit){
                         $page++;
                         $counter = 0;
