@@ -145,18 +145,18 @@ trait NodeList {
                             $role
                         );
                         $record = $node->data();
-                    }
-                    //parse the record if parse is enabled
-                    if($is_filter){
-                        $record = $this->filter($record, $options['filter'], $options);
-                        if(!$record){
-                            unset($list[$nr]);
+                        //parse the record if parse is enabled
+                        if($is_filter){
+                            $record = $this->filter($record, $options['filter'], $options);
+                            if(!$record){
+                                unset($list[$nr]);
+                            }
                         }
-                    }
-                    elseif($is_where){
-                        $record = $this->where($record, $options['where'], $options);
-                        if(!$record){
-                            unset($list[$nr]);
+                        elseif($is_where){
+                            $record = $this->where($record, $options['where'], $options);
+                            if(!$record){
+                                unset($list[$nr]);
+                            }
                         }
                     }
                 }
