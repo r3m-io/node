@@ -166,21 +166,9 @@ trait Data {
                 }
                 $count = count($attribute);
                 $action = strtolower($attribute[0]);
-                $url = false;
-                switch($count){
-                    case 2:
-                        $url = '{{config(\'project.dir.data\')}}Node/BinaryTree/' . $options['class'] . '/Asc/Asc/' . Controller::name(implode('-', $attribute)) . '.btree';
-                        break;
-                    case 1:
-                        $url = '{{config(\'project.dir.data\')}}Node/BinaryTree/' . $options['class'] . '/Asc/' . Controller::name(implode('-', $attribute)) . '.btree';
-                        break;
-                    default:
-                        throw new Exception('Invalid attribute count: ' . $count . '.');
-                }
                 $is_unique[] = (object) [
                     'is.unique' => [
                         'class' => $options['class'],
-                        'url' => $url,
                         'attribute' => $attribute
                     ]
                 ];
@@ -255,13 +243,14 @@ trait Data {
         if(!empty($objects)){
             $expose->set('objects', $objects);
         }
-        $data->set($class . '.sync.expose', [ $expose->data() ]);
+        $data->set($class . '.count.expose', [ $expose->data() ]);
+        $data->set($class . '.create.expose', [ $expose->data() ]);
         $data->set($class . '.list.expose', [ $expose->data() ]);
+        $data->set($class . '.page.expose', [ $expose->data() ]);
+        $data->set($class . '.patch.expose', [ $expose->data() ]);
+        $data->set($class . '.put.expose', [ $expose->data() ]);
         $data->set($class . '.read.expose', [ $expose->data() ]);
         $data->set($class . '.record.expose', [ $expose->data() ]);
-        $data->set($class . '.create.expose', [ $expose->data() ]);
-        $data->set($class . '.put.expose', [ $expose->data() ]);
-        $data->set($class . '.patch.expose', [ $expose->data() ]);
         return $data->data();
     }
 
