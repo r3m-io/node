@@ -71,7 +71,7 @@ trait NodeList {
             $result['count'] = 0;
             $result['max'] = 0;
             $result['list'] = $list;
-            $result['sort'] = $options['sort'];
+            $result['sort'] = $options['sort'] ?? [];
             if(!empty($options['filter'])) {
                 $result['filter'] = $options['filter'];
             }
