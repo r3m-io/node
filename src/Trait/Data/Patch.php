@@ -19,10 +19,9 @@ Trait Patch {
     {
         $name = Controller::name($class);
         $object = $this->object();
-        $object->request('node', (object) $node);
-        $object->request('node.uuid', Core::uuid());
-        $object->request('node.#class', $name);
-
+        if(is_array($node)){
+            $node = Core::object($node, Core::OBJECT_OBJECT);
+        }
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
@@ -51,6 +50,39 @@ Trait Patch {
             $name .
             $object->config('extension.json');
 
+        $data = $object->data_read($url);
+        if(!$data){
+            return false;
+        }
+        $list = $data->get($name);
+        if(empty($list)){
+            return false;
+        }
+        $object->request('node', $node);
+        $object->request('node.#class', $name);
+        $is_found = false;
+        $record = false;
+        foreach($list as $nr => $record){
+            if(
+                is_object($record) &&
+                property_exists($record, 'uuid') &&
+                $record->uuid === $object->request('node.uuid')
+            ){
+                $is_found = $nr;
+                break;
+            }
+        }
+        if($is_found === false){
+            return false;
+        }
+        $patch = $record;
+        if(is_object($node)){
+            foreach($node as $attribute => $value){
+                $patch->{$attribute} = $value;
+            }
+        }
+        $patch->{'#class'} = $name;
+        $object->request('node', $patch);
         if(
             array_key_exists('validation', $options) &&
             $options['validation'] === false
@@ -81,15 +113,7 @@ Trait Patch {
                         __FUNCTION__,
                         $role
                     );
-                    $data = $object->data_read($url);
-                    if(!$data){
-                        $data = new Storage();
-                    }
-                    $list = $data->get($name);
-                    if(empty($list)){
-                        $list = [];
-                    }
-                    $list[] = $record->data();
+                    $list[$is_found] = $record->data();
                     $data->set($name, $list);
                     $data->write($url);
                     $response['node'] = $record->data();
