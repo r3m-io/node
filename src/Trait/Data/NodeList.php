@@ -125,11 +125,6 @@ trait NodeList {
                     $options['where'] = $this->where_convert($options['where']);
                     $is_where = true;
                 }
-                $debug = debug_backtrace(true);
-                d($debug[0]['file'] . ' ' . $debug[0]['line'] . ' ' . $debug[0]['function']);
-                d($debug[1]['file'] . ' ' . $debug[1]['line'] . ' ' . $debug[1]['function']);
-                d($debug[2]['file'] . ' ' . $debug[2]['line'] . ' ' . $debug[2]['function']);
-                ddd($list);
                 foreach($list as $nr => $record) {
                     if(
                         is_object($record) &&
@@ -162,6 +157,10 @@ trait NodeList {
                                 unset($list[$nr]);
                             }
                         }
+                    }
+                    elseif(is_object($record)){
+                        //objects which doesn't belong there
+                        unset($list[$nr]);
                     }
                 }
                 $list = array_values($list);
