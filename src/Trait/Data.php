@@ -104,15 +104,44 @@ trait Data {
             $item['Node']['#class'] = $name;
             $item['Node']['type'] = 'object';
             $item['Node']['property'] = $this->object_create_property($object, $name);
-            if(!empty($item['Node']['property'])){
-                $item['Node']['property'][] = (object) [
-                    'name' => 'uuid',
-                    'type' => 'uuid'
-                ];
-                $item['Node']['property'][] = (object) [
-                    'name' => '#class',
-                    'type' => 'string'
-                ];
+            if(
+                !empty($item['Node']['property']) &&
+                is_array($item['Node']['property'])
+            ){
+                $is_uuid = false;
+                $is_class = false;
+                foreach($item['Node']['property'] as $nr => $property){
+                    if(
+                        is_object($property) &&
+                        property_exists($property, 'name') &&
+                        $property->name === 'uuid'
+                    ){
+                        $is_uuid = true;
+
+                    }
+                    if(
+                        is_object($property) &&
+                        property_exists($property, 'name') &&
+                        $property->name === '#class'
+                    ){
+                        $is_class = true;
+                    }
+                    if($is_uuid && $is_class){
+                        break;
+                    }
+                }
+                if($is_uuid === false){
+                    $item['Node']['property'][] = (object) [
+                        'name' => 'uuid',
+                        'type' => 'uuid'
+                    ];
+                }
+                if($is_class === false){
+                    $item['Node']['property'][] = (object) [
+                        'name' => '#class',
+                        'type' => 'string'
+                    ];
+                }
             }
             $item['is.unique'] = $this->object_create_is_unique($object, $name);
             $item = (object) $item;
