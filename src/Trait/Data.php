@@ -13,6 +13,8 @@ use R3m\Io\Module\File;
 
 use R3m\Io\Node\Service\Security;
 
+use Exception;
+
 use R3m\Io\Exception\ObjectException;
 
 trait Data {
@@ -159,12 +161,12 @@ trait Data {
             !empty($options['is.unique']) &&
             is_array($options['is.unique'])
         ){
+            $action = false;
             foreach ($options['is.unique'] as $nr => $string){
                 $attribute = explode(',', $string);
                 foreach($attribute as $attribute_nr => $value){
                     $attribute[$attribute_nr] = trim($value);
                 }
-                $count = count($attribute);
                 $action = strtolower($attribute[0]);
                 $is_unique[] = (object) [
                     'is.unique' => [
@@ -173,43 +175,13 @@ trait Data {
                     ]
                 ];
             }
-            $validate->set($options['class'] . '.create.validate.' . $action, $is_unique);
-            $validate->set($options['class'] . '.put.validate.' . $action, $is_unique);
-            $validate->set($options['class'] . '.patch.validate.' . $action, $is_unique);
+            if($action){
+                $validate->set($options['class'] . '.create.validate.' . $action, $is_unique);
+                $validate->set($options['class'] . '.put.validate.' . $action, $is_unique);
+                $validate->set($options['class'] . '.patch.validate.' . $action, $is_unique);
+            }
         }
         return $validate->data();
-    }
-
-    /**
-     * @throws ObjectException
-     * @throws Exception
-     */
-    public function object_create_meta(App $object, $options=[]): mixed
-    {
-        if(!array_key_exists('class', $options)){
-            return false;
-        }
-        if(!array_key_exists('url', $options)){
-            return false;
-        }
-        $meta = new Storage();
-        $key = [
-            'property' => [
-                'uuid'
-            ]
-        ];
-        $property = [];
-        $property[] = 'uuid';
-        $key = sha1(Core::object($key, Core::OBJECT_JSON));
-        $meta->set('Sort.' . $options['class'] . '.' . $key . '.property', $property);
-        $meta->set('Sort.' . $options['class'] . '.' . $key . '.lines', 0);
-        $meta->set('Sort.' . $options['class'] . '.' . $key . '.count', 0);
-        $meta->set('Sort.' . $options['class'] . '.' . $key . '.url.asc', $options['url']);
-        $meta->set('Sort.' . $options['class'] . '.' . $key . '.mtime', File::mtime($options['url']));
-        $meta->set('Filter', (object) []);
-        $meta->set('Where', (object) []);
-        $meta->set('Count', (object) []);
-        return $meta->data();
     }
 
     /**
@@ -297,37 +269,6 @@ trait Data {
             }
         }
         return $result;
-    }
-
-    /**
-     * @throws ObjectException
-     */
-    public function object_create_sync(App $object, $class): object
-    {
-        $sync = [];
-        $sync['interval'] = (int) Cli::read('input', 'What is the "sync" interval: ');
-        if($sync['interval'] < 60){
-            $sync['interval'] = 60;
-        }
-        return (object) $sync;
-    }
-
-    /**
-     * @throws ObjectException
-     */
-    public function object_create_sort(App $object, $class): array
-    {
-        $sort = [];
-        echo 'Leave "sort" empty if finished.' . PHP_EOL;
-        while(true){
-            echo 'Enter the property of the "sort"' . PHP_EOL;
-            $name = Cli::read('input', '(use a , to use multiple properties): ');
-            if(empty($name)){
-                break;
-            }
-            $sort[] = $name;
-        }
-        return $sort;
     }
 
     /**
