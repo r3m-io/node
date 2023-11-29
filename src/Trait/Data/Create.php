@@ -74,13 +74,15 @@ Trait Create {
                     $expose &&
                     $role
                 ) {
-                    $record = $this->expose(
+                    $node = $this->expose(
                         $node,
                         $expose,
                         $name,
                         __FUNCTION__,
                         $role
                     );
+                    d($object->request());
+                    ddd($node);
                     $data = $object->data_read($url);
                     if(!$data){
                         $data = new Storage();
@@ -89,10 +91,10 @@ Trait Create {
                     if(empty($list)){
                         $list = [];
                     }
-                    $list[] = $record->data();
+                    $list[] = $node->data();
                     $data->set($name, $list);
                     $data->write($url);
-                    $response['node'] = $record->data();
+                    $response['node'] = $node->data();
                 }
             } else {
                 $response['error'] = $validate->test;
