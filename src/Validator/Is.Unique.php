@@ -100,6 +100,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
             property_exists($record, 'uuid') &&
             !empty($record->uuid)
         ){
+            ddd($object->request());
             return false;
         } else {
             return true;
