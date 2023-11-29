@@ -100,7 +100,11 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
             property_exists($record, 'uuid') &&
             !empty($record->uuid)
         ){
-            ddd($object->request());
+            $uuid = $object->request('node.uuid');
+            if($uuid === $record->uuid){
+                //can patch, can put
+                return true;
+            }
             return false;
         } else {
             return true;
