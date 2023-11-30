@@ -122,7 +122,9 @@ trait NodeList {
                         is_array($options['where'])
                     )
                 ){
-                    $options['where'] = $this->where_convert($options['where']);
+                    if(is_string($options['where'])){
+                        $options['where'] = $this->where_convert($options['where']);
+                    }
                     $is_where = true;
                 }
                 foreach($list as $nr => $record) {
