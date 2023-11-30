@@ -446,6 +446,8 @@ trait Where {
                             }
                         }
                         return $set;
+                    } else {
+                        ddd($set);
                     }
                 case 'xor' :
                     $operator = 'xor';
