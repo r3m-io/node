@@ -456,6 +456,7 @@ trait Where {
                         }
                         return $set;
                     } else {
+                        /*
                         if(
                             is_bool($set[0]) &&
                             $set[0] === true &&
@@ -487,7 +488,7 @@ trait Where {
                         } else {
                             ddd($set);
                         }
-
+                        */
                     }
                 case 'xor' :
                     $operator = 'xor';
