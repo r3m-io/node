@@ -481,6 +481,7 @@ trait Where {
                                 $set[2] = false;
                             }
                         }
+                        return $set;
                     }
                 case 'xor' :
                     $operator = 'xor';
