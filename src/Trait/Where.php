@@ -480,8 +480,9 @@ trait Where {
                                 $set[0] = false;
                                 $set[2] = false;
                             }
+                            return $set;
                         }
-                        return $set;
+
                     }
                 case 'xor' :
                     $operator = 'xor';
