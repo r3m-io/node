@@ -126,7 +126,6 @@ trait NodeList {
                         $options['where'] = $this->where_convert($options['where']);
                     }
                     $is_where = true;
-                    ddd($options);
                 }
                 foreach($list as $nr => $record) {
                     if(
