@@ -385,6 +385,10 @@ trait Where {
                         $where[$key] = false;
                         return $set;
                     }
+                    elseif($set[0] === false && !empty($set[2])){
+                        $where[$key] = false;
+                        return $set;
+                    }
                     $list = [];
                     $list[] = $record;
                     if(
