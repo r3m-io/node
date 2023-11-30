@@ -626,6 +626,7 @@ trait Where {
                     return $record;
                 }
                 $count_set = count($set);
+                d($count_set);
                 if($count_set === 1){
                     if($operator === null && $set[0] === true){
                         break;
