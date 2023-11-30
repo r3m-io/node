@@ -628,6 +628,7 @@ trait Where {
                 $count_set = count($set);
                 d($count_set);
                 if($count_set === 1){
+                    d($record);
                     d($operator);
                     d($set);
                     if($operator === null && $set[0] === true){
