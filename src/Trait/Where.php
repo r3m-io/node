@@ -481,6 +481,8 @@ trait Where {
                                 $set[2] = false;
                             }
                             return $set;
+                        } else {
+                            ddd($set);
                         }
 
                     }
