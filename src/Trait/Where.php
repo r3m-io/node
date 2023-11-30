@@ -471,6 +471,9 @@ trait Where {
                                 ]
                             ];
                             $and = Filter::list($list)->where($filter_where);
+                            d($filter_where);
+                            d($list);
+                            ddd($and);
                             if (!empty($and)) {
                                 $where[$key] = true;
                                 $set[0] = true;
