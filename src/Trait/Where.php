@@ -705,6 +705,8 @@ trait Where {
                                 $set[0] = false;
                             }
                             break;
+                        default:
+                            throw Exception('Unknown operator: ' . $operator);
                     }
                 }
                 $counter++;
