@@ -417,6 +417,10 @@ trait Where {
                             $set[0] = true;
                             $set[2] = true;
                         } else {
+                            $where[$key] = false;
+                            $set[0] = false;
+                            $set[2] = false;
+                            /*
                             if(
                                 is_array($set[0]) &&
                                 is_array($set[2]) &&
@@ -448,10 +452,35 @@ trait Where {
                                     $set[2] = false;
                                 }
                             }
+                            */
                         }
                         return $set;
                     } else {
-                        ddd($set);
+                        if(
+                            is_bool($set[0]) &&
+                            $set[0] === true &&
+                            is_array($set[2]) &&
+                            array_key_exists('attribute', $set[2]) &&
+                            array_key_exists('value', $set[2]) &&
+                            array_key_exists('operator', $set[2])
+                        ) {
+                            $filter_where = [
+                                'node.' . $set[2]['attribute'] => [
+                                    'value' => $set[2]['value'],
+                                    'operator' => $set[2]['operator']
+                                ]
+                            ];
+                            $and = Filter::list($list)->where($filter_where);
+                            if (!empty($and)) {
+                                $where[$key] = true;
+                                $set[0] = true;
+                                $set[2] = true;
+                            } else {
+                                $where[$key] = false;
+                                $set[0] = false;
+                                $set[2] = false;
+                            }
+                        }
                     }
                 case 'xor' :
                     $operator = 'xor';
