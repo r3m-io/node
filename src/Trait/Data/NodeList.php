@@ -146,6 +146,7 @@ trait NodeList {
                             $role
                         );
                         $record = $node->data();
+                        d($record);
                         //parse the record if parse is enabled
                         if($is_filter){
                             $record = $this->filter($record, $options['filter'], $options);
