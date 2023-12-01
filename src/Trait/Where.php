@@ -26,7 +26,7 @@ trait Where {
                 $record['type'] === Token::TYPE_IS_MINUS &&
                 $record['value'] === '-'
             ){
-                d($previous);
+                d($tree[$previous]);
                 d($record);
                 ddd($tree[$nr + 1]);
             }
