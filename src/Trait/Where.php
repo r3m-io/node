@@ -378,6 +378,9 @@ trait Where {
                         }
                         return $set;
                     }
+                    /**
+                     * more than "1 and"
+                     */
                     elseif(
                         $set[0] === true &&
                         is_array($set[2]) &&
