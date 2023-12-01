@@ -44,7 +44,7 @@ trait Where {
             ]
         ];
         $count = 0;
-        $prepare = Token::tree_prepare($string, $count, $options);
+        $prepare = Token::tree_prepare('{' . $string . '}', $count, $options);
         $prepare = Token::prepare($prepare, $count);
         $token = Token::define($prepare);
         $token = Token::group($token, $options);
@@ -59,7 +59,7 @@ trait Where {
                 'xor'
             ]
         ]);
-        d($tree2);
+//        d($tree2);
         ddd($tree);
         $is_collect = false;
         $previous = null;
