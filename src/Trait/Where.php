@@ -452,6 +452,7 @@ trait Where {
                         $where[$key] = true;
                         $set = [];
                         $set[0] = true;
+                        $operator = null;
                         return $set;
                     }
                     $where[$key] = false;
