@@ -39,8 +39,7 @@ trait Where {
             'extra_operators' => [
                 'and',
                 'or',
-                'xor',
-                'not-partial'
+                'xor'
             ]
         ]);
         $is_collect = false;
@@ -95,6 +94,15 @@ trait Where {
                 )
             ){
                 $tree[$nr] = $record['value'];
+            }
+            elseif(
+                in_array(
+                    strtolower($record['value']),
+                    Filter::OPERATOR_LIST_NAME,
+                    true
+                )
+            ){
+                $tree[$nr]['is_operator'] = true;
             }
             if($is_collect === true){
                 $collection[] = $record;
