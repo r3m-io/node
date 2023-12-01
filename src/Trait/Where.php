@@ -411,6 +411,7 @@ trait Where {
                     $list[] = $record;
                     $is_true = 0;
                     $left = null;
+                    d($set);
                     foreach ($set as $nr => $true) {
                         if(
                             is_string($true) &&
