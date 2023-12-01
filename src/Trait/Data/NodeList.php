@@ -178,7 +178,6 @@ trait NodeList {
                         ]
                     );
                 }
-                d($list);
                 if(!empty($options['limit']) && $options['limit'] === '*'){
                     $list_count = 0;
                     foreach($list as $index => $record){
@@ -235,6 +234,7 @@ trait NodeList {
                 $result['relation'] = $options['relation'] ?? true;
                 $result['parse'] = $options['parse'] ?? false;
                 $result['mtime'] = $mtime;
+                d($result);
                 return $result;
             }
         }
