@@ -235,7 +235,6 @@ trait Where {
      * @throws Exception
      */
     private function where_process($record=[], $set=[], &$where=[], &$key=null, &$operator=null, $options=[]){
-        ddd($set);
         if(
             array_key_exists(0, $set) &&
             count($set) === 1
@@ -243,13 +242,12 @@ trait Where {
             $operator = null;
             if($set[0] === true || $set[0] === false){
                 $where[$key] = $set[0];
-//                array_shift($set);
                 return $set;
             }
             $list = [];
             $list[] = $record;
             $filter_where = [
-                'node.' . $set[0]['attribute'] => [
+                $set[0]['attribute'] => [
                     'value' => $set[0]['value'],
                     'operator' => $set[0]['operator']
                 ]
@@ -259,20 +257,8 @@ trait Where {
                 $where[$key] = true;
                 $set[0] = true;
             } else {
-                $filter_where = [
-                    $set[0]['attribute'] => [
-                        'value' => $set[0]['value'],
-                        'operator' => $set[0]['operator']
-                    ]
-                ];
-                $left = Filter::list($list)->where($filter_where);
-                if(!empty($left)){
-                    $where[$key] = true;
-                    $set[0] = true;
-                } else {
-                    $where[$key] = false;
-                    $set[0] = false;
-                }
+                $where[$key] = false;
+                $set[0] = false;
             }
             return $set;
         }
@@ -281,100 +267,60 @@ trait Where {
             array_key_exists(1, $set) &&
             array_key_exists(2, $set)
         ){
-            switch($set[1]){
+            switch($set[1]) {
                 case 'or':
                     $operator = 'or';
-                    if($set[0] === true || $set[2] === true){
+                    if ($set[0] === true || $set[2] === true) {
                         $where[$key] = true;
                         return $set;
                     }
                     $list = [];
                     $list[] = $record;
-                    if($set[0] === false){
+                    if ($set[0] === false) {
                         $left = $set[0];
-                    }
-                    elseif(
+                    } elseif (
                         is_array($set[0]) &&
                         array_key_exists('attribute', $set[0]) &&
                         array_key_exists('value', $set[0]) &&
                         array_key_exists('operator', $set[0])
-                    ){
+                    ) {
                         $filter_where = [
-                            'node.' . $set[0]['attribute'] => [
+                            $set[0]['attribute'] => [
                                 'value' => $set[0]['value'],
                                 'operator' => $set[0]['operator']
                             ]
                         ];
                         $left = Filter::list($list)->where($filter_where);
                     }
-                    if($set[2] === false){
+                    if ($set[2] === false) {
                         $right = $set[2];
-                    }
-                    elseif(
+                    } elseif (
                         is_array($set[2]) &&
                         array_key_exists('attribute', $set[2]) &&
                         array_key_exists('value', $set[2]) &&
                         array_key_exists('operator', $set[2])
-                    ){
+                    ) {
                         $filter_where = [
-                            'node.' . $set[2]['attribute'] => [
+                            $set[2]['attribute'] => [
                                 'value' => $set[2]['value'],
                                 'operator' => $set[2]['operator']
                             ]
                         ];
                         $right = Filter::list($list)->where($filter_where);
                     }
-                    if(!empty($left)){
+                    if (!empty($left)) {
                         $where[$key] = true;
                         $set[0] = true;
                     } else {
-                        if(
-                            is_array($set[0]) &&
-                            array_key_exists('attribute', $set[0]) &&
-                            array_key_exists('value', $set[0]) &&
-                            array_key_exists('operator', $set[0])
-                        ){
-                            $filter_where = [
-                                $set[0]['attribute'] => [
-                                    'value' => $set[0]['value'],
-                                    'operator' => $set[0]['operator']
-                                ]
-                            ];
-                            $left = Filter::list($list)->where($filter_where);
-                            if(!empty($left)){
-                                $where[$key] = true;
-                                $set[0] = true;
-                            } else {
-                                $set[0] = false;
-                            }
-                        }
+                        $set[0] = false;
                     }
-                    if(!empty($right)){
+                    if (!empty($right)) {
                         $where[$key] = true;
                         $set[2] = true;
                     } else {
-                        if(
-                            is_array($set[2]) &&
-                            array_key_exists('attribute', $set[2]) &&
-                            array_key_exists('value', $set[2]) &&
-                            array_key_exists('operator', $set[2])
-                        ){
-                            $filter_where = [
-                                $set[2]['attribute'] => [
-                                    'value' => $set[2]['value'],
-                                    'operator' => $set[2]['operator']
-                                ]
-                            ];
-                            $right = Filter::list($list)->where($filter_where);
-                            if(!empty($right)){
-                                $where[$key] = true;
-                                $set[2] = true;
-                            } else {
-                                $set[2] = false;
-                            }
-                        }
+                        $set[2] = false;
                     }
-                    if(!empty($left) || !empty($right)){
+                    if (!empty($left) || !empty($right)) {
                         //nothing
                     } else {
                         $where[$key] = false;
@@ -382,17 +328,13 @@ trait Where {
                     return $set;
                 case 'and':
                     $operator = 'and';
-                    if($set[0] === false && $set[2] === false){
-                        $where[$key] = false;
-                        return $set;
-                    }
-                    elseif($set[0] === false && !empty($set[2])){
+                    if ($set[0] === false && $set[2] === false) {
                         $where[$key] = false;
                         return $set;
                     }
                     $list = [];
                     $list[] = $record;
-                    if(
+                    if (
                         is_array($set[0]) &&
                         is_array($set[2]) &&
                         array_key_exists('attribute', $set[0]) &&
@@ -401,13 +343,13 @@ trait Where {
                         array_key_exists('attribute', $set[2]) &&
                         array_key_exists('value', $set[2]) &&
                         array_key_exists('operator', $set[2])
-                    ){
+                    ) {
                         $filter_where = [
-                            'node.' . $set[0]['attribute'] => [
+                            $set[0]['attribute'] => [
                                 'value' => $set[0]['value'],
                                 'operator' => $set[0]['operator']
                             ],
-                            'node.' . $set[2]['attribute'] => [
+                            $set[2]['attribute'] => [
                                 'value' => $set[2]['value'],
                                 'operator' => $set[2]['operator']
                             ]
@@ -415,7 +357,7 @@ trait Where {
                         $and = Filter::list($list)->where($filter_where);
                         d($record);
                         d($and);
-                        if(!empty($and)){
+                        if (!empty($and)) {
                             $where[$key] = true;
                             $set[0] = true;
                             $set[2] = true;
@@ -423,229 +365,53 @@ trait Where {
                             $where[$key] = false;
                             $set[0] = false;
                             $set[2] = false;
-                            /*
-                            if(
-                                is_array($set[0]) &&
-                                is_array($set[2]) &&
-                                array_key_exists('attribute', $set[0]) &&
-                                array_key_exists('value', $set[0]) &&
-                                array_key_exists('operator', $set[0]) &&
-                                array_key_exists('attribute', $set[2]) &&
-                                array_key_exists('value', $set[2]) &&
-                                array_key_exists('operator', $set[2])
-                            ){
-                                $filter_where = [
-                                    $set[0]['attribute'] => [
-                                        'value' => $set[0]['value'],
-                                        'operator' => $set[0]['operator']
-                                    ],
-                                    $set[2]['attribute'] => [
-                                        'value' => $set[2]['value'],
-                                        'operator' => $set[2]['operator']
-                                    ]
-                                ];
-                                $and = Filter::list($list)->where($filter_where);
-                                if(!empty($and)){
-                                    $where[$key] = true;
-                                    $set[0] = true;
-                                    $set[2] = true;
-                                } else {
-                                    $where[$key] = false;
-                                    $set[0] = false;
-                                    $set[2] = false;
-                                }
-                            }
-                            */
                         }
                         return $set;
                     } else {
-                        /*
-                        if(
-                            is_bool($set[0]) &&
-                            $set[0] === true &&
-                            is_array($set[2]) &&
-                            array_key_exists('attribute', $set[2]) &&
-                            array_key_exists('value', $set[2]) &&
-                            array_key_exists('operator', $set[2])
-                        ) {
-                            $filter_where = [
-                                'node.' . $set[2]['attribute'] => [
-                                    'value' => $set[2]['value'],
-                                    'operator' => $set[2]['operator']
-                                ]
-                            ];
-                            $and = Filter::list($list)->where($filter_where);
-                            d($filter_where);
-                            d($list);
-                            ddd($and);
-                            if (!empty($and)) {
-                                $where[$key] = true;
-                                $set[0] = true;
-                                $set[2] = true;
-                            } else {
-                                $where[$key] = false;
-                                $set[0] = false;
-                                $set[2] = false;
-                            }
-                            return $set;
-                        } else {
-                            ddd($set);
-                        }
-                        */
+                        ddd($set);
                     }
                 case 'xor' :
                     $operator = 'xor';
                     $list = [];
                     $list[] = $record;
-                    if($set[1] === $operator){
-                        $is_true = 0;
-                        foreach($set as $nr => $true){
-                            if(
-                                is_array($true) &&
-                                array_key_exists('attribute', $true) &&
-                                array_key_exists('value', $true) &&
-                                array_key_exists('operator', $true)
-                            ){
-                                $filter_where = [
-                                    'node.' . $true['attribute'] => [
-                                        'value' => $true['value'],
-                                        'operator' => $true['operator']
-                                    ]
-                                ];
-                                $current = Filter::list($list)->where($filter_where);
-                                if(!empty($current)){
-                                    $is_true++;
-                                    $set[$nr] = true;
-                                } else {
-                                    $filter_where = [
-                                        $true['attribute'] => [
-                                            'value' => $true['value'],
-                                            'operator' => $true['operator']
-                                        ]
-                                    ];
-                                    $current = Filter::list($list)->where($filter_where);
-                                    if(!empty($current)){
-                                        $is_true++;
-                                        $set[$nr] = true;
-                                    } else {
-                                        $set[$nr] = false;
-                                    }
-                                }
-                            }
-                            elseif($true === true){
+                    $is_true = 0;
+                    ddd($set);
+                    foreach ($set as $nr => $true) {
+                        if (
+                            is_array($true) &&
+                            array_key_exists('attribute', $true) &&
+                            array_key_exists('value', $true) &&
+                            array_key_exists('operator', $true)
+                        ) {
+                            $filter_where = [
+                                $true['attribute'] => [
+                                    'value' => $true['value'],
+                                    'operator' => $true['operator']
+                                ]
+                            ];
+                            $current = Filter::list($list)->where($filter_where);
+                            if (!empty($current)) {
                                 $is_true++;
+                                $set[$nr] = true;
+                            } else {
+                                $set[$nr] = false;
                             }
+                        } elseif ($true === true) {
+                            $is_true++;
                         }
-                        if($is_true === 1){
-                            $where[$key] = true;
-                            $set = [];
-                            $set[0] = true;
-                            return $set;
-                        }
-                        $where[$key] = false;
+                    }
+                    if ($is_true === 1) {
+                        $where[$key] = true;
                         $set = [];
-                        $set[0] = false;
+                        $set[0] = true;
                         return $set;
                     }
-                    if($set[0] === false){
-                        $left = $set[0];
-                    }
-                    elseif(
-                        is_array($set[0]) &&
-                        array_key_exists('attribute', $set[0]) &&
-                        array_key_exists('value', $set[0]) &&
-                        array_key_exists('operator', $set[0])
-                    ){
-                        $filter_where = [
-                            'node.' . $set[0]['attribute'] => [
-                                'value' => $set[0]['value'],
-                                'operator' => $set[0]['operator']
-                            ]
-                        ];
-                        $left = Filter::list($list)->where($filter_where);
-                    }
-                    if($set[2] === false){
-                        $right = $set[2];
-                    }
-                    elseif(
-                        is_array($set[2]) &&
-                        array_key_exists('attribute', $set[2]) &&
-                        array_key_exists('value', $set[2]) &&
-                        array_key_exists('operator', $set[2])
-                    ){
-                        $filter_where = [
-                            'node.' . $set[2]['attribute'] => [
-                                'value' => $set[2]['value'],
-                                'operator' => $set[2]['operator']
-                            ]
-                        ];
-                        $right = Filter::list($list)->where($filter_where);
-                    }
-                    if(!empty($left)){
-                        $set[0] = true;
-                    }
-                    elseif(
-                        is_array($set[0]) &&
-                        array_key_exists('attribute', $set[0]) &&
-                        array_key_exists('value', $set[0]) &&
-                        array_key_exists('operator', $set[0])
-                    ){
-                        $filter_where = [
-                            $set[0]['attribute'] => [
-                                'value' => $set[0]['value'],
-                                'operator' => $set[0]['operator']
-                            ]
-                        ];
-                        $left = Filter::list($list)->where($filter_where);
-                        if(!empty($left)){
-                            $where[$key] = true;
-                            $set[0] = true;
-                        } else {
-                            $set[0] = false;
-                        }
-                    }
-                    if(!empty($right)){
-                        $set[2] = true;
-                    }
-                    elseif(
-                        is_array($set[2]) &&
-                        array_key_exists('attribute', $set[2]) &&
-                        array_key_exists('value', $set[2]) &&
-                        array_key_exists('operator', $set[2])
-                    ){
-                        $filter_where = [
-                            $set[2]['attribute'] => [
-                                'value' => $set[2]['value'],
-                                'operator' => $set[2]['operator']
-                            ]
-                        ];
-                        $right = Filter::list($list)->where($filter_where);
-                        if(!empty($right)){
-                            $where[$key] = true;
-                            $set[2] = true;
-                        } else {
-                            $set[2] = false;
-                        }
-                    }
-                    if(!empty($left) || !empty($right)){
-                        if(!empty($left) && !empty($right)){
-                            $where[$key] = false;
-                            array_shift($set);
-                            array_shift($set);
-                            $set[0] = false;
-                        } else {
-                            $where[$key] = true;
-                            array_shift($set);
-                            array_shift($set);
-                            $set[0] = true;
-                        }
-                    } else {
-                        $where[$key] = false;
-                        array_shift($set);
-                        array_shift($set);
-                        $set[0] = false;
-                    }
+                    $where[$key] = false;
+                    $set = [];
+                    $set[0] = false;
                     return $set;
+
+
             }
         }
     }
