@@ -448,12 +448,11 @@ trait Where {
                             }
                         }
                     }
-                    d($set);
-                    d($is_true);
                     if ($is_true === 1) {
                         $where[$key] = true;
                         $set = [];
                         $set[0] = true;
+                        d('yes');
                         return $set;
                     }
                     $where[$key] = false;
