@@ -40,6 +40,7 @@ Trait Record {
                 'uuid' => 'ASC'
             ];
         }
+        d($options);
         $list = $this->list($name, $role, $options);
         if(
             is_array($list) &&
