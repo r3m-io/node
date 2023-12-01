@@ -51,7 +51,7 @@ trait Where {
                 'xor'
             ]
         ]);
-        $tree = $this->operator($tree);
+//        $tree = $this->operator($tree);
 
 //        d($tree2);
 //        ddd($tree);
