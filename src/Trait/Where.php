@@ -28,6 +28,7 @@ trait Where {
             ){
                 $operator = $tree[$previous]['value'];
                 $operator .= $record['value'];
+                ddd($tree);
                 for($i = $nr + 1; $i < count($tree); $i++){
                     if($tree[$i]['type'] === Token::TYPE_WHITESPACE){
                         break;
