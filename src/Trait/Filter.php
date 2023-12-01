@@ -34,6 +34,7 @@ trait Filter {
      * @throws FileWriteException
      * @throws Exception
      */
+    /*
     public function filter_nodelist($class, $role, $options): array
     {
         $name =  Controller::name($class);
@@ -127,4 +128,5 @@ trait Filter {
         }
         return $list;
     }
+    */
 }

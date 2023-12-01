@@ -235,6 +235,7 @@ trait Where {
      * @throws Exception
      */
     private function where_process($record=[], $set=[], &$where=[], &$key=null, &$operator=null, $options=[]){
+        ddd($set);
         if(
             array_key_exists(0, $set) &&
             count($set) === 1
