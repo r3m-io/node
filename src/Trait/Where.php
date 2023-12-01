@@ -104,6 +104,16 @@ trait Where {
             ){
                 $tree[$nr]['is_operator'] = true;
             }
+            elseif(
+                array_key_exists('execute', $record) &&
+                in_array(
+                    strtolower($record['execute']),
+                    Filter::OPERATOR_LIST_NAME,
+                    true
+                )
+            ){
+                $tree[$nr]['is_operator'] = true;
+            }
             if($is_collect === true){
                 $collection[] = $record;
                 $is_collect = $nr;
