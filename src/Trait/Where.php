@@ -50,6 +50,16 @@ trait Where {
         $token = Token::group($token, $options);
         $token = Token::cast($token);
         $tree = Token::method($token);
+
+        $tree2 = Token::tree('{' . $string . '}', [
+            'with_whitespace' => true,
+            'extra_operators' => [
+                'and',
+                'or',
+                'xor'
+            ]
+        ]);
+        d($tree2);
         ddd($tree);
         $is_collect = false;
         $previous = null;
