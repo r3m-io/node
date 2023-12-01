@@ -411,7 +411,6 @@ trait Where {
                     $list[] = $record;
                     $is_true = 0;
                     $left = null;
-                    d($set);
                     foreach ($set as $nr => $true) {
                         if(
                             is_string($true) &&
@@ -449,6 +448,7 @@ trait Where {
                             }
                         }
                     }
+                    d($set);
                     if ($is_true === 1) {
                         $where[$key] = true;
                         $set = [];
