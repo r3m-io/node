@@ -25,6 +25,7 @@ Trait Record {
         $options = Core::object($options, Core::OBJECT_ARRAY);
         $options['limit'] = 1;
         $options['page'] = 1;
+        ddd($options);
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
