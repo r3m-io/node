@@ -171,12 +171,13 @@ trait NodeList {
                     !empty($options['sort']) &&
                     is_array($options['sort'])
                 ){
-                    $list = Sort::list($list)->with(
+                    $list_sort = Sort::list($list)->with(
                         $options['sort'],
                         [
                             'key_reset' => true,
                         ]
                     );
+                    ddd($list_sort);
                 }
                 if(!empty($options['limit']) && $options['limit'] === '*'){
                     $list_count = 0;
