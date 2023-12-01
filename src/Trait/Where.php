@@ -68,12 +68,6 @@ trait Where {
         if(!is_string($string)){
             return $string;
         }
-        /*
-        $string = str_replace([
-
-        ], [], $string);
-        */
-
         $options = [
             'with_whitespace' => true,
             'extra_operators' => [
@@ -84,8 +78,6 @@ trait Where {
         ];
         $tree = Token::tree('{' . $string . '}', $options);
         $tree = $this->operator($tree);
-//        d($tree2);
-        d($tree);
         $is_collect = false;
         $previous = null;
         $next = null;
