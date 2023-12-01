@@ -328,8 +328,18 @@ trait Where {
                     return $set;
                 case 'and':
                     $operator = 'and';
-                    if ($set[0] === false && $set[2] === false) {
+                    if ($set[0] === true && $set[2] === true) {
+                        $where[$key] = true;
+                        return $set;
+                    }
+                    elseif ($set[0] === false && $set[2] === false) {
                         $where[$key] = false;
+                        return $set;
+                    }
+                    elseif($set[0] === false){
+                        $where[$key] = false;
+                        $set[0] = false;
+                        $set[2] = false;
                         return $set;
                     }
                     $list = [];
