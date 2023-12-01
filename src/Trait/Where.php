@@ -33,9 +33,16 @@ trait Where {
                         break;
                     }
                     $operator .= $tree[$i]['value'];
+                    unset($tree[$i]);
                 }
-
-                ddd($operator);
+                if($previous || $previous === 0){
+                    $tree[$nr]['column'] = $tree[$previous]['column'];
+                    $tree[$nr]['row'] = $tree[$previous]['row'];
+                    unset($tree[$previous]);
+                }
+                $tree[$nr]['value'] = $operator;
+                $tree[$nr]['type'] = $operator;
+                $tree[$nr]['is_operator'] = true;
             }
         }
         return $tree;
