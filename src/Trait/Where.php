@@ -34,14 +34,23 @@ trait Where {
 
         ], [], $string);
         */
-        $tree = Token::tree('{' . $string . '}', [
+
+        $options = [
             'with_whitespace' => true,
             'extra_operators' => [
                 'and',
                 'or',
                 'xor'
             ]
-        ]);
+        ];
+        $count = 0;
+        $prepare = Token::tree_prepare($string, $count, $options);
+        $prepare = Token::prepare($prepare, $count);
+        $token = Token::define($prepare);
+        $token = Token::group($token, $options);
+        $token = Token::cast($token);
+        $tree = Token::method($token);
+        ddd($tree);
         $is_collect = false;
         $previous = null;
         $next = null;
@@ -94,25 +103,6 @@ trait Where {
                 )
             ){
                 $tree[$nr] = $record['value'];
-            }
-            elseif(
-                in_array(
-                    strtolower($record['value']),
-                    Filter::OPERATOR_LIST_NAME,
-                    true
-                )
-            ){
-                $tree[$nr]['is_operator'] = true;
-            }
-            elseif(
-                array_key_exists('execute', $record) &&
-                in_array(
-                    strtolower($record['execute']),
-                    Filter::OPERATOR_LIST_NAME,
-                    true
-                )
-            ){
-                $tree[$nr]['is_operator'] = true;
             }
             if($is_collect === true){
                 $collection[] = $record;
