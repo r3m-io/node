@@ -35,7 +35,11 @@ Trait Record {
         )){
             return null;
         }
-        d($options);
+        if(!array_key_exists('sort', $options)){
+            $options['sort'] = [
+                'uuid' => 'ASC'
+            ];
+        }
         $list = $this->list($name, $role, $options);
         if(
             is_array($list) &&
