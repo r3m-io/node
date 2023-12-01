@@ -9,6 +9,31 @@ use Exception;
 
 trait Where {
 
+    private function operator($tree=[]): array
+    {
+        if(!is_array($tree)){
+            return $tree;
+        }
+        $result = [];
+        $previous = null;
+        foreach($tree as $nr => $record){
+            if(array_key_exists($nr - 1, $tree)){
+                $previous = $nr - 1;
+            }
+            if(
+                array_key_exists('type', $record) &&
+                array_key_exists('value', $record) &&
+                $record['type'] === Token::TYPE_OPERATOR &&
+                $record['value'] === '-'
+            ){
+                d($previous);
+                d($record);
+                ddd($tree[$nr + 1]);
+            }
+        }
+        return $tree;
+    }
+
     /**
      * @throws Exception
      */
@@ -51,7 +76,7 @@ trait Where {
                 'xor'
             ]
         ]);
-//        $tree = $this->operator($tree);
+        $tree = $this->operator($tree);
 
 //        d($tree2);
 //        ddd($tree);
