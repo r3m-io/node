@@ -16,34 +16,40 @@ trait Where {
         }
         $result = [];
         $previous = null;
+        $is_collect = false;
         foreach($tree as $nr => $record){
             if(array_key_exists($nr - 1, $tree)){
                 $previous = $nr - 1;
             }
             if(
+                $is_collect === false &&
                 array_key_exists('type', $record) &&
                 array_key_exists('value', $record) &&
                 $record['type'] === Token::TYPE_IS_MINUS &&
                 $record['value'] === '-'
-            ){
-                $operator = $tree[$previous]['value'];
-                $operator .= $record['value'];
-                ddd($tree);
-                for($i = $nr + 1; $i < count($tree); $i++){
-                    if($tree[$i]['type'] === Token::TYPE_WHITESPACE){
-                        break;
-                    }
-                    $operator .= $tree[$i]['value'];
-                    unset($tree[$i]);
+            ) {
+                if($previous || $previous === 0){
+                    $operator = $tree[$previous]['value'];
                 }
+                $operator .= $record['value'];
+                $is_collect = $nr;
                 if($previous || $previous === 0){
                     $tree[$nr]['column'] = $tree[$previous]['column'];
                     $tree[$nr]['row'] = $tree[$previous]['row'];
                     unset($tree[$previous]);
                 }
-                $tree[$nr]['value'] = $operator;
-                $tree[$nr]['type'] = $operator;
-                $tree[$nr]['is_operator'] = true;
+                continue;
+            }
+            if($is_collect !== false){
+                if($record['type'] === Token::TYPE_WHITESPACE){
+                    $tree[$is_collect]['value'] = $operator;
+                    $tree[$is_collect]['type'] = $operator;
+                    $tree[$is_collect]['is_operator'] = true;
+                    $is_collect = false;
+                    continue;
+                }
+                $operator .= $record['value'];
+                unset($tree[$nr]);
             }
         }
         return $tree;
