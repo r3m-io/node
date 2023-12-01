@@ -17,6 +17,7 @@ trait Where {
         $result = [];
         $previous = null;
         $is_collect = false;
+        $operator = '';
         foreach($tree as $nr => $record){
             if(array_key_exists($nr - 1, $tree)){
                 $previous = $nr - 1;
@@ -46,11 +47,18 @@ trait Where {
                     $tree[$is_collect]['type'] = $operator;
                     $tree[$is_collect]['is_operator'] = true;
                     $is_collect = false;
+                    $operator = '';
                     continue;
                 }
                 $operator .= $record['value'];
                 unset($tree[$nr]);
             }
+        }
+        if($is_collect){
+            $tree[$is_collect]['value'] = $operator;
+            $tree[$is_collect]['type'] = $operator;
+            $tree[$is_collect]['is_operator'] = true;
+            $is_collect = false;
         }
         return $tree;
     }
