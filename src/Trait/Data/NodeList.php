@@ -171,6 +171,7 @@ trait NodeList {
                     !empty($options['sort']) &&
                     is_array($options['sort'])
                 ){
+                    d($options);
                     $list_sort = Sort::list($list)->with(
                         $options['sort'],
                         [
