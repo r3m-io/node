@@ -177,11 +177,12 @@ trait NodeList {
                             'key_reset' => true,
                         ]
                     );
-                    ddd($list_sort);
+                } else {
+                    $list_sort = $list;
                 }
                 if(!empty($options['limit']) && $options['limit'] === '*'){
                     $list_count = 0;
-                    foreach($list as $index => $record){
+                    foreach($list_sort as $index => $record){
                         if(is_object($record)){
                             $record->{'#index'} = $index;
                         }
@@ -192,7 +193,7 @@ trait NodeList {
                     $result['limit'] = $list_count;
                     $result['count'] = $list_count;
                     $result['max'] = $max;
-                    $result['list'] = $list;
+                    $result['list'] = $list_sort;
                     $result['sort'] = $options['sort'] ?? [];
                     $result['filter'] = $options['filter'] ?? [];
                     $result['where'] = $options['where'] ?? [];
@@ -205,7 +206,7 @@ trait NodeList {
                 $limit = $options['limit'] ?? 4096;
                 $list_temp = [];
                 $list_count = 0;
-                foreach($list as $index => $record){
+                foreach($list_sort as $index => $record){
                     if(
                         $index < ($page - 1) * $limit
                     ){
