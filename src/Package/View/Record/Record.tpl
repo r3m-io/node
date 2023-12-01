@@ -14,15 +14,11 @@ Available classes:
 {{/for.each}}
 {{/if}}
 {{else}}
-{{if(is.empty($options.uuid))}}
-You can use list to get the uuid.
-{{else}}
 {{$response = R3m.Io.Node:Data:record(
 $class,
 R3m.Io.Node:Role:role_system(),
 $options
 )}}
 {{$response|json.encode:'JSON_PRETTY_PRINT'}}
-{{/if}}
-{{/if}}
 
+{{/if}}
