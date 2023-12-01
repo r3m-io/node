@@ -29,12 +29,18 @@ trait Where {
         if(!is_string($string)){
             return $string;
         }
+        /*
+        $string = str_replace([
+
+        ], [], $string);
+        */
         $tree = Token::tree('{' . $string . '}', [
             'with_whitespace' => true,
             'extra_operators' => [
                 'and',
                 'or',
-                'xor'
+                'xor',
+                'not-partial'
             ]
         ]);
         $is_collect = false;
