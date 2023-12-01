@@ -169,8 +169,7 @@ trait NodeList {
                 $limit = $options['limit'] ?? 4096;
                 if(
                     !empty($options['sort']) &&
-                    is_array($options['sort']) &&
-                    $limit !== 1
+                    is_array($options['sort'])
                 ){
                     $list = Sort::list($list)->with(
                         $options['sort'],
