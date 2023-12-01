@@ -180,6 +180,7 @@ trait NodeList {
                 } else {
                     $list_sort = $list;
                 }
+                d($list_sort);
                 if(!empty($options['limit']) && $options['limit'] === '*'){
                     $list_count = 0;
                     foreach($list_sort as $index => $record){
