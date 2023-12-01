@@ -412,7 +412,7 @@ trait Where {
                             ]
                         ];
                         $and = Filter::list($list)->where($filter_where);
-                        d($filter_where);
+                        d($record);
                         d($and);
                         if(!empty($and)){
                             $where[$key] = true;
