@@ -377,8 +377,22 @@ trait Where {
                             $set[2] = false;
                         }
                         return $set;
-                    } else {
-                        ddd($set);
+                    }
+                    elseif(
+                        $set[0] === true &&
+                        is_array($set[2]) &&
+                        array_key_exists('attribute', $set[2]) &&
+                        array_key_exists('value', $set[2]) &&
+                        array_key_exists('operator', $set[2])
+                    ) {
+                        $filter_where = [
+                            $set[2]['attribute'] => [
+                                'value' => $set[2]['value'],
+                                'operator' => $set[2]['operator']
+                            ]
+                        ];
+                        $and = Filter::list($list)->where($filter_where);
+                        ddd($and);
                     }
                 case 'xor' :
                     $operator = 'xor';
