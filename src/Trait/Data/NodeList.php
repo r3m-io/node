@@ -171,7 +171,6 @@ trait NodeList {
                     !empty($options['sort']) &&
                     is_array($options['sort'])
                 ){
-                    d($options);
                     $list_sort = Sort::list($list)->with(
                         $options['sort'],
                         [
@@ -181,9 +180,6 @@ trait NodeList {
                 } else {
                     $list_sort = $list;
                 }
-                d($options);
-                d($list_sort);
-                d($list);
                 if(!empty($options['limit']) && $options['limit'] === '*'){
                     $list_count = 0;
                     foreach($list_sort as $index => $record){
@@ -240,7 +236,6 @@ trait NodeList {
                 $result['relation'] = $options['relation'] ?? true;
                 $result['parse'] = $options['parse'] ?? false;
                 $result['mtime'] = $mtime;
-                d($result);
                 return $result;
             }
         }
