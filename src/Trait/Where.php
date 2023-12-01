@@ -26,9 +26,16 @@ trait Where {
                 $record['type'] === Token::TYPE_IS_MINUS &&
                 $record['value'] === '-'
             ){
-                d($tree[$previous]);
-                d($record);
-                ddd($tree[$nr + 1]);
+                $operator = $tree[$previous]['value'];
+                $operator .= $record['value'];
+                for($i = $nr + 1; $i < count($tree); $i++){
+                    if($tree[$i]['type'] === Token::TYPE_WHITESPACE){
+                        break;
+                    }
+                    $operator .= $tree[$i]['value'];
+                }
+
+                ddd($operator);
             }
         }
         return $tree;
