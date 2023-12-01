@@ -60,7 +60,7 @@ trait Where {
             ]
         ]);
 //        d($tree2);
-        ddd($tree);
+        ddd($tree2);
         $is_collect = false;
         $previous = null;
         $next = null;
