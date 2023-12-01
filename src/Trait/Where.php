@@ -365,8 +365,6 @@ trait Where {
                             ]
                         ];
                         $and = Filter::list($list)->where($filter_where);
-                        d($record);
-                        d($and);
                         if (!empty($and)) {
                             $where[$key] = true;
                             $set[0] = true;
@@ -395,7 +393,16 @@ trait Where {
                             ]
                         ];
                         $and = Filter::list($list)->where($filter_where);
-                        ddd($and);
+                        if (!empty($and)) {
+                            $where[$key] = true;
+                            $set[0] = true;
+                            $set[2] = true;
+                        } else {
+                            $where[$key] = false;
+                            $set[0] = false;
+                            $set[2] = false;
+                        }
+                        return $set;
                     }
                 case 'xor' :
                     $operator = 'xor';
