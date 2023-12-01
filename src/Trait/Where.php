@@ -235,9 +235,10 @@ trait Where {
      * @throws Exception
      */
     private function where_process($record=[], $set=[], &$where=[], &$key=null, &$operator=null, $options=[]){
+        $count = count($set);
         if(
             array_key_exists(0, $set) &&
-            count($set) === 1
+            $count === 1
         ){
             $operator = null;
             if($set[0] === true || $set[0] === false){
@@ -377,7 +378,7 @@ trait Where {
                         return $set;
                     }
                     /**
-                     * more than "1 and"
+                     * more than "1 'and' or 'or'"
                      */
                     elseif(
                         $set[0] === true &&
@@ -409,9 +410,24 @@ trait Where {
                     $list = [];
                     $list[] = $record;
                     $is_true = 0;
-                    ddd($set);
+                    $left = null;
                     foreach ($set as $nr => $true) {
-                        if (
+                        if(
+                            is_string($true) &&
+                            in_array($true, [
+                                'and',
+                                'or'
+                            ], true)
+                        ){
+                            throw new Exception('And or Or not allowed in Xor, use sets instead.');
+                        }
+                        elseif (
+                            is_bool($true) &&
+                            $true === true
+                        ) {
+                            $is_true++;
+                        }
+                        elseif (
                             is_array($true) &&
                             array_key_exists('attribute', $true) &&
                             array_key_exists('value', $true) &&
@@ -430,8 +446,6 @@ trait Where {
                             } else {
                                 $set[$nr] = false;
                             }
-                        } elseif ($true === true) {
-                            $is_true++;
                         }
                     }
                     if ($is_true === 1) {
