@@ -23,7 +23,7 @@ trait Where {
             if(
                 array_key_exists('type', $record) &&
                 array_key_exists('value', $record) &&
-                $record['type'] === Token::TYPE_OPERATOR &&
+                $record['type'] === Token::TYPE_IS_MINUS &&
                 $record['value'] === '-'
             ){
                 d($previous);
