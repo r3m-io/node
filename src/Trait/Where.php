@@ -82,18 +82,10 @@ trait Where {
                 'xor'
             ]
         ];
-        $tree = Token::tree('{' . $string . '}', [
-            'with_whitespace' => true,
-            'extra_operators' => [
-                'and',
-                'or',
-                'xor'
-            ]
-        ]);
+        $tree = Token::tree('{' . $string . '}', $options);
         $tree = $this->operator($tree);
-
 //        d($tree2);
-        ddd($tree);
+        d($tree);
         $is_collect = false;
         $previous = null;
         $next = null;
