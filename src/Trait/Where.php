@@ -43,15 +43,7 @@ trait Where {
                 'xor'
             ]
         ];
-        $count = 0;
-        $prepare = Token::tree_prepare('{' . $string . '}', $count, $options);
-        $prepare = Token::prepare($prepare, $count);
-        $token = Token::define($prepare);
-        $token = Token::group($token, $options);
-        $token = Token::cast($token);
-        $tree = Token::method($token);
-
-        $tree2 = Token::tree('{' . $string . '}', [
+        $tree = Token::tree('{' . $string . '}', [
             'with_whitespace' => true,
             'extra_operators' => [
                 'and',
@@ -59,8 +51,10 @@ trait Where {
                 'xor'
             ]
         ]);
+//        $tree = $this->operator($tree);
+
 //        d($tree2);
-        ddd($tree2);
+        ddd($tree);
         $is_collect = false;
         $previous = null;
         $next = null;
