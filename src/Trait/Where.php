@@ -27,7 +27,10 @@ trait Where {
                 array_key_exists('type', $record) &&
                 array_key_exists('value', $record) &&
                 $record['type'] === Token::TYPE_IS_MINUS &&
-                $record['value'] === '-'
+                $record['value'] === '-' &&
+                array_key_exists($previous, $tree) &&
+                array_key_exists('type', $tree[$previous]) &&
+                $tree[$previous]['type'] !== Token::TYPE_WHITESPACE
             ) {
                 if($previous || $previous === 0){
                     $operator = $tree[$previous]['value'];
