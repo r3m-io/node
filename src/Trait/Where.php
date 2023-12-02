@@ -302,7 +302,6 @@ trait Where {
             $operator = null;
             if($set[0] === true || $set[0] === false){
                 $where[$key] = $set[0];
-                d($set);
                 return $set;
             }
             $list = [];
@@ -321,7 +320,6 @@ trait Where {
                 $where[$key] = false;
                 $set[0] = false;
             }
-            d($set);
             return $set;
         }
         elseif(
@@ -334,7 +332,6 @@ trait Where {
                     $operator = 'or';
                     if ($set[0] === true || $set[2] === true) {
                         $where[$key] = true;
-                        d($set);
                         return $set;
                     }
                     $list = [];
