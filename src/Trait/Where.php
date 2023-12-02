@@ -385,7 +385,6 @@ trait Where {
                     } else {
                         $where[$key] = false;
                     }
-                    d($set);
                     return $set;
                 case 'and':
                     $operator = 'and';
