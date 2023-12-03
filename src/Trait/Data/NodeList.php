@@ -55,7 +55,7 @@ trait NodeList {
             $result['relation'] = $options['relation'];
             $result['parse'] = $options['parse'];
             $result['mtime'] = $mtime;
-            $result['duration'] = microtime(true) - $object->config('server.time.start');
+            $result['duration'] = microtime(true) - $object->config('time.start');
             return $result;
         }
         $data_url = $object->config('project.dir.node') .
@@ -82,7 +82,7 @@ trait NodeList {
             $result['relation'] = $options['relation'];
             $result['parse'] = $options['parse'];
             $result['mtime'] = $mtime;
-            $result['duration'] = microtime(true) - $object->config('server.time.start');
+            $result['duration'] = microtime(true) - $object->config('time.start');
             return $result;
         }
         $data = $object->data_read($data_url);
@@ -211,7 +211,7 @@ trait NodeList {
                     $result['relation'] = $options['relation'] ?? true;
                     $result['parse'] = $options['parse'] ?? false;
                     $result['mtime'] = $mtime;
-                    $result['duration'] = microtime(true) - $object->config('server.time.start');
+                    $result['duration'] = microtime(true) - $object->config('time.start');
                     return $result;
                 }
                 $page = $options['page'] ?? 1;
@@ -248,7 +248,7 @@ trait NodeList {
                 $result['relation'] = $options['relation'] ?? true;
                 $result['parse'] = $options['parse'] ?? false;
                 $result['mtime'] = $mtime;
-                $result['duration'] = microtime(true) - $object->config('server.time.start');
+                $result['duration'] = microtime(true) - $object->config('time.start');
                 return $result;
             }
         }
