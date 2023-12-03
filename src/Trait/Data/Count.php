@@ -16,7 +16,6 @@ Trait Count {
     {
         $options = Core::object($options, Core::OBJECT_ARRAY);
         $count = 0;
-        $name = Controller::name($class);
         if(!array_key_exists('function', $options)){
             $options['function'] = 'count';
         }
