@@ -103,7 +103,12 @@ trait NodeList {
                 if($object_data){
                     $relation = $object_data->get('relation');
                 }
-                if(!empty($relation) && is_array($relation)){
+                if(
+                    !empty($relation) &&
+                    is_array($relation) &&
+                    array_key_exists('relation', $options) &&
+                    $options['relation'] === true
+                ){
                     ddd('has relation');
                 }
                 $is_filter = false;
