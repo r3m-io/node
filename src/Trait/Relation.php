@@ -110,7 +110,6 @@ trait Relation {
                                 $node->has($relation->attribute)
                             ){
                                 $one_many = $node->get($relation->attribute);
-                                d($one_many);
                                 if(is_object($one_many)){
                                     if(!property_exists($one_many, 'limit')){
                                         throw new Exception('Relation: ' . $relation->attribute . ' has no limit');
@@ -140,26 +139,18 @@ trait Relation {
                                     ){
                                         $output_filter = $one_many->output->filter;
                                     }
-                                    d($one_many);
-                                    ddd($output_filter);
-                                    if($one_many->limit === '*'){
-                                        $list = $this->list_select_all($object, $relation, $one_many);
-                                        $node->set($relation->attribute, $list);
+                                    $response = $this->list(
+                                        $relation->class,
+                                        $this->role_system(),
+                                        $one_many
+                                    );
+                                    if(
+                                        !empty($response) &&
+                                        array_key_exists('list', $response)
+                                    ){
+                                        $node->set($relation->attribute, $response['list']);
                                     } else {
-                                        $response = $this->list(
-                                            $relation->class,
-                                            $this->role_system(),
-                                            $one_many
-                                        );
-                                        if(
-                                            !empty($response) &&
-                                            array_key_exists('list', $response)
-                                        ){
-                                            $node->set($relation->attribute, $response['list']);
-                                        } else {
-                                            $node->set($relation->attribute, []);
-                                        }
-                                        d($response);
+                                        $node->set($relation->attribute, []);
                                     }
                                     $record = $node->data();
                                     break;
@@ -179,8 +170,19 @@ trait Relation {
                                             'uuid' => 'ASC'
                                         ];
                                     }
-                                    $list = $this->list_select_all($object, $relation, $one_many);
-                                    $node->set($relation->attribute, $list);
+                                    $response = $this->list(
+                                        $relation->class,
+                                        $this->role_system(),
+                                        $one_many
+                                    );
+                                    if(
+                                        !empty($response) &&
+                                        array_key_exists('list', $response)
+                                    ){
+                                        $node->set($relation->attribute, $response['list']);
+                                    } else {
+                                        $node->set($relation->attribute, []);
+                                    }
                                     $record = $node->data();
                                     break;
                                 }
