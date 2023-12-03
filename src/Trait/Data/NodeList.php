@@ -152,8 +152,10 @@ trait NodeList {
                             $role
                         );
                         $record = $node->data();
-                        $record = $this->relation($record, $object_data, $role, $options);
-                        ddd($record);
+                        if($has_relation){
+                            $record = $this->relation($record, $object_data, $role, $options);
+                            ddd($record);
+                        }
                         //parse the record if parse is enabled
                         if($is_filter){
                             $record = $this->filter($record, $options['filter'], $options);
