@@ -417,7 +417,7 @@ trait Relation {
                 }
             }
         }
-        ddd($record);
+        d($record);
         return $record;
     }
 }
