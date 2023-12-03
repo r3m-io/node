@@ -23,6 +23,7 @@ trait NodeList {
         $mtime = false;
         $name = Controller::name($class);
         $options = Core::object($options, Core::OBJECT_ARRAY);
+        $object = $this->object();
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
@@ -54,10 +55,9 @@ trait NodeList {
             $result['relation'] = $options['relation'];
             $result['parse'] = $options['parse'];
             $result['mtime'] = $mtime;
-            $result['duration'] = microtime(true) - $object->config('time.start');
+            $result['duration'] = microtime(true) - $object->config('server.time.start');
             return $result;
         }
-        $object = $this->object();
         $data_url = $object->config('project.dir.node') .
             'Data' .
             $object->config('ds') .
@@ -82,7 +82,7 @@ trait NodeList {
             $result['relation'] = $options['relation'];
             $result['parse'] = $options['parse'];
             $result['mtime'] = $mtime;
-            $result['duration'] = microtime(true) - $object->config('time.start');
+            $result['duration'] = microtime(true) - $object->config('server.time.start');
             return $result;
         }
         $data = $object->data_read($data_url);
@@ -211,7 +211,7 @@ trait NodeList {
                     $result['relation'] = $options['relation'] ?? true;
                     $result['parse'] = $options['parse'] ?? false;
                     $result['mtime'] = $mtime;
-                    $result['duration'] = microtime(true) - $object->config('time.start');
+                    $result['duration'] = microtime(true) - $object->config('server.time.start');
                     return $result;
                 }
                 $page = $options['page'] ?? 1;
@@ -248,7 +248,7 @@ trait NodeList {
                 $result['relation'] = $options['relation'] ?? true;
                 $result['parse'] = $options['parse'] ?? false;
                 $result['mtime'] = $mtime;
-                $result['duration'] = microtime(true) - $object->config('time.start');
+                $result['duration'] = microtime(true) - $object->config('server.time.start');
                 return $result;
             }
         }
