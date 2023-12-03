@@ -54,6 +54,7 @@ trait NodeList {
             $result['relation'] = $options['relation'];
             $result['parse'] = $options['parse'];
             $result['mtime'] = $mtime;
+            $result['duration'] = microtime(true) - $object->config('time.start');
             return $result;
         }
         $object = $this->object();
@@ -81,6 +82,7 @@ trait NodeList {
             $result['relation'] = $options['relation'];
             $result['parse'] = $options['parse'];
             $result['mtime'] = $mtime;
+            $result['duration'] = microtime(true) - $object->config('time.start');
             return $result;
         }
         $data = $object->data_read($data_url);
@@ -154,7 +156,6 @@ trait NodeList {
                         $record = $node->data();
                         if($has_relation){
                             $record = $this->relation($record, $object_data, $role, $options);
-                            ddd($record);
                         }
                         //parse the record if parse is enabled
                         if($is_filter){
@@ -210,6 +211,7 @@ trait NodeList {
                     $result['relation'] = $options['relation'] ?? true;
                     $result['parse'] = $options['parse'] ?? false;
                     $result['mtime'] = $mtime;
+                    $result['duration'] = microtime(true) - $object->config('time.start');
                     return $result;
                 }
                 $page = $options['page'] ?? 1;
@@ -246,6 +248,7 @@ trait NodeList {
                 $result['relation'] = $options['relation'] ?? true;
                 $result['parse'] = $options['parse'] ?? false;
                 $result['mtime'] = $mtime;
+                $result['duration'] = microtime(true) - $object->config('time.start');
                 return $result;
             }
         }
