@@ -110,65 +110,59 @@ trait Relation {
                                 $node->has($relation->attribute)
                             ){
                                 $one_many = $node->get($relation->attribute);
-                                ddd($one_many);
+                                d($one_many);
                                 if(is_object($one_many)){
-                                    if(
-                                        property_exists($relation, 'class') &&
-                                        property_exists($relation, 'attribute') &&
-                                        property_exists($relation, 'type')
-                                    ){
-                                        if(!property_exists($one_many, 'limit')){
-                                            throw new Exception('Relation: ' . $relation->attribute . ' has no limit');
-                                        }
-                                        if(!property_exists($one_many, 'page')){
-                                            $one_many->page = 1;
-                                        }
-                                        if($one_many->limit === '*'){
-                                            $one_many->page = 1;
-                                        }
-                                        if(!property_exists($one_many, 'sort')){
-                                            if(property_exists($relation, 'sort')){
-                                                $one_many->sort = $relation->sort;
-                                            } else {
-                                                $one_many->sort = [
-                                                    'uuid' => 'ASC'
-                                                ];
-                                            }
-                                        }
-                                        if(
-                                            property_exists($one_many, 'output') &&
-                                            !empty($one_many->output) &&
-                                            is_object($one_many->output) &&
-                                            property_exists($one_many->output, 'filter') &&
-                                            !empty($one_many->output->filter) &&
-                                            is_array($one_many->output->filter)
-                                        ){
-                                            $output_filter = $one_many->output->filter;
-                                        }
-                                        d($one_many);
-                                        ddd($output_filter);
-                                        if($one_many->limit === '*'){
-                                            $list = $this->list_select_all($object, $relation, $one_many);
-                                            $node->set($relation->attribute, $list);
-                                        } else {
-                                            $response = $this->list(
-                                                $relation->class,
-                                                $this->role_system(),
-                                                $one_many
-                                            );
-                                            if(
-                                                !empty($response) &&
-                                                array_key_exists('list', $response)
-                                            ){
-                                                $node->set($relation->attribute, $response['list']);
-                                            } else {
-                                                $node->set($relation->attribute, []);
-                                            }
-                                            d($response);
-                                        }
-                                        $record = $node->data();
-                                        break;
+                                    if(!property_exists($one_many, 'limit')){
+                                        throw new Exception('Relation: ' . $relation->attribute . ' has no limit');
                                     }
+                                    if(!property_exists($one_many, 'page')){
+                                        $one_many->page = 1;
+                                    }
+                                    if($one_many->limit === '*'){
+                                        $one_many->page = 1;
+                                    }
+                                    if(!property_exists($one_many, 'sort')){
+                                        if(property_exists($relation, 'sort')){
+                                            $one_many->sort = $relation->sort;
+                                        } else {
+                                            $one_many->sort = [
+                                                'uuid' => 'ASC'
+                                            ];
+                                        }
+                                    }
+                                    if(
+                                        property_exists($one_many, 'output') &&
+                                        !empty($one_many->output) &&
+                                        is_object($one_many->output) &&
+                                        property_exists($one_many->output, 'filter') &&
+                                        !empty($one_many->output->filter) &&
+                                        is_array($one_many->output->filter)
+                                    ){
+                                        $output_filter = $one_many->output->filter;
+                                    }
+                                    d($one_many);
+                                    ddd($output_filter);
+                                    if($one_many->limit === '*'){
+                                        $list = $this->list_select_all($object, $relation, $one_many);
+                                        $node->set($relation->attribute, $list);
+                                    } else {
+                                        $response = $this->list(
+                                            $relation->class,
+                                            $this->role_system(),
+                                            $one_many
+                                        );
+                                        if(
+                                            !empty($response) &&
+                                            array_key_exists('list', $response)
+                                        ){
+                                            $node->set($relation->attribute, $response['list']);
+                                        } else {
+                                            $node->set($relation->attribute, []);
+                                        }
+                                        d($response);
+                                    }
+                                    $record = $node->data();
+                                    break;
                                 }
                                 elseif(
                                     is_string($one_many) &&
