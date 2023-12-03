@@ -27,7 +27,7 @@ trait NodeList {
             $options['function'] = __FUNCTION__;
         }
         if(!array_key_exists('relation', $options)){
-            $options['relation'] = true;
+            $options['relation'] = false;
         }
         if(!array_key_exists('parse', $options)){
             $options['parse'] = false;
