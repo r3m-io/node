@@ -7,12 +7,12 @@ use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\File;
 use R3m\Io\Module\Filter as Module;
 use R3m\Io\Module\Parse;
+use R3m\Io\Module\Route;
 
 use Exception;
 
 use R3m\Io\Exception\FileWriteException;
 use R3m\Io\Exception\ObjectException;
-use R3m\Io\Module\Route;
 
 trait Relation {
 
@@ -311,6 +311,8 @@ trait Relation {
                                 if(!is_string($uuid)){
                                     break;
                                 }
+                                throw new Exception('Not implemented yet...');
+                                /*
                                 $relation_url = $object->config('project.dir.data') .
                                     'Node' .
                                     $object->config('ds') .
@@ -381,6 +383,7 @@ trait Relation {
                                         }
                                     }
                                 }
+                                */
                             }
                             $record = $node->data();
                             break;
@@ -415,244 +418,5 @@ trait Relation {
             }
         }
         return $record;
-    }
-
-    private function relation_inner($relation, $data=[], $options=[], &$counter=0): false|array|stdClass
-    {
-        $object = $this->object();
-        $counter++;
-        if($counter > 1024){
-            $is_loaded = $object->data('R3m.Io.Node.BinaryTree.relation');
-            d($is_loaded);
-            d($relation);
-            ddd($data);
-        }
-        if(!property_exists($relation, 'type')){
-            return false;
-        }
-        $is_allowed = false;
-        $options_relation = $options['relation'] ?? [];
-        if(is_bool($options_relation) && $options_relation === true){
-            $is_allowed = true;
-        }
-        elseif(is_bool($options_relation) && $options_relation === false){
-            $is_allowed = false;
-        }
-        elseif(is_array($options_relation)){
-            foreach($options_relation as $option){
-                if(strtolower($option) === strtolower($relation->class)){
-                    $is_allowed = true;
-                    break;
-                }
-            }
-        }
-        switch($relation->type){
-            case 'one-many':
-                if(!is_array($data)){
-                    return false;
-                }
-                foreach($data as $relation_data_nr => $relation_data_uuid){
-                    if(
-                        $is_allowed &&
-                        is_string($relation_data_uuid) &&
-                        Core::is_uuid($relation_data_uuid)
-                    ){
-                        $relation_data_url = $object->config('project.dir.data') .
-                            'Node' .
-                            $object->config('ds') .
-                            'Storage' .
-                            $object->config('ds') .
-                            substr($relation_data_uuid, 0, 2) .
-                            $object->config('ds') .
-                            $relation_data_uuid .
-                            $object->config('extension.json')
-                        ;
-                        $relation_data = $object->data_read($relation_data_url, sha1($relation_data_url));
-                        if($relation_data){
-//                            $record = $relation_data->data();
-
-                            $relation_object_url = $object->config('project.dir.data') .
-                                'Node' .
-                                $object->config('ds') .
-                                'Object' .
-                                $object->config('ds') .
-                                $relation->class .
-                                $object->config('extension.json')
-                            ;
-                            $relation_object_data = $object->data_read($relation_object_url, sha1($relation_object_url));
-                            $relation_object_relation = $relation_object_data->data('relation');
-
-                            $is_loaded = $object->data('R3m.Io.Node.BinaryTree.relation');
-                            if(empty($is_loaded)){
-                                $is_loaded = [];
-                            }
-                            if($relation_data->has('#class')){
-                                $is_loaded[] = $relation_data->get('#class');
-                                $object->data('R3m.Io.Node.BinaryTree.relation', $is_loaded);
-                            }
-                            if(is_array($relation_object_relation)){
-                                foreach($relation_object_relation as $relation_object_relation_nr => $relation_object_relation_data){
-                                    if(
-                                        property_exists($relation_object_relation_data, 'class') &&
-                                        property_exists($relation_object_relation_data, 'attribute')
-                                    ){
-                                        if(
-                                            in_array(
-                                                $relation_object_relation_data->class,
-                                                $is_loaded,
-                                                true
-                                            )
-                                        ){
-                                            //already loaded
-                                            continue;
-                                        }
-                                    }
-                                    $selected = $relation_data->get($relation_object_relation_data->attribute);
-                                    $selected = $this->relation_inner($relation_object_relation_data, $selected, $options, $counter);
-                                    $relation_data->set($relation_object_relation_data->attribute, $selected);
-                                }
-                            }
-                            $data[$relation_data_nr] = $relation_data->data();
-                        } else {
-                            //old data, remove from list
-                            unset($data[$relation_data_nr]);
-                        }
-                    }
-                }
-                break;
-            case 'many-one':
-                if(
-                    $is_allowed &&
-                    is_string($data) &&
-                    Core::is_uuid($data)
-                ){
-                    $relation_data_url = $object->config('project.dir.data') .
-                        'Node' .
-                        $object->config('ds') .
-                        'Storage' .
-                        $object->config('ds') .
-                        substr($data, 0, 2) .
-                        $object->config('ds') .
-                        $data .
-                        $object->config('extension.json')
-                    ;
-                    $relation_data = $object->data_read($relation_data_url, sha1($relation_data_url));
-                    if($relation_data) {
-//                        $record = $relation_data->data();
-
-                        $relation_object_url = $object->config('project.dir.data') .
-                            'Node' .
-                            $object->config('ds') .
-                            'Object' .
-                            $object->config('ds') .
-                            $relation->class .
-                            $object->config('extension.json')
-                        ;
-                        $relation_object_data = $object->data_read($relation_object_url, sha1($relation_object_url));
-                        $relation_object_relation = $relation_object_data->data('relation');
-
-                        $is_loaded = $object->data('R3m.Io.Node.BinaryTree.relation');
-                        if(empty($is_loaded)){
-                            $is_loaded = [];
-                        }
-                        if($relation_data->has('#class')){
-                            $is_loaded[] = $relation_data->get('#class');
-                            $object->data('R3m.Io.Node.BinaryTree.relation', $is_loaded);
-                        }
-                        if(is_array($relation_object_relation)){
-                            foreach($relation_object_relation as $relation_object_relation_nr => $relation_object_relation_data){
-                                if(
-                                    property_exists($relation_object_relation_data, 'class') &&
-                                    property_exists($relation_object_relation_data, 'attribute')
-                                ){
-
-                                    if(
-                                        in_array(
-                                            $relation_object_relation_data->class,
-                                            $is_loaded,
-                                            true
-                                        )
-                                    ){
-                                        //already loaded
-                                        continue;
-                                    }
-                                }
-                                $selected = $relation_data->get($relation_object_relation_data->attribute);
-                                $selected = $this->relation_inner($relation_object_relation_data, $selected, $options, $counter);
-                                $relation_data->set($relation_object_relation_data->attribute, $selected);
-                            }
-                        }
-                        $data = $relation_data->data();
-                    }
-                }
-                break;
-            case 'one-one':
-                if(
-                    $is_allowed &&
-                    is_string($data) &&
-                    Core::is_uuid($data)
-                ){
-                    $relation_data_url = $object->config('project.dir.data') .
-                        'Node' .
-                        $object->config('ds') .
-                        'Storage' .
-                        $object->config('ds') .
-                        substr($data, 0, 2) .
-                        $object->config('ds') .
-                        $data .
-                        $object->config('extension.json')
-                    ;
-                    $relation_data = $object->data_read($relation_data_url, sha1($relation_data_url));
-                    if($relation_data) {
-//                        $record = $relation_data->data();
-
-                        $relation_object_url = $object->config('project.dir.data') .
-                            'Node' .
-                            $object->config('ds') .
-                            'Object' .
-                            $object->config('ds') .
-                            $relation->class .
-                            $object->config('extension.json')
-                        ;
-                        $relation_object_data = $object->data_read($relation_object_url, sha1($relation_object_url));
-                        $relation_object_relation = $relation_object_data->data('relation');
-
-                        $is_loaded = $object->data('R3m.Io.Node.BinaryTree.relation');
-                        if(empty($is_loaded)){
-                            $is_loaded = [];
-                        }
-                        if($relation_data->has('#class')){
-                            $is_loaded[] = $relation_data->get('#class');
-                            $object->data('R3m.Io.Node.BinaryTree.relation', $is_loaded);
-                        }
-                        if(is_array($relation_object_relation)){
-                            foreach($relation_object_relation as $relation_object_relation_nr => $relation_object_relation_data){
-                                if(
-                                    property_exists($relation_object_relation_data, 'class') &&
-                                    property_exists($relation_object_relation_data, 'attribute')
-                                ){
-
-                                    if(
-                                        in_array(
-                                            $relation_object_relation_data->class,
-                                            $is_loaded,
-                                            true
-                                        )
-                                    ){
-                                        //already loaded
-                                        continue;
-                                    }
-                                }
-                                $selected = $relation_data->get($relation_object_relation_data->attribute);
-                                $selected = $this->relation_inner($relation_object_relation_data, $selected, $options, $counter);
-                                $relation_data->set($relation_object_relation_data->attribute, $selected);
-                            }
-                        }
-                        $data = $relation_data->data();
-                    }
-                }
-                break;
-        }
-        return $data;
     }
 }
