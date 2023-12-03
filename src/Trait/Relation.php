@@ -24,6 +24,7 @@ trait Relation {
         if($data){
             $node = new Storage($record);
             $relations = $data->data('relation');
+            d($relations);
             if(!$relations){
                 return $record;
             }
