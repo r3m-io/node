@@ -16,16 +16,17 @@ use R3m\Io\Module\Route;
 
 trait Relation {
 
+    /**
+     * @throws Exception
+     */
     private function relation($record, $data, $role, $options=[]){
         $object = $this->object();
         if(!$role){
             return $record;
         }
-        d($data);
         if($data){
             $node = new Storage($record);
             $relations = $data->data('relation');
-            d($relations);
             if(!$relations){
                 return $record;
             }
@@ -94,6 +95,9 @@ trait Relation {
                                         $node->set($relation->attribute, false);
                                     }
                                 } else {
+                                    $read = $this->read($relation->class, $this->role_system(), ['uuid' => $uuid]);
+                                    ddd($read);
+                                    /*
                                     $relation_url = $object->config('project.dir.data') .
                                         'Node' .
                                         $object->config('ds') .
@@ -159,6 +163,8 @@ trait Relation {
                                             }
                                         }
                                     }
+                                    */
+
                                 }
                             }
                             $record = $node->data();
