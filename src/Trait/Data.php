@@ -21,6 +21,7 @@ trait Data {
 
     use Expose;
     use Filter;
+    use Relation;
     use Tree;
     use Validate;
     use Where;

@@ -92,6 +92,7 @@ trait NodeList {
             $object->config('extension.json')
         ;
         $object_data = $object->data_read($object_url);
+        $has_relation = false;
         if($data){
             $list = $data->data($name);
             if(
@@ -109,7 +110,7 @@ trait NodeList {
                     array_key_exists('relation', $options) &&
                     $options['relation'] === true
                 ){
-                    ddd('has relation');
+                    $has_relation = true;
                 }
                 $is_filter = false;
                 $is_where = false;
@@ -151,6 +152,8 @@ trait NodeList {
                             $role
                         );
                         $record = $node->data();
+                        $record = $this->relation($record, $object_data, $role, $options);
+                        ddd($record);
                         //parse the record if parse is enabled
                         if($is_filter){
                             $record = $this->filter($record, $options['filter'], $options);
