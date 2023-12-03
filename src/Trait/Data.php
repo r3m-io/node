@@ -294,13 +294,13 @@ trait Data {
                     $multiple = $property->multiple;
                 }
                 if(!empty($objects)){
-                    $result['objects'][$property->name] = [
+                    $result['object'][$property->name] = [
                         'multiple' => $multiple,
                         'expose' => $expose,
-                        'objects' => $objects
+                        'object' => $objects
                     ];
                 } else {
-                    $result['objects'][$property->name] = [
+                    $result['object'][$property->name] = [
                         'multiple' => $multiple,
                         'expose' => $expose
                     ];
