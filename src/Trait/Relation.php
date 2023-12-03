@@ -60,7 +60,6 @@ trait Relation {
                             }
                         }
                     }
-                    ddd($relation);
                     switch(strtolower($relation->type)){
                         case 'one-one':
                             if(
@@ -202,6 +201,8 @@ trait Relation {
                                         ){
                                             $output_filter = $one_many->output->filter;
                                         }
+                                        d($one_many);
+                                        ddd($output_filter);
                                         if($one_many->limit === '*'){
                                             $list = $this->list_select_all($object, $relation, $one_many);
                                             $node->set($relation->attribute, $list);
