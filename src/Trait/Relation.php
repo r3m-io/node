@@ -186,7 +186,7 @@ trait Relation {
                                     $record = $node->data();
                                     break;
                                 }
-                                elseif($one_many === '' || $one_many === false){
+                                elseif($one_many === 'relation'){
                                     if(
                                         property_exists($relation, 'limit') &&
                                         !empty($relation->limit) &&
@@ -239,23 +239,18 @@ trait Relation {
                                         ){
                                             $one_many->filter = $relation->filter;
                                         }
-                                        if($one_many->limit === '*'){
-                                            $list = $this->list_select_all($object, $relation, $one_many);
-                                            $node->set($relation->attribute, $list);
+                                        $response = $this->list(
+                                            $relation->class,
+                                            $this->role_system(),
+                                            $one_many
+                                        );
+                                        if(
+                                            !empty($response) &&
+                                            array_key_exists('list', $response)
+                                        ){
+                                            $node->set($relation->attribute, $response['list']);
                                         } else {
-                                            $response = $this->list(
-                                                $relation->class,
-                                                $this->role_system(),
-                                                $one_many
-                                            );
-                                            if(
-                                                !empty($response) &&
-                                                array_key_exists('list', $response)
-                                            ){
-                                                $node->set($relation->attribute, $response['list']);
-                                            } else {
-                                                $node->set($relation->attribute, []);
-                                            }
+                                            $node->set($relation->attribute, []);
                                         }
                                         $record = $node->data();
                                         break;
@@ -264,13 +259,20 @@ trait Relation {
                                 if(!is_array($one_many)){
                                     break;
                                 }
+                                $relation_url = $object->config('project.dir.node') .
+                                    'Data' .
+                                    $object->config('ds') .
+                                    $relation->class .
+                                    $object->config('extension.json')
+                                ;
+                                $relation_data = $object->data_read($relation_url, sha1($relation_url));
+                                ddd($relation_data);
+
                                 foreach($one_many as $nr => $uuid){
                                     if(!is_string($uuid)){
                                         continue;
                                     }
-                                    $relation_url = $object->config('project.dir.data') .
-                                        'Node' .
-                                        $object->config('ds') .
+                                    $relation_url = $object->config('project.dir.node') .
                                         'Storage' .
                                         $object->config('ds') .
                                         substr($uuid, 0, 2) .
