@@ -259,89 +259,45 @@ trait Relation {
                                 if(!is_array($one_many)){
                                     break;
                                 }
-                                $relation_url = $object->config('project.dir.node') .
-                                    'Data' .
-                                    $object->config('ds') .
-                                    $relation->class .
-                                    $object->config('extension.json')
-                                ;
-                                $relation_data = $object->data_read($relation_url, sha1($relation_url));
-                                ddd($relation_data);
-
-                                foreach($one_many as $nr => $uuid){
-                                    if(!is_string($uuid)){
-                                        continue;
-                                    }
-                                    $relation_url = $object->config('project.dir.node') .
-                                        'Storage' .
-                                        $object->config('ds') .
-                                        substr($uuid, 0, 2) .
-                                        $object->config('ds') .
-                                        $uuid .
-                                        $object->config('extension.json')
-                                    ;
-                                    $relation_data = $object->data_read($relation_url, sha1($relation_url));
-                                    if($relation_data){
+                                $options_one_many = (object) [
+                                    'limit' => '*',
+                                    'page' => 1,
+                                    'sort' => [
+                                        'uuid' => 'ASC'
+                                    ],
+                                ];
+                                $response = $this->list(
+                                    $relation->class,
+                                    $this->role_system(),
+                                    $options_one_many
+                                );
+                                if(
+                                    !empty($response) &&
+                                    array_key_exists('list', $response)
+                                ){
+                                    $index = new Storage();
+                                    foreach($response['list'] as $nr => $record){
                                         if(
-                                            $relation_data->has('#class')
+                                            is_object($record) &&
+                                            property_exists($record, 'uuid')
                                         ){
-                                            $relation_object_url = $object->config('project.dir.data') .
-                                                'Node' .
-                                                $object->config('ds') .
-                                                'Object' .
-                                                $object->config('ds') .
-                                                $relation_data->get('#class') .
-                                                $object->config('extension.json')
-                                            ;
-                                            $relation_object_data = $object->data_read($relation_object_url, sha1($relation_object_url));
-                                            if(
-                                                $relation_object_data &&
-                                                $relation_object_data->has('relation')
-                                            ){
-                                                $relation_object_relation = $relation_object_data->get('relation');
-                                                if(is_array($relation_object_relation)){
-                                                    foreach($relation_object_relation as $relation_nr => $relation_relation){
-                                                        if(
-                                                            property_exists($relation_relation, 'type') &&
-                                                            property_exists($relation_relation, 'class') &&
-                                                            property_exists($record, '#class') &&
-                                                            $relation_relation->type === 'many-one' &&
-                                                            $relation_relation->class === $record->{'#class'}
-                                                        ){
-                                                            //don't need cross-reference, parent is this.
-                                                            continue;
-                                                        }
-                                                        if(
-                                                            property_exists($relation_relation, 'type') &&
-                                                            property_exists($relation_relation, 'class') &&
-                                                            property_exists($record, '#class') &&
-                                                            $relation_relation->type === 'one-one' &&
-                                                            $relation_relation->class === $record->{'#class'}
-                                                        ){
-                                                            //don't need cross-reference, parent is this.
-                                                            continue;
-                                                        }
-                                                        if(
-                                                            property_exists($relation_relation, 'attribute')
-                                                        ){
-                                                            $relation_data_data = $relation_data->get($relation_relation->attribute);
-                                                            $relation_data_data = $this->relation_inner($relation_relation, $relation_data_data, $options);
-                                                            $relation_data->set($relation_relation->attribute, $relation_data_data);
-                                                        }
-                                                    }
-                                                }
-                                                if($relation_data){
-                                                    $one_many[$nr] = $relation_data->data();
-                                                }
-                                            } else {
-                                                if($relation_data){
-                                                    $one_many[$nr] = $relation_data->data();
-                                                }
-                                            }
+                                            $index->set($record->uuid, $record);
                                         }
                                     }
+                                    foreach($one_many as $nr => $uuid){
+                                        if(!is_string($uuid)){
+                                            continue;
+                                        }
+                                        if($index->has($uuid)){
+                                            $one_many[$nr] = $index->get($uuid);
+                                        } else {
+                                            unset($one_many[$nr]);
+                                        }
+                                    }
+                                    $node->set($relation->attribute, $one_many);
+                                } else {
+                                    $node->set($relation->attribute, []);
                                 }
-                                $node->set($relation->attribute, $one_many);
                             }
                             $record = $node->data();
                             break;
