@@ -93,7 +93,14 @@ trait Relation {
                                         $node->set($relation->attribute, false);
                                     }
                                 } else {
-                                    $read = $this->read($relation->class, $this->role_system(), ['uuid' => $uuid]);
+                                    $read = $this->read(
+                                        $relation->class,
+                                        $this->role_system(),
+                                        [
+                                            'uuid' => $uuid,
+                                            'relation' => $options['relation']
+                                        ]
+                                    );
                                     if (
                                         array_key_exists('node', $read) &&
                                         property_exists($read['node'], 'uuid')
@@ -139,6 +146,7 @@ trait Relation {
                                     ){
                                         $output_filter = $one_many->output->filter;
                                     }
+                                    $one_many->relation = $options['relation'] ?? [];
                                     $response = $this->list(
                                         $relation->class,
                                         $this->role_system(),
@@ -170,6 +178,7 @@ trait Relation {
                                             'uuid' => 'ASC'
                                         ];
                                     }
+                                    $one_many->relation = $options['relation'] ?? [];
                                     $response = $this->list(
                                         $relation->class,
                                         $this->role_system(),
@@ -239,6 +248,7 @@ trait Relation {
                                         ){
                                             $one_many->filter = $relation->filter;
                                         }
+                                        $one_many->relation = $options['relation'] ?? [];
                                         $response = $this->list(
                                             $relation->class,
                                             $this->role_system(),
@@ -265,6 +275,7 @@ trait Relation {
                                     'sort' => [
                                         'uuid' => 'ASC'
                                     ],
+                                    'relation' => $options['relation'] ?? []
                                 ];
                                 $response = $this->list(
                                     $relation->class,
