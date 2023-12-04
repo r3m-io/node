@@ -179,7 +179,7 @@ trait Relation {
                                             'uuid' => 'ASC'
                                         ];
                                     }
-                                    $one_many->relation = $options['relation'] ?? [];
+                                    $one_many->relation = $options['relation'];
                                     $response = $this->list(
                                         $relation->class,
                                         $this->role_system(),
@@ -249,7 +249,7 @@ trait Relation {
                                         ){
                                             $one_many->filter = $relation->filter;
                                         }
-                                        $one_many->relation = $options['relation'] ?? [];
+                                        $one_many->relation = $options['relation'];
                                         $response = $this->list(
                                             $relation->class,
                                             $this->role_system(),
@@ -276,7 +276,7 @@ trait Relation {
                                     'sort' => [
                                         'uuid' => 'ASC'
                                     ],
-                                    'relation' => $options['relation'] ?? []
+                                    'relation' => $options['relation']
                                 ];
                                 $response = $this->list(
                                     $relation->class,
