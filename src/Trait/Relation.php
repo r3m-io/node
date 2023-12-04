@@ -78,6 +78,7 @@ trait Relation {
                                         'sort' => [
                                             'uuid' => 'ASC'
                                         ],
+                                        'relation' => $options['relation']
                                     ];
                                     $response = $this->record(
                                         $relation->class,
