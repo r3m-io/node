@@ -113,7 +113,7 @@ trait NodeList {
                         is_object($response) &&
                         property_exists($response, 'duration')
                     ){
-                        $response->duration = microtime(true) - $object->config('time.start');
+                        $response->duration = (microtime(true) - $object->config('time.start')) * 1000;
                     }
                     return $response;
                 }
