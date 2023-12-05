@@ -329,11 +329,20 @@ trait NodeList {
                     $relation->class .
                     $object->config('extension.json')
                 ;
+                $data_url = $object->config('project.dir.node') .
+                    'Data' .
+                    $object->config('ds') .
+                    $relation->class .
+                    $object->config('extension.json')
+                ;
                 $data = $object->data_read($object_url, sha1($object_url));
                 if(!$data){
                     continue;
                 }
-                ddd($data);
+                $mtime[$object_url] = File::mtime($data_url);
+                $data_mtime = $this->relation_mtime($data);
+                d($mtime);
+                d($data_mtime);
             }
         }
         return $mtime;
