@@ -298,54 +298,14 @@ trait NodeList {
                     $ramdisk_url_node
                 ){
                     $relation_mtime = $this->relation_mtime($object_data);
-                    ddd($relation_mtime);
                     $ramdisk = new Storage();
-                    $ramdisk->data('response', $result);
+                    $ramdisk->set('mtime', $mtime);
+                    $ramdisk->set('response', $result);
+                    $ramdisk->set('relation', $relation_mtime);
                     $ramdisk->write($ramdisk_url_node);
                 }
                 return $result;
             }
         }
-    }
-
-    private function relation_mtime($object_data){
-        $mtime = [];
-        if(empty($object_data)) {
-            return [];
-        }
-        $object = $this->object();
-        $relations = $object_data->get('relation');
-        if(
-            !empty($relations) &&
-            is_array($relations)
-        ){
-            foreach($relations as $relation){
-                if(!property_exists($relation, 'class')){
-                    continue;
-                }
-                $object_url = $object->config('project.dir.node') .
-                    'Object' .
-                    $object->config('ds') .
-                    $relation->class .
-                    $object->config('extension.json')
-                ;
-                $data_url = $object->config('project.dir.node') .
-                    'Data' .
-                    $object->config('ds') .
-                    $relation->class .
-                    $object->config('extension.json')
-                ;
-                $data = $object->data_read($object_url, sha1($object_url));
-                if(!$data){
-                    continue;
-                }
-                $mtime[$object_url] = File::mtime($data_url);
-                $data_mtime = $this->relation_mtime($data);
-                foreach($data_mtime as $url => $value){
-                    $mtime[$url] = $value;
-                }
-            }
-        }
-        return $mtime;
     }
 }
