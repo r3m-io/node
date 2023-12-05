@@ -91,7 +91,7 @@ trait NodeList {
         $cache_url = $object->config('ramdisk.url') .
             $object->config('posix.id') .
             $object->config('ds') .
-            'Cache' .
+            'Node' .
             $object->config('ds') .
             $name .
             $object->config('ds') .
