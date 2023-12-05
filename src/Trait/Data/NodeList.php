@@ -102,28 +102,29 @@ trait NodeList {
             $key .
             $object->config('extension.json')
         ;
-
+        $mtime = File::mtime($data_url);
         if(File::exist($ramdisk_url_node)){
             //we have cache url
             $ramdisk = $object->data_read($ramdisk_url_node);
             //need to verify all relations
             if($ramdisk){
-                ddd($ramdisk);
-                $response = $ramdisk->get('response');
-                if($response){
-                    if(
-                        is_object($response) &&
-                        property_exists($response, 'duration')
-                    ){
-                        $response->duration = (microtime(true) - $object->config('time.start')) * 1000;
+                if($mtime === $ramdisk->get('mtime')){
+                    ddd($ramdisk);
+                    $response = $ramdisk->get('response');
+                    if($response){
+                        if(
+                            is_object($response) &&
+                            property_exists($response, 'duration')
+                        ){
+                            $response->duration = (microtime(true) - $object->config('time.start')) * 1000;
+                        }
+                        return $response;
                     }
-                    return $response;
                 }
             }
         }
 
         $data = $object->data_read($data_url);
-        $mtime = File::mtime($data_url);
         $object_url = $object->config('project.dir.node') .
             'Object' .
             $object->config('ds') .
