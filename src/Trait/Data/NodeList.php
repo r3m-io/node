@@ -116,6 +116,7 @@ trait NodeList {
                                 break;
                             }
                             if ($relation_mtime !== File::mtime($relation_url)) {
+                                d($relation_url);
                                 $is_cache_miss = true;
                                 break;
                             }
