@@ -464,7 +464,7 @@ trait Relation {
                 if(!$data){
                     continue;
                 }
-                $mtime[$object_url] = File::mtime($data_url);
+                $mtime[$data_url] = File::mtime($data_url);
                 $data_mtime = $this->relation_mtime($data);
                 foreach($data_mtime as $url => $value){
                     $mtime[$url] = $value;
