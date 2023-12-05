@@ -98,6 +98,8 @@ trait NodeList {
             $key .
             $object->config('extension.json')
         ;
+        d($name);
+        d($options);
         ddd($cache_url);
         $data = $object->data_read($data_url);
         $mtime = File::mtime($data_url);
