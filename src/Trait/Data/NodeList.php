@@ -297,7 +297,8 @@ trait NodeList {
                     $options['ramdisk'] === true &&
                     $ramdisk_url_node
                 ){
-                    ddd($relation);
+                    $relation_mtime = $this->relation_mtime($object_data);
+                    ddd($relation_mtime);
                     $ramdisk = new Storage();
                     $ramdisk->data('response', $result);
                     $ramdisk->write($ramdisk_url_node);
@@ -305,6 +306,23 @@ trait NodeList {
                 return $result;
             }
         }
+    }
+
+    private function relation_mtime($object_data){
+        $mtime = [];
+        if(empty($object_data)) {
+            return [];
+        }
+        $relations = $object_data->get('relation');
+        if(
+            !empty($relations) &&
+            is_array($relations)
+        ){
+            foreach($relations as $relation){
+                ddd($relation);
+            }
+        }
+        return $mtime;
     }
 
 }
