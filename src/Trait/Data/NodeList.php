@@ -104,20 +104,25 @@ trait NodeList {
         ;
         $mtime = File::mtime($data_url);
         if(File::exist($ramdisk_url_node)){
-            //we have cache url
             $ramdisk = $object->data_read($ramdisk_url_node);
-            //need to verify all relations
             if($ramdisk){
-                if($mtime === $ramdisk->get('mtime')){
+                $is_cache_miss = false;
+                if($mtime === $ramdisk->get('mtime')) {
                     $relations = $ramdisk->get('relation');
-                    if($relations){
-                        foreach($relations as $relation_url => $relation_mtime){
-                            d($relation_url);
-                            d($relation_mtime);
+                    if ($relations) {
+                        foreach ($relations as $relation_url => $relation_mtime) {
+                            if (!File::exist($relation_url)) {
+                                $is_cache_miss = true;
+                                break;
+                            }
+                            if ($relation_mtime !== File::mtime($relation_url)) {
+                                $is_cache_miss = true;
+                                break;
+                            }
                         }
                     }
-
-
+                }
+                if($is_cache_miss === false){
                     ddd($ramdisk);
                     $response = $ramdisk->get('response');
                     if($response){
@@ -132,7 +137,6 @@ trait NodeList {
                 }
             }
         }
-
         $data = $object->data_read($data_url);
         $object_url = $object->config('project.dir.node') .
             'Object' .
