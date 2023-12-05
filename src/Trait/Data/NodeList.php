@@ -122,6 +122,7 @@ trait NodeList {
                         }
                     }
                 }
+                ddd($is_cache_miss);
                 if($is_cache_miss === false){
                     ddd($ramdisk);
                     $response = $ramdisk->get('response');
