@@ -105,11 +105,13 @@ trait NodeList {
         if(File::exist($ramdisk_url_node)){
             //we have cache url
             $ramdisk = $object->data_read($ramdisk_url_node);
-
-            ddd($ramdisk);
-
-
-            ddd($ramdisk_url_node);
+            //need to verify all relations
+            if($ramdisk){
+                $response = $ramdisk->get('response');
+                if($response){
+                    return $response;
+                }
+            }
         }
         $data = $object->data_read($data_url);
         $mtime = File::mtime($data_url);
