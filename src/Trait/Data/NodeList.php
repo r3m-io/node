@@ -85,6 +85,20 @@ trait NodeList {
             $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
             return $result;
         }
+        //cache key
+        $key = sha1(Core::object($options, Core::OBJECT_JSON));
+
+        $cache_url = $object->config('ramdisk.url') .
+            $object->config('posix.id') .
+            $object->config('ds') .
+            'Cache' .
+            $object->config('ds') .
+            $name .
+            $object->config('ds') .
+            $key .
+            $object->config('extension.json')
+        ;
+        ddd($cache_url);
         $data = $object->data_read($data_url);
         $mtime = File::mtime($data_url);
         $object_url = $object->config('project.dir.node') .
@@ -156,6 +170,7 @@ trait NodeList {
                         $record = $node->data();
                         if($has_relation){
                             $record = $this->relation($record, $object_data, $role, $options);
+                            //collect relation mtime
                         }
                         //parse the record if parse is enabled
                         if($is_filter){
