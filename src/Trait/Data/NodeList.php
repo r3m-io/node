@@ -313,13 +313,27 @@ trait NodeList {
         if(empty($object_data)) {
             return [];
         }
+        $object = $this->object();
         $relations = $object_data->get('relation');
         if(
             !empty($relations) &&
             is_array($relations)
         ){
             foreach($relations as $relation){
-                ddd($relation);
+                if(!property_exists($relation, 'class')){
+                    continue;
+                }
+                $object_url = $object->config('project.dir.node') .
+                    'Object' .
+                    $object->config('ds') .
+                    $relation->class .
+                    $object->config('extension.json')
+                ;
+                $data = $object->data_read($object_url, sha1($object_url));
+                if(!$data){
+                    continue;
+                }
+                ddd($data);
             }
         }
         return $mtime;
