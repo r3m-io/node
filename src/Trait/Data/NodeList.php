@@ -109,6 +109,15 @@ trait NodeList {
             //need to verify all relations
             if($ramdisk){
                 if($mtime === $ramdisk->get('mtime')){
+                    $relations = $ramdisk->get('relation');
+                    if($relations){
+                        foreach($relations as $relation_url => $relation_mtime){
+                            d($relation_url);
+                            d($relation_mtime);
+                        }
+                    }
+
+
                     ddd($ramdisk);
                     $response = $ramdisk->get('response');
                     if($response){
