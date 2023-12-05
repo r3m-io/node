@@ -88,19 +88,24 @@ trait NodeList {
         //cache key
         $key = sha1(Core::object($options, Core::OBJECT_JSON));
 
-        $cache_url = $object->config('ramdisk.url') .
+        $ramdisk_dir = $object->config('ramdisk.url') .
             $object->config('posix.id') .
-            $object->config('ds') .
+            $object->config('ds')
+        ;
+        $ramdisk_dir_node = $ramdisk_dir .
             'Node' .
-            $object->config('ds') .
+            $object->config('ds')
+        ;
+        $ramdisk_url_node = $ramdisk_dir_node .
             $name .
-            $object->config('ds') .
+            '.' .
             $key .
             $object->config('extension.json')
         ;
-        d($name);
-        d($options);
-        ddd($cache_url);
+        if(File::exist($ramdisk_url_node)){
+            //we have cache url
+            ddd($ramdisk_url_node);
+        }
         $data = $object->data_read($data_url);
         $mtime = File::mtime($data_url);
         $object_url = $object->config('project.dir.node') .
@@ -269,6 +274,15 @@ trait NodeList {
                 $result['parse'] = $options['parse'] ?? false;
                 $result['mtime'] = $mtime;
                 $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+                if(
+                    array_key_exists('ramdisk', $options) &&
+                    $options['ramdisk'] === true &&
+                    $ramdisk_url_node
+                ){
+                    d($options);
+                    d($ramdisk_url_node);
+                    ddd($result);
+                }
                 return $result;
             }
         }
