@@ -108,7 +108,6 @@ trait NodeList {
             if($ramdisk){
                 $is_cache_miss = false;
                 if($mtime === $ramdisk->get('mtime')) {
-                    d($ramdisk);
                     $relations = $ramdisk->get('relation');
                     if ($relations) {
                         foreach ($relations as $relation_url => $relation_mtime) {
@@ -117,16 +116,13 @@ trait NodeList {
                                 break;
                             }
                             if ($relation_mtime !== File::mtime($relation_url)) {
-                                d($relation_url);
                                 $is_cache_miss = true;
                                 break;
                             }
                         }
                     }
                 }
-                d($is_cache_miss);
                 if($is_cache_miss === false){
-                    ddd($ramdisk);
                     $response = $ramdisk->get('response');
                     if($response){
                         if(
