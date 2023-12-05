@@ -108,7 +108,7 @@ trait NodeList {
             if($ramdisk){
                 $is_cache_miss = false;
                 if($mtime === $ramdisk->get('mtime')) {
-                    ddd($ramdisk);
+                    d($ramdisk);
                     $relations = $ramdisk->get('relation');
                     if ($relations) {
                         foreach ($relations as $relation_url => $relation_mtime) {
