@@ -102,6 +102,7 @@ trait NodeList {
             $key .
             $object->config('extension.json')
         ;
+        $ramdisk_url_node = false;
         if(File::exist($ramdisk_url_node)){
             //we have cache url
             $ramdisk = $object->data_read($ramdisk_url_node);
@@ -292,6 +293,7 @@ trait NodeList {
                     $options['ramdisk'] === true &&
                     $ramdisk_url_node
                 ){
+                    ddd($relation);
                     $ramdisk = new Storage();
                     $ramdisk->data('response', $result);
                     $ramdisk->write($ramdisk_url_node);
