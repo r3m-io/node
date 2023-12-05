@@ -130,7 +130,6 @@ trait NodeList {
                         ){
                             $response['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
                         }
-                        d($response);
                         return $response;
                     }
                 }
