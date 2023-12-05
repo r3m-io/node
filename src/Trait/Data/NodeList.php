@@ -104,6 +104,11 @@ trait NodeList {
         ;
         if(File::exist($ramdisk_url_node)){
             //we have cache url
+            $ramdisk = $object->data_read($ramdisk_url_node);
+
+            ddd($ramdisk);
+
+
             ddd($ramdisk_url_node);
         }
         $data = $object->data_read($data_url);
