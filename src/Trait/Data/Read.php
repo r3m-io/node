@@ -65,6 +65,9 @@ Trait Read {
         )){
             $options_record['ramdisk'] = true;
         }
+        if(array_key_exists('ramdisk', $options)){
+            $options_record['ramdisk'] = $options['ramdisk'];
+        }
         $data = $this->record($name, $role, $options_record);
         if($data){
             return $data;
