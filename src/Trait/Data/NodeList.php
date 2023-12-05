@@ -341,11 +341,11 @@ trait NodeList {
                 }
                 $mtime[$object_url] = File::mtime($data_url);
                 $data_mtime = $this->relation_mtime($data);
-                d($mtime);
-                d($data_mtime);
+                foreach($data_mtime as $url => $value){
+                    $mtime[$url] = $value;
+                }
             }
         }
         return $mtime;
     }
-
 }
