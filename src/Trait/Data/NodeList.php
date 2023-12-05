@@ -109,6 +109,12 @@ trait NodeList {
             if($ramdisk){
                 $response = $ramdisk->get('response');
                 if($response){
+                    if(
+                        is_object($response) &&
+                        property_exists($response, 'duration')
+                    ){
+                        $response->duration = microtime(true) - $object->config('time.start');
+                    }
                     return $response;
                 }
             }
