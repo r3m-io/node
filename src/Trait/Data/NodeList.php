@@ -123,13 +123,12 @@ trait NodeList {
                     }
                 }
                 if($is_cache_miss === false){
-                    $response = $ramdisk->get('response');
+                    $response = (array) $ramdisk->get('response');
                     if($response){
                         if(
-                            is_object($response) &&
-                            property_exists($response, 'duration')
+                            array_key_exists('duration', $response)
                         ){
-                            $response->duration = (microtime(true) - $object->config('time.start')) * 1000;
+                            $response['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
                         }
                         d($response);
                         return $response;

@@ -40,15 +40,15 @@ Trait Record {
                 'uuid' => 'ASC'
             ];
         }
-        $list = $this->list($name, $role, $options);
-        d($list);
+        $response = $this->list($name, $role, $options);
+        d($response);
         if(
-            is_array($list) &&
-            array_key_exists('list', $list) &&
-            array_key_exists(0, $list['list'])
+            is_array($response) &&
+            array_key_exists('list', $response) &&
+            array_key_exists(0, $response['list'])
         ){
-            $record = $list;
-            $record['node'] = $list['list'][0];
+            $record = $response;
+            $record['node'] = $response['list'][0];
             if(property_exists($record['node'], '#index')){
                 unset($record['node']->{'#index'});
             }
