@@ -103,7 +103,6 @@ trait NodeList {
             $object->config('extension.json')
         ;
         $mtime = File::mtime($data_url);
-        /*
         if(File::exist($ramdisk_url_node)){
             $ramdisk = $object->data_read($ramdisk_url_node);
             if($ramdisk){
@@ -141,7 +140,6 @@ trait NodeList {
                 }
             }
         }
-        */
         $data = $object->data_read($data_url);
         $object_url = $object->config('project.dir.node') .
             'Object' .
