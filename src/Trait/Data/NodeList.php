@@ -230,7 +230,10 @@ trait NodeList {
                 } else {
                     $list_sort = $list;
                 }
-                if(!empty($options['limit']) && $options['limit'] === '*'){
+                if(
+                    !empty($options['limit']) &&
+                    $options['limit'] === '*'
+                ){
                     $list_count = 0;
                     foreach($list_sort as $index => $record){
                         if(is_object($record)){
