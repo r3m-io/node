@@ -41,6 +41,7 @@ Trait Record {
             ];
         }
         $list = $this->list($name, $role, $options);
+        d($list);
         if(
             is_array($list) &&
             array_key_exists('list', $list) &&
