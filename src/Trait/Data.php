@@ -275,9 +275,9 @@ trait Data {
                 property_exists($property, 'type') &&
                 $property->type === 'object'
             ){
+                $expose = [];
+                $objects = [];
                 if(property_exists($property, 'property')){
-                    $expose = [];
-                    $objects = [];
                     foreach($property->property as $object_property){
                         if(property_exists($object_property, 'name')){
                             $expose[] = $object_property->name;
