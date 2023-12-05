@@ -123,6 +123,7 @@ trait NodeList {
                     }
                 }
                 if($is_cache_miss === false){
+                    ddd($ramdisk);
                     $response = $ramdisk->get('response');
                     if($response){
                         if(
@@ -312,7 +313,6 @@ trait NodeList {
                     $ramdisk_url_node
                 ){
                     $relation_mtime = $this->relation_mtime($object_data);
-                    d($relation_mtime);
                     $ramdisk = new Storage();
                     $ramdisk->set('mtime', $mtime);
                     $ramdisk->set('response', $result);
