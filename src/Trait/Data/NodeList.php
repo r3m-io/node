@@ -170,7 +170,10 @@ trait NodeList {
                                 unset($list[$nr]);
                             }
                         }
-                        $list[$nr] = $record;
+                        if($record){
+                            $list[$nr] = $record;
+                        }
+
                     }
                     elseif(is_object($record)){
                         //objects which doesn't belong there
