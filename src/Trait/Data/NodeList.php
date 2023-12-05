@@ -162,14 +162,14 @@ trait NodeList {
                             $record = $this->filter($record, $options['filter'], $options);
                             if(!$record){
                                 unset($list[$nr]);
-                                continue;
+//                                continue;
                             }
                         }
                         elseif($is_where){
                             $record = $this->where($record, $options['where'], $options);
                             if(!$record){
                                 unset($list[$nr]);
-                                continue;
+//                                continue;
                             }
                         }
                         $list[$nr] = $record;
@@ -185,7 +185,6 @@ trait NodeList {
                     !empty($options['sort']) &&
                     is_array($options['sort'])
                 ){
-                    d($list);
                     $list_sort = Sort::list($list)->with(
                         $options['sort'],
                         [
