@@ -102,12 +102,13 @@ trait NodeList {
             $key .
             $object->config('extension.json')
         ;
-        /*
+
         if(File::exist($ramdisk_url_node)){
             //we have cache url
             $ramdisk = $object->data_read($ramdisk_url_node);
             //need to verify all relations
             if($ramdisk){
+                ddd($ramdisk);
                 $response = $ramdisk->get('response');
                 if($response){
                     if(
@@ -120,7 +121,7 @@ trait NodeList {
                 }
             }
         }
-        */
+
         $data = $object->data_read($data_url);
         $mtime = File::mtime($data_url);
         $object_url = $object->config('project.dir.node') .
