@@ -102,7 +102,6 @@ trait NodeList {
             $key .
             $object->config('extension.json')
         ;
-        d($options);
         if(File::exist($ramdisk_url_node)){
             //we have cache url
             ddd($ramdisk_url_node);
