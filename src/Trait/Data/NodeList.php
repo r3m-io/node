@@ -279,9 +279,9 @@ trait NodeList {
                     $options['ramdisk'] === true &&
                     $ramdisk_url_node
                 ){
-                    d($options);
-                    d($ramdisk_url_node);
-                    ddd($result);
+                    $ramdisk = new Storage();
+                    $ramdisk->data('response', $result);
+                    $ramdisk->write($ramdisk_url_node);
                 }
                 return $result;
             }
