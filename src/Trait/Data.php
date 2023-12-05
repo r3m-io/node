@@ -254,10 +254,10 @@ trait Data {
         $objects = $this->object_create_expose_object($object, $class, $item->get('Node.property'));
         if(
             !empty($objects) &&
-            is_object($objects) &&
-            property_exists($objects, 'object')
+            is_array($objects) &&
+            array_key_exists('object', $objects)
         ){
-            $expose->set('object', $objects->object);
+            $expose->set('object', $objects['object']);
         }
         $data->set($class . '.count.expose', [ $expose->data() ]);
         $data->set($class . '.create.expose', [ $expose->data() ]);
