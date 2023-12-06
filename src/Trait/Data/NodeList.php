@@ -89,7 +89,8 @@ trait NodeList {
         $ramdisk_url_node = false;
         if(
             array_key_exists('ramdisk', $options) &&
-            $options['ramdisk'] === true
+            $options['ramdisk'] === true &&
+            !empty($object->config('ramdisk.url'))
         ){
             $key_options = $options;
             if(
