@@ -91,9 +91,18 @@ trait NodeList {
             array_key_exists('ramdisk', $options) &&
             $options['ramdisk'] === true
         ){
-            ddd($role);
+            $key_options = $options;
+            if(
+                is_object($role) &&
+                property_exists($role, 'uuid')
+            ){
+                //per role cache
+                $key_options['role'] = $role->uuid;
+            } else {
+                throw new Exception('Role not set for ramdisk');
+            }
             //cache key
-            $key = sha1(Core::object($options, Core::OBJECT_JSON));
+            $key = sha1(Core::object($key_options, Core::OBJECT_JSON));
             $ramdisk_dir = $object->config('ramdisk.url') .
                 $object->config('posix.id') .
                 $object->config('ds')
