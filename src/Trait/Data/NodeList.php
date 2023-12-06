@@ -91,6 +91,7 @@ trait NodeList {
             array_key_exists('ramdisk', $options) &&
             $options['ramdisk'] === true
         ){
+            ddd($role);
             //cache key
             $key = sha1(Core::object($options, Core::OBJECT_JSON));
             $ramdisk_dir = $object->config('ramdisk.url') .
