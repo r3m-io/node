@@ -85,52 +85,56 @@ trait NodeList {
             $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
             return $result;
         }
-        //cache key
-        $key = sha1(Core::object($options, Core::OBJECT_JSON));
-
-        $ramdisk_dir = $object->config('ramdisk.url') .
-            $object->config('posix.id') .
-            $object->config('ds')
-        ;
-        $ramdisk_dir_node = $ramdisk_dir .
-            'Node' .
-            $object->config('ds')
-        ;
-        $ramdisk_url_node = $ramdisk_dir_node .
-            $name .
-            '.' .
-            $key .
-            $object->config('extension.json')
-        ;
         $mtime = File::mtime($data_url);
-        if(File::exist($ramdisk_url_node)){
-            $ramdisk = $object->data_read($ramdisk_url_node);
-            if($ramdisk){
-                $is_cache_miss = false;
-                if($mtime === $ramdisk->get('mtime')) {
-                    $relations = $ramdisk->get('relation');
-                    if ($relations) {
-                        foreach ($relations as $relation_url => $relation_mtime) {
-                            if (!File::exist($relation_url)) {
-                                $is_cache_miss = true;
-                                break;
-                            }
-                            if ($relation_mtime !== File::mtime($relation_url)) {
-                                $is_cache_miss = true;
-                                break;
+        if(
+            array_key_exists('ramdisk', $options) &&
+            $options['ramdisk'] === true
+        ){
+            //cache key
+            $key = sha1(Core::object($options, Core::OBJECT_JSON));
+            $ramdisk_dir = $object->config('ramdisk.url') .
+                $object->config('posix.id') .
+                $object->config('ds')
+            ;
+            $ramdisk_dir_node = $ramdisk_dir .
+                'Node' .
+                $object->config('ds')
+            ;
+            $ramdisk_url_node = $ramdisk_dir_node .
+                $name .
+                '.' .
+                $key .
+                $object->config('extension.json')
+            ;
+            if(File::exist($ramdisk_url_node)){
+                $ramdisk = $object->data_read($ramdisk_url_node);
+                if($ramdisk){
+                    $is_cache_miss = false;
+                    if($mtime === $ramdisk->get('mtime')) {
+                        $relations = $ramdisk->get('relation');
+                        if ($relations) {
+                            foreach ($relations as $relation_url => $relation_mtime) {
+                                if (!File::exist($relation_url)) {
+                                    $is_cache_miss = true;
+                                    break;
+                                }
+                                if ($relation_mtime !== File::mtime($relation_url)) {
+                                    $is_cache_miss = true;
+                                    break;
+                                }
                             }
                         }
                     }
-                }
-                if($is_cache_miss === false){
-                    $response = (array) $ramdisk->get('response');
-                    if($response){
-                        if(
-                            array_key_exists('duration', $response)
-                        ){
-                            $response['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+                    if($is_cache_miss === false){
+                        $response = (array) $ramdisk->get('response');
+                        if($response){
+                            if(
+                                array_key_exists('duration', $response)
+                            ){
+                                $response['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+                            }
+                            return $response;
                         }
-                        return $response;
                     }
                 }
             }
