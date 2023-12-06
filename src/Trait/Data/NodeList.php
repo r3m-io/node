@@ -86,6 +86,7 @@ trait NodeList {
             return $result;
         }
         $mtime = File::mtime($data_url);
+        $ramdisk_url_node = false;
         if(
             array_key_exists('ramdisk', $options) &&
             $options['ramdisk'] === true
@@ -272,6 +273,18 @@ trait NodeList {
                     $result['parse'] = $options['parse'] ?? false;
                     $result['mtime'] = $mtime;
                     $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+                    if(
+                        array_key_exists('ramdisk', $options) &&
+                        $options['ramdisk'] === true &&
+                        $ramdisk_url_node !== false
+                    ){
+                        $relation_mtime = $this->relation_mtime($object_data);
+                        $ramdisk = new Storage();
+                        $ramdisk->set('mtime', $mtime);
+                        $ramdisk->set('response', $result);
+                        $ramdisk->set('relation', $relation_mtime);
+                        $ramdisk->write($ramdisk_url_node);
+                    }
                     return $result;
                 }
                 $page = $options['page'] ?? 1;
@@ -312,7 +325,7 @@ trait NodeList {
                 if(
                     array_key_exists('ramdisk', $options) &&
                     $options['ramdisk'] === true &&
-                    $ramdisk_url_node
+                    $ramdisk_url_node !== false
                 ){
                     $relation_mtime = $this->relation_mtime($object_data);
                     $ramdisk = new Storage();
