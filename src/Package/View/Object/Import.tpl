@@ -1,5 +1,6 @@
 {{R3M}}
 {{$request = request()}}
+{{dd($request)}}
 {{$options = options()}}
 Package: {{$request.package}}
 
