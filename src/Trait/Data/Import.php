@@ -88,6 +88,7 @@ Trait Import {
                         ]
                 ]
             );
+            d('test');
             ddd($priority);
             foreach($list as $name => $record){
                 if(property_exists($record, 'resource')){
