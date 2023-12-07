@@ -104,10 +104,14 @@ trait NodeList {
             }
             //cache key
             $key = sha1(Core::object($key_options, Core::OBJECT_JSON));
-            $ramdisk_dir = $object->config('ramdisk.url') .
-                $object->config('posix.id') .
-                $object->config('ds')
-            ;
+            if(array_key_exists('ramdisk_dir', $options)){
+                $ramdisk_dir = $options['ramdisk_dir'];
+            } else {
+                $ramdisk_dir = $object->config('ramdisk.url') .
+                    $object->config('posix.id') .
+                    $object->config('ds')
+                ;
+            }
             $ramdisk_dir_node = $ramdisk_dir .
                 'Node' .
                 $object->config('ds')
