@@ -54,6 +54,7 @@ trait NodeList {
             }
             $result['relation'] = $options['relation'];
             $result['parse'] = $options['parse'];
+            $result['ramdisk'] = $options['ramdisk'] ?? false;
             $result['mtime'] = $mtime;
             $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
             return $result;
@@ -81,6 +82,7 @@ trait NodeList {
             }
             $result['relation'] = $options['relation'];
             $result['parse'] = $options['parse'];
+            $result['ramdisk'] = $options['ramdisk'] ?? false;
             $result['mtime'] = $mtime;
             $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
             return $result;
@@ -289,6 +291,7 @@ trait NodeList {
                     $result['where'] = $options['where'] ?? [];
                     $result['relation'] = $options['relation'] ?? true;
                     $result['parse'] = $options['parse'] ?? false;
+                    $result['ramdisk'] = $options['ramdisk'] ?? false;
                     $result['mtime'] = $mtime;
                     $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
                     if(
@@ -338,6 +341,7 @@ trait NodeList {
                 $result['where'] = $options['where'] ?? [];
                 $result['relation'] = $options['relation'] ?? true;
                 $result['parse'] = $options['parse'] ?? false;
+                $result['ramdisk'] = $options['ramdisk'] ?? false;
                 $result['mtime'] = $mtime;
                 $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
                 if(
