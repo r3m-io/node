@@ -71,6 +71,7 @@ Trait Import {
             ]
         ];
         $data = $object->data_read($options['url']);
+        ddd($data);
         if($data) {
             $create_many_count = 0;
             $put_many_count = 0;
