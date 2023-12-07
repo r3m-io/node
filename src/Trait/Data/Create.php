@@ -109,7 +109,8 @@ Trait Create {
         return $response;
     }
 
-    public function create_many($class, $role, $nodeList=[], $options=[]){
+    public function create_many($class, $role, $nodeList=[], $options=[]): void
+    {
         d($class);
         d($role);
         d($nodeList);
