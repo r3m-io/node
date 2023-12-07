@@ -109,6 +109,11 @@ Trait Import {
                     $node->set('redirect', $record->redirect);
                 }
                 $node->set('priority', 1000);
+                $options_create = [];
+                $this->create($class, $role, $node, $options_create);
+
+
+
                 ddd($node);
             }
         }

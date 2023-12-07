@@ -19,7 +19,16 @@ Trait Create {
     {
         $name = Controller::name($class);
         $object = $this->object();
-        $object->request('node', (object) $node);
+
+        if(
+            is_object($node) &&
+            get_class($node) === Storage::class
+        ){
+            $node = $node->data();
+        } else {
+            $node = Core::object($node, Core::OBJECT_OBJECT);
+        }
+        $object->request('node', $node);
         $object->request('node.uuid', Core::uuid());
         $object->request('node.#class', $name);
 
