@@ -92,12 +92,10 @@ Trait Import {
                 array_key_exists('node', $priority) &&
                 property_exists($priority['node'], 'priority')
             ) {
-                $priority = $priority['node']->priority;
+                $priority = $priority['node']->priority + 1;
             } else {
                 $priority = 1000;
             }
-            d('test');
-            ddd($priority);
             foreach($list as $name => $record){
                 if(property_exists($record, 'resource')){
                     continue;
