@@ -195,6 +195,7 @@ class Cli extends Controller {
                     ucfirst($module)
                 );
             }
+            $object->request('package', $node);
             $object->request('module', $module);
             if($submodule){
                 $object->request('submodule', $submodule);
