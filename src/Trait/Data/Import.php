@@ -71,7 +71,20 @@ Trait Import {
             ]
         ];
         $data = $object->data_read($options['url']);
-        ddd($data);
+
+        /**
+         * route imports
+         */
+
+        if($data){
+            $list = $data->data();
+            foreach($list as $nr => $record){
+                ddd($record);
+            }
+        }
+
+
+
         if($data) {
             $create_many_count = 0;
             $put_many_count = 0;
