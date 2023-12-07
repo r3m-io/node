@@ -79,7 +79,8 @@ trait Relation {
                                             'uuid' => 'ASC'
                                         ],
                                         'relation' => $options['relation'],
-                                        'ramdisk' => $options['ramdisk'] ?? false
+                                        'ramdisk' => $options['ramdisk'] ?? false,
+                                        'ramdisk_dir' => $options['ramdisk_dir'] ?? false
                                     ];
                                     $response = $this->record(
                                         $relation->class,
@@ -101,7 +102,8 @@ trait Relation {
                                         [
                                             'uuid' => $uuid,
                                             'relation' => $options['relation'],
-                                            'ramdisk' => $options['ramdisk'] ?? false
+                                            'ramdisk' => $options['ramdisk'] ?? false,
+                                            'ramdisk_dir' => $options['ramdisk_dir'] ?? false
                                         ]
                                     );
                                     if (
@@ -151,6 +153,7 @@ trait Relation {
                                     }
                                     $one_many->relation = $options['relation'] ?? [];
                                     $one_many->ramdisk = $options['ramdisk'] ?? false;
+                                    $one_many->ramdisk_dir = $options['ramdisk_dir'] ?? false;
                                     $response = $this->list(
                                         $relation->class,
                                         $this->role_system(),
@@ -175,6 +178,7 @@ trait Relation {
                                         'limit' => '*',
                                         'page' => 1,
                                         'ramdisk' => $options['ramdisk'] ?? false,
+                                        'ramdisk_dir' => $options['ramdisk_dir'] ?? false,
                                         'relation' => $options['relation'] ?? []
                                     ];
                                     if(property_exists($relation, 'sort')){
@@ -227,6 +231,7 @@ trait Relation {
                                             'limit' => $relation->limit,
                                             'page' => $page,
                                             'ramdisk' => $options['ramdisk'] ?? false,
+                                            'ramdisk_dir' => $options['ramdisk_dir'] ?? false,
                                             'relation' => $options['relation'] ?? []
                                         ];
                                         if($one_many->limit === '*'){
@@ -281,7 +286,9 @@ trait Relation {
                                     'sort' => [
                                         'uuid' => 'ASC'
                                     ],
-                                    'relation' => $options['relation']
+                                    'relation' => $options['relation'],
+                                    'ramdisk' => $options['ramdisk'] ?? false,
+                                    'ramdisk_dir' => $options['ramdisk_dir'] ?? false
                                 ];
                                 $response = $this->list(
                                     $relation->class,
