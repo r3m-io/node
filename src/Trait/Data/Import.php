@@ -83,6 +83,7 @@ Trait Import {
                     continue;
                 }
                 $node = new Storage();
+                $node->set('name', $name);
                 if(property_exists($record, 'host')){
                     $host = $record->host;
                     if(is_array($host) && array_key_exists(0, $host)){
