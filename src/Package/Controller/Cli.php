@@ -195,6 +195,22 @@ class Cli extends Controller {
                     ucfirst($module)
                 );
             }
+            $object->request('module', $module);
+            if($submodule){
+                $object->request('submodule', $submodule);
+            }
+            if($command){
+                $object->request('command', $command);
+            }
+            if($subcommand){
+                $object->request('subcommand', $subcommand);
+            }
+            if($action){
+                $object->request('action', $action);
+            }
+            if($subaction){
+                $object->request('subaction', $subaction);
+            }
             return Cli::response($object, $url);
         } catch (Exception | UrlEmptyException | UrlNotExistException | LocateException $exception){
             return $exception;

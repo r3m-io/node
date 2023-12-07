@@ -21,20 +21,6 @@ File not found: {{$options.url}}
 {{$options.url = terminal.readline('Url: ')}}
 {{/while}}
 {{$class = controller.name($options.class)}}
-{{if(is.empty($options.offset))}}
-{{$options.offset = 0}}
-{{/if}}
-{{if(is.empty($options.limit))}}
-{{$options.limit = '100%'}}
-{{/if}}
-{{if(is.empty($options.compression))}}
-{{$options.compression = false}}
-{{else}}
-{{$options.compression = [
-'algorithm' => 'gz',
-'level' => 9
-]}}
-{{/if}}
 {{$response = R3m.Io.Node:Data:import(
 $class,
 R3m.Io.Node:Role:role.system(),
