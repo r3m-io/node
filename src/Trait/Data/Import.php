@@ -88,14 +88,13 @@ Trait Import {
                         ]
                 ]
             );
-            if(empty($priority)){
-                $priority = 1000;
-            }
-            elseif(
+            if(
                 array_key_exists('node', $priority) &&
                 property_exists($priority['node'], 'priority')
             ) {
                 $priority = $priority['node']->priority;
+            } else {
+                $priority = 1000;
             }
             d('test');
             ddd($priority);
