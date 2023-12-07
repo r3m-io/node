@@ -78,7 +78,8 @@ trait Relation {
                                         'sort' => [
                                             'uuid' => 'ASC'
                                         ],
-                                        'relation' => $options['relation']
+                                        'relation' => $options['relation'],
+                                        'ramdisk' => $options['ramdisk'] ?? false
                                     ];
                                     $response = $this->record(
                                         $relation->class,
@@ -99,7 +100,8 @@ trait Relation {
                                         $this->role_system(),
                                         [
                                             'uuid' => $uuid,
-                                            'relation' => $options['relation']
+                                            'relation' => $options['relation'],
+                                            'ramdisk' => $options['ramdisk'] ?? false
                                         ]
                                     );
                                     if (
@@ -148,6 +150,7 @@ trait Relation {
                                         $output_filter = $one_many->output->filter;
                                     }
                                     $one_many->relation = $options['relation'] ?? [];
+                                    $one_many->ramdisk = $options['ramdisk'] ?? false;
                                     $response = $this->list(
                                         $relation->class,
                                         $this->role_system(),
@@ -171,6 +174,8 @@ trait Relation {
                                     $one_many = (object) [
                                         'limit' => '*',
                                         'page' => 1,
+                                        'ramdisk' => $options['ramdisk'] ?? false,
+                                        'relation' => $options['relation'] ?? []
                                     ];
                                     if(property_exists($relation, 'sort')){
                                         $one_many->sort = $relation->sort;
@@ -179,7 +184,6 @@ trait Relation {
                                             'uuid' => 'ASC'
                                         ];
                                     }
-                                    $one_many->relation = $options['relation'];
                                     $response = $this->list(
                                         $relation->class,
                                         $this->role_system(),
@@ -222,6 +226,8 @@ trait Relation {
                                         $one_many = (object) [
                                             'limit' => $relation->limit,
                                             'page' => $page,
+                                            'ramdisk' => $options['ramdisk'] ?? false,
+                                            'relation' => $options['relation'] ?? []
                                         ];
                                         if($one_many->limit === '*'){
                                             $one_many->page = 1;
@@ -249,7 +255,6 @@ trait Relation {
                                         ){
                                             $one_many->filter = $relation->filter;
                                         }
-                                        $one_many->relation = $options['relation'];
                                         $response = $this->list(
                                             $relation->class,
                                             $this->role_system(),
