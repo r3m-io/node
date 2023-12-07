@@ -78,8 +78,38 @@ Trait Import {
 
         if($data){
             $list = $data->data();
-            foreach($list as $nr => $record){
-                ddd($record);
+            foreach($list as $name => $record){
+                if(property_exists($record, 'resource')){
+                    continue;
+                }
+                $node = new Storage();
+                if(property_exists($record, 'host')){
+                    $host = $record->host;
+                    if(is_array($host) && array_key_exists(0, $host)){
+                        $host = $host[0];
+                        $node->set('host', $host);
+                    }
+                }
+                if(property_exists($record, 'controller')){
+                    $node->set('controller', $record->controller);
+                }
+                if(property_exists($record, 'method')){
+                    $node->set('method', $record->method);
+                }
+                if(property_exists($record, 'request')){
+                    $node->set('request', $record->method);
+                }
+                if(property_exists($record, 'path')){
+                    $node->set('path', $record->path);
+                }
+                if(property_exists($record, 'url')){
+                    $node->set('url', $record->url);
+                }
+                if(property_exists($record, 'redirect')){
+                    $node->set('redirect', $record->redirect);
+                }
+                $node->set('priority', 1000);
+                ddd($node);
             }
         }
 
