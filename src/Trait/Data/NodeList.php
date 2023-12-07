@@ -291,7 +291,6 @@ trait NodeList {
                     $result['parse'] = $options['parse'] ?? false;
                     $result['mtime'] = $mtime;
                     $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
-                    d($ramdisk_url_node);
                     if(
                         array_key_exists('ramdisk', $options) &&
                         $options['ramdisk'] === true &&
@@ -340,7 +339,6 @@ trait NodeList {
                 $result['relation'] = $options['relation'] ?? true;
                 $result['parse'] = $options['parse'] ?? false;
                 $result['mtime'] = $mtime;
-                d($ramdisk_url_node);
                 $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
                 if(
                     array_key_exists('ramdisk', $options) &&
