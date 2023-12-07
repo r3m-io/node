@@ -333,6 +333,7 @@ trait NodeList {
                 $result['parse'] = $options['parse'] ?? false;
                 $result['mtime'] = $mtime;
                 d($class);
+                d($options);
                 d($ramdisk_url_node);
                 $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
                 if(
