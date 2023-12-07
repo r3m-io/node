@@ -78,6 +78,17 @@ Trait Import {
 
         if($data){
             $list = $data->data();
+            $priority = $this->record(
+                $class,
+                $role,
+                [
+                    'sort' =>
+                        [
+                            'priority' => Sort::DESC
+                        ]
+                ]
+            );
+            ddd($priority);
             foreach($list as $name => $record){
                 if(property_exists($record, 'resource')){
                     continue;
@@ -109,9 +120,10 @@ Trait Import {
                 if(property_exists($record, 'redirect')){
                     $node->set('redirect', $record->redirect);
                 }
-                $node->set('priority', 1000);
+                $node->set('priority', $priority);
                 $options_create = [];
                 $response = $this->create($class, $role, $node, $options_create);
+                $priority++;
                 d($response);
             }
         }
