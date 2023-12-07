@@ -110,14 +110,11 @@ Trait Import {
                 }
                 $node->set('priority', 1000);
                 $options_create = [];
-                $this->create($class, $role, $node, $options_create);
-
-
-
-                ddd($node);
+                $response = $this->create($class, $role, $node, $options_create);
+                d($response);
             }
         }
-
+        ddd('end');
 
 
         if($data) {
