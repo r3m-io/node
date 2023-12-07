@@ -81,6 +81,7 @@ trait Relation {
                                         'relation' => $options['relation'],
                                         'ramdisk' => $options['ramdisk'] ?? false
                                     ];
+                                    ddd($options);
                                     $response = $this->record(
                                         $relation->class,
                                         $this->role_system(),
