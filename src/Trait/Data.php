@@ -28,6 +28,7 @@ trait Data {
     use Data\Count;
     use Data\Create;
     use Data\Delete;
+    use Data\Import;
     use Data\NodeList;
     use Data\Page;
     use Data\Patch;

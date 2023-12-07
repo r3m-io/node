@@ -108,4 +108,13 @@ Trait Create {
         }
         return $response;
     }
+
+    public function create_many($class, $role, $nodeList=[], $options=[]){
+        d($class);
+        d($role);
+        d($nodeList);
+        d($options);
+        ddd('end');
+
+    }
 }
