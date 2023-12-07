@@ -20,6 +20,7 @@ trait NodeList {
      * @throws Exception
      */
     public function list($class, $role, $options=[]){
+        d($class);
         d($options);
         $mtime = false;
         $name = Controller::name($class);
