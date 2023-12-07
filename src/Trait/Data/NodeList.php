@@ -90,7 +90,10 @@ trait NodeList {
         if(
             array_key_exists('ramdisk', $options) &&
             $options['ramdisk'] === true &&
-            !empty($object->config('ramdisk.url'))
+            (
+                !empty($object->config('ramdisk.url')) ||
+                array_key_exists('ramdisk_dir', $options)
+            )
         ){
             $key_options = $options;
             if(
