@@ -89,6 +89,8 @@ trait NodeList {
             return $result;
         }
         $mtime = File::mtime($data_url);
+        $ramdisk_dir = false;
+        $ramdisk_dir_node = false;
         $ramdisk_url_node = false;
         if(
             array_key_exists('ramdisk', $options) &&
@@ -348,7 +350,9 @@ trait NodeList {
                 if(
                     array_key_exists('ramdisk', $options) &&
                     $options['ramdisk'] === true &&
-                    $ramdisk_url_node !== false
+                    $ramdisk_url_node !== false &&
+                    $ramdisk_dir !== false &&
+                    $ramdisk_dir_node !== false
                 ){
 
                     $relation_mtime = $this->relation_mtime($object_data);
@@ -357,6 +361,17 @@ trait NodeList {
                     $ramdisk->set('response', $result);
                     $ramdisk->set('relation', $relation_mtime);
                     $ramdisk->write($ramdisk_url_node);
+                    if($object->config('posix.id') === 0){
+                        $this->sync_file([
+                            'ramdisk_dir' => $ramdisk_dir
+                        ]);
+                    } else {
+                        $this->sync_file([
+                            'ramdisk_dir' => $ramdisk_dir,
+                            'ramdisk_dir_node' => $ramdisk_dir_node,
+                            'ramdisk_url_node' => $ramdisk_url_node,
+                        ]);
+                    }
                 }
                 return $result;
             }
