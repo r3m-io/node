@@ -1,10 +1,14 @@
 {
-  "r3m_io-node-cli": {
-    "path": "r3m_io\/node",
-    "controller": "Package.R3m.Io.Node.Controller.Cli.run",
-    "language": "en",
-    "method": [
-      "CLI"
-    ]
+  "System": {
+    "Route": {
+      "#class": "System.Route",
+      "name": "r3m-io-cli-node",
+      "controller": "Package:R3m:Io:Node:Controller:Cli:run",
+      "path": "r3m_io/node",
+      "priority": 1001,
+      "method": [
+        "CLI"
+      ]
+    }
   }
 }
