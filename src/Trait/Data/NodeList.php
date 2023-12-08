@@ -285,7 +285,7 @@ trait NodeList {
                     $result['limit'] = $list_count;
                     $result['count'] = $list_count;
                     $result['max'] = $max;
-                    $result['list'] = $list_sort;
+                    $result['list'] = $this->nodeList_output_filter($list_sort, $options);
                     $result['sort'] = $options['sort'] ?? [];
                     $result['filter'] = $options['filter'] ?? [];
                     $result['where'] = $options['where'] ?? [];
@@ -335,7 +335,7 @@ trait NodeList {
                 $result['limit'] = $limit;
                 $result['count'] = $list_count;
                 $result['max'] = $max;
-                $result['list'] = $list;
+                $result['list'] = $this->nodeList_output_filter($list, $options);
                 $result['sort'] = $options['sort'] ?? [];
                 $result['filter'] = $options['filter'] ?? [];
                 $result['where'] = $options['where'] ?? [];
@@ -360,5 +360,40 @@ trait NodeList {
                 return $result;
             }
         }
+    }
+
+    private function nodeList_output_filter($list, $options=[]): mixed
+    {
+        d($list);
+        ddd($options);
+        /*
+        if(
+            empty($output_filter) &&
+            property_exists($relation, 'output') &&
+            !empty($relation->output) &&
+            is_object($relation->output) &&
+            property_exists($relation->output, 'filter') &&
+            !empty($relation->output->filter) &&
+            is_array($relation->output->filter)
+        ){
+            $output_filter = $relation->output->filter;
+        }
+        if($output_filter){
+            foreach($output_filter as $output_filter_nr => $output_filter_data){
+                $route = (object) [
+                    'controller' => $output_filter_data
+                ];
+                $route = Route::controller($route);
+                if(
+                    property_exists($route, 'controller') &&
+                    property_exists($route, 'function') &&
+                    property_exists($record, $relation->attribute)
+                ){
+                    $record->{$relation->attribute} = $route->controller::{$route->function}($object, $record->{$relation->attribute});
+                }
+            }
+        }
+        */
+        return $list;
     }
 }
