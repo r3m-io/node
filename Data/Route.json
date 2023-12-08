@@ -1,14 +1,16 @@
 {
   "System": {
-    "Route": {
-      "#class": "System.Route",
-      "name": "r3m-io-cli-node",
-      "controller": "Package:R3m:Io:Node:Controller:Cli:run",
-      "path": "r3m_io/node",
-      "priority": 1001,
-      "method": [
-        "CLI"
-      ]
-    }
+    "Route": [
+      {
+        "#class": "System.Route",
+        "name": "r3m-io-cli-node",
+        "controller": "Package:R3m:Io:Node:Controller:Cli:run",
+        "path": "r3m_io/node",
+        "priority": 1001,
+        "method": [
+          "CLI"
+        ]
+      }
+    ]
   }
 }
