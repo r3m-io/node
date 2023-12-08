@@ -364,6 +364,12 @@ trait NodeList {
 
     private function nodeList_output_filter($list, $options=[]): mixed
     {
+        if(!array_key_exists('output', $options)){
+            return $list;
+        }
+        if(!array_key_exists('filter', $options['output'])){
+            return $list;
+        }
         d($list);
         ddd($options);
         /*
