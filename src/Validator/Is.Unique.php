@@ -30,6 +30,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
     $dir_node = $object->config('project.dir.node');
     $url = false;
     $name = false;
+    $allow_empty = false;
     if (is_object($validate)) {
         if (property_exists($validate, 'class')) {
             $name = Controller::name($validate->class);
@@ -37,22 +38,30 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
         }
         if (property_exists($validate, 'attribute')) {
             $attribute = $validate->attribute;
+            $value = [];
+            $explode = [];
+            $value_count = 0;
             if (is_array($attribute)) {
-                $value = [];
                 foreach ($attribute as $nr => $record) {
                     $explode = explode(':', $record);
                     foreach($explode as $explode_nr => $explode_value){
                         $explode[$explode_nr] = trim($explode_value);
                     }
                     $value[$nr] = $object->request('node.' . trim($explode[0]));
-                    if(
-                        $value[$nr] === null ||
-                        $value[$nr] === ''
-                    ){
-                        throw new Exception('Is.Unique: ' . $explode[0] . ' is empty');
-                    }
+                    $value_count++;
                 }
             }
+            if(
+                $value_count === 1 &&
+                $value[0] === null ||
+                $value[0] === '' &&
+                array_key_exists(0, $explode)
+            ){
+                throw new Exception('Is.Unique: value' . $explode[0] . ' is empty');
+            }
+        }
+        if(property_exists($validate, 'allow_empty')) {
+            $allow_empty = explode(':', $validate->allow_empty);
         }
     }
     if (
@@ -68,12 +77,46 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
                 foreach($explode as $explode_nr => $explode_value){
                     $explode[$explode_nr] = trim($explode_value);
                 }
-                if(array_key_exists(1, $explode)){
-                    $options['filter'][$explode[1]]['operator'] = Filter::OPERATOR_STRICTLY_EXACT;
-                    $options['filter'][$explode[1]]['value'] = $value[$nr];
+                if($allow_empty === false){
+                    if(array_key_exists(1, $explode)){
+                        $options['filter'][$explode[1]]['operator'] = Filter::OPERATOR_STRICTLY_EXACT;
+                        $options['filter'][$explode[1]]['value'] = $value[$nr];
+                    } else {
+                        $options['filter'][$explode[0]]['operator'] = Filter::OPERATOR_STRICTLY_EXACT;
+                        $options['filter'][$explode[0]]['value'] = $value[$nr];
+                    }
                 } else {
-                    $options['filter'][$explode[0]]['operator'] = Filter::OPERATOR_STRICTLY_EXACT;
-                    $options['filter'][$explode[0]]['value'] = $value[$nr];
+                    if(
+                        array_key_exists(1, $allow_empty) &&
+                        array_key_exists(1, $explode) &&
+                        $allow_empty[1] === $explode[1] &&
+                        (
+                            $value[$nr] === null ||
+                            $value[$nr] === ''
+                        )
+                    ){
+                        continue;
+                    }
+                    elseif(
+                        array_key_exists(0, $allow_empty) &&
+                        array_key_exists(0, $explode) &&
+                        $allow_empty[0] === $explode[0] &&
+                        (
+                            $value[$nr] === null ||
+                            $value[$nr] === ''
+                        )
+                    ){
+                        continue;
+                    }
+                    elseif(
+                        array_key_exists(1, $explode)
+                    ){
+                        $options['filter'][$explode[1]]['operator'] = Filter::OPERATOR_STRICTLY_EXACT;
+                        $options['filter'][$explode[1]]['value'] = $value[$nr];
+                    } else {
+                        $options['filter'][$explode[0]]['operator'] = Filter::OPERATOR_STRICTLY_EXACT;
+                        $options['filter'][$explode[0]]['value'] = $value[$nr];
+                    }
                 }
             }
         }
