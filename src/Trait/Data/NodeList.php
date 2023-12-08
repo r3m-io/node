@@ -286,7 +286,7 @@ trait NodeList {
                     $result['limit'] = $list_count;
                     $result['count'] = $list_count;
                     $result['max'] = $max;
-                    $result['list'] = $this->nodeList_output_filter($list_sort, $options);
+                    $result['list'] = $this->nodeList_output_filter($object, $list_sort, $options);
                     $result['sort'] = $options['sort'] ?? [];
                     $result['filter'] = $options['filter'] ?? [];
                     $result['where'] = $options['where'] ?? [];
@@ -336,7 +336,7 @@ trait NodeList {
                 $result['limit'] = $limit;
                 $result['count'] = $list_count;
                 $result['max'] = $max;
-                $result['list'] = $this->nodeList_output_filter($list, $options);
+                $result['list'] = $this->nodeList_output_filter($object, $list, $options);
                 $result['sort'] = $options['sort'] ?? [];
                 $result['filter'] = $options['filter'] ?? [];
                 $result['where'] = $options['where'] ?? [];
