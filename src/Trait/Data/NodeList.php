@@ -8,6 +8,7 @@ use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\File;
+use R3m\Io\Module\Route;
 use R3m\Io\Module\Sort;
 
 use R3m\Io\Node\Service\Security;
@@ -362,7 +363,7 @@ trait NodeList {
         }
     }
 
-    private function nodeList_output_filter($list, $options=[]): mixed
+    private function nodeList_output_filter(App $object, $list, $options=[]): mixed
     {
         if(!array_key_exists('output', $options)){
             return $list;
@@ -370,36 +371,22 @@ trait NodeList {
         if(!array_key_exists('filter', $options['output'])){
             return $list;
         }
-        d($list);
-        ddd($options);
-        /*
-        if(
-            empty($output_filter) &&
-            property_exists($relation, 'output') &&
-            !empty($relation->output) &&
-            is_object($relation->output) &&
-            property_exists($relation->output, 'filter') &&
-            !empty($relation->output->filter) &&
-            is_array($relation->output->filter)
-        ){
-            $output_filter = $relation->output->filter;
-        }
+        $output_filter = $options['output']['filter'];
         if($output_filter){
-            foreach($output_filter as $output_filter_nr => $output_filter_data){
+            foreach($output_filter as $output_filter_data){
                 $route = (object) [
                     'controller' => $output_filter_data
                 ];
                 $route = Route::controller($route);
                 if(
                     property_exists($route, 'controller') &&
-                    property_exists($route, 'function') &&
-                    property_exists($record, $relation->attribute)
+                    property_exists($route, 'function')
                 ){
-                    $record->{$relation->attribute} = $route->controller::{$route->function}($object, $record->{$relation->attribute});
+                    //don't check on empty $list, an output filter can have defaults...
+                    $list = $route->controller::{$route->function}($object, $list);
                 }
             }
         }
-        */
         return $list;
     }
 }
