@@ -57,7 +57,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
                 $value[0] === '' &&
                 array_key_exists(0, $explode)
             ){
-                throw new Exception('Is.Unique: value' . $explode[0] . ' is empty');
+                throw new Exception('Is.Unique: ' . $explode[0] . ' is empty');
             }
         }
         if(property_exists($validate, 'allow_empty')) {
