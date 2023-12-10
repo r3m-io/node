@@ -236,6 +236,11 @@ Trait Rename {
                     continue;
                 }
                 if($file->name === 'System.Config.Log.json'){
+                    $read_data = $object->data_read($file->url);
+                    if($read_data){
+                        $relations = $read_data->get('relations');
+                        ddd($relations);
+                    }
                     ddd($file);
                 }
             }
