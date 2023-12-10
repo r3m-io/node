@@ -52,7 +52,6 @@ Trait Rename {
             $force = $options['force'];
         }
         $merge = false;
-        $merger = new Storage();
         if(array_key_exists('merge', $options)){
             $merge = $options['merge'];
         }
@@ -82,128 +81,148 @@ Trait Rename {
         ){
             throw new Exception('To (Expose) ('. $to .') already exists');
         }
-        if(!File::exist($url_data_from)){
-            //can still process expose, object & validate
-        }
-        $read = $object->data_read($url_data_from);
         if(
-            (
-                $merge ||
-                $skip ||
-                $merge_overwrite
-            ) &&
-            File::exist($url_data_to)
+            File::exist($url_object_to) &&
+            $force === false &&
+            $merge === false &&
+            $skip === false &&
+            $merge_overwrite === false
         ){
-            $write_to = $object->data_read($url_data_to);
-            if($write_to){
-                foreach($write_to->data($to) as $record){
+            throw new Exception('To (Object) ('. $to .') already exists');
+        }
+        $list = [];
+        if(File::exist($url_data_from)){
+            $merger = new Storage();
+            $read = $object->data_read($url_data_from);
+            if(
+                (
+                    $merge ||
+                    $skip ||
+                    $merge_overwrite
+                ) &&
+                File::exist($url_data_to)
+            ){
+                $write_to = $object->data_read($url_data_to);
+                if($write_to){
+                    foreach($write_to->data($to) as $record){
+                        if(
+                            is_array($record) &&
+                            array_key_exists('uuid', $record)
+                        ){
+                            $merger->set($record['uuid'], $record);
+                        }
+                        elseif(
+                            is_object($record) &&
+                            property_exists($record, 'uuid')
+                        ){
+                            $merger->set($record->uuid, $record);
+                        }
+                    }
+                }
+                $write = new Storage();
+            }
+            elseif($force &&
+                File::exist($url_data_to)
+            ){
+                File::delete($url_data_to);
+                $write = new Storage();
+            } else {
+                $write = new Storage();
+            }
+            if($read){
+                foreach($read->data($from) as $record){
                     if(
                         is_array($record) &&
                         array_key_exists('uuid', $record)
                     ){
-                        $merger->set($record['uuid'], $record);
+                        $record['#class'] = $to;
+                        if(
+                            $skip &&
+                            $merger->has($record['uuid'])
+                        ){
+                            //merge skip
+                            continue;
+                        }
+                        elseif(
+                            $merge_overwrite &&
+                            $merger->has($record['uuid'])
+                        ){
+                            //merge overwrite
+                            //use of $record
+                        }
+                        elseif(
+                            $merge &&
+                            $merger->has($record['uuid'])
+                        ){
+                            //merge patch
+                            $record = array_merge($merger->get($record['uuid']), $record);
+                        }
+                        $merger->delete($record['uuid']);
                     }
                     elseif(
                         is_object($record) &&
                         property_exists($record, 'uuid')
-                    ){
-                        $merger->set($record->uuid, $record);
+                    ) {
+                        $record->{'#class'} = $to;
+                        if(
+                            $skip &&
+                            $merger->has($record->uuid)
+                        ){
+                            //merge skip
+                            continue;
+                        }
+                        elseif(
+                            $merge_overwrite &&
+                            $merger->has($record->uuid)
+                        ){
+                            //merge overwrite
+                            //use of $record
+                        }
+                        elseif(
+                            $merge &&
+                            $merger->has($record->uuid)
+                        ){
+                            //merge patch
+                            $record = Core::object_merge($merger->get($record->uuid), $record);
+                        }
+                        $merger->delete($record->uuid);
                     }
+                    $list[] = $record;
                 }
             }
-            $write = new Storage();
-        }
-        elseif($force &&
-            File::exist($url_data_to)
-        ){
-            File::delete($url_data_to);
-            $write = new Storage();
-        } else {
-            $write = new Storage();
-        }
-        $list = [];
-        if($read){
-            foreach($read->data($from) as $record){
-                if(
-                    is_array($record) &&
-                    array_key_exists('uuid', $record)
-                ){
-                    $record['#class'] = $to;
-                    if(
-                        $skip &&
-                        $merger->has($record['uuid'])
-                    ){
-                        //merge skip
-                        continue;
-                    }
-                    elseif(
-                        $merge_overwrite &&
-                        $merger->has($record['uuid'])
-                    ){
-                        //merge overwrite
-                        //use of $record
-                    }
-                    elseif(
-                        $merge &&
-                        $merger->has($record['uuid'])
-                    ){
-                        //merge patch
-                        $record = array_merge($merger->get($record['uuid']), $record);
-                    }
-                    $merger->delete($record['uuid']);
-                }
-                elseif(
-                    is_object($record) &&
-                    property_exists($record, 'uuid')
-                ) {
-                    $record->{'#class'} = $to;
-                    if(
-                        $skip &&
-                        $merger->has($record->uuid)
-                    ){
-                        //merge skip
-                        continue;
-                    }
-                    elseif(
-                        $merge_overwrite &&
-                        $merger->has($record->uuid)
-                    ){
-                        //merge overwrite
-                        //use of $record
-                    }
-                    elseif(
-                        $merge &&
-                        $merger->has($record->uuid)
-                    ){
-                        //merge patch
-                        $record = Core::object_merge($merger->get($record->uuid), $record);
-                    }
-                    $merger->delete($record->uuid);
-                }
+            foreach($merger->data() as $record){
                 $list[] = $record;
             }
+            $write->set($to, $list);
+            $url_data_write = $write->write($url_data_to);
+        } else {
+            //can still process expose, object & validate
         }
-        foreach($merger->data() as $record){
-            $list[] = $record;
-        }
-        $write->set($to, $list);
-        $url_data_write = $write->write($url_data_to);
-
         $read = $object->data_read($url_expose_from);
         $write = new Storage();
         if($read){
             $write->data($to, $read->data($from));
         }
         if(Core::object_is_empty($write->data())){
-            throw new Exception('Empty expose write, check fix from: ' . $url_expose_from);
+            throw new Exception('Empty expose write, fix from: ' . $url_expose_from);
         }
         if(File::exist($url_expose_to)){
             File::delete($url_expose_to);
         }
-        $write->write($url_expose_to);
-        d($url_object_from);
-        d($url_object_to);
-        //node.object
+        $url_expose_write =$write->write($url_expose_to);
+
+        $read = $object->data_read($url_object_from);
+        $write = new Storage();
+        if($read){
+            $write->data($to, $read->data($from));
+        }
+        if(Core::object_is_empty($write->data())){
+            throw new Exception('Empty object write, fix from: ' . $url_object_from);
+        }
+        if(File::exist($url_object_to)){
+            File::delete($url_object_to);
+        }
+        $url_object_write = $write->write($url_object_to);
         //node.validate
 
         d($from);
