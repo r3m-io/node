@@ -227,7 +227,6 @@ Trait Rename {
 
         $dir = new Dir();
         $read = $dir->read($dir_object);
-        ddd($read);
         if(
             $read &&
             is_array($read)
@@ -236,11 +235,12 @@ Trait Rename {
                 if($file->type === Dir::TYPE){
                     continue;
                 }
+                if($file->name === 'System.Config.Log.json'){
+                    ddd($file);
+                }
             }
 
         }
-
-
         //node.validate
         d($url_expose_write);
         d($url_data_write);
