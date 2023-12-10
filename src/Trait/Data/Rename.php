@@ -36,6 +36,39 @@ Trait Rename {
         )){
             return false;
         }
+        $url_data_from = $object->config('project.dir.node') . 'Data' . $object->config('ds') . $from . $object->config('extension.json');
+        $url_data_to = $object->config('project.dir.node') . 'Data' . $object->config('ds') . $to . $object->config('extension.json');
+        // 2 options: -force (overwrite) or -merge (merge)
+        $force = false;
+        if(array_key_exists('force', $options)){
+            $force = $options['force'];
+        }
+        $merge = false;
+        if(array_key_exists('merge', $options)){
+            $merge = $options['merge'];
+        }
+        if(
+            File::exist($url_data_to) &&
+            $force === false &&
+            $merge === false
+        ){
+            throw new Exception('To ('. $to .') already exists');
+        }
+        if(!File::exist($url_data_from)){
+            //can still process expose, object & validate
+        }
+        $read = $object->data_read($url_data_from);
+        if($read){
+            foreach($read->data($from) as $record){
+                ddd($record);
+            }
+        }
+
+        //node.data
+        //node.expose
+        //node.object
+        //node.validate
+
         d($from);
         d($to);
         ddd($options);
