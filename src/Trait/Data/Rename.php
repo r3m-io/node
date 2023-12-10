@@ -214,7 +214,7 @@ Trait Rename {
         $read = $object->data_read($url_object_from);
         $write = new Storage();
         if($read){
-            $write->data($to, $read->data($from));
+            $write->data($read->data());
         }
         if(Core::object_is_empty($write->data())){
             throw new Exception('Empty object write, fix from: ' . $url_object_from);
@@ -224,7 +224,9 @@ Trait Rename {
         }
         $url_object_write = $write->write($url_object_to);
         //node.validate
-
+        d($url_expose_write);
+        d($url_data_write);
+        d($url_object_write);
         d($from);
         d($to);
         ddd($options);
