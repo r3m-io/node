@@ -223,6 +223,24 @@ Trait Rename {
             File::delete($url_object_to);
         }
         $url_object_write = $write->write($url_object_to);
+        //node.relations
+
+        $dir = new Dir();
+        $read = $dir->read($dir_object);
+        ddd($read);
+        if(
+            $read &&
+            is_array($read)
+        ){
+            foreach($read as $file){
+                if($file->type === Dir::TYPE){
+                    continue;
+                }
+            }
+
+        }
+
+
         //node.validate
         d($url_expose_write);
         d($url_data_write);
