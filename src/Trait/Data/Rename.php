@@ -239,12 +239,20 @@ Trait Rename {
                     $read_data = $object->data_read($file->url);
                     if($read_data){
                         $relations = $read_data->get('relation');
-                        ddd($relations);
+                        foreach($relations as $nr => $relation){
+                            if(
+                                property_exists($relation, 'class') &&
+                                $relation->class === $from
+                            ){
+                                $relation->class = $to;
+                                $relations[$nr] = $relation;
+                            }
+                        }
+                        $read_data->set('relation', $relations);
+                        $read_data->write($file->url);
                     }
-                    ddd($file);
                 }
             }
-
         }
         //node.validate
         d($url_expose_write);
