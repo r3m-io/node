@@ -106,30 +106,67 @@ Trait Rename {
         $list = [];
         if($read){
             foreach($read->data($from) as $record){
-                $record->{'#class'} = $to;
                 if(
-                    $skip &&
-                    $merger->has($record->uuid)
+                    is_array($record) &&
+                    array_key_exists('uuid', $record)
                 ){
-                    //merge skip
-                    continue;
+                    $record['#class'] = $to;
+                    if(
+                        $skip &&
+                        $merger->has($record['uuid'])
+                    ){
+                        //merge skip
+                        continue;
+                    }
+                    elseif(
+                        $overwrite &&
+                        $merger->has($record['uuid'])
+                    ){
+                        //merge overwrite
+                        //use of $record
+                    }
+                    elseif(
+                        $merge &&
+                        $merger->has($record['uuid'])
+                    ){
+                        //merge patch
+                        $record = array_merge($merger->get($record['uuid']), $record);
+                    }
+                    $merger->delete($record['uuid']);
                 }
                 elseif(
-                    $overwrite &&
-                    $merger->has($record->uuid)
-                ){
-                    //merge overwrite
-                    //use of $record
-                }
-                elseif(
-                    $merge &&
-                    $merger->has($record->uuid)
-                ){
-                    //merge patch
-                    $record = Core::object_merge($merger->get($record->uuid), $record);
+                    is_object($record) &&
+                    property_exists($record, 'uuid')
+                ) {
+                    $record->{'#class'} = $to;
+                    if(
+                        $skip &&
+                        $merger->has($record->uuid)
+                    ){
+                        //merge skip
+                        continue;
+                    }
+                    elseif(
+                        $overwrite &&
+                        $merger->has($record->uuid)
+                    ){
+                        //merge overwrite
+                        //use of $record
+                    }
+                    elseif(
+                        $merge &&
+                        $merger->has($record->uuid)
+                    ){
+                        //merge patch
+                        $record = Core::object_merge($merger->get($record->uuid), $record);
+                    }
+                    $merger->delete($record->uuid);
                 }
                 $list[] = $record;
             }
+        }
+        foreach($merger->data() as $record){
+            $list[] = $record;
         }
         ddd($list);
         //node.data
