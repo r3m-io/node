@@ -20,7 +20,7 @@ Trait Rename {
     /**
      * @throws Exception
      */
-    public function rename($from, $to, $role, $options=[]): false|array|object
+    public function rename($from, $to, $role, $options=[]): mixed
     {
         $object = $this->object();
         $from = Controller::name($from);
@@ -262,36 +262,29 @@ Trait Rename {
                     if($file->type === Dir::TYPE){
                         continue;
                     }
-                    if($file->name === 'System.Config.Log.json'){
-                        $read_data = $object->data_read($file->url);
-                        if($read_data){
-                            $relations = $read_data->get('relation');
-                            foreach($relations as $nr => $relation){
-                                if(
-                                    property_exists($relation, 'class') &&
-                                    $relation->class === $from
-                                ){
-                                    $relation->class = $to;
-                                    $relations[$nr] = $relation;
-                                }
+                    $read_data = $object->data_read($file->url);
+                    if($read_data){
+                        $relations = $read_data->get('relation');
+                        foreach($relations as $nr => $relation){
+                            if(
+                                property_exists($relation, 'class') &&
+                                $relation->class === $from
+                            ){
+                                $relation->class = $to;
+                                $relations[$nr] = $relation;
                             }
-                            $read_data->set('relation', $relations);
-                            $read_data->write($file->url);
                         }
+                        $read_data->set('relation', $relations);
+                        $read_data->write($file->url);
                     }
                 }
             }
+            File::delete($url_data_from);
+            File::delete($url_expose_from);
+            File::delete($url_object_from);
+            File::delete($url_validate_from);
         }
-
-
-        //node.validate
-        d($url_expose_write);
-        d($url_data_write);
-        d($url_object_write);
-        d($from);
-        d($to);
-        ddd($options);
-        return false;
+        return 'Rename successful, from: ' . $from . ' to: ' . $to . PHP_EOL;
     }
 
     /**
