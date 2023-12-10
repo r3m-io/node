@@ -20,7 +20,7 @@ Trait Rename {
     /**
      * @throws Exception
      */
-    public function rename($from, $to, $role, $options=[]): mixed
+    public function rename($from, $to, $role, $options=[]): bool
     {
         $object = $this->object();
         $from = Controller::name($from);
@@ -246,7 +246,6 @@ Trait Rename {
             File::delete($url_validate_to);
         }
         $url_validate_write = $write->write($url_validate_to);
-        //node.relations
         if(
             $url_expose_write &&
             $url_object_write &&
@@ -286,8 +285,9 @@ Trait Rename {
             File::delete($url_expose_from);
             File::delete($url_object_from);
             File::delete($url_validate_from);
+            return true;
         }
-        return 'Rename successful, from: ' . $from . ' to: ' . $to . PHP_EOL;
+        return false;
     }
 
     /**
