@@ -58,12 +58,15 @@ Trait Rename {
             //can still process expose, object & validate
         }
         $read = $object->data_read($url_data_from);
+        $write = new Storage();
+        $list = [];
         if($read){
             foreach($read->data($from) as $record){
-                ddd($record);
+                $record->{'#class'} = $to;
+                $list[] = $record;
             }
         }
-
+        ddd($list);
         //node.data
         //node.expose
         //node.object
