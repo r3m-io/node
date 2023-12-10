@@ -9,7 +9,10 @@
         "priority": 1001,
         "method": [
           "CLI"
-        ]
+        ],
+        "request": {
+          "language": "en"
+        }
       }
     ]
   }
