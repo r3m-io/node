@@ -20,6 +20,36 @@ Trait Rename {
     /**
      * @throws Exception
      */
+    public function rename($class, $role, $options=[]): false|array|object
+    {
+        $object = $this->object();
+        $name = Controller::name($class);
+        $options = Core::object($options, Core::OBJECT_ARRAY);
+        if(!array_key_exists('from', $options)){
+            throw new Exception('Option "from" is missing');
+        }
+        if(!array_key_exists('to', $options)){
+            throw new Exception('Option "to" is missing');
+        }
+        if(!array_key_exists('function', $options)){
+            $options['function'] = __FUNCTION__;
+        }
+        if(!Security::is_granted(
+            $class,
+            $role,
+            $options
+        )){
+            return false;
+        }
+        d($class);
+        ddd($options);
+        return false;
+    }
+
+    /**
+     * @throws Exception
+     */
+    /*
     public function rename(): void
     {
         $object = $this->object();
@@ -45,10 +75,7 @@ Trait Rename {
         )){
             return;
         }
-        ddd($options);
 
-
-        /*
         $from_dir_binary_tree = $object->config('project.dir.data') .
             'Node' .
             $object->config('ds') .
