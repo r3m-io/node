@@ -172,8 +172,15 @@ Trait Rename {
             $list[] = $record;
         }
         $write->set($to, $list);
-        $write->write($url_data_to);
+        $url_data_write = $write->write($url_data_to);
 
+        $read = $object->data_read($url_expose_from);
+        $write = new Storage();
+        if($read){
+            $write->data($to, $read->data($from));
+        }
+        //throw error on empty write
+        ddd($write);
 
         d($url_expose_from);
         d($url_expose_to);
