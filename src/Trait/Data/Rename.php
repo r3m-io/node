@@ -170,8 +170,7 @@ Trait Rename {
             $list[] = $record;
         }
         $write->set($to, $list);
-        ddd($write);
-        //node.data
+        $write->write($url_data_to);
         //node.expose
         //node.object
         //node.validate
