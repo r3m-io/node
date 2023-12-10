@@ -46,6 +46,8 @@ Trait Rename {
         $url_expose_to = $object->config('project.dir.node') . 'Expose' . $object->config('ds') . $to . $object->config('extension.json');
         $url_object_from = $object->config('project.dir.node') . 'Object' . $object->config('ds') . $from . $object->config('extension.json');
         $url_object_to = $object->config('project.dir.node') . 'Object' . $object->config('ds') . $to . $object->config('extension.json');
+        $url_validate_from = $object->config('project.dir.node') . 'Validate' . $object->config('ds') . $from . $object->config('extension.json');
+        $url_validate_to = $object->config('project.dir.node') . 'Validate' . $object->config('ds') . $to . $object->config('extension.json');
         // 4 options: -force (overwrite file) or -skip (skip) or -merge (merge patch) or -merge-overwite (merge overwrite)
         $force = false;
         if(array_key_exists('force', $options)){
@@ -89,6 +91,15 @@ Trait Rename {
             $merge_overwrite === false
         ){
             throw new Exception('To (Object) ('. $to .') already exists');
+        }
+        if(
+            File::exist($url_validate_to) &&
+            $force === false &&
+            $merge === false &&
+            $skip === false &&
+            $merge_overwrite === false
+        ){
+            throw new Exception('To (Validate) ('. $to .') already exists');
         }
         $list = [];
         if(File::exist($url_data_from)){
@@ -196,7 +207,7 @@ Trait Rename {
             $write->set($to, $list);
             $url_data_write = $write->write($url_data_to);
         } else {
-            //can still process expose, object & validate
+            //can still process expose, object & validate & relations
         }
         $read = $object->data_read($url_expose_from);
         $write = new Storage();
@@ -223,37 +234,56 @@ Trait Rename {
             File::delete($url_object_to);
         }
         $url_object_write = $write->write($url_object_to);
+        $read = $object->data_read($url_validate_from);
+        $write = new Storage();
+        if($read){
+            $write->data($to, $read->data($from));
+        }
+        if(Core::object_is_empty($write->data($to))){
+            throw new Exception('Empty validate write, fix from: ' . $url_object_from);
+        }
+        if(File::exist($url_validate_to)){
+            File::delete($url_validate_to);
+        }
+        $url_validate_write = $write->write($url_validate_to);
         //node.relations
-
-        $dir = new Dir();
-        $read = $dir->read($dir_object);
         if(
-            $read &&
-            is_array($read)
+            $url_expose_write &&
+            $url_object_write &&
+            $url_validate_write
         ){
-            foreach($read as $file){
-                if($file->type === Dir::TYPE){
-                    continue;
-                }
-                if($file->name === 'System.Config.Log.json'){
-                    $read_data = $object->data_read($file->url);
-                    if($read_data){
-                        $relations = $read_data->get('relation');
-                        foreach($relations as $nr => $relation){
-                            if(
-                                property_exists($relation, 'class') &&
-                                $relation->class === $from
-                            ){
-                                $relation->class = $to;
-                                $relations[$nr] = $relation;
+            $dir = new Dir();
+            $read = $dir->read($dir_object);
+            if(
+                $read &&
+                is_array($read)
+            ){
+                foreach($read as $file){
+                    if($file->type === Dir::TYPE){
+                        continue;
+                    }
+                    if($file->name === 'System.Config.Log.json'){
+                        $read_data = $object->data_read($file->url);
+                        if($read_data){
+                            $relations = $read_data->get('relation');
+                            foreach($relations as $nr => $relation){
+                                if(
+                                    property_exists($relation, 'class') &&
+                                    $relation->class === $from
+                                ){
+                                    $relation->class = $to;
+                                    $relations[$nr] = $relation;
+                                }
                             }
+                            $read_data->set('relation', $relations);
+                            $read_data->write($file->url);
                         }
-                        $read_data->set('relation', $relations);
-                        $read_data->write($file->url);
                     }
                 }
             }
         }
+
+
         //node.validate
         d($url_expose_write);
         d($url_data_write);
