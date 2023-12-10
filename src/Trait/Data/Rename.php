@@ -238,7 +238,7 @@ Trait Rename {
                 if($file->name === 'System.Config.Log.json'){
                     $read_data = $object->data_read($file->url);
                     if($read_data){
-                        $relations = $read_data->get('relations');
+                        $relations = $read_data->get('relation');
                         ddd($relations);
                     }
                     ddd($file);
