@@ -36,10 +36,16 @@ Trait Rename {
         )){
             return false;
         }
+        $dir_object = $object->config('project.dir.node') .
+            'Object' .
+            $object->config('ds')
+        ;
         $url_data_from = $object->config('project.dir.node') . 'Data' . $object->config('ds') . $from . $object->config('extension.json');
         $url_data_to = $object->config('project.dir.node') . 'Data' . $object->config('ds') . $to . $object->config('extension.json');
         $url_expose_from = $object->config('project.dir.node') . 'Expose' . $object->config('ds') . $from . $object->config('extension.json');
         $url_expose_to = $object->config('project.dir.node') . 'Expose' . $object->config('ds') . $to . $object->config('extension.json');
+        $url_object_from = $object->config('project.dir.node') . 'Object' . $object->config('ds') . $from . $object->config('extension.json');
+        $url_object_to = $object->config('project.dir.node') . 'Object' . $object->config('ds') . $to . $object->config('extension.json');
         // 4 options: -force (overwrite file) or -skip (skip) or -merge (merge patch) or -merge-overwite (merge overwrite)
         $force = false;
         if(array_key_exists('force', $options)){
@@ -65,7 +71,16 @@ Trait Rename {
             $skip === false &&
             $merge_overwrite === false
         ){
-            throw new Exception('To ('. $to .') already exists');
+            throw new Exception('To (Data) ('. $to .') already exists');
+        }
+        if(
+            File::exist($url_expose_to) &&
+            $force === false &&
+            $merge === false &&
+            $skip === false &&
+            $merge_overwrite === false
+        ){
+            throw new Exception('To (Expose) ('. $to .') already exists');
         }
         if(!File::exist($url_data_from)){
             //can still process expose, object & validate
@@ -179,13 +194,15 @@ Trait Rename {
         if($read){
             $write->data($to, $read->data($from));
         }
-        //throw error on empty write
-        ddd($write);
-
-        d($url_expose_from);
-        d($url_expose_to);
-
-        //node.expose
+        if(Core::object_is_empty($write->data())){
+            throw new Exception('Empty expose write, check fix from: ' . $url_expose_from);
+        }
+        if(File::exist($url_expose_to)){
+            File::delete($url_expose_to);
+        }
+        $write->write($url_expose_to);
+        d($url_object_from);
+        d($url_object_to);
         //node.object
         //node.validate
 
