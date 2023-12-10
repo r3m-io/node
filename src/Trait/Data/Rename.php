@@ -209,6 +209,9 @@ Trait Rename {
         } else {
             //can still process expose, object & validate & relations
         }
+        if(!File::exist($url_expose_from)){
+            throw new Exception('From (Expose) ('. $from .') does not exist');
+        }
         $read = $object->data_read($url_expose_from);
         $write = new Storage();
         if($read){
@@ -221,7 +224,9 @@ Trait Rename {
             File::delete($url_expose_to);
         }
         $url_expose_write =$write->write($url_expose_to);
-
+        if(!File::exist($url_object_from)){
+            throw new Exception('From (Object) ('. $from .') does not exist');
+        }
         $read = $object->data_read($url_object_from);
         $write = new Storage();
         if($read){
@@ -234,6 +239,9 @@ Trait Rename {
             File::delete($url_object_to);
         }
         $url_object_write = $write->write($url_object_to);
+        if(!File::exist($url_validate_from)){
+            throw new Exception('From (Validate) ('. $from .') does not exist');
+        }
         $read = $object->data_read($url_validate_from);
         $write = new Storage();
         if($read){
