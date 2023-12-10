@@ -27,12 +27,12 @@ Trait Rename {
         if(property_exists($options, 'from')){
             $options->from = Controller::name(trim($options->from));
         } else {
-            throw new Exception('Option from is missing');
+            throw new Exception('Option "from" is missing');
         }
         if(property_exists($options, 'to')){
             $options->to = Controller::name(trim($options->to));
         } else {
-            throw new Exception('Option to is missing');
+            throw new Exception('Option "to" is missing');
         }
         $role = $this->role_system();
         if(!property_exists($options, 'function')){
