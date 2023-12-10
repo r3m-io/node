@@ -265,6 +265,9 @@ Trait Rename {
                     $read_data = $object->data_read($file->url);
                     if($read_data){
                         $relations = $read_data->get('relation');
+                        if(empty($relations)){
+                            continue;
+                        }
                         foreach($relations as $nr => $relation){
                             if(
                                 property_exists($relation, 'class') &&
