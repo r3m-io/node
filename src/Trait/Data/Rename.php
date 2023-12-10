@@ -77,9 +77,9 @@ Trait Rename {
             ) &&
             File::exist($url_data_to)
         ){
-            $write = $object->data_read($url_data_to);
-            if($write){
-                foreach($write->data($to) as $record){
+            $write_to = $object->data_read($url_data_to);
+            if($write_to){
+                foreach($write_to->data($to) as $record){
                     if(
                         is_array($record) &&
                         array_key_exists('uuid', $record)
@@ -94,6 +94,7 @@ Trait Rename {
                     }
                 }
             }
+            $write = new Storage();
         }
         elseif($force &&
             File::exist($url_data_to)
@@ -168,7 +169,8 @@ Trait Rename {
         foreach($merger->data() as $record){
             $list[] = $record;
         }
-        ddd($list);
+        $write->set($to, $list);
+        ddd($write);
         //node.data
         //node.expose
         //node.object
