@@ -281,10 +281,12 @@ Trait Rename {
                     }
                 }
             }
-            File::delete($url_data_from);
-            File::delete($url_expose_from);
-            File::delete($url_object_from);
-            File::delete($url_validate_from);
+            if($from !== $to){
+                File::delete($url_data_from);
+                File::delete($url_expose_from);
+                File::delete($url_object_from);
+                File::delete($url_validate_from);
+            }
             return true;
         }
         return false;
