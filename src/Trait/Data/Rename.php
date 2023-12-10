@@ -38,7 +38,9 @@ Trait Rename {
         }
         $url_data_from = $object->config('project.dir.node') . 'Data' . $object->config('ds') . $from . $object->config('extension.json');
         $url_data_to = $object->config('project.dir.node') . 'Data' . $object->config('ds') . $to . $object->config('extension.json');
-        // 4 options: -force (overwrite) or -merge (merge patch) or -skip (skip) or -overwite (merge overwrite)
+        $url_expose_from = $object->config('project.dir.node') . 'Expose' . $object->config('ds') . $from . $object->config('extension.json');
+        $url_expose_to = $object->config('project.dir.node') . 'Expose' . $object->config('ds') . $to . $object->config('extension.json');
+        // 4 options: -force (overwrite file) or -skip (skip) or -merge (merge patch) or -merge-overwite (merge overwrite)
         $force = false;
         if(array_key_exists('force', $options)){
             $force = $options['force'];
@@ -52,16 +54,16 @@ Trait Rename {
         if(array_key_exists('skip', $options)){
             $skip = $options['skip'];
         }
-        $overwrite = false;
-        if(array_key_exists('overwrite', $options)){
-            $overwrite = $options['overwrite'];
+        $merge_overwrite = false;
+        if(array_key_exists('merge-overwrite', $options)){
+            $merge_overwrite = $options['merge-overwrite'];
         }
         if(
             File::exist($url_data_to) &&
             $force === false &&
             $merge === false &&
             $skip === false &&
-            $overwrite === false
+            $merge_overwrite === false
         ){
             throw new Exception('To ('. $to .') already exists');
         }
@@ -73,7 +75,7 @@ Trait Rename {
             (
                 $merge ||
                 $skip ||
-                $overwrite
+                $merge_overwrite
             ) &&
             File::exist($url_data_to)
         ){
@@ -120,7 +122,7 @@ Trait Rename {
                         continue;
                     }
                     elseif(
-                        $overwrite &&
+                        $merge_overwrite &&
                         $merger->has($record['uuid'])
                     ){
                         //merge overwrite
@@ -148,7 +150,7 @@ Trait Rename {
                         continue;
                     }
                     elseif(
-                        $overwrite &&
+                        $merge_overwrite &&
                         $merger->has($record->uuid)
                     ){
                         //merge overwrite
@@ -171,6 +173,11 @@ Trait Rename {
         }
         $write->set($to, $list);
         $write->write($url_data_to);
+
+
+        d($url_expose_from);
+        d($url_expose_to);
+
         //node.expose
         //node.object
         //node.validate
