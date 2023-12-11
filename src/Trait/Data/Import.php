@@ -174,6 +174,7 @@ Trait Import {
                         $options_patch = [];
                         $node->set('uuid', $record['node']->uuid);
                         $response = $this->patch($class, $role, $node, $options_patch);
+                        d($response);
                         $patch++;
                     } else {
                         $skip++;
