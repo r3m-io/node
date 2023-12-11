@@ -161,7 +161,7 @@ Trait Import {
                     ){
                         $options_put = [];
                         $node->set('uuid', $record['node']->uuid);
-                        $response = $this->put($class, $role, $node->data(), $options_put);
+                        $response = $this->put($class, $role, $node, $options_put);
                         d($response);
                         $put++;
                     }
@@ -174,7 +174,7 @@ Trait Import {
                     ){
                         $options_patch = [];
                         $node->set('uuid', $record['node']->uuid);
-                        $response = $this->patch($class, $role, $node->data(), $options_patch);
+                        $response = $this->patch($class, $role, $node, $options_patch);
                         d($response);
                         $patch++;
                     } else {

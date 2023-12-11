@@ -18,8 +18,16 @@ Trait Put {
     public function put($class, $role, $node=[], $options=[]): false|array
     {
         $name = Controller::name($class);
+        if(
+            is_object($node) &&
+            get_class($node) === Storage::class
+        ){
+            $node = $node->data();
+        } else {
+            $node = Core::object($node, Core::OBJECT_OBJECT);
+        }
         $object = $this->object();
-        $object->request('node', (object) $node);
+        $object->request('node', $node);
         $object->request('node.#class', $name);
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;

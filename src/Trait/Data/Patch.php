@@ -18,10 +18,15 @@ Trait Patch {
     public function patch($class, $role, $node=[], $options=[]): false|array
     {
         $name = Controller::name($class);
-        $object = $this->object();
-        if(is_array($node)){
+        if(
+            is_object($node) &&
+            get_class($node) === Storage::class
+        ){
+            $node = $node->data();
+        } else {
             $node = Core::object($node, Core::OBJECT_OBJECT);
         }
+        $object = $this->object();
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
