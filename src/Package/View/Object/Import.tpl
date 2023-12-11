@@ -7,28 +7,25 @@ Module: {{$request.module|uppercase.first}}
 
 Submodule: {{$request.submodule|uppercase.first}}
 
-{{while(is.empty($options.class))}}
-{{$options.class = terminal.readline('Class: ')}}
-{{/while}}
-{{while(!file.exist($options.url))}}
-{{if(
-!is.empty($options.url) &&
-!file.exist($options.url)
-)}}
-File not found: {{$options.url}}
+{{$class = data.extract('options.class')}}
+{{if(is.empty($class))}}
+You need to provide the option class.
+Available classes:
+{{$read = dir.read(config('project.dir.node') + 'Object/')}}
+{{if(is.array($read))}}
+{{$read = data.sort($read, ['name' => 'ASC'])}}
+{{for.each($read as $file)}}
+- {{file.basename($file.name, config('extension.json'))}}
 
+{{/for.each}}
 {{/if}}
-{{$options.url = terminal.readline('Url: ')}}
-{{/while}}
-{{$class = controller.name($options.class)}}
+{{else}}
 {{$response = R3m.Io.Node:Data:import(
 $class,
 R3m.Io.Node:Role:role.system(),
-[
-'url' => $options.url,
-'offset' => $options.offset,
-'limit' => $options.limit,
-'compression' => $options.compression
-])}}
+$options
+)}}
 Amount ({{$class}}) : {{$response.count}}
+{{/if}}
+
 
