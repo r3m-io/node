@@ -97,10 +97,53 @@ Trait Import {
                     $unique = (array) $data_object->get('is.unique');
                     $unique = array_shift($unique);
                     $explode = explode(',', $unique);
+                    $count = 0;
                     foreach($explode as $nr => $value){
                         $explode[$nr] = trim($value);
+                        $count++;
                     }
-                    ddd($explode);
+                    switch ($count){
+                        case 2:
+                            if(
+                                $node->has($explode[0]) &&
+                                $node->has($explode[1])
+                            ){
+                                $record = $this->record(
+                                    $name,
+                                    $role,
+                                    [
+                                        'filter' => [
+                                            $explode[0] => [
+                                                'value' => $node->get($explode[0]),
+                                                'operator' => '==='
+                                            ],
+                                            $explode[1] => [
+                                                'value' => $node->get($explode[1]),
+                                                'operator' => '==='
+                                            ]
+                                        ]
+                                    ]
+                                );
+                            }
+                        break;
+                        case 1:
+                            if($node->has($explode[0])){
+                                $record = $this->record(
+                                    $name,
+                                    $role,
+                                    [
+                                        'filter' => [
+                                            $explode[0] => [
+                                                'value' => $node->get($explode[0]),
+                                                'operator' => '==='
+                                            ]
+                                        ]
+                                    ]
+                                );
+                            }
+                        break;
+                    }
+                    ddd($record);
                 }
 
                 ddd('no');
