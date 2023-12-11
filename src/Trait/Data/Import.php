@@ -77,6 +77,13 @@ Trait Import {
             } else {
                 $priority = 2001;
             }
+            $url_object = $object->config('project.dir.node') .
+                'Object' .
+                $object->config('ds') .
+                $name .
+                $object->config('extension.json')
+            ;
+            $data_object = $object->data_read($url_object);
             foreach($list as $record){
                 if(property_exists($record, 'resource')){
                     continue;
@@ -85,7 +92,14 @@ Trait Import {
                 $node->data($record);
                 $node->delete('uuid');
                 $node->set('priority', $priority);
+
+                if($data_object && $data_object->has('is.unique')){
+                    ddd('yes');
+                }
+
+                ddd('no');
                 $options_create = [];
+                //need object file to get is unique
                 $response = $this->create($class, $role, $node, $options_create);
                 $priority++;
                 d($response);
