@@ -93,7 +93,7 @@ Trait Import {
                 $node->delete('uuid');
                 $node->set('priority', $priority);
 
-                if($data_object && $data_object->het('is.unique')){
+                if($data_object && $data_object->has('is.unique')){
                     $unique = $data_object->get('is.unique');
                     ddd($unique);
                 }
