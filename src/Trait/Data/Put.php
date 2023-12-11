@@ -54,6 +54,7 @@ Trait Put {
             return false;
         }
         $list = $data->get($name);
+        d($list);
         if(empty($list)){
             return false;
         }
