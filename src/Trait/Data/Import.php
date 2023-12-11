@@ -94,8 +94,13 @@ Trait Import {
                 $node->set('priority', $priority);
 
                 if($data_object && $data_object->has('is.unique')){
-                    $unique = $data_object->get('is.unique');
-                    ddd($unique);
+                    $unique = (array) $data_object->get('is.unique');
+                    $unique = array_shift($unique);
+                    $explode = explode(',', $unique);
+                    foreach($explode as $nr => $value){
+                        $explode[$nr] = trim($value);
+                    }
+                    ddd($explode);
                 }
 
                 ddd('no');
