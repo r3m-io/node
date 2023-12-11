@@ -162,6 +162,7 @@ Trait Import {
                         $options_put = [];
                         $node->set('uuid', $record['node']->uuid);
                         $response = $this->put($class, $role, $node, $options_put);
+                        d($response);
                         $put++;
                     }
                     elseif(
