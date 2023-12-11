@@ -39,6 +39,10 @@ Trait Import {
         $start = microtime(true);
         $options['function'] = __FUNCTION__;
         $options['relation'] = false;
+        $skip = 0;
+        $put = 0;
+        $patch = 0;
+        $create = 0;
         if(!Security::is_granted(
             $name,
             $role,
@@ -92,8 +96,11 @@ Trait Import {
                 $node->data($record);
                 $node->delete('uuid');
                 $node->set('priority', $priority);
-
-                if($data_object && $data_object->has('is.unique')){
+                $record = false;
+                if(
+                    $data_object &&
+                    $data_object->has('is.unique')
+                ){
                     $unique = (array) $data_object->get('is.unique');
                     $unique = array_shift($unique);
                     $explode = explode(',', $unique);
@@ -143,18 +150,48 @@ Trait Import {
                             }
                         break;
                     }
-                    ddd($record);
                 }
-
-                ddd('no');
-                $options_create = [];
-                //need object file to get is unique
-                $response = $this->create($class, $role, $node, $options_create);
+                if($record){
+                    if(
+                        array_key_exists('force', $options) &&
+                        $options['force'] === true &&
+                        array_key_exists('node', $record) &&
+                        property_exists($record['node'], 'uuid') &&
+                        !empty($record['node']->uuid)
+                    ){
+                        $options_put = [];
+                        $node->set('uuid', $record['node']->uuid);
+                        $response = $this->put($class, $role, $node, $options_put);
+                        $put++;
+                    }
+                    elseif(
+                        array_key_exists('patch', $options) &&
+                        $options['patch'] === true &&
+                        array_key_exists('node', $record) &&
+                        property_exists($record['node'], 'uuid') &&
+                        !empty($record['node']->uuid)
+                    ){
+                        $options_patch = [];
+                        $node->set('uuid', $record['node']->uuid);
+                        $response = $this->patch($class, $role, $node, $options_patch);
+                        $patch++;
+                    } else {
+                        $skip++;
+                    }
+                } else {
+                    $options_create = [];
+                    $response = $this->create($class, $role, $node, $options_create);
+                    $create++;
+                }
                 $priority++;
-                d($response);
             }
         }
-        ddd('end');
-        return [];
+        return [
+            'skip' => $skip,
+            'put' => $put,
+            'patch' => $patch,
+            'create' => $create,
+            'duration' => (microtime(true) - $start) * 1000
+        ];
     }
 }

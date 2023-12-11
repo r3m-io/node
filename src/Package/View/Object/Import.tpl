@@ -25,7 +25,8 @@ $class,
 R3m.Io.Node:Role:role.system(),
 $options
 )}}
-Amount ({{$class}}) : {{$response.count}}
+{{$response|json.encode:'JSON_PRETTY_PRINT'}}
+
 {{/if}}
 
 
