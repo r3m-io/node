@@ -162,7 +162,6 @@ Trait Import {
                         $options_put = [];
                         $node->set('uuid', $record['node']->uuid);
                         $response = $this->put($class, $role, $node, $options_put);
-                        d($response);
                         $put++;
                     }
                     elseif(
@@ -175,7 +174,6 @@ Trait Import {
                         $options_patch = [];
                         $node->set('uuid', $record['node']->uuid);
                         $response = $this->patch($class, $role, $node, $options_patch);
-                        d($response);
                         $patch++;
                     } else {
                         $skip++;
