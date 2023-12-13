@@ -38,16 +38,31 @@ trait Role {
         $object = $this->object();
         if($object->config(Config::POSIX_ID) === 0){
             $url = $object->config('project.dir.data') . 'Account' . $object->config('ds') . 'Role.System.json';
-            $url_route = $object->config('project.dir.vendor') . $package . '/Data/Role.System.json';
-            if(File::exist($url_route)){
+            $url_package = $object->config('project.dir.vendor') . $package . '/Data/Role.System.json';
+            if(File::exist($url_package)){
                 if(File::exist($url)){
-                    d($url_route);
+                    $data = $object->data_read($url);
+                    $data_package = $object->data_read($url_package);
+                    if($data && $data_package){
+                        $name = $data_package->get('name');
+                        if($data->get('name') === $name){
+                            $permissions = $data->get('permission');
+                            $package_permissions = $data_package->get('permission');
+                            if($package_permissions){
+                                foreach($package_permissions as $permission){
+                                    $permissions[] = $permission;
+                                }
+                            }
+                            ddd($permissions);
+                        }
+                    }
+                    d($url_package);
                     ddd($url);
                 } else {
                     $data = new Storage();
-                    $data_route = $object->data_read($url_route);
-                    if($data_route){
-                        $data->data($data_route->data());
+                    $data_package = $object->data_read($url_package);
+                    if($data_package){
+                        $data->data($data_package->data());
                         $dir = Dir::name($url);
                         Dir::create($dir, Dir::CHMOD);
                         $data->write($url);
