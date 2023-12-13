@@ -46,7 +46,7 @@ trait Role {
                     $data = new Storage();
                     $data_route = $object->data_read($url_route);
                     if($data_route){
-                        $data->set($data_route->data());
+                        $data->data($data_route->data());
                         $data->write($url);
                     }
                 }
