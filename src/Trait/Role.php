@@ -53,11 +53,16 @@ trait Role {
                                     $permissions[] = $permission;
                                 }
                             }
-                            ddd($permissions);
+                            $data->set('permission', $permissions);
+                            $data->write($url);
+                            $command = 'chown www-data:www-data ' . $url;
+                            exec($command);
+                            if($object->config('framework.environment') === Config::MODE_DEVELOPMENT){
+                                $command = 'chmod 666 ' . $url;
+                                exec($command);
+                            }
                         }
-                    }
-                    d($url_package);
-                    ddd($url);
+                    };
                 } else {
                     $data = new Storage();
                     $data_package = $object->data_read($url_package);
