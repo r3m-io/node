@@ -32,29 +32,25 @@ trait Role {
         }
     }
 
-    public function role_system_create(): void
+    public function role_system_create($package=''): void
     {
         $object = $this->object();
         if($object->config(Config::POSIX_ID) === 0){
             $url = $object->config('project.dir.data') . 'Account' . $object->config('ds') . 'Role.System.json';
-            $url_route = $object->config('project.dir.vendor') . 'r3m_io/route/Data/Role.System.json';
-
+            $url_route = $object->config('project.dir.vendor') . $package . '/Data/Role.System.json';
             if(File::exist($url_route)){
                 if(File::exist($url)){
-
+                    d($url_route);
+                    ddd($url);
                 } else {
-                    $url = new Storage();
+                    $data = new Storage();
                     $data_route = $object->data_read($url_route);
                     if($data_route){
-                        ddd($data_route);
+                        $data->set($data_route->data());
+                        $data->write($url);
                     }
-                    //create url;
                 }
             }
-
-
-            d($url_route);
-            ddd($url);
         }
     }
 }
