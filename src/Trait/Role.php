@@ -51,11 +51,15 @@ trait Role {
                         $dir = Dir::name($url);
                         Dir::create($dir, Dir::CHMOD);
                         $data->write($url);
+                        $command = 'chown www-data:www-data ' . $object->config('project.dir.data');
+                        exec($command);
                         $command = 'chown www-data:www-data ' . $dir;
                         exec($command);
                         $command = 'chown www-data:www-data ' . $url;
                         exec($command);
                         if($object->config('framework.environment') === Config::MODE_DEVELOPMENT){
+                            $command = 'chmod 777 ' . $object->config('project.dir.data');
+                            exec($command);
                             $command = 'chmod 777 ' . $dir;
                             exec($command);
                             $command = 'chmod 666 ' . $url;
