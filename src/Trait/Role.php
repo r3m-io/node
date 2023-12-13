@@ -6,6 +6,7 @@ use R3m\Io\App;
 use R3m\Io\Config;
 
 use R3m\Io\Module\Data as Storage;
+use R3m\Io\Module\Dir;
 use R3m\Io\Module\File;
 
 trait Role {
