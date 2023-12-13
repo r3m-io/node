@@ -47,8 +47,19 @@ trait Role {
                     $data_route = $object->data_read($url_route);
                     if($data_route){
                         $data->data($data_route->data());
-                        ddd($url);
+                        $dir = Dir::name($url);
+                        Dir::create($dir, Dir::CHMOD);
                         $data->write($url);
+                        $command = 'chown www-data:www-data ' . $dir;
+                        exec($command);
+                        $command = 'chown www-data:www-data ' . $url;
+                        exec($command);
+                        if($object->config('framework.environment') === Config::MODE_DEVELOPMENT){
+                            $command = 'chmod 777 ' . $dir;
+                            exec($command);
+                            $command = 'chmod 666 ' . $url;
+                            exec($command);
+                        }
                     }
                 }
             }
