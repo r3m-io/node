@@ -47,6 +47,7 @@ trait Role {
                     $data_route = $object->data_read($url_route);
                     if($data_route){
                         $data->data($data_route->data());
+                        ddd($url);
                         $data->write($url);
                     }
                 }
