@@ -13,10 +13,11 @@ trait Role {
         if(
             in_array(
                 $object->config(Config::POSIX_ID),
-            [
-                0,
-                33,     //remove this, how to handle www-data events, middleware and filter
-            ]
+                [
+                    0,
+                    33,     //remove this, how to handle www-data events, middleware and filter
+                ],
+                true
             )
         ){
             $url = $object->config('project.dir.data') . 'Account' . $object->config('ds') . 'Role.System.json';
@@ -25,6 +26,17 @@ trait Role {
                 return $data->data();
             }
             return false;
+        }
+    }
+
+    public function role_system_create(): void
+    {
+        $object = $this->object();
+        if($object->config(Config::POSIX_ID) === 0){
+            $url = $object->config('project.dir.data') . 'Account' . $object->config('ds') . 'Role.System.json';
+            $url_route = $object->config('project.dir.vendor') . 'r3m_io/route/Data/Role.System.json';
+            d($url_route);
+            ddd($url);
         }
     }
 }
