@@ -5,6 +5,9 @@ namespace R3m\Io\Node\Trait;
 use R3m\Io\App;
 use R3m\Io\Config;
 
+use R3m\Io\Module\Data as Storage;
+use R3m\Io\Module\File;
+
 trait Role {
 
     public function role_system()
@@ -35,6 +38,21 @@ trait Role {
         if($object->config(Config::POSIX_ID) === 0){
             $url = $object->config('project.dir.data') . 'Account' . $object->config('ds') . 'Role.System.json';
             $url_route = $object->config('project.dir.vendor') . 'r3m_io/route/Data/Role.System.json';
+
+            if(File::exist($url_route)){
+                if(File::exist($url)){
+
+                } else {
+                    $url = new Storage();
+                    $data_route = $object->data_read($url_route);
+                    if($data_route){
+                        ddd($data_route);
+                    }
+                    //create url;
+                }
+            }
+
+
             d($url_route);
             ddd($url);
         }
