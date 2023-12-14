@@ -1,6 +1,6 @@
 ### Setup
 {{$request = request()}}
-{{dd($request())}}
+{{dd($request)}}
 {{$class = 'System.Installation'}}
 {{$options = [
 'where' => 'name === r3m_io/node'
