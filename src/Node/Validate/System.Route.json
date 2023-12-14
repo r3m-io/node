@@ -1,0 +1,69 @@
+{
+    "System": {
+        "Route": {
+            "create": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "host": [
+                        {
+                            "is.unique": {
+                                "class": "System.Route",
+                                "attribute": [
+                                    "host",
+                                    "name"
+                                ],
+                                "allow_empty": "host"
+                            }
+                        }
+                    ]
+                }
+            },
+            "put": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "host": [
+                        {
+                            "is.unique": {
+                                "class": "System.Route",
+                                "attribute": [
+                                    "host",
+                                    "name"
+                                ],
+                                "allow_empty": "host"
+                            }
+                        }
+                    ]
+                }
+            },
+            "patch": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "host": [
+                        {
+                            "is.unique": {
+                                "class": "System.Route",
+                                "attribute": [
+                                    "host",
+                                    "name"
+                                ],
+                                "allow_empty": "host"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

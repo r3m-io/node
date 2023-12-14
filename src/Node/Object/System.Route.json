@@ -1,0 +1,57 @@
+{
+    "Node": {
+        "#class": "System.Route",
+        "type": "object",
+        "property": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "host",
+                "type": "string"
+            },
+            {
+                "name": "controller",
+                "type": "string"
+            },
+            {
+                "name": "url",
+                "type": "string"
+            },
+            {
+                "name": "redirect",
+                "type": "string"
+            },
+            {
+                "name": "path",
+                "type": "string"
+            },
+            {
+                "name": "priority",
+                "type": "int"
+            },
+            {
+                "name": "method",
+                "type": "array"
+            },
+            {
+                "name": "request",
+                "type": "object",
+                "property": [],
+                "multiple": false
+            },
+            {
+                "name": "uuid",
+                "type": "uuid"
+            },
+            {
+                "name": "#class",
+                "type": "string"
+            }
+        ]
+    },
+    "is.unique": [
+        "host, name"
+    ]
+}

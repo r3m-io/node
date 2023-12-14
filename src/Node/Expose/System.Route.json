@@ -1,0 +1,214 @@
+{
+    "System": {
+        "Route": {
+            "count": {
+                "expose": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "name",
+                            "host",
+                            "controller",
+                            "url",
+                            "redirect",
+                            "path",
+                            "priority",
+                            "method",
+                            "request"
+                        ],
+                        "object": {
+                            "request": {
+                                "multiple": false,
+                                "dynamic": true
+                            }
+                        }
+                    }
+                ]
+            },
+            "create": {
+                "expose": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "name",
+                            "host",
+                            "controller",
+                            "url",
+                            "redirect",
+                            "path",
+                            "priority",
+                            "method",
+                            "request"
+                        ],
+                        "object": {
+                            "request": {
+                                "multiple": false,
+                                "dynamic": true
+                            }
+                        }
+                    }
+                ]
+            },
+            "list": {
+                "expose": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "name",
+                            "host",
+                            "controller",
+                            "url",
+                            "redirect",
+                            "path",
+                            "priority",
+                            "method",
+                            "request"
+                        ],
+                        "object": {
+                            "request": {
+                                "multiple": false,
+                                "dynamic": true
+                            }
+                        }
+                    }
+                ]
+            },
+            "page": {
+                "expose": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "name",
+                            "host",
+                            "controller",
+                            "url",
+                            "redirect",
+                            "path",
+                            "priority",
+                            "method",
+                            "request"
+                        ],
+                        "object": {
+                            "request": {
+                                "multiple": false,
+                                "dynamic": true
+                            }
+                        }
+                    }
+                ]
+            },
+            "patch": {
+                "expose": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "name",
+                            "host",
+                            "controller",
+                            "url",
+                            "redirect",
+                            "path",
+                            "priority",
+                            "method",
+                            "request"
+                        ],
+                        "object": {
+                            "request": {
+                                "multiple": false,
+                                "dynamic": true
+                            }
+                        }
+                    }
+                ]
+            },
+            "put": {
+                "expose": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "name",
+                            "host",
+                            "controller",
+                            "url",
+                            "redirect",
+                            "path",
+                            "priority",
+                            "method",
+                            "request"
+                        ],
+                        "object": {
+                            "request": {
+                                "multiple": false,
+                                "dynamic": true
+                            }
+                        }
+                    }
+                ]
+            },
+            "read": {
+                "expose": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "name",
+                            "host",
+                            "controller",
+                            "url",
+                            "redirect",
+                            "path",
+                            "priority",
+                            "method",
+                            "request"
+                        ],
+                        "object": {
+                            "request": {
+                                "multiple": false,
+                                "dynamic": true
+                            }
+                        }
+                    }
+                ]
+            },
+            "record": {
+                "expose": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "name",
+                            "host",
+                            "controller",
+                            "url",
+                            "redirect",
+                            "path",
+                            "priority",
+                            "method",
+                            "request"
+                        ],
+                        "object": {
+                            "request": {
+                                "multiple": false,
+                                "dynamic": true
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
