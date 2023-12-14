@@ -14,6 +14,7 @@ $options
 {{if(is.empty($response))}}
 {{$output = execute(binary() + ' ' + $request.package + ' create -class=System.Installation -name=' +  $request.package +' -ctime=' + time() + ' -mtime=' + time())}}
 {{implode("\n", $output)}}
+
 - {{$request.package}} installed...
 
 {{else}}
