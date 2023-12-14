@@ -4,7 +4,6 @@ namespace R3m\Io\Node\Trait\Data;
 
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
-use R3m\Io\Module\File;
 use R3m\Io\Module\Data as Storage;
 
 use R3m\Io\Node\Service\Security;
@@ -66,12 +65,9 @@ Trait Create {
         ){
             $validate = (object) ['success' => true];
         } else {
-            d($validate_url);
-            d(File::exist($validate_url));
             $validate = $this->validate($object, $validate_url,  $name . '.create');
         }
         $response = [];
-        ddd($validate);
         if($validate) {
             if ($validate->success === true) {
                 $expose = $this->expose_get(
