@@ -1,5 +1,6 @@
 {{R3M}}
 ### Setup
+
 {{$request = request()}}
 {{$class = 'System.Installation'}}
 {{$options = [
@@ -12,6 +13,8 @@ $options
 )}}
 {{if(is.empty($response))}}
 {{$output = execute(binary() + ' ' + $request.package + ' create -class=System.Installation -name=r3m_io/node -ctime=' + time() + ' -mtime=' + time())}}
+{{$output}}
+
 {{else}}
 - Skipping {{$request.package}} installation
 
