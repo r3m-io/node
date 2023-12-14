@@ -12,7 +12,7 @@ R3m.Io.Node:Role:role_system(),
 $options
 )}}
 {{if(is.empty($response))}}
-{{$output = execute(binary() + ' ' + $request.package + ' create -class=System.Installation -name=' +  $request.package +' -ctime=' + time() + ' -mtime=' + time())}}
+{{$output = execute(binary() + ' r3m_io/node create -class=System.Installation -name=' +  $request.package +' -ctime=' + time() + ' -mtime=' + time())}}
 {{implode("\n", $output)}}
 
 - {{$request.package}} installed...
