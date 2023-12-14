@@ -4,7 +4,7 @@
 {{$request = request()}}
 {{$class = 'System.Installation'}}
 {{$options = [
-'where' => 'name === ' + $request.package
+'where' => 'name === "' + $request.package + '"',
 ]}}
 {{$response = R3m.Io.Node:Data:record(
 $class,
@@ -13,9 +13,9 @@ $options
 )}}
 {{if(is.empty($response))}}
 {{$output = execute(binary() + ' ' + $request.package + ' create -class=System.Installation -name=r3m_io/node -ctime=' + time() + ' -mtime=' + time())}}
-{{$output}}
+- {{$request.package}} installed...
 
 {{else}}
-- Skipping {{$request.package}} installation
+- Skipping {{$request.package}} installation...
 
 {{/if}}
