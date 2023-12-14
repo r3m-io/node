@@ -1,4 +1,6 @@
 ### Setup
+{{$request = request()}}
+{{dd($request())}}
 {{$class = 'System.Installation'}}
 {{$options = [
 'where' => 'name === r3m_io/node'
@@ -11,6 +13,6 @@ $options
 {{if(is.empty($response))}}
 {{$output = execute(binary() + ' r3m_io/node create -class=System.Installation -name=r3m_io/node -ctime=' + time() + ' -mtime=' + time())}}
 {{else}}
-{{dd('patch the installation with new mtime ?')}}
-{{/if}}
+- Skipping r3m_io/node installation
 
+{{/if}}
