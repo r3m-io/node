@@ -19,7 +19,6 @@ Trait Create {
     {
         $name = Controller::name($class);
         $object = $this->object();
-
         if(
             is_object($node) &&
             get_class($node) === Storage::class
@@ -66,6 +65,8 @@ Trait Create {
         ){
             $validate = (object) ['success' => true];
         } else {
+            d($validate_url);
+            d(File::exist($validate_url));
             $validate = $this->validate($object, $validate_url,  $name . '.create');
         }
         $response = [];
