@@ -69,6 +69,7 @@ Trait Create {
             $validate = $this->validate($object, $validate_url,  $name . '.create');
         }
         $response = [];
+        ddd($validate);
         if($validate) {
             if ($validate->success === true) {
                 $expose = $this->expose_get(
