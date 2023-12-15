@@ -245,7 +245,6 @@ trait NodeList {
                             }
                         }
                         elseif($is_where){
-                            d($options['where']);
                             $record = $this->where($record, $options['where'], $options);
                             if(!$record){
                                 unset($list[$nr]);
