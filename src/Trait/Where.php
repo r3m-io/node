@@ -295,6 +295,8 @@ trait Where {
      */
     private function where_process($record=[], $set=[], &$where=[], &$key=null, &$operator=null, $options=[]){
         $count = count($set);
+        d($set);
+        d($count);
         if(
             array_key_exists(0, $set) &&
             $count === 1
