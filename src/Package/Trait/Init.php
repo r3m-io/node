@@ -13,6 +13,7 @@ trait Init {
     public function register (){
         $object = $this->object();
         $options = App::options($object);
+        ddd($options);
         echo 'register' . PHP_EOL;
 //        ddd('register');
         /*
