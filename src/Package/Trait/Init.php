@@ -17,7 +17,7 @@ trait Init {
     public function register (){
         $object = $this->object();
         $options = App::options($object);
-        $node = new Node();
+        $node = new Node($object);
         $record_options = [
             'where' => [
                 'value' => $object->request('package'),
