@@ -36,6 +36,9 @@ trait Init {
                 $record = $response['node'];
                 $record->mtime = time();
                 $response = $node->put($class, $node->role_system(), $record);
+                echo 'Register update ' . $object->request('package') . ' installation...' . PHP_EOL;
+            } else {
+                echo 'Skipping ' . $object->request('package') . ' installation...' . PHP_EOL;
             }
         } else {
             $time = time();
@@ -45,6 +48,7 @@ trait Init {
                 'mtime' => $time,
             ];
             $response = $node->create($class, $node->role_system(), $record);
+            echo 'Registering ' . $object->request('package') . ' installation...' . PHP_EOL;
         }
     }
 }
