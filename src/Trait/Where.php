@@ -540,7 +540,7 @@ trait Where {
             }
             $set = $this->where_get_set($where, $key, $deepest);
             while($record !== false){
-                //d($set);
+                d($set);
                 $set = $this->where_process($record, $set, $where, $key, $operator, $options);
                 d($set);
                 d($record);
