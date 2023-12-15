@@ -18,4 +18,4 @@ $options
 {{else}}
 - Skipping {{$request.package}} installation...
 {{/if}}
-*
+*/

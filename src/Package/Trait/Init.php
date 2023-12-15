@@ -13,9 +13,37 @@ trait Init {
     public function register (){
         $object = $this->object();
         $options = App::options($object);
-        ddd($options);
-        echo 'register' . PHP_EOL;
-//        ddd('register');
+
+        ddd($object->request());
+
+//        $package = $object->request('package');
+
+        /*
+        $record_options = [
+            'where' => 'name === "' . $request->package . '"'
+        ];
+        */
+
+
+        /*
+        {{$request = request()}}
+        {{$class = 'System.Installation'}}
+        {{$options = [
+        'where' => 'name === "' + $request.package + '"',
+        ]}}
+        {{$response = R3m.Io.Node:Data:record(
+        $class,
+        R3m.Io.Node:Role:role.system(),
+        $options
+        )}}
+        {{if(is.empty($response))}}
+        {{$output = execute(binary() + ' r3m_io/node create -class=System.Installation -name=' +  $request.package +' -ctime=' + time() + ' -mtime=' + time())}}
+        - {{$request.package}} installed...
+        {{else}}
+        - Skipping {{$request.package}} installation...
+        {{/if}}
+        */
+
         /*
         $url_package = $object->config('project.dir.vendor') . 'r3m_io/boot/Data/Package.json';
         $class = File::basename($url_package, $object->config('extension.json'));
