@@ -28,8 +28,11 @@ trait Init {
         $class = 'System.Installation';
         $response = $node->record($class, $node->role_system(), $record_options);
         if($response){
-            d('test2');
-            ddd($response);
+            if(property_exists($options, 'force')){
+                d('test2');
+                ddd($response);
+            }
+
             //check for force so we can update mtime
         } else {
             $time = time();
@@ -39,8 +42,6 @@ trait Init {
                 'mtime' => $time,
             ];
             $response = $node->create($class, $node->role_system(), $record);
-            d('test1');
-            ddd($response);
         }
 
         /*
@@ -87,35 +88,4 @@ trait Init {
         }
         */
     }
-
-    /*
-{{$installation = 'System.Installation'}}
-{{$packages = array.read(config('project.dir.vendor') + 'r3m_io/boot/Data/Package.json' )}}
-{{if(!is.empty($packages))}}
-{{for.each($packages as $nr => $package)}}
-{{$options = [
-    'where' => 'name === "' + $package  + '"'
-]}}
-{{$response = R3m.Io.Node:Data:record(
-$installation,
-R3m.Io.Node:Role:role.system(),
-$options
-)}}
-{{if(is.empty($response))}}
-{{$command = binary() + ' install ' + $package}}
-{{$command}}
-
-- Installing {{$package}} ...
-
-{{$output = execute($command)}}
-{{if(is.array($output))}}
-{{implode("\n", $output)}}
-{{/if}}
-
-{{else}}
-- Skipping {{$package}} installation
-{{/if}}
-{{/for.each}}
-{{/if}}
-*/
 }
