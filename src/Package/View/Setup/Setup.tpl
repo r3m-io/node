@@ -1,6 +1,7 @@
 {{R3M}}
 ### Setup
-
+{{Package.R3m.Io.Node:Init:register()}}
+/*
 {{$request = request()}}
 {{$class = 'System.Installation'}}
 {{$options = [
@@ -17,3 +18,4 @@ $options
 {{else}}
 - Skipping {{$request.package}} installation...
 {{/if}}
+*
