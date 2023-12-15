@@ -62,8 +62,6 @@ Trait Put {
             return false;
         }
         $list = $data->get($name);
-        d($object->request());
-        d($list);
         if(empty($list)){
             return false;
         }
@@ -78,7 +76,6 @@ Trait Put {
                 break;
             }
         }
-        d($is_found);
         if($is_found === false){
             return false;
         }
