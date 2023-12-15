@@ -230,6 +230,7 @@ Trait Create {
         $response = [];
         $response['list'] = $result;
         $response['byte'] = $write;
+        $response['duration'] = (microtime(true) - $object->request('time.start')) * 1000;
         return $response;
     }
 }
