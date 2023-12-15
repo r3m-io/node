@@ -4,7 +4,7 @@
   "#class": "Account.Role",
   "permission": [
     {
-      "name": "Data:object:create",
+      "name": "Data:object.create",
       "attribute": [],
       "#class": "Account.Permission"
     }
