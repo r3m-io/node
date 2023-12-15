@@ -7,23 +7,41 @@ use R3m\Io\Module\Core;
 use R3m\Io\Module\File;
 
 use R3m\Io\Node\Model\Node;
+
+use Exception;
 trait Init {
 
-
+    /**
+     * @throws Exception
+     */
     public function register (){
         $object = $this->object();
         $options = App::options($object);
-
-        ddd($object->request());
-
-//        $package = $object->request('package');
-
-        /*
+        $node = new Node();
         $record_options = [
-            'where' => 'name === "' . $request->package . '"'
+            'where' => [
+                'value' => $object->request('package'),
+                'attribute' => 'name',
+                'operator' => '===',
+            ]
         ];
-        */
-
+        $class = 'System.Installation';
+        $response = $node->record($class, $node->role_system(), $record_options);
+        if($response){
+            d('test2');
+            ddd($response);
+            //check for force so we can update mtime
+        } else {
+            $time = time();
+            $record = (object) [
+                'name' => $object->request('package'),
+                'ctime' => $time,
+                'mtime' => $time,
+            ];
+            $response = $node->create($class, $node->role_system(), $record);
+            d('test1');
+            ddd($response);
+        }
 
         /*
         {{$request = request()}}
