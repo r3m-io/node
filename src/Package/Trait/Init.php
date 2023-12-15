@@ -10,7 +10,8 @@ trait Init {
 
     public function register (){
         $object = $this->object();
-        ddd('register');
+        echo 'register' . PHP_EOL;
+//        ddd('register');
         /*
         $url_package = $object->config('project.dir.vendor') . 'r3m_io/boot/Data/Package.json';
         $class = File::basename($url_package, $object->config('extension.json'));
