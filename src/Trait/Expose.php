@@ -62,7 +62,7 @@ trait Expose {
             ) {
                 $permission = [];
                 $permission['uuid'] = Core::uuid();
-                $permission['name'] = str_replace('.', ':', Controller::name($class)) . '.' . $function;
+                $permission['name'] = str_replace('.', ':', Controller::name($class)) . '.' . str_replace('_', '.', $function);
                 $permission['property'] = [];
                 $permission['role'] = $role->uuid;
                 $role->permission = [];
@@ -81,7 +81,7 @@ trait Expose {
                         if (
                             (
                                 property_exists($permission, 'name') &&
-                                $permission->name === str_replace('.', ':', Controller::name($class)) . ':' . $function &&
+                                $permission->name === str_replace('.', ':', Controller::name($class)) . ':' . str_replace('_', '.', $function) &&
                                 property_exists($action, 'role') &&
                                 $action->role === $role->name
                             )
@@ -222,7 +222,7 @@ trait Expose {
             }
         }
         if($is_expose === false){
-            throw new Exception('No permission found for ' . str_replace('.', ':', Controller::name($class)) . ':' . $function);
+            throw new Exception('No permission found for ' . str_replace('.', ':', Controller::name($class)) . ':' . str_replace('_', '.', $function));
         }
         return new Storage((object) $record);
     }
