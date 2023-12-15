@@ -295,8 +295,6 @@ trait Where {
      */
     private function where_process($record=[], $set=[], &$where=[], &$key=null, &$operator=null, $options=[]){
         $count = count($set);
-        d($set);
-        d($count);
         if(
             array_key_exists(0, $set) &&
             $count === 1
@@ -314,7 +312,6 @@ trait Where {
                     'operator' => $set[0]['operator']
                 ]
             ];
-            d($filter_where);
             $left = Filter::list($list)->where($filter_where);
             if(!empty($left)){
                 $where[$key] = true;
@@ -542,20 +539,12 @@ trait Where {
             }
             $set = $this->where_get_set($where, $key, $deepest);
             while($record !== false){
-                d($set);
                 $set = $this->where_process($record, $set, $where, $key, $operator, $options);
-                d($set);
-                d($record);
-//                d($deepest);
                 if(empty($set) && $deepest === 0){
                     return $record;
                 }
                 $count_set = count($set);
-//                d($count_set);
                 if($count_set === 1){
-//                    d($record);
-//                    d($operator);
-//                    d($set);
                     if($operator === null && $set[0] === true){
                         break;
                     } else {
