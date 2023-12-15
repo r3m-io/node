@@ -312,6 +312,7 @@ trait Where {
                     'operator' => $set[0]['operator']
                 ]
             ];
+            d($filter_where);
             $left = Filter::list($list)->where($filter_where);
             if(!empty($left)){
                 $where[$key] = true;
