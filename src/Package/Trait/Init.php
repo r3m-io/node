@@ -21,9 +21,11 @@ trait Init {
         $node = new Node($object);
         $record_options = [
             'where' => [
-                'value' => $object->request('package'),
-                'attribute' => 'name',
-                'operator' => '===',
+                [
+                    'value' => $object->request('package'),
+                    'attribute' => 'name',
+                    'operator' => '===',
+                ]
             ]
         ];
         $class = 'System.Installation';
