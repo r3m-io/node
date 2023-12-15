@@ -1,6 +1,8 @@
 <?php
 namespace Package\R3m\Io\Node\Trait;
 
+use R3m\Io\App;
+
 use R3m\Io\Module\Core;
 use R3m\Io\Module\File;
 
@@ -10,6 +12,7 @@ trait Init {
 
     public function register (){
         $object = $this->object();
+        $options = App::options($object);
         echo 'register' . PHP_EOL;
 //        ddd('register');
         /*
