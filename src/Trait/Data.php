@@ -263,10 +263,13 @@ trait Data {
         }
         $data->set($class . '.count.expose', [ $expose->data() ]);
         $data->set($class . '.create.expose', [ $expose->data() ]);
+        $data->set($class . '.create_many.expose', [ $expose->data() ]);
         $data->set($class . '.list.expose', [ $expose->data() ]);
         $data->set($class . '.page.expose', [ $expose->data() ]);
         $data->set($class . '.patch.expose', [ $expose->data() ]);
+        $data->set($class . '.patch_many.expose', [ $expose->data() ]);
         $data->set($class . '.put.expose', [ $expose->data() ]);
+        $data->set($class . '.put_many.expose', [ $expose->data() ]);
         $data->set($class . '.read.expose', [ $expose->data() ]);
         $data->set($class . '.record.expose', [ $expose->data() ]);
         return $data->data();
