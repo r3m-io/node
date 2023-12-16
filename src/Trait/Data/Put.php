@@ -121,6 +121,9 @@ Trait Put {
         return $response;
     }
 
+    /**
+     * @throws Exception
+     */
     public function put_many($class, $role, $nodeList=[], $options=[]){
         $name = Controller::name($class);
         $object = $this->object();
