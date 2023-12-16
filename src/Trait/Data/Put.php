@@ -120,4 +120,40 @@ Trait Put {
         }
         return $response;
     }
+
+    public function put_many($class, $role, $nodeList=[], $options=[]){
+        $name = Controller::name($class);
+        $object = $this->object();
+        if(!array_key_exists('function', $options)){
+            $options['function'] = __FUNCTION__;
+        }
+        $options['relation'] = false;
+        if(!Security::is_granted(
+            $class,
+            $role,
+            $options
+        )){
+            return false;
+        }
+        $dir_data = $object->config('project.dir.node') .
+            'Data' .
+            $object->config('ds')
+        ;
+        $url = $dir_data .
+            $name .
+            $object->config('extension.json')
+        ;
+        $dir_validate = $object->config('project.dir.node') .
+            'Validate'.
+            $object->config('ds')
+        ;
+        $validate_url =
+            $dir_validate .
+            $name .
+            $object->config('extension.json');
+        d($dir_data);
+        d($url);
+        d($dir_validate);
+        ddd($validate_url);
+    }
 }
