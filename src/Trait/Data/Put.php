@@ -154,6 +154,9 @@ Trait Put {
             $dir_validate .
             $name .
             $object->config('extension.json');
+        d($class);
+        d($nodeList);
+        d($options);
         d($dir_data);
         d($url);
         d($dir_validate);
