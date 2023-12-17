@@ -157,15 +157,35 @@ Trait Put {
 
         $start = microtime(true);
         $data = $object->data_read($url, sha1($url));
+        if($data && $data->has($name)){
+            $list = $data->get($name);
+        } else {
+            $list = [];
+        }
+        $uuid = [];
+        foreach($list as $nr => $record){
+            $uuid[$record->uuid] = $nr;
+        }
+        $duration = (microtime(true) - $start) * 1000;
+        $error = [];
+        foreach($nodeList as $nr => $record){
+            if(property_exists($record, 'uuid')){
+                if(array_key_exists($record->uuid, $uuid)){
+                    $list_nr = $uuid[$record->uuid];
+                    $list[$list_nr] = $record;
+                } else {
+                    $error[] = $record;
+                }
+            }
+        }
+        if(!empty($error)){
+            $response = [];
+            $response['error'] = $error;
+            return $response;
+        }
+        d($list);
+        d($duration);
         $duration = (microtime(true) - $start) * 1000;
         d($duration);
-
-        d($class);
-        d($nodeList);
-        d($options);
-        d($dir_data);
-        d($url);
-        d($dir_validate);
-        ddd($validate_url);
     }
 }
