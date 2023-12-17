@@ -154,6 +154,12 @@ Trait Put {
             $dir_validate .
             $name .
             $object->config('extension.json');
+
+        $start = microtime(true);
+        $data = $object->data_read($url, sha1($url));
+        $duration = (microtime(true) - $start) * 1000;
+        d($duration);
+
         d($class);
         d($nodeList);
         d($options);
