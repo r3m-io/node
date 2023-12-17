@@ -5,7 +5,6 @@
   "permission": [
     {
       "name": "Data:object.create",
-      "attribute": [],
       "#class": "Account.Permission"
     }
   ]
