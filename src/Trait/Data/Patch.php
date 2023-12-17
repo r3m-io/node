@@ -129,4 +129,13 @@ Trait Patch {
         }
         return $response;
     }
+
+    /**
+     * @throws Exception
+     */
+    public function patch_many($class, $role, $nodeList=[], $options=[]){
+        d($options);
+        ddd($class);
+
+    }
 }

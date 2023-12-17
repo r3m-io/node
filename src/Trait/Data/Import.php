@@ -170,9 +170,21 @@ Trait Import {
 //                $priority++;
             }
         }
-        d($create_many);
-        d($put_many);
-        d($patch_many);
+        if(!empty($create_many)){
+            $response = $this->create_many($class, $role, $create_many, [
+                'process' => 'always true with many?'
+            ]);
+        }
+        if(!empty($put_many)){
+            $response = $this->put_many($class, $role, $put_many, [
+                'process' => 'always true with many?'
+            ]);
+        }
+        if(!empty($patch_many)){
+            $response = $this->patch_many($class, $role, $patch_many, [
+                'process' => 'always true with many?'
+            ]);
+        }
         return [
             'skip' => $skip,
             'put' => $put,
