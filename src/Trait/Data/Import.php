@@ -108,7 +108,8 @@ Trait Import {
                                                 'value' => $node->get($explode[1]),
                                                 'operator' => '==='
                                             ]
-                                        ]
+                                        ],
+                                        'process' => 'always true with import?'
                                     ]
                                 );
                             }
@@ -124,7 +125,8 @@ Trait Import {
                                                 'value' => $node->get($explode[0]),
                                                 'operator' => '==='
                                             ]
-                                        ]
+                                        ],
+                                        'process' => 'always true with import?'
                                     ]
                                 );
                             }
