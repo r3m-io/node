@@ -63,24 +63,6 @@ Trait Import {
 
         if($data){
             $list = $data->data($name);
-            $priority = $this->record(
-                $name,
-                $role,
-                [
-                    'sort' =>
-                        [
-                            'priority' => Sort::DESC
-                        ]
-                ]
-            );
-            if(
-                array_key_exists('node', $priority) &&
-                property_exists($priority['node'], 'priority')
-            ) {
-                $priority = $priority['node']->priority + 1;
-            } else {
-                $priority = 2001;
-            }
             $url_object = $object->config('project.dir.node') .
                 'Object' .
                 $object->config('ds') .
@@ -89,13 +71,8 @@ Trait Import {
             ;
             $data_object = $object->data_read($url_object);
             foreach($list as $record){
-                if(property_exists($record, 'resource')){
-                    continue;
-                }
                 $node = new Storage();
                 $node->data($record);
-                $node->delete('uuid');
-                $node->set('priority', $priority);
                 $record = false;
                 if(
                     $data_object &&
@@ -159,9 +136,10 @@ Trait Import {
                         property_exists($record['node'], 'uuid') &&
                         !empty($record['node']->uuid)
                     ){
-                        $options_put = [];
                         $node->set('uuid', $record['node']->uuid);
-                        $response = $this->put($class, $role, $node, $options_put);
+                        $put_many[] = $node->data();
+//                        $options_put = [];
+//                        $response = $this->put($class, $role, $node, $options_put);
                         $put++;
                     }
                     elseif(
@@ -171,21 +149,27 @@ Trait Import {
                         property_exists($record['node'], 'uuid') &&
                         !empty($record['node']->uuid)
                     ){
-                        $options_patch = [];
                         $node->set('uuid', $record['node']->uuid);
-                        $response = $this->patch($class, $role, $node, $options_patch);
+                        $patch_many[] = $node->data();
+//                        $options_patch = [];
+//                        $response = $this->patch($class, $role, $node, $options_patch);
                         $patch++;
                     } else {
                         $skip++;
                     }
                 } else {
-                    $options_create = [];
-                    $response = $this->create($class, $role, $node, $options_create);
+                    $node->delete('uuid');
+                    $create_many[] = $node->data();
+//                    $options_create = [];
+//                    $response = $this->create($class, $role, $node, $options_create);
                     $create++;
                 }
-                $priority++;
+//                $priority++;
             }
         }
+        d($create_many);
+        d($put_many);
+        d($patch_many);
         return [
             'skip' => $skip,
             'put' => $put,

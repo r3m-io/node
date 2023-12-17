@@ -144,7 +144,6 @@ trait NodeList {
                                 }
                                 if ($relation_mtime !== File::mtime($relation_url)) {
                                     $is_cache_miss = true;
-                                    d($relation_url);
                                     break;
                                 }
                             }
@@ -164,14 +163,24 @@ trait NodeList {
                 }
             }
         }
-        $data = $object->data_read($data_url);
+        if(array_key_exists('process', $options)){
+            //keep an eye on memory usage of this script, because it grows here...
+            $data = $object->data_read($data_url, sha1($data_url));
+        } else {
+            $data = $object->data_read($data_url);
+        }
         $object_url = $object->config('project.dir.node') .
             'Object' .
             $object->config('ds') .
             $name .
             $object->config('extension.json')
         ;
-        $object_data = $object->data_read($object_url);
+        if(array_key_exists('process', $options)){
+            //keep an eye on memory usage of this script, because it grows here...
+            $object_data = $object->data_read($object_url, sha1($object_url));
+        } else {
+            $object_data = $object->data_read($object_url);
+        }
         $has_relation = false;
         if($data){
             $list = $data->data($name);
