@@ -43,6 +43,9 @@ Trait Import {
         $put = 0;
         $patch = 0;
         $create = 0;
+        $put_many = [];
+        $patch_many = [];
+        $create_many = [];
         if(!Security::is_granted(
             $name,
             $role,
