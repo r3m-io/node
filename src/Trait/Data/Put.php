@@ -183,6 +183,8 @@ Trait Put {
             $response['error'] = $error;
             return $response;
         }
+        $data->set($name, $list);
+        $data->write($url);
         d($list);
         d($duration);
         $duration = (microtime(true) - $start) * 1000;
