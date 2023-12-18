@@ -76,11 +76,11 @@ Trait Import {
             foreach($list as $record){
                 $node = new Storage();
                 $node->data($record);
-                $record = false;
                 if(
                     $data_object &&
                     $data_object->has('is.unique')
                 ){
+                    $record = false;
                     $unique = (array) $data_object->get('is.unique');
                     $unique = array_shift($unique);
                     $explode = explode(',', $unique);
