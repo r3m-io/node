@@ -219,7 +219,10 @@ Trait Create {
         if(!$data){
             $data = new Storage();
         } else {
-            $list = array_merge($data->get($name), $list);
+            $old = $data->get($name);
+            if(is_array($old)){
+                $list = array_merge($old, $list);
+            }
         }
         $data->set($name, $list);
         $write = $data->write($url);

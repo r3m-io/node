@@ -168,11 +168,13 @@ Trait Put {
         }
         $duration = (microtime(true) - $start) * 1000;
         $error = [];
+        $result = [];
         foreach($nodeList as $nr => $record){
             if(property_exists($record, 'uuid')){
                 if(array_key_exists($record->uuid, $uuid)){
                     $list_nr = $uuid[$record->uuid];
                     $list[$list_nr] = $record;
+                    $result[] = $record->uuid;
                 } else {
                     $error[] = $record;
                 }
@@ -184,10 +186,12 @@ Trait Put {
             return $response;
         }
         $data->set($name, $list);
-        $data->write($url);
-        d($list);
-        d($duration);
+        $write = $data->write($url);
         $duration = (microtime(true) - $start) * 1000;
-        d($duration);
+        $response = [];
+        $response['list'] = $result;
+        $response['duration'] = $duration;
+        $response['byte'] = $write;
+        return $response;
     }
 }
