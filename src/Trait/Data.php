@@ -26,6 +26,7 @@ trait Data {
     use Validate;
     use Where;
     use Data\Count;
+    use Data\Commit;
     use Data\Create;
     use Data\Delete;
     use Data\Import;

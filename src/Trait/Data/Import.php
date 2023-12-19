@@ -46,6 +46,7 @@ Trait Import {
         $put_many = [];
         $patch_many = [];
         $create_many = [];
+        $error = [];
         if(!Security::is_granted(
             $name,
             $role,
@@ -172,7 +173,11 @@ Trait Import {
             ) {
                 $create = count($response['list']);
             }
-        }
+            elseif(
+                array_key_exists('error', $response)
+            ){
+                $error = $response['error'];
+            }
         if(!empty($put_many)){
             $response = $this->put_many($class, $role, $put_many, [
                 'transaction' => true
@@ -183,9 +188,14 @@ Trait Import {
             ) {
                 $put = count($response['list']);
             }
-            d($response);
+            elseif(
+                array_key_exists('error', $response)
+            ){
+                $error = array_merge($error, $response['error']);
+            }
         }
-        ddd($object->data());
+        $object->config('time.limit', 0);
+        $this->commit($class, $role);
         /*
         if(!empty($patch_many)){
             $response = $this->patch_many($class, $role, $patch_many, [
