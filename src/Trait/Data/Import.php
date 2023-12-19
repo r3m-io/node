@@ -163,21 +163,21 @@ Trait Import {
                 }
             }
         }
-        if(!empty($create_many)){
+        if(!empty($create_many)) {
             $response = $this->create_many($class, $role, $create_many, [
                 'transaction' => true
             ]);
-            if(
+            if (
                 array_key_exists('list', $response) &&
                 is_array($response['list'])
             ) {
                 $create = count($response['list']);
-            }
-            elseif(
+            } elseif (
                 array_key_exists('error', $response)
-            ){
+            ) {
                 $error = $response['error'];
             }
+        }
         if(!empty($put_many)){
             $response = $this->put_many($class, $role, $put_many, [
                 'transaction' => true
@@ -194,18 +194,35 @@ Trait Import {
                 $error = array_merge($error, $response['error']);
             }
         }
-        $object->config('time.limit', 0);
-        $this->commit($class, $role);
-        /*
         if(!empty($patch_many)){
             $response = $this->patch_many($class, $role, $patch_many, [
-                'process' => 'always true with many?',
                 'transaction' => true
             ]);
-            ddd($response);
+            if(
+                array_key_exists('list', $response) &&
+                is_array($response['list'])
+            ) {
+                $patch = count($response['list']);
+            }
+            elseif(
+                array_key_exists('error', $response)
+            ){
+                $error = array_merge($error, $response['error']);
+            }
         }
-        */
-
+        if(!empty($error)){
+            return [
+                'error' => $error,
+                'transaction' => true,
+                'duration' => (microtime(true) - $start) * 1000
+            ];
+        }
+        $commit = 0;
+        if($create > 0 || $put > 0 || $patch > 0){
+            $object->config('time.limit', 0);
+            $commit = $this->commit($class, $role);
+        }
+        ddd($commit);
         return [
             'skip' => $skip,
             'put' => $put,
