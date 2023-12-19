@@ -130,6 +130,9 @@ Trait Put {
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
+        if(!array_key_exists('transaction', $options)){
+            $options['transaction'] = false;
+        }
         $options['relation'] = false;
         if(!Security::is_granted(
             $class,
@@ -156,9 +159,16 @@ Trait Put {
             $object->config('extension.json');
 
         $start = microtime(true);
-        $data = $object->data_read($url, sha1($url));
-        if($data && $data->has($name)){
+        if($options['transaction'] === true){
+            $data = $object->data_read($url, sha1($url));
+        } else {
+            $data = $object->data_read($url);
+        }
+        if($data){
             $list = $data->get($name);
+            if(!is_array($list)){
+                throw new Exception('Array expected');
+            }
         } else {
             $list = [];
         }
@@ -166,7 +176,6 @@ Trait Put {
         foreach($list as $nr => $record){
             $uuid[$record->uuid] = $nr;
         }
-        $duration = (microtime(true) - $start) * 1000;
         $error = [];
         $result = [];
         foreach($nodeList as $nr => $record){
@@ -186,12 +195,21 @@ Trait Put {
             return $response;
         }
         $data->set($name, $list);
-        $write = $data->write($url);
-        $duration = (microtime(true) - $start) * 1000;
         $response = [];
         $response['list'] = $result;
+        if(
+            array_key_exists('transaction', $options) &&
+            $options['transaction'] === true
+        ){
+            $object->data(sha1($url), $data);
+            $response['transaction'] = true;
+        } else {
+            $write = $data->write($url);
+            $response['byte'] = $write;
+            $response['transaction'] = false;
+        }
+        $duration = (microtime(true) - $start) * 1000;
         $response['duration'] = $duration;
-        $response['byte'] = $write;
         return $response;
     }
 }

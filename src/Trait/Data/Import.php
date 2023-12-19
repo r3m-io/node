@@ -72,7 +72,7 @@ Trait Import {
                 $name .
                 $object->config('extension.json')
             ;
-            $data_object = $object->data_read($url_object);
+            $data_object = $object->data_read($url_object, sha1($url_object));
             foreach($list as $record){
                 $node = new Storage();
                 $node->data($record);
@@ -109,7 +109,7 @@ Trait Import {
                                                 'operator' => '==='
                                             ]
                                         ],
-                                        'process' => 'always true with import?'
+                                        'transaction' => true
                                     ]
                                 );
                             }
@@ -126,7 +126,7 @@ Trait Import {
                                                 'operator' => '==='
                                             ]
                                         ],
-                                        'process' => 'always true with import?'
+                                        'transaction' => true
                                     ]
                                 );
                             }
@@ -143,9 +143,6 @@ Trait Import {
                     ){
                         $node->set('uuid', $record['node']->uuid);
                         $put_many[] = $node->data();
-//                        $options_put = [];
-//                        $response = $this->put($class, $role, $node, $options_put);
-                        $put++;
                     }
                     elseif(
                         array_key_exists('patch', $options) &&
@@ -156,40 +153,49 @@ Trait Import {
                     ){
                         $node->set('uuid', $record['node']->uuid);
                         $patch_many[] = $node->data();
-//                        $options_patch = [];
-//                        $response = $this->patch($class, $role, $node, $options_patch);
-                        $patch++;
                     } else {
                         $skip++;
                     }
                 } else {
                     $node->delete('uuid');
                     $create_many[] = $node->data();
-//                    $options_create = [];
-//                    $response = $this->create($class, $role, $node, $options_create);
-                    $create++;
                 }
-//                $priority++;
             }
         }
         if(!empty($create_many)){
             $response = $this->create_many($class, $role, $create_many, [
-                'process' => 'always true with many?'
+                'transaction' => true
             ]);
-            ddd($response);
+            if(
+                array_key_exists('list', $response) &&
+                is_array($response['list'])
+            ) {
+                $create = count($response['list']);
+            }
         }
         if(!empty($put_many)){
             $response = $this->put_many($class, $role, $put_many, [
-                'process' => 'always true with many?'
+                'transaction' => true
             ]);
-            ddd($response);
+            if(
+                array_key_exists('list', $response) &&
+                is_array($response['list'])
+            ) {
+                $put = count($response['list']);
+            }
+            d($response);
         }
+        ddd($object->data());
+        /*
         if(!empty($patch_many)){
             $response = $this->patch_many($class, $role, $patch_many, [
-                'process' => 'always true with many?'
+                'process' => 'always true with many?',
+                'transaction' => true
             ]);
             ddd($response);
         }
+        */
+
         return [
             'skip' => $skip,
             'put' => $put,

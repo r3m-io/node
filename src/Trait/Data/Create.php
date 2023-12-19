@@ -215,24 +215,40 @@ Trait Create {
             $response['error'] = $error;
             return $response;
         }
-        $data = $object->data_read($url);
+        if(
+            array_key_exists('transaction', $options) &&
+            $options['transaction'] === true
+        ){
+            $data = $object->data_read($url, sha1($url));
+        } else {
+            $data = $object->data_read($url);
+        }
         if(!$data){
             $data = new Storage();
         } else {
-            $old = $data->get($name);
-            if(is_array($old)){
-                $list = array_merge($old, $list);
+            $original = $data->get($name);
+            if(is_array($original)){
+                $list = array_merge($original, $list);
             }
         }
         $data->set($name, $list);
-        $write = $data->write($url);
-        $this->sync_file([
-            'dir_data' => $dir_data,
-            'url' => $url,
-        ]);
         $response = [];
         $response['list'] = $result;
-        $response['byte'] = $write;
+        if (
+            array_key_exists('transaction', $options) &&
+            $options['transaction'] === true
+        ){
+            $object->data(sha1($url), $data);
+            $response['transaction'] = true;
+        } else {
+            $write = $data->write($url);
+            $this->sync_file([
+                'dir_data' => $dir_data,
+                'url' => $url,
+            ]);
+            $response['byte'] = $write;
+            $response['transaction'] = false;
+        }
         $response['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
         return $response;
     }

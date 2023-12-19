@@ -34,6 +34,9 @@ trait NodeList {
         if(!array_key_exists('parse', $options)){
             $options['parse'] = false;
         }
+        if(!array_key_exists('transaction', $options)){
+            $options['transaction'] = false;
+        }
         if(!Security::is_granted(
             $name,
             $role,
@@ -57,6 +60,7 @@ trait NodeList {
             $result['parse'] = $options['parse'];
             $result['ramdisk'] = $options['ramdisk'] ?? false;
             $result['mtime'] = $mtime;
+            $result['transaction'] = $options['transaction'] ?? false;
             $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
             return $result;
         }
@@ -85,6 +89,7 @@ trait NodeList {
             $result['parse'] = $options['parse'];
             $result['ramdisk'] = $options['ramdisk'] ?? false;
             $result['mtime'] = $mtime;
+            $result['transaction'] = $options['transaction'] ?? false;
             $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
             return $result;
         }
@@ -163,7 +168,7 @@ trait NodeList {
                 }
             }
         }
-        if(array_key_exists('process', $options)){
+        if($options['transaction'] === true){
             //keep an eye on memory usage of this script, because it grows here...
             $data = $object->data_read($data_url, sha1($data_url));
         } else {
@@ -175,8 +180,7 @@ trait NodeList {
             $name .
             $object->config('extension.json')
         ;
-        if(array_key_exists('process', $options)){
-            //keep an eye on memory usage of this script, because it grows here...
+        if($options['transaction'] === true){
             $object_data = $object->data_read($object_url, sha1($object_url));
         } else {
             $object_data = $object->data_read($object_url);
@@ -306,6 +310,7 @@ trait NodeList {
                     $result['parse'] = $options['parse'] ?? false;
                     $result['ramdisk'] = $options['ramdisk'] ?? false;
                     $result['mtime'] = $mtime;
+                    $result['transaction'] = $options['transaction'] ?? false;
                     $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
                     if(
                         array_key_exists('ramdisk', $options) &&
@@ -356,6 +361,7 @@ trait NodeList {
                 $result['parse'] = $options['parse'] ?? false;
                 $result['ramdisk'] = $options['ramdisk'] ?? false;
                 $result['mtime'] = $mtime;
+                $result['transaction'] = $options['transaction'] ?? false;
                 $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
                 if(
                     array_key_exists('ramdisk', $options) &&
