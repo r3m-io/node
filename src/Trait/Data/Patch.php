@@ -195,6 +195,7 @@ Trait Patch {
         }
         $error = [];
         $result = [];
+        ddd($nodeList);
         foreach($nodeList as $nr => $node){
             if(
                 is_object($node) &&
