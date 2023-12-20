@@ -186,14 +186,60 @@ Trait Put {
         }
         $error = [];
         $result = [];
-        foreach($nodeList as $nr => $record){
-            if(property_exists($record, 'uuid')){
-                if(array_key_exists($record->uuid, $uuid)){
-                    $list_nr = $uuid[$record->uuid];
-                    $list[$list_nr] = $record;
-                    $result[] = $record->uuid;
+        foreach($nodeList as $nr => $node){
+            if(
+                is_object($node) &&
+                get_class($node) === Storage::class
+            ){
+                $node = $node->data();
+            } else {
+                $node = Core::object($node, Core::OBJECT_OBJECT);
+            }
+            $object->request('node', $node);
+            $object->request('node.#class', $name);
+            if(
+                array_key_exists('validation', $options) &&
+                $options['validation'] === false
+            ){
+                $validate = (object) ['success' => true];
+            } else {
+                $validate = $this->validate($object, $validate_url,  $name . '.create');
+            }
+            if($validate) {
+                if ($validate->success === true) {
+                    $expose = $this->expose_get(
+                        $object,
+                        $name,
+                        $name . '.' . __FUNCTION__ . '.expose'
+                    );
+                    $node = new Storage();
+                    $node->data($object->request('node'));
+                    $node->set('#class', $name);
+                    if (
+                        $expose &&
+                        $role
+                    ) {
+                        $node = $this->expose(
+                            $node,
+                            $expose,
+                            $name,
+                            __FUNCTION__,
+                            $role
+                        );
+                        $record = $node->data();
+                        if(Core::object_is_empty($record)){
+                            throw new Exception('Empty node after expose...');
+                        }
+                        if(property_exists($record, 'uuid')){
+                            if(array_key_exists($record->uuid, $uuid)){
+                                $list_nr = $uuid[$record->uuid];
+                                $list[$list_nr] = $record;
+                                $result[] = $record->uuid;
+                            }
+                        }
+                    }
                 } else {
-                    $error[] = $record;
+                    $error[] = $validate->test;
                 }
             }
         }
