@@ -74,7 +74,7 @@ Trait Commit {
             $bytes = $data->write($url);
             $duration = microtime(true) - $start;
 
-            $speed = $bytes / (1 / $duration);
+            $speed = $bytes / $duration;
             d($duration);
             d($speed);
             ddd($bytes);
