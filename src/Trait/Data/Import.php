@@ -63,6 +63,13 @@ Trait Import {
             $name .
             $object->config('extension.json')
         ;
+        $dir_cache = $object->config('project.dir.cache') .
+            'Node' .
+            $object->config('ds')
+        ;
+        d($object->config());
+        ddd($dir_cache);
+
         $app_options = App::options($object);
         if(property_exists($app_options, 'force')){
             $options['force'] = $app_options->force;
@@ -242,6 +249,7 @@ Trait Import {
             'mtime' => File::mtime($url),
             'duration' => $duration * 1000,
             'item_per_second' => $item_per_second,
+            'transaction' => true
         ];
     }
 }
