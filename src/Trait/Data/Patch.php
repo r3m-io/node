@@ -195,7 +195,6 @@ Trait Patch {
         }
         $error = [];
         $result = [];
-        ddd($nodeList);
         foreach($nodeList as $nr => $node){
             if(
                 is_object($node) &&
@@ -214,6 +213,7 @@ Trait Patch {
             }
             $object->request('node', Core::object_merge($record, $node));
             $object->request('node.#class', $name);
+            ddd($object->request('node'));
             if(
                 array_key_exists('validation', $options) &&
                 $options['validation'] === false
