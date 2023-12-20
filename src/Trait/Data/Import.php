@@ -49,6 +49,10 @@ Trait Import {
             if(!File::exist($options['url'])){
                 return [];
             }
+            $app_options = App::options($object);
+            if(property_exists($app_options, 'force')){
+                $options['force'] = $app_options->force;
+            }
             set_time_limit(0);
             $start = microtime(true);
             $options['function'] = __FUNCTION__;
@@ -77,31 +81,32 @@ Trait Import {
                 $object->config('extension.json')
             ;
             if(File::exist($url_lock)){
+                $timer = 0;
+                $lock_wait_timeout = 60;
+                if(property_exists($app_options, 'lock_wait_timeout')){
+                    $lock_wait_timeout = $app_options->lock_wait_timeout;
+                }
                 while(File::exist($url_lock)){
                     sleep(1);
+                    $timer++;
+                    if($timer > $lock_wait_timeout){
+                        throw Exception('Lock timeout on class: ' . $name .' with url: ' . $options['url']);
+                    }
                 }
-                //wait and retry
-                // LOCK_WAIT_TIMEOUT
-                ddd('make retry mechanism');
-            } else {
-                Dir::create($dir_lock, Dir::CHMOD);
-                $command = 'chown www-data:www-data ' . $dir_lock;
-                exec($command);
-                File::touch($url_lock);
-                $command = 'chown www-data:www-data ' . $url_lock;
-                exec($command);
-                if($object->config('framework.environment') === Config::MODE_DEVELOPMENT){
-                    $command = 'chmod 777 ' . $dir_lock;
-                    exec($command);
-                    $command = 'chmod 666 ' . $url_lock;
-                    exec($command);
-                }
-                sleep(10);
             }
-            $app_options = App::options($object);
-            if(property_exists($app_options, 'force')){
-                $options['force'] = $app_options->force;
+            Dir::create($dir_lock, Dir::CHMOD);
+            $command = 'chown www-data:www-data ' . $dir_lock;
+            exec($command);
+            File::touch($url_lock);
+            $command = 'chown www-data:www-data ' . $url_lock;
+            exec($command);
+            if($object->config('framework.environment') === Config::MODE_DEVELOPMENT){
+                $command = 'chmod 777 ' . $dir_lock;
+                exec($command);
+                $command = 'chmod 666 ' . $url_lock;
+                exec($command);
             }
+            sleep(10);
             $data = $object->data_read($options['url']);
             if($data){
                 $list = $data->data($name);
