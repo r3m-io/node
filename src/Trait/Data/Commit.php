@@ -74,7 +74,7 @@ Trait Commit {
             $bytes = $data->write($url);
             $duration = microtime(true) - $start;
             $speed = $bytes / $duration;
-            $duration = (microtime(true) - $object->config('time.start') * 1000);
+            $duration = (microtime(true) - $object->config('time.start')) * 1000;
             $result['speed'] = File::size_format($speed) . '/sec';
             $result['duration'] = $duration;
         } else {
