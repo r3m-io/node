@@ -5,6 +5,7 @@ namespace R3m\Io\Node\Trait;
 use R3m\Io\App;
 use R3m\Io\Config;
 
+use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\Dir;
 use R3m\Io\Module\File;
@@ -54,6 +55,10 @@ trait Role {
                                         $permissions[] = $permission;
                                     }
                                 }
+                            }
+                            $uuid = $data->get('uuid');
+                            if(empty($uuid)){
+                                $data->set('uuid', Core::uuid());
                             }
                             $data->set('permission', $permissions);
                             $data->write($url);
