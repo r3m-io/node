@@ -26,7 +26,7 @@ Trait Commit {
      * @throws FileWriteException
      * @throws Exception
      */
-    public function commit($class, $role, $options=[]): int
+    public function commit($class, $role, $options=[]): array
     {
         $start = microtime(true);
         $name = Controller::name($class);
@@ -52,7 +52,7 @@ Trait Commit {
             $role,
             $options
         )) {
-            return 0;
+            return [];
         }
         if (property_exists($app_options, 'force')) {
             $options['force'] = $app_options->force;
@@ -74,36 +74,12 @@ Trait Commit {
             $bytes = $data->write($url);
             $duration = microtime(true) - $start;
             $speed = $bytes / $duration;
-
-            if($speed < 1024){
-                $format = 'B';
-                $usage = $speed;
-            } elseif($speed < 1024 * 1024){
-                $format = 'KB';
-                $usage = $speed / 1024;
-            } elseif($speed < 1024 * 1024 * 1024){
-                $format = 'MB';
-                $usage = $speed / 1024 / 1024;
-            } elseif($speed < 1024 * 1024 * 1024 * 1024){
-                $format = 'GB';
-                $usage = $speed / 1024 / 1024 / 1024;
-            } elseif($speed < 1024 * 1024 * 1024 * 1024 * 1024){
-                $format = 'TB';
-                $usage = $speed / 1024 / 1024 / 1024 / 1024;
-            } elseif($speed < 1024 * 1024 * 1024 * 1024 * 1024 * 1024){
-                $format = 'PB';
-                $usage = $speed / 1024 / 1024 / 1024 / 1024 / 1024;
-            } else {
-                $format = 'EB';
-                $usage = $speed / 1024 / 1024 / 1024 / 1024 / 1024 / 1024;
-            }
-            d($duration);
-            d($speed);
-            d($usage . $format);
-            ddd($bytes);
+            $duration = (microtime(true) - $object->config('time.start') * 1000);
+            $result['commit'] = File::size_format($speed) . '/sec';
+            $result['duration'] = $duration;
         } else {
-            throw Exception('Commit-data not found for url: ' . $data);
+            throw new Exception('Commit-data not found for url: ' . $data);
         }
-        return 1;
+        return $result;
     }
 }
