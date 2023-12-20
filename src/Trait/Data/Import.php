@@ -63,23 +63,30 @@ Trait Import {
             $name .
             $object->config('extension.json')
         ;
-        $dir_cache = $object->config('project.dir.cache') .
+        $dir_cache = $object->config('framework.dir.temp') .
             'Node' .
             $object->config('ds')
         ;
-        d($object->config());
-        ddd($dir_cache);
-
+        $dir_lock = $dir_cache .
+            'Lock' .
+            $object->config('ds')
+        ;
+        $url_lock = $dir_lock .
+            $name .
+            $object->config('extension.lock');
+        if(File::exist($url_lock)){
+            //wait and retry
+            // LOCK_WAIT_TIMEOUT
+            ddd('make retry mechanism');
+        } else {
+            File::touch($url_lock);
+            sleep(10);
+        }
         $app_options = App::options($object);
         if(property_exists($app_options, 'force')){
             $options['force'] = $app_options->force;
         }
         $data = $object->data_read($options['url']);
-
-        /**
-         * route imports
-         */
-
         if($data){
             $list = $data->data($name);
             $url_object = $object->config('project.dir.node') .
@@ -240,6 +247,7 @@ Trait Import {
         $duration = microtime(true) - $start;
         $total = $put + $patch + $create;
         $item_per_second = round($total / $duration, 2);
+        File::delete($url_lock);
         return [
             'skip' => $skip,
             'put' => $put,
