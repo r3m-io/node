@@ -38,6 +38,7 @@ Trait Import {
             if(!File::exist($options['url'])){
                 return false;
             }
+            ddd($options);
             $app_options = App::options($object);
             if(property_exists($app_options, 'force')){
                 $options['force'] = $app_options->force;
