@@ -37,6 +37,9 @@ trait NodeList {
         if(!array_key_exists('transaction', $options)){
             $options['transaction'] = false;
         }
+        if(!array_key_exists('lock', $options)){
+            $options['lock'] = false;
+        }
         if(!Security::is_granted(
             $name,
             $role,
