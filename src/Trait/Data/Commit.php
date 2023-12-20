@@ -57,8 +57,25 @@ Trait Commit {
         if (property_exists($app_options, 'force')) {
             $options['force'] = $app_options->force;
         }
+        //version 2 should append in json-line
         //make url sha1(url) of class
-        ddd('yes found commit');
+        $dir_data = $object->config('project.dir.node') .
+            'Data' .
+            $object->config('ds')
+        ;
+        $url = $dir_data .
+            $name .
+            $object->config('extension.json')
+        ;
+        $data = $object->data(sha1($url));
+        if($data){
+            $bytes = $data->write($url);
+        } else {
+            throw Exception('Commit-data not found for url: ' . $data);
+        }
+        $duration = (microtime(true) - $object->config('time.start')) * 1000;
+        d($duration);
+        ddd($bytes);
         return 1;
     }
 }
