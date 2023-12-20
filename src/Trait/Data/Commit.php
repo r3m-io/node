@@ -73,10 +73,33 @@ Trait Commit {
             $start = microtime(true);
             $bytes = $data->write($url);
             $duration = microtime(true) - $start;
-
             $speed = $bytes / $duration;
+
+            if($speed < 1024){
+                $format = 'B';
+                $usage = $speed;
+            } elseif($speed < 1024 * 1024){
+                $format = 'KB';
+                $usage = $speed / 1024;
+            } elseif($speed < 1024 * 1024 * 1024){
+                $format = 'MB';
+                $usage = $speed / 1024 / 1024;
+            } elseif($speed < 1024 * 1024 * 1024 * 1024){
+                $format = 'GB';
+                $usage = $speed / 1024 / 1024 / 1024;
+            } elseif($speed < 1024 * 1024 * 1024 * 1024 * 1024){
+                $format = 'TB';
+                $usage = $speed / 1024 / 1024 / 1024 / 1024;
+            } elseif($speed < 1024 * 1024 * 1024 * 1024 * 1024 * 1024){
+                $format = 'PB';
+                $usage = $speed / 1024 / 1024 / 1024 / 1024 / 1024;
+            } else {
+                $format = 'EB';
+                $usage = $speed / 1024 / 1024 / 1024 / 1024 / 1024 / 1024;
+            }
             d($duration);
             d($speed);
+            d($usage . $format);
             ddd($bytes);
         } else {
             throw Exception('Commit-data not found for url: ' . $data);
