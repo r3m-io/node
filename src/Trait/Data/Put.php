@@ -167,7 +167,7 @@ Trait Put {
             $object->config('extension.json');
 
         $start = microtime(true);
-        if($options['transaction'] === true){
+        if($transaction === true){
             $data = $object->data_read($url, sha1($url));
         } else {
             $data = $object->data_read($url);
