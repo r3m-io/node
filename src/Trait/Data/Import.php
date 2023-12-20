@@ -230,6 +230,9 @@ Trait Import {
             $object->config('time.limit', 0);
             $commit = $this->commit($class, $role);
         }
+        $duration = microtime(true) - $start;
+        $total = $put + $patch + $create;
+        $item_per_second = round($total / $duration, 2);
         return [
             'skip' => $skip,
             'put' => $put,
@@ -237,7 +240,8 @@ Trait Import {
             'create' => $create,
             'commit' => $commit,
             'mtime' => File::mtime($url),
-            'duration' => (microtime(true) - $start) * 1000
+            'duration' => $duration * 1000,
+            'item_per_second' => $item_per_second,
         ];
     }
 }
