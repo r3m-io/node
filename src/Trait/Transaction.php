@@ -26,7 +26,6 @@ Trait Transaction {
         $this->lock($name, $options);
         $object = $this->object();
         $object->config('node.transaction.' . $name, true);
-        sleep(10);
     }
 
     /**

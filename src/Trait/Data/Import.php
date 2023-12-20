@@ -67,6 +67,9 @@ Trait Import {
                 $object->config('extension.json')
             ;
             $this->startTransaction($name, $options);
+            if(array_key_exists('sleep')){
+                sleep((int) $options['sleep']);
+            }
             $data = $object->data_read($options['url']);
             if($data){
                 $list = $data->data($name);
