@@ -75,7 +75,9 @@ Trait Commit {
             $duration = microtime(true) - $start;
             $speed = $bytes / $duration;
             $result['bytes'] = $bytes;
+            $result['size'] = File::size_format($bytes);
             $result['speed'] = File::size_format($speed) . '/sec';
+            $result['mtime'] = File::mtime($url);
         } else {
             throw new Exception('Commit-data not found for url: ' . $data);
         }
