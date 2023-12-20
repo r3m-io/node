@@ -50,7 +50,7 @@ Trait Lock {
         }
         Dir::create($dir_lock, Dir::CHMOD);
         File::touch($url_lock);
-        $this->file_sync([
+        File::permission($object, [
             'dir_cache' => $dir_cache,
             'dir_lock' => $dir_lock,
             'url_lock' => $url_lock

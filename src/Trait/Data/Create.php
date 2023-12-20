@@ -109,7 +109,7 @@ Trait Create {
                     $data->set($name, $list);
                     $data->write($url);
                     $response['node'] = $node->data();
-                    $this->sync_file([
+                    File::permission($object, [
                         'dir_data' => $dir_data,
                         'url' => $url,
                     ]);
@@ -259,7 +259,7 @@ Trait Create {
             $response['transaction'] = true;
         } else {
             $write = $data->write($url);
-            $this->sync_file([
+            File::permission($object, [
                 'dir_data' => $dir_data,
                 'url' => $url,
             ]);

@@ -381,11 +381,11 @@ trait NodeList {
                     $ramdisk->set('relation', $relation_mtime);
                     $ramdisk->write($ramdisk_url_node);
                     if($object->config('posix.id') === 0){
-                        $this->sync_file([
+                        File::permission($object, [
                             'ramdisk_dir' => $ramdisk_dir
                         ]);
                     } else {
-                        $this->sync_file([
+                        File::permission($object, [
                             'ramdisk_dir' => $ramdisk_dir,
                             'ramdisk_dir_node' => $ramdisk_dir_node,
                             'ramdisk_url_node' => $ramdisk_url_node,

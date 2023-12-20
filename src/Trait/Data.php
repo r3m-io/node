@@ -162,7 +162,7 @@ trait Data {
                 File::write($url_validate, Core::object($validate, Core::OBJECT_JSON));
                 echo '- ' . $url_validate . PHP_EOL;
             }
-            $this->sync_file([
+            File::permission($object, [
                 'dir_object' => $dir_object,
                 'dir_data' => $dir_data,
                 'dir_expose' => $dir_expose,
@@ -476,6 +476,7 @@ trait Data {
         return $properties;
     }
 
+    /*
     private function sync_file($options=[]): void
     {
         $object = $this->object();
@@ -500,4 +501,5 @@ trait Data {
             }
         }
     }
+    */
 }
