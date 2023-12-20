@@ -55,6 +55,14 @@ Trait Import {
             return [];
         }
         $object = $this->object();
+        $dir_data = $object->config('project.dir.node') .
+            'Data' .
+            $object->config('ds')
+        ;
+        $url = $dir_data .
+            $name .
+            $object->config('extension.json')
+        ;
         $app_options = App::options($object);
         if(property_exists($app_options, 'force')){
             $options['force'] = $app_options->force;
@@ -228,6 +236,7 @@ Trait Import {
             'patch' => $patch,
             'create' => $create,
             'commit' => $commit,
+            'mtime' => File::mtime($url),
             'duration' => (microtime(true) - $start) * 1000
         ];
     }
