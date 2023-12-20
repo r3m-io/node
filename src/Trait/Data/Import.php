@@ -79,7 +79,18 @@ Trait Import {
             // LOCK_WAIT_TIMEOUT
             ddd('make retry mechanism');
         } else {
+            Dir::create($dir_lock, Dir::CHMOD);
+            $command = 'chown www-data:www-data ' . $dir_lock;
+            exec($command);
             File::touch($url_lock);
+            $command = 'chown www-data:www-data ' . $url_lock;
+            exec($command);
+            if($object->config('framework.environment') === Config::MODE_DEVELOPMENT){
+                $command = 'chmod 777 ' . $dir_lock;
+                exec($command);
+                $command = 'chmod 666 ' . $url_lock;
+                exec($command);
+            }
             sleep(10);
         }
         $app_options = App::options($object);
