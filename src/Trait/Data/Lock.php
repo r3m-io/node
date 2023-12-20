@@ -37,6 +37,8 @@ Trait Lock {
             $name .
             $object->config('extension.lock')
         ;
+        d($url_lock);
+        d(File::exist($url_lock));
         if(File::exist($url_lock)) {
             $timer = 0;
             $lock_wait_timeout = $options['lock_wait_timeout'];
