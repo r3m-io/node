@@ -1,9 +1,11 @@
 <?php
 
-namespace R3m\Io\Node\Trait\Data;
+namespace R3m\Io\Node\Trait;
 
+use Exception;
 use R3m\Io\App;
-
+use R3m\Io\Exception\FileWriteException;
+use R3m\Io\Exception\ObjectException;
 use R3m\Io\Module\Cli;
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
@@ -11,35 +13,36 @@ use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\Dir;
 use R3m\Io\Module\File;
 use R3m\Io\Module\Sort;
-
 use R3m\Io\Node\Service\Security;
 
-use Exception;
+Trait Transaction {
 
-use R3m\Io\Exception\FileWriteException;
-use R3m\Io\Exception\ObjectException;
-
-Trait Commit {
+    /**
+     * @throws Exception
+     */
+    public function startTransaction($class, $options=[]): void
+    {
+        $name = Controller::name($class);
+        $this->lock($name, $options);
+        $object = $this->object();
+        $object->config('node.transaction.' . $name, true);
+        sleep(10);
+    }
 
     /**
      * @throws ObjectException
      * @throws FileWriteException
      * @throws Exception
      */
-    public function commit($class, $role, $options=[]): array
+    public function commit($class, $role, $options=[]): false|array
     {
         $start = microtime(true);
         $name = Controller::name($class);
         $object = $this->object();
         $options = Core::object($options, Core::OBJECT_ARRAY);
         $app_options = App::options($object);
-        if (array_key_exists('time.limit', $options)) {
-            set_time_limit((int)$options['time.limit']);
-        } elseif (
-            property_exists($app_options, 'time') &&
-            property_exists($app_options->time, 'limit')
-        ) {
-            set_time_limit((int)$options->{'time'}->{'limit'});
+        if (array_key_exists('time_limit', $options)) {
+            set_time_limit((int)$options['time_limit']);
         } elseif ($object->config('time.limit')) {
             set_time_limit((int)$object->config('time.limit')); // 10 minutes
         } else {
@@ -52,10 +55,16 @@ Trait Commit {
             $role,
             $options
         )) {
-            return [];
+            $this->unlock($name, $options);
+            return false;
         }
         if (property_exists($app_options, 'force')) {
             $options['force'] = $app_options->force;
+        }
+        $is_transaction = $object->config('node.transaction.' . $name);
+        if(!$is_transaction){
+            $this->unlock($name, $options);
+            return false;
         }
         $result = [];
         //version 2 should append in json-line
@@ -80,6 +89,8 @@ Trait Commit {
         } else {
             throw new Exception('Commit-data not found for url: ' . $data);
         }
+        $object->config('delete', 'node.transaction.' . $name);
+        $this->unlock($name, $options);
         return $result;
     }
 }

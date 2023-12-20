@@ -134,6 +134,9 @@ Trait Create {
         if(!array_key_exists('transaction', $options)){
             $options['transaction'] = false;
         }
+        if(!array_key_exists('import', $options)){
+            $options['import'] = false;
+        }
         $options['relation'] = false;
         if(!Security::is_granted(
             $class,
@@ -142,7 +145,13 @@ Trait Create {
         )){
             return false;
         }
-        $this->lock($name, $options);
+        $transaction = $object->config('node.transaction.' . $name);
+        if(
+            $options['import'] === false &&
+            empty($transaction)
+        ){
+            $this->lock($name, $options);
+        }
         $dir_data = $object->config('project.dir.node') .
             'Data' .
             $object->config('ds')
@@ -215,17 +224,21 @@ Trait Create {
                 }
             }
         }
-        if(empty($list)){
-            $this->unlock($name, $options);
+        if(empty($list)) {
+            if ($options['import'] === false){
+                $this->unlock($name);
+            }
             return false;
         }
         if(!empty($error)){
             $response = [];
             $response['error'] = $error;
-            $this->unlock($name, $options);
+            if ($options['import'] === false){
+                $this->unlock($name);
+            }
             return $response;
         }
-        if($options['transaction'] === true){
+        if($transaction === true){
             $data = $object->data_read($url, sha1($url));
         } else {
             $data = $object->data_read($url);
@@ -241,7 +254,7 @@ Trait Create {
         $data->set($name, $list);
         $response = [];
         $response['list'] = $result;
-        if ($options['transaction'] === true){
+        if ($transaction === true){
             $object->data(sha1($url), $data);
             $response['transaction'] = true;
         } else {
@@ -252,9 +265,11 @@ Trait Create {
             ]);
             $response['byte'] = $write;
             $response['transaction'] = false;
+            if ($options['import'] === false){
+                $this->unlock($name);
+            }
         }
         $response['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
-        $this->unlock($name, $options);
         return $response;
     }
 }

@@ -42,6 +42,7 @@ Trait Import {
             if(property_exists($app_options, 'force')){
                 $options['force'] = $app_options->force;
             }
+            $options['import'] = true;
             set_time_limit(0);
             $start = microtime(true);
             $options['function'] = __FUNCTION__;
@@ -69,8 +70,7 @@ Trait Import {
                 $name .
                 $object->config('extension.json')
             ;
-            $this->lock($name, $options);
-            sleep(10);
+            $this->startTransaction($name, $options);
             $data = $object->data_read($options['url']);
             if($data){
                 $list = $data->data($name);
@@ -172,8 +172,7 @@ Trait Import {
             }
             if(!empty($create_many)) {
                 $response = $this->create_many($class, $role, $create_many, [
-                    'transaction' => true,
-                    'is_import' => true
+                    'import' => true
                 ]);
                 if (
                     array_key_exists('list', $response) &&
@@ -188,8 +187,7 @@ Trait Import {
             }
             if(!empty($put_many)){
                 $response = $this->put_many($class, $role, $put_many, [
-                    'transaction' => true,
-                    'is_import' => true
+                    'import' => true
                 ]);
                 if(
                     array_key_exists('list', $response) &&
@@ -205,8 +203,7 @@ Trait Import {
             }
             if(!empty($patch_many)){
                 $response = $this->patch_many($class, $role, $patch_many, [
-                    'transaction' => true,
-                    'is_import' => true
+                    'import' => true
                 ]);
                 if(
                     array_key_exists('list', $response) &&
@@ -221,7 +218,7 @@ Trait Import {
                 }
             }
             if(!empty($error)){
-                $this->unlock($name, $options);
+                $this->unlock($name);
                 return [
                     'error' => $error,
                     'transaction' => true,
@@ -236,7 +233,8 @@ Trait Import {
             $duration = microtime(true) - $start;
             $total = $put + $patch + $create;
             $item_per_second = round($total / $duration, 2);
-            $this->unlock($name, $options);
+
+            $object->config('delete', 'node.transaction.' . $name);
             return [
                 'skip' => $skip,
                 'put' => $put,
@@ -250,7 +248,8 @@ Trait Import {
             ];
         }
         catch(Exception $exception){
-            $this->unlock($name, $options);
+            $this->unlock($name);
+            $object->config('delete', 'node.transaction.' . $name);
             throw $exception;
         }
     }

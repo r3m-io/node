@@ -1,32 +1,28 @@
 <?php
 namespace R3m\Io\Node\Trait;
 
+use Exception;
 use R3m\Io\App;
 use R3m\Io\Config;
-
+use R3m\Io\Exception\ObjectException;
 use R3m\Io\Module\Cli;
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\Dir;
 use R3m\Io\Module\File;
-
 use R3m\Io\Node\Service\Security;
-
-use Exception;
-
-use R3m\Io\Exception\ObjectException;
 
 trait Data {
 
     use Expose;
     use Filter;
     use Relation;
+    use Transaction;
     use Tree;
     use Validate;
     use Where;
     use Data\Count;
-    use Data\Commit;
     use Data\Create;
     use Data\Delete;
     use Data\Import;

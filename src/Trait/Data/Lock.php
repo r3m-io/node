@@ -20,11 +20,8 @@ Trait Lock {
      */
     public function lock($class, $options=[]): bool
     {
-        if(!array_key_exists('is_import', $options)){
-            $options['is_import'] = false;
-        }
-        if(!array_key_exists('transaction', $options)){
-            $options['transaction'] = false;
+        if(!array_key_exists('lock_wait_timeout', $options)){
+            $options['lock_wait_timeout'] = 60;
         }
         $name = Controller::name($class);
         $object = $this->object();
@@ -40,84 +37,22 @@ Trait Lock {
             $name .
             $object->config('extension.lock')
         ;
-        if(
-            File::exist($url_lock) &&
-            $options['is_import'] === false
-        ) {
+        if(File::exist($url_lock)) {
             $timer = 0;
-            $lock_wait_timeout = 60;
-            if(array_key_exists('lock_wait_timeout', $options)){
-                $lock_wait_timeout = $options['lock_wait_timeout'];
-            }
+            $lock_wait_timeout = $options['lock_wait_timeout'];
             while(File::exist($url_lock)){
                 sleep(1);
                 $timer++;
                 if($timer > $lock_wait_timeout){
-                    throw new Exception('Lock timeout on class: ' . $name .' in create_many');
+                    throw new Exception('Lock timeout on class: ' . $name);
                 }
-            }
-        }
-        elseif(
-            File::exist($url_lock) &&
-            $options['is_import'] === true &&
-            array_key_exists('url', $options)
-        ){
-            if(File::exist($url_lock)){
-                $timer = 0;
-                $lock_wait_timeout = 60;
-                if(array_key_exists('lock_wait_timeout', $options)){
-                    $lock_wait_timeout = $options['lock_wait_timeout'];
-                }
-                while(File::exist($url_lock)){
-                    sleep(1);
-                    $timer++;
-                    if($timer > $lock_wait_timeout){
-                        throw new Exception('Lock timeout on class: ' . $name .' with url: ' . $options['url']);
-                    }
-                }
-            }
-            Dir::create($dir_lock, Dir::CHMOD);
-            $command = 'chown www-data:www-data ' . $dir_lock;
-            exec($command);
-            File::touch($url_lock);
-            $command = 'chown www-data:www-data ' . $url_lock;
-            exec($command);
-            if($object->config('framework.environment') === Config::MODE_DEVELOPMENT){
-                $command = 'chmod 777 ' . $dir_lock;
-                exec($command);
-                $command = 'chmod 666 ' . $url_lock;
-                exec($command);
-            }
-        }
-        elseif(
-            !File::exist($url_lock) &&
-            $options['is_import'] === false &&
-            $options['transaction'] === false
-        ){
-            Dir::create($dir_lock, Dir::CHMOD);
-            $command = 'chown www-data:www-data ' . $dir_lock;
-            exec($command);
-            File::touch($url_lock);
-            $command = 'chown www-data:www-data ' . $url_lock;
-            exec($command);
-            if($object->config('framework.environment') === Config::MODE_DEVELOPMENT){
-                $command = 'chmod 777 ' . $dir_lock;
-                exec($command);
-                $command = 'chmod 666 ' . $url_lock;
-                exec($command);
             }
         }
         return true;
     }
 
-    public function unlock($class, $options): bool
+    public function unlock($class): bool
     {
-        if(!array_key_exists('is_import', $options)){
-            $options['is_import'] = false;
-        }
-        if(!array_key_exists('transaction', $options)){
-            $options['transaction'] = false;
-        }
         $name = Controller::name($class);
         $object = $this->object();
         $dir_cache = $object->config('framework.dir.temp') .
@@ -132,15 +67,7 @@ Trait Lock {
             $name .
             $object->config('extension.lock')
         ;
-        if(
-            (
-                $options['is_import'] === false &&
-                $options['transaction'] === false
-            ) ||
-            $options['is_import'] === true
-        ){
-            File::delete($url_lock);
-        }
+        File::delete($url_lock);
         return true;
     }
 }

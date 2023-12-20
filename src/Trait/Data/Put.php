@@ -124,17 +124,15 @@ Trait Put {
     /**
      * @throws Exception
      */
-    public function put_many($class, $role, $nodeList=[], $options=[]){
+    public function put_many($class, $role, $nodeList=[], $options=[]): false|array
+    {
         $name = Controller::name($class);
         $object = $this->object();
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
-        if(!array_key_exists('transaction', $options)){
-            $options['transaction'] = false;
-        }
-        if(!array_key_exists('is_import', $options)){
-            $options['is_import'] = false;
+        if(!array_key_exists('import', $options)){
+            $options['import'] = false;
         }
         $options['relation'] = false;
         if(!Security::is_granted(
@@ -144,34 +142,12 @@ Trait Put {
         )){
             return false;
         }
-        $dir_cache = $object->config('framework.dir.temp') .
-            'Node' .
-            $object->config('ds')
-        ;
-        $dir_lock = $dir_cache .
-            'Lock' .
-            $object->config('ds')
-        ;
-        $url_lock = $dir_lock .
-            $name .
-            $object->config('extension.lock');
-
-
-
-        if(!File::exist($url_lock)){
-            $inner_lock = true;
-            Dir::create($dir_lock, Dir::CHMOD);
-            $command = 'chown www-data:www-data ' . $dir_lock;
-            exec($command);
-            File::touch($url_lock);
-            $command = 'chown www-data:www-data ' . $url_lock;
-            exec($command);
-            if($object->config('framework.environment') === Config::MODE_DEVELOPMENT){
-                $command = 'chmod 777 ' . $dir_lock;
-                exec($command);
-                $command = 'chmod 666 ' . $url_lock;
-                exec($command);
-            }
+        $transaction = $object->config('node.transaction.' . $name);
+        if(
+            $options['import'] === false &&
+            empty($transaction)
+        ){
+            $this->lock($class, $options);
         }
         $dir_data = $object->config('project.dir.node') .
             'Data' .
@@ -224,21 +200,27 @@ Trait Put {
         if(!empty($error)){
             $response = [];
             $response['error'] = $error;
+            if(
+                $options['import'] === false &&
+                empty($transaction)
+            ){
+                $this->unlock($class);
+            }
             return $response;
         }
         $data->set($name, $list);
         $response = [];
         $response['list'] = $result;
-        if(
-            array_key_exists('transaction', $options) &&
-            $options['transaction'] === true
-        ){
+        if($transaction === true){
             $object->data(sha1($url), $data);
             $response['transaction'] = true;
         } else {
             $write = $data->write($url);
             $response['byte'] = $write;
             $response['transaction'] = false;
+            if($options['import'] === false){
+                $this->unlock($class);
+            }
         }
         $duration = (microtime(true) - $start) * 1000;
         $response['duration'] = $duration;
