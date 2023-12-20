@@ -213,8 +213,6 @@ Trait Patch {
             }
             $object->request('node', Core::object_merge($record, $node));
             $object->request('node.#class', $name);
-            d($object->request('node'));
-            die;
             if(
                 array_key_exists('validation', $options) &&
                 $options['validation'] === false
