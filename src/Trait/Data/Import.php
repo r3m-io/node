@@ -26,28 +26,17 @@ Trait Import {
      * @throws FileWriteException
      * @throws Exception
      */
-    public function import($class, $role, $options=[]): array
+    public function import($class, $role, $options=[]): false|array
     {
         $name = Controller::name($class);
         $object = $this->object();
-        $dir_cache = $object->config('framework.dir.temp') .
-            'Node' .
-            $object->config('ds')
-        ;
-        $dir_lock = $dir_cache .
-            'Lock' .
-            $object->config('ds')
-        ;
-        $url_lock = $dir_lock .
-            $name .
-            $object->config('extension.lock');
         try {
             $options = Core::object($options, Core::OBJECT_ARRAY);
             if(!array_key_exists('url', $options)){
-                return [];
+                return false;
             }
             if(!File::exist($options['url'])){
-                return [];
+                return false;
             }
             $app_options = App::options($object);
             if(property_exists($app_options, 'force')){
@@ -70,7 +59,7 @@ Trait Import {
                 $role,
                 $options
             )){
-                return [];
+                return false;
             }
             $dir_data = $object->config('project.dir.node') .
                 'Data' .
@@ -80,32 +69,7 @@ Trait Import {
                 $name .
                 $object->config('extension.json')
             ;
-            if(File::exist($url_lock)){
-                $timer = 0;
-                $lock_wait_timeout = 60;
-                if(property_exists($app_options, 'lock_wait_timeout')){
-                    $lock_wait_timeout = $app_options->lock_wait_timeout;
-                }
-                while(File::exist($url_lock)){
-                    sleep(1);
-                    $timer++;
-                    if($timer > $lock_wait_timeout){
-                        throw Exception('Lock timeout on class: ' . $name .' with url: ' . $options['url']);
-                    }
-                }
-            }
-            Dir::create($dir_lock, Dir::CHMOD);
-            $command = 'chown www-data:www-data ' . $dir_lock;
-            exec($command);
-            File::touch($url_lock);
-            $command = 'chown www-data:www-data ' . $url_lock;
-            exec($command);
-            if($object->config('framework.environment') === Config::MODE_DEVELOPMENT){
-                $command = 'chmod 777 ' . $dir_lock;
-                exec($command);
-                $command = 'chmod 666 ' . $url_lock;
-                exec($command);
-            }
+            $this->lock($name, $options);
             sleep(10);
             $data = $object->data_read($options['url']);
             if($data){
@@ -209,6 +173,7 @@ Trait Import {
             if(!empty($create_many)) {
                 $response = $this->create_many($class, $role, $create_many, [
                     'transaction' => true,
+                    'is_import' => true
                 ]);
                 if (
                     array_key_exists('list', $response) &&
@@ -223,7 +188,8 @@ Trait Import {
             }
             if(!empty($put_many)){
                 $response = $this->put_many($class, $role, $put_many, [
-                    'transaction' => true
+                    'transaction' => true,
+                    'is_import' => true
                 ]);
                 if(
                     array_key_exists('list', $response) &&
@@ -239,7 +205,8 @@ Trait Import {
             }
             if(!empty($patch_many)){
                 $response = $this->patch_many($class, $role, $patch_many, [
-                    'transaction' => true
+                    'transaction' => true,
+                    'is_import' => true
                 ]);
                 if(
                     array_key_exists('list', $response) &&
@@ -254,7 +221,7 @@ Trait Import {
                 }
             }
             if(!empty($error)){
-                File::delete($url_lock);
+                $this->unlock($name, $options);
                 return [
                     'error' => $error,
                     'transaction' => true,
@@ -269,7 +236,7 @@ Trait Import {
             $duration = microtime(true) - $start;
             $total = $put + $patch + $create;
             $item_per_second = round($total / $duration, 2);
-            File::delete($url_lock);
+            $this->unlock($name, $options);
             return [
                 'skip' => $skip,
                 'put' => $put,
@@ -283,7 +250,7 @@ Trait Import {
             ];
         }
         catch(Exception $exception){
-            File::delete($url_lock);
+            $this->unlock($name, $options);
             throw $exception;
         }
     }

@@ -30,6 +30,7 @@ trait Data {
     use Data\Create;
     use Data\Delete;
     use Data\Import;
+    use Data\Lock;
     use Data\NodeList;
     use Data\Page;
     use Data\Patch;

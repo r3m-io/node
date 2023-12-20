@@ -2,9 +2,13 @@
 
 namespace R3m\Io\Node\Trait\Data;
 
+use R3m\Io\Config;
+
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
+use R3m\Io\Module\Dir;
+use R3m\Io\Module\File;
 
 use R3m\Io\Node\Service\Security;
 
@@ -120,12 +124,15 @@ Trait Create {
     /**
      * @throws Exception
      */
-    public function create_many($class, $role, $nodeList=[], $options=[])
+    public function create_many($class, $role, $nodeList=[], $options=[]): false|array
     {
         $name = Controller::name($class);
         $object = $this->object();
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
+        }
+        if(!array_key_exists('transaction', $options)){
+            $options['transaction'] = false;
         }
         $options['relation'] = false;
         if(!Security::is_granted(
@@ -135,6 +142,7 @@ Trait Create {
         )){
             return false;
         }
+        $this->lock($name, $options);
         $dir_data = $object->config('project.dir.node') .
             'Data' .
             $object->config('ds')
@@ -208,17 +216,16 @@ Trait Create {
             }
         }
         if(empty($list)){
+            $this->unlock($name, $options);
             return false;
         }
         if(!empty($error)){
             $response = [];
             $response['error'] = $error;
+            $this->unlock($name, $options);
             return $response;
         }
-        if(
-            array_key_exists('transaction', $options) &&
-            $options['transaction'] === true
-        ){
+        if($options['transaction'] === true){
             $data = $object->data_read($url, sha1($url));
         } else {
             $data = $object->data_read($url);
@@ -234,10 +241,7 @@ Trait Create {
         $data->set($name, $list);
         $response = [];
         $response['list'] = $result;
-        if (
-            array_key_exists('transaction', $options) &&
-            $options['transaction'] === true
-        ){
+        if ($options['transaction'] === true){
             $object->data(sha1($url), $data);
             $response['transaction'] = true;
         } else {
@@ -250,6 +254,7 @@ Trait Create {
             $response['transaction'] = false;
         }
         $response['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+        $this->unlock($name, $options);
         return $response;
     }
 }
