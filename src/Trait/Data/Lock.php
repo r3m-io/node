@@ -20,6 +20,7 @@ Trait Lock {
      */
     public function lock($class, $options=[]): bool
     {
+        ddd($options);
         if(!array_key_exists('lock_wait_timeout', $options)){
             $options['lock_wait_timeout'] = 60;
         }
