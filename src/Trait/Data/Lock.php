@@ -48,7 +48,13 @@ Trait Lock {
                 }
             }
         }
+        Dir::create($dir_lock, Dir::CHMOD);
         File::touch($url_lock);
+        $this->file_sync([
+            'dir_cache' => $dir_cache,
+            'dir_lock' => $dir_lock,
+            'url_lock' => $url_lock
+        ]);
         return true;
     }
 
