@@ -133,7 +133,8 @@ Trait Patch {
     /**
      * @throws Exception
      */
-    public function patch_many($class, $role, $nodeList=[], $options=[]){
+    public function patch_many($class, $role, $nodeList=[], $options=[]): false|array
+    {
         $name = Controller::name($class);
         $object = $this->object();
         if(!array_key_exists('function', $options)){
