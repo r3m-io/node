@@ -69,13 +69,14 @@ Trait Commit {
         ;
         $data = $object->data(sha1($url));
         if($data){
+            $start = microtime(true);
             $bytes = $data->write($url);
+            $duration = (microtime(true) - $start) * 1000;
+            d($duration);
+            ddd($bytes);
         } else {
             throw Exception('Commit-data not found for url: ' . $data);
         }
-        $duration = (microtime(true) - $object->config('time.start')) * 1000;
-        d($duration);
-        ddd($bytes);
         return 1;
     }
 }
