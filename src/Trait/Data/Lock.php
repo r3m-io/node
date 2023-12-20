@@ -40,6 +40,7 @@ Trait Lock {
         if(File::exist($url_lock)) {
             $timer = 0;
             $lock_wait_timeout = $options['lock_wait_timeout'];
+            ddd($lock_wait_timeout);
             while(File::exist($url_lock)){
                 sleep(1);
                 $timer++;
