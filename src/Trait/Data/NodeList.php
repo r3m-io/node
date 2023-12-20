@@ -116,6 +116,7 @@ trait NodeList {
                 //per role cache
                 $key_options['role'] = $role->uuid;
             } else {
+                ddd($role);
                 throw new Exception('Role not set for ramdisk');
             }
             //cache key
