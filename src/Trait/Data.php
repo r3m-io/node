@@ -18,6 +18,7 @@ trait Data {
     use Expose;
     use Filter;
     use Relation;
+    use Stats;
     use Transaction;
     use Tree;
     use Validate;
