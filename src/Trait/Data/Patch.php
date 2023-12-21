@@ -23,6 +23,7 @@ Trait Patch {
         $nodeList = [$node];
         $response = $this->patch_many($class, $role, $nodeList, $options);
         if(
+            $response &&
             array_key_exists('list', $response) &&
             is_array($response['list'])
         ){
@@ -34,6 +35,7 @@ Trait Patch {
             }
         }
         elseif(
+            $response &&
             array_key_exists('error', $response) &&
             is_array($response['error'])
         ){
