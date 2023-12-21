@@ -36,10 +36,24 @@ trait Role {
 
     public function role_has_permission($role, $permission=''): bool
     {
+        $list = [];
         $object = $this->object();
-        d($role);
-        ddd($permission);
-        return false;
+        if(property_exists($role, 'uuid')){
+            $list = $object->data($role->uuid);
+            if(empty($list)){
+                $list = [];
+                foreach ($role->permission as $record){
+                    if(
+                        is_object($record) &&
+                        property_exists($record, 'name')
+                    ){
+                        $list[] = $record->name;
+                    }
+                }
+                $object->data($role->uuid, $list);
+            }
+        }
+        return in_array($permission, $list, true);
     }
 
     public function role_system_create($package=''): void
