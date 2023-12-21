@@ -22,17 +22,27 @@ Trait Patch {
         }
         $nodeList = [$node];
         $response = $this->patch_many($class, $role, $nodeList, $options);
-        if(array_key_exists('list', $response)){
-            $result = [
-                'node' => array_shift($response['list'])
-            ];
-            return $result;
+        if(
+            array_key_exists('list', $response) &&
+            is_array($response['list'])
+        ){
+            $node = reset($response['list']);
+            if($node){
+                return [
+                    'node' => $node
+                ];
+            }
         }
-        elseif(array_key_exists('error', $response)){
-            $result = [
-                'error' => array_shift($response['error'])
-            ];
-            return $result;
+        elseif(
+            array_key_exists('error', $response) &&
+            is_array($response['error'])
+        ){
+            $error = reset($response['error']);
+            if($error){
+                return [
+                    'error' => $error
+                ];
+            }
         }
         return false;
     }
