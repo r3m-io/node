@@ -137,6 +137,7 @@ trait Import {
                                 break;
                         }
                     }
+                    d($record);
                     if($record){
                         if(
                             array_key_exists('force', $options) &&
