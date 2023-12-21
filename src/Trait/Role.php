@@ -47,13 +47,16 @@ trait Role {
                         is_object($record) &&
                         property_exists($record, 'name')
                     ){
-                        $list[] = $record->name;
+                        $list[$record->name] = true;
                     }
                 }
                 $object->data($role->uuid, $list);
             }
         }
-        return in_array($permission, $list, true);
+        if(array_key_exists($permission, $list)){
+            return true;
+        }
+        return false;
     }
 
     public function role_system_create($package=''): void
