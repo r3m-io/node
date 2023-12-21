@@ -231,6 +231,7 @@ Trait Patch {
                 $validate = $this->validate($object, $validate_url,  $name . '.create');
             }
             if($validate) {
+                ddd($options);
                 if ($validate->success === true) {
                     $expose = $this->expose_get(
                         $object,
