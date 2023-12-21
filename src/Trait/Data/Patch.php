@@ -23,6 +23,8 @@ Trait Patch {
         $nodeList = [$node];
         $response = $this->patch_many($class, $role, $nodeList, $options);
 
+//        if(array_key_exists(''))
+
         ddd($response);
 
 
@@ -231,7 +233,6 @@ Trait Patch {
                 $validate = $this->validate($object, $validate_url,  $name . '.create');
             }
             if($validate) {
-                ddd($options);
                 if ($validate->success === true) {
                     $expose = $this->expose_get(
                         $object,
