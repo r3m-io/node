@@ -48,11 +48,23 @@ trait Role {
                         $name = $data_package->get('name');
                         if($data->get('name') === $name){
                             $permissions = $data->get('permission');
+                            $list = [];
+                            foreach($permissions as $nr => $permission){
+                                if(
+                                    is_object($permission) &&
+                                    property_exists($permission, 'name')
+                                ){
+                                    $list[] = $permission->name;
+                                }
+                            }
                             $package_permissions = $data_package->get('permission');
                             if($package_permissions){
                                 foreach($package_permissions as $permission){
-                                    ddd($permission);
-                                    if(!in_array($permission, $permissions, true)){
+                                    if(
+                                        is_object($permission) &&
+                                        property_exists($permission, 'name') &&
+                                        !in_array($permission->name, $list, true)
+                                    ){
                                         $permissions[] = $permission;
                                     }
                                 }
