@@ -17,6 +17,9 @@ Trait Patch {
      */
     public function patch($class, $role, $node=[], $options=[]): false|array
     {
+        if(!array_key_exists('function', $options)){
+            $options['function'] = __FUNCTION__;
+        }
         $nodeList = [$node];
         $response = $this->patch_many($class, $role, $nodeList, $options);
 
