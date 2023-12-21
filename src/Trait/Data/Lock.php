@@ -26,6 +26,8 @@ Trait Lock {
         $name = Controller::name($class);
         $object = $this->object();
         $dir_cache = $object->config('framework.dir.temp') .
+            '33' .
+            $object->config('ds') .
             'Node' .
             $object->config('ds')
         ;
@@ -63,6 +65,8 @@ Trait Lock {
         $name = Controller::name($class);
         $object = $this->object();
         $dir_cache = $object->config('framework.dir.temp') .
+            '33' .
+            $object->config('ds') .
             'Node' .
             $object->config('ds')
         ;
