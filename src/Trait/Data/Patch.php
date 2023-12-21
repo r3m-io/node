@@ -26,7 +26,7 @@ Trait Patch {
             array_key_exists('list', $response) &&
             is_array($response['list'])
         ){
-            $node = reset($response['list']);
+            $node = current($response['list']);
             if($node){
                 return [
                     'node' => $node
@@ -37,7 +37,7 @@ Trait Patch {
             array_key_exists('error', $response) &&
             is_array($response['error'])
         ){
-            $error = reset($response['error']);
+            $error = current($response['error']);
             if($error){
                 return [
                     'error' => $error
