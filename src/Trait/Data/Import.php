@@ -140,7 +140,6 @@ trait Import {
                         ddd($data_object);
                         $record = ['node' => $record];
                     }
-                    d($record);
                     if($record){
                         if(
                             array_key_exists('force', $options) &&
