@@ -48,6 +48,7 @@ trait Role {
                         $name = $data_package->get('name');
                         if($data->get('name') === $name){
                             $permissions = $data->get('permission');
+                            ddd($permissions);
                             $package_permissions = $data_package->get('permission');
                             if($package_permissions){
                                 foreach($package_permissions as $permission){
