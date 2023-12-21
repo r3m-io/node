@@ -137,6 +137,7 @@ trait Import {
                                 break;
                         }
                     } else {
+                        d($url_object);
                         ddd($data_object);
                         $record = ['node' => $record];
                     }
