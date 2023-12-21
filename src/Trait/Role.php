@@ -83,12 +83,9 @@ trait Role {
                             }
                             $data->set('permission', $permissions);
                             $data->write($url);
-                            $command = 'chown www-data:www-data ' . $url;
-                            exec($command);
-                            if($object->config('framework.environment') === Config::MODE_DEVELOPMENT){
-                                $command = 'chmod 666 ' . $url;
-                                exec($command);
-                            }
+                            File::permission($object, [
+                                'url' => $url
+                            ]);
                         }
                     };
                 } else {
@@ -98,21 +95,16 @@ trait Role {
                         $data->data($data_package->data());
                         $dir = Dir::name($url);
                         Dir::create($dir, Dir::CHMOD);
-                        $data->write($url);
-                        $command = 'chown www-data:www-data ' . $object->config('project.dir.data');
-                        exec($command);
-                        $command = 'chown www-data:www-data ' . $dir;
-                        exec($command);
-                        $command = 'chown www-data:www-data ' . $url;
-                        exec($command);
-                        if($object->config('framework.environment') === Config::MODE_DEVELOPMENT){
-                            $command = 'chmod 777 ' . $object->config('project.dir.data');
-                            exec($command);
-                            $command = 'chmod 777 ' . $dir;
-                            exec($command);
-                            $command = 'chmod 666 ' . $url;
-                            exec($command);
+                        $uuid = $data->get('uuid');
+                        if(empty($uuid)){
+                            $data->set('uuid', Core::uuid());
                         }
+                        $data->write($url);
+                        File::permission($object, [
+                            'dir_data' => $object->config('project.dir.data'),
+                            'dir' => $dir,
+                            'url' => $url
+                        ]);
                     }
                 }
             }
