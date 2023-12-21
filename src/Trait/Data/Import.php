@@ -136,6 +136,8 @@ trait Import {
                                 }
                                 break;
                         }
+                    } else {
+                        $record = ['node' => $record];
                     }
                     d($record);
                     if($record){
