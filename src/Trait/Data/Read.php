@@ -11,7 +11,7 @@ use Exception;
 
 use R3m\Io\Exception\FileWriteException;
 use R3m\Io\Exception\ObjectException;
-Trait Read {
+trait Read {
 
     /**
      * @throws ObjectException

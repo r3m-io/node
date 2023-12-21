@@ -7,7 +7,7 @@ use R3m\Io\Module\Core;
 
 use Exception;
 
-Trait Count {
+trait Count {
 
     /**
      * @throws Exception

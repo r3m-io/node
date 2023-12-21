@@ -12,7 +12,7 @@ use Exception;
 use R3m\Io\Exception\FileWriteException;
 use R3m\Io\Exception\ObjectException;
 
-Trait Record {
+trait Record {
 
     /**
      * @throws ObjectException

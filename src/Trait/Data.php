@@ -34,6 +34,7 @@ trait Data {
     use Data\Read;
     use Data\Record;
     use Data\Rename;
+    use Data\Single;
 
     /**
      * @throws Exception

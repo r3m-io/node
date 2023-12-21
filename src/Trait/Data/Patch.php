@@ -10,7 +10,7 @@ use R3m\Io\Node\Service\Security;
 
 use Exception;
 
-Trait Patch {
+trait Patch {
 
     /**
      * @throws Exception
@@ -22,31 +22,7 @@ Trait Patch {
         }
         $nodeList = [$node];
         $response = $this->patch_many($class, $role, $nodeList, $options);
-        if(
-            $response &&
-            array_key_exists('list', $response) &&
-            is_array($response['list'])
-        ){
-            $node = current($response['list']);
-            if($node){
-                return [
-                    'node' => $node
-                ];
-            }
-        }
-        elseif(
-            $response &&
-            array_key_exists('error', $response) &&
-            is_array($response['error'])
-        ){
-            $error = current($response['error']);
-            if($error){
-                return [
-                    'error' => $error
-                ];
-            }
-        }
-        return false;
+        return $this->single($response);
     }
 
     /**

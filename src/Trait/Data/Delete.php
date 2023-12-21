@@ -13,7 +13,7 @@ use R3m\Io\Node\Service\Security;
 
 use Exception;
 
-Trait Delete {
+trait Delete {
 
     /**
      * @throws Exception

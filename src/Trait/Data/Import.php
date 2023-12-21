@@ -19,7 +19,7 @@ use R3m\Io\Exception\FileWriteException;
 use R3m\Io\Exception\ObjectException;
 use R3m\Io\Node\Service\Security;
 
-Trait Import {
+trait Import {
 
     /**
      * @throws ObjectException

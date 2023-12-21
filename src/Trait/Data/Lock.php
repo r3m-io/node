@@ -13,7 +13,7 @@ use Exception;
 use R3m\Io\Exception\FileWriteException;
 use R3m\Io\Exception\ObjectException;
 
-Trait Lock {
+trait Lock {
 
     /**
      * @throws Exception

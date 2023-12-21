@@ -15,7 +15,7 @@ use R3m\Io\Node\Service\Security;
 
 use Exception;
 
-Trait Rename {
+trait Rename {
 
     /**
      * @throws Exception
