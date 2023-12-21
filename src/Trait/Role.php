@@ -34,6 +34,14 @@ trait Role {
         }
     }
 
+    public function role_has($role, $permission=''): bool
+    {
+        $object = $this->object();
+        d($role);
+        ddd($permission);
+        return false;
+    }
+
     public function role_system_create($package=''): void
     {
         $object = $this->object();
