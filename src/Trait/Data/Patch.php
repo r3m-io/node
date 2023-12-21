@@ -235,7 +235,7 @@ Trait Patch {
                     $expose = $this->expose_get(
                         $object,
                         $name,
-                        $name . '.' . __FUNCTION__ . '.expose'
+                        $name . '.' . $options['function'] . '.expose'
                     );
                     $node = new Storage();
                     $node->data($object->request('node'));
@@ -248,7 +248,7 @@ Trait Patch {
                             $node,
                             $expose,
                             $name,
-                            __FUNCTION__,
+                            $options['function'],
                             $role
                         );
                         $record = $node->data();
@@ -259,7 +259,14 @@ Trait Patch {
                             if(array_key_exists($record->uuid, $uuid)){
                                 $list_nr = $uuid[$record->uuid];
                                 $list[$list_nr] = $record;
-                                $result[] = $record->uuid;
+                                if(
+                                    array_key_exists('function', $options) &&
+                                    $options['function'] === __FUNCTION__
+                                ){
+                                    $result[] = $record->uuid;
+                                } else {
+                                    $result[] = $record;
+                                }
                             }
                         }
                     }
