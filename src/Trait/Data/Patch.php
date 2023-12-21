@@ -17,6 +17,11 @@ Trait Patch {
      */
     public function patch($class, $role, $node=[], $options=[]): false|array
     {
+        d($class);
+        d($node);
+        ddd($options);
+
+
         $name = Controller::name($class);
         if(
             is_object($node) &&
