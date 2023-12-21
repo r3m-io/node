@@ -23,10 +23,16 @@ Trait Patch {
         $nodeList = [$node];
         $response = $this->patch_many($class, $role, $nodeList, $options);
         if(array_key_exists('list', $response)){
-            return array_shift($response['list']);
+            $result = [
+                'node' => array_shift($response['list'])
+            ];
+            return $result;
         }
         elseif(array_key_exists('error', $response)){
-            return array_shift($response['error']);
+            $result = [
+                'error' => array_shift($response['error'])
+            ];
+            return $result;
         }
         return false;
     }
