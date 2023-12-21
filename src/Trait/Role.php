@@ -34,7 +34,7 @@ trait Role {
         }
     }
 
-    public function role_has($role, $permission=''): bool
+    public function role_has_permission($role, $permission=''): bool
     {
         $object = $this->object();
         d($role);
