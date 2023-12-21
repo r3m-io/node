@@ -17,9 +17,10 @@ Trait Patch {
      */
     public function patch($class, $role, $node=[], $options=[]): false|array
     {
-        d($class);
-        d($node);
-        ddd($options);
+        $nodeList = [$node];
+        $response = $this->patch_many($class, $role, $nodeList, $options);
+
+        ddd($response);
 
 
         $name = Controller::name($class);
