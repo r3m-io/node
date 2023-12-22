@@ -38,11 +38,8 @@ trait Import {
             if(!File::exist($options['url'])){
                 return false;
             }
-            if(
-                array_key_exists('uuid', $options) &&
-                $options['uuid'] === true
-            ){
-                ddd($options);
+            if(!array_key_exists('uuid', $options)){
+                $options['uuid'] = false;
             }
             $options['import'] = true;
             set_time_limit(0);
@@ -76,6 +73,9 @@ trait Import {
             $data = $object->data_read($options['url']);
             if($data){
                 $list = $data->data($name);
+                if(!is_array($list)){
+                    $list = [];
+                }
                 $url_object = $object->config('project.dir.node') .
                     'Object' .
                     $object->config('ds') .
@@ -176,7 +176,8 @@ trait Import {
             }
             if(!empty($create_many)) {
                 $response = $this->create_many($class, $role, $create_many, [
-                    'import' => true
+                    'import' => true,
+                    'uuid' => $options['uuid']
                 ]);
                 if (
                     array_key_exists('list', $response) &&
@@ -191,7 +192,8 @@ trait Import {
             }
             if(!empty($put_many)){
                 $response = $this->put_many($class, $role, $put_many, [
-                    'import' => true
+                    'import' => true,
+                    'uuid' => $options['uuid']
                 ]);
                 if(
                     array_key_exists('list', $response) &&
@@ -207,7 +209,8 @@ trait Import {
             }
             if(!empty($patch_many)){
                 $response = $this->patch_many($class, $role, $patch_many, [
-                    'import' => true
+                    'import' => true,
+                    'uuid' => $options['uuid']
                 ]);
                 if(
                     array_key_exists('list', $response) &&

@@ -38,6 +38,9 @@ trait Put {
         if(!array_key_exists('import', $options)){
             $options['import'] = false;
         }
+        if(!array_key_exists('uuid', $options)){
+            $options['uuid'] = false;
+        }
         $options['relation'] = false;
         if(!Security::is_granted(
             $class,
