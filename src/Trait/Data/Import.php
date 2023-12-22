@@ -169,7 +169,9 @@ trait Import {
                             $skip++;
                         }
                     } else {
-                        $node->delete('uuid');
+                        if(!$options['uuid'] === true){
+                            $node->delete('uuid');
+                        }
                         $create_many[] = $node->data();
                     }
                 }
@@ -192,8 +194,7 @@ trait Import {
             }
             if(!empty($put_many)){
                 $response = $this->put_many($class, $role, $put_many, [
-                    'import' => true,
-                    'uuid' => $options['uuid']
+                    'import' => true
                 ]);
                 if(
                     array_key_exists('list', $response) &&
@@ -209,8 +210,7 @@ trait Import {
             }
             if(!empty($patch_many)){
                 $response = $this->patch_many($class, $role, $patch_many, [
-                    'import' => true,
-                    'uuid' => $options['uuid']
+                    'import' => true
                 ]);
                 if(
                     array_key_exists('list', $response) &&
