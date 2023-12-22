@@ -321,7 +321,7 @@ trait NodeList {
                         $options['ramdisk'] === true &&
                         $ramdisk_url_node !== false
                     ){
-                        ddd($ramdisk_url_node);
+                        d($ramdisk_url_node);
                         $relation_mtime = $this->relation_mtime($object_data);
                         $ramdisk = new Storage();
                         $ramdisk->set('mtime', $mtime);
@@ -375,7 +375,7 @@ trait NodeList {
                     $ramdisk_dir !== false &&
                     $ramdisk_dir_node !== false
                 ){
-                    ddd($ramdisk_url_node);
+                    d($ramdisk_url_node);
                     $relation_mtime = $this->relation_mtime($object_data);
                     $ramdisk = new Storage();
                     $ramdisk->set('mtime', $mtime);
