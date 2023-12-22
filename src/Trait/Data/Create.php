@@ -92,10 +92,11 @@ trait Create {
                 $node = Core::object($node, Core::OBJECT_OBJECT);
             }
             $object->request('node', $node);
-            if($options['uuid'] === true){
-                ddd($object->request());
+            if($options['uuid'] === true && !empty($object->request('node.uuid'))){
+                // do nothing
+            } else {
+                $object->request('node.uuid', Core::uuid());
             }
-            $object->request('node.uuid', Core::uuid());
             $object->request('node.#class', $name);
             if(
                 array_key_exists('validation', $options) &&
