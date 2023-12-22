@@ -85,6 +85,10 @@ Trait Transaction {
             $result['bytes'] = $bytes;
             $result['size'] = File::size_format($bytes);
             $result['speed'] = File::size_format($speed) . '/sec';
+            File::permission($object, [
+                'dir_data' => $dir_data,
+                'url' => $url,
+            ]);
         } else {
             throw new Exception('Commit-data not found for url: ' . $data);
         }
