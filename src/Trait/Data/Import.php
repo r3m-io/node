@@ -38,6 +38,12 @@ trait Import {
             if(!File::exist($options['url'])){
                 return false;
             }
+            if(
+                array_key_exists('uuid', $options) &&
+                $options['uuid'] === true
+            ){
+                ddd($options);
+            }
             $options['import'] = true;
             set_time_limit(0);
             $start = microtime(true);
@@ -137,8 +143,6 @@ trait Import {
                                 break;
                         }
                     } else {
-                        d($url_object);
-                        ddd($data_object);
                         $record = ['node' => $record];
                     }
                     if($record){
