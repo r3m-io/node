@@ -54,6 +54,7 @@ trait Create {
             $role,
             $options
         )){
+            d('1');
             return false;
         }
         $transaction = $object->config('node.transaction.' . $name);
@@ -150,6 +151,7 @@ trait Create {
             if ($options['import'] === false){
                 $this->unlock($name);
             }
+            d('2');
             return false;
         }
         if(!empty($error)){
