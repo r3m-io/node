@@ -22,7 +22,9 @@ trait Delete {
     {
         $name = Controller::name($class);
         d($name);
+        d($options);
         $options = Core::object($options, Core::OBJECT_ARRAY);
+        d($options);
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
