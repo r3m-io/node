@@ -36,6 +36,7 @@ trait Delete {
             d(2);
             return false;
         }
+        ddd('here');
         $options['relation'] = false;
         if(!Security::is_granted(
             $name,
