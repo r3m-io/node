@@ -53,6 +53,7 @@ trait Delete {
         if(!$list){
             return true;
         }
+        ddd($list);
         foreach($list as $nr => $record){
             if(
                 is_object($record) &&
