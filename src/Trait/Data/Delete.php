@@ -36,7 +36,6 @@ trait Delete {
             d(2);
             return false;
         }
-        ddd('here');
         $options['relation'] = false;
         if(!Security::is_granted(
             $name,
@@ -46,6 +45,7 @@ trait Delete {
             d(3);
             return false;
         }
+        ddd('here');
         $object = $this->object();
         $dir_data = $object->config('project.dir.node') .
             'Data' .
