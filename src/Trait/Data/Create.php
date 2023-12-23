@@ -150,13 +150,6 @@ trait Create {
                 }
             }
         }
-        if(empty($list)) {
-            if ($options['import'] === false){
-                $this->unlock($name);
-            }
-            d('2');
-            return false;
-        }
         if(!empty($error)){
             $response = [];
             $response['error'] = $error;
@@ -164,6 +157,12 @@ trait Create {
                 $this->unlock($name);
             }
             return $response;
+        }
+        if(empty($list)) {
+            if ($options['import'] === false){
+                $this->unlock($name);
+            }
+            return false;
         }
         if($transaction === true){
             $data = $object->data_read($url, sha1($url));
