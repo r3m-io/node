@@ -53,6 +53,7 @@ trait Delete {
         if(!$list){
             return true;
         }
+        $result = false;
         foreach($list as $nr => $record){
             if(
                 is_object($record) &&
@@ -61,9 +62,11 @@ trait Delete {
                 if($record->uuid === $options['uuid']){
                     if(is_array($list)){
                         unset($list[$nr]);
+                        $result = true;
                     }
                     elseif(is_object($list)){
                         unset($list->{$nr});
+                        $result = true;
                     }
                     if(empty($list)){
                         File::delete($url);
@@ -75,7 +78,7 @@ trait Delete {
                         $data->data($name, $list);
                         $data->write($url);
                     }
-                    return true;
+                    return $result;
                 }
             }
         }
