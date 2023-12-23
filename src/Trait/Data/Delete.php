@@ -47,11 +47,11 @@ trait Delete {
         $url = $dir_data . $name . $object->config('extension.json');
         $data = $object->data_read($url);
         if(!$data){
-            return true;
+            return false;
         }
         $list = $data->data($name);
         if(!$list){
-            return true;
+            return false;
         }
         $result = false;
         foreach($list as $nr => $record){
