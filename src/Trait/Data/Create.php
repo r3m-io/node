@@ -54,7 +54,6 @@ trait Create {
             $role,
             $options
         )){
-            d('1');
             return false;
         }
         $transaction = $object->config('node.transaction.' . $name);
