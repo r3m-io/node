@@ -21,14 +21,17 @@ trait Delete {
     public function delete($class, $role, $options=[]): bool
     {
         $name = Controller::name($class);
+        d($name);
         $options = Core::object($options, Core::OBJECT_ARRAY);
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
         if(!array_key_exists('uuid', $options)){
+            d(1);
             return false;
         }
         if(!Core::is_uuid($options['uuid'])){
+            d(2);
             return false;
         }
         $options['relation'] = false;
@@ -37,6 +40,7 @@ trait Delete {
             $role,
             $options
         )){
+            d(3);
             return false;
         }
         $object = $this->object();
@@ -47,10 +51,12 @@ trait Delete {
         $url = $dir_data . $name . $object->config('extension.json');
         $data = $object->data_read($url);
         if(!$data){
+            d(4);
             return true;
         }
         $list = $data->data($name);
         if(!$list){
+            d(5);
             return true;
         }
         ddd($list);
