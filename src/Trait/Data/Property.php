@@ -73,7 +73,6 @@ trait Property {
             $uuid[$record->uuid] = $nr;
         }
         $error = [];
-        $result = [];
         if (
             is_object($node) &&
             get_class($node) === Storage::class
@@ -110,6 +109,7 @@ trait Property {
         } else {
             $validate = $this->validate($object, $validate_url, $name . '.create');
         }
+        $record = false;
         if ($validate) {
             if ($validate->success === true) {
                 $expose = $this->expose_get(
@@ -139,7 +139,6 @@ trait Property {
                         if (array_key_exists($record->uuid, $uuid)) {
                             $list_nr = $uuid[$record->uuid];
                             $list[$list_nr] = $record;
-                            $result[] = $record;
                         }
                     }
                 }
@@ -160,7 +159,7 @@ trait Property {
         }
         $data->set($name, $list);
         $response = [];
-        $response['list'] = $result;
+        $response['node'] = $record;
         if ($transaction === true) {
             $object->data(sha1($url), $data);
             $response['transaction'] = true;
