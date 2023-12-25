@@ -105,6 +105,7 @@ trait Property {
         if($has_delete === false){
             return false;
         }
+        d($object->request());
         if (
             array_key_exists('validation', $options) &&
             $options['validation'] === false
