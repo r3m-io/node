@@ -10,12 +10,12 @@ use R3m\Io\Node\Service\Security;
 
 use Exception;
 
-trait PropertyRemove {
+trait Property {
 
     /**
      * @throws Exception
      */
-    public function property_remove($class, $role, $node=[], $options=[]): false|array
+    public function property_delete($class, $role, $node=[], $options=[]): false|array
     {
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;

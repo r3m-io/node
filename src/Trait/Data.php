@@ -31,7 +31,7 @@ trait Data {
     use Data\NodeList;
     use Data\Page;
     use Data\Patch;
-    use Data\PropertyRemove;
+    use Data\Property;
     use Data\Put;
     use Data\Read;
     use Data\Record;
