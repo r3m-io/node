@@ -88,6 +88,7 @@ trait Property {
         } else {
             $node = Core::object($node, Core::OBJECT_OBJECT);
         }
+        d($node);
         d($uuid);
         ddd($list);
         $record = (object) [];
