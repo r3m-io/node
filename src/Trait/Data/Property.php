@@ -88,6 +88,8 @@ trait Property {
         } else {
             $node = Core::object($node, Core::OBJECT_OBJECT);
         }
+        d($uuid);
+        ddd($list);
         $record = (object) [];
         if(property_exists($node, 'uuid')){
             if(array_key_exists($node->uuid, $uuid)){
@@ -96,6 +98,17 @@ trait Property {
             }
         }
         ddd($record);
+        if($transaction === true){
+            $object->data(sha1($url), $data);
+            $response['transaction'] = true;
+        } else {
+            $write = $data->write($url);
+            $response['byte'] = $write;
+            $response['transaction'] = false;
+            if($options['import'] === false){
+                $this->unlock($class);
+            }
+        }
 
         /*
         $object->request('node', Core::object_merge($record, $node));
