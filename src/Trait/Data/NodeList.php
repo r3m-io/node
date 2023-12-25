@@ -155,6 +155,7 @@ trait NodeList {
                                     break;
                                 }
                                 if ($relation_mtime !== File::mtime($relation_url)) {
+                                    ddd('yes');
                                     $is_cache_miss = true;
                                     break;
                                 }
