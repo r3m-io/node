@@ -100,7 +100,7 @@ trait Property {
                 continue;
             }
             $has_delete = true;
-            $object->request('delete', $attribute);
+            $object->request('delete', 'node.' . $attribute);
         }
         if($has_delete === false){
             return false;
