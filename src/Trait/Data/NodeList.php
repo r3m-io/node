@@ -155,12 +155,13 @@ trait NodeList {
                                     break;
                                 }
                                 if ($relation_mtime !== File::mtime($relation_url)) {
-                                    ddd('yes');
                                     $is_cache_miss = true;
                                     break;
                                 }
                             }
                         }
+                    } else {
+                        $is_cache_miss = true;
                     }
                     if($is_cache_miss === false){
                         $response = (array) $ramdisk->get('response');
