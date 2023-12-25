@@ -189,6 +189,5 @@ trait Patch {
         $duration = (microtime(true) - $start) * 1000;
         $response['duration'] = $duration;
         return $response;
-
     }
 }
