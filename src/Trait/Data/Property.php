@@ -17,13 +17,10 @@ trait Property {
      */
     public function property_delete($class, $role, $node=[], $options=[]): false|array
     {
-        if (!array_key_exists('function', $options)) {
-            $options['function'] = __FUNCTION__;
-        }
         $name = Controller::name($class);
         $object = $this->object();
         if (!array_key_exists('function', $options)) {
-            $options['function'] = __FUNCTION__;
+            $options['function'] = 'patch'; //this one need the same rights as patch
         }
         if (!array_key_exists('import', $options)) {
             $options['import'] = false;
@@ -105,7 +102,6 @@ trait Property {
         if($has_delete === false){
             return false;
         }
-        d($object->request());
         if (
             array_key_exists('validation', $options) &&
             $options['validation'] === false
