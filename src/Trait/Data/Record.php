@@ -59,6 +59,7 @@ trait Record {
             unset($record['count']);
             return $record;
         }
+        d($response);
         return null;
     }
 
