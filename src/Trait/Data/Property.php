@@ -86,7 +86,11 @@ trait Property {
             if (array_key_exists($node->uuid, $uuid)) {
                 $list_nr = $uuid[$node->uuid];
                 $record = $list[$list_nr];
+            } else {
+                return false;
             }
+        } else {
+            return false;
         }
         $object->request('node', Core::object_merge($record, $node));
         $object->request('node.#class', $name);
