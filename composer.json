@@ -8,8 +8,9 @@
         "ext-posix": "*",
         "ext-zlib": "*",
         "ext-iconv": "*",
-        "r3m_io/framework": "*"
+        "r3m_io/framework": "dev-root"
     },
+    "minimum-stability": "dev",
     "license" : "MIT",
     "authors" : [{
         "name" : "Remco van der Velde",
