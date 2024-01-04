@@ -28,6 +28,9 @@ trait Role {
             $url = $object->config('project.dir.data') . 'Account' . $object->config('ds') . 'Role.System.json';
             $data = $object->data_read($url);
             if($data){
+                if(property_exists($data, 'uuid')){
+                    $object->config('framework.role.system.uuid', $data->uuid);
+                }
                 return $data->data();
             }
             return false;
