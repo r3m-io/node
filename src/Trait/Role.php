@@ -29,6 +29,7 @@ trait Role {
             $data = $object->data_read($url);
             if($data){
                 $object->config('framework.role.system.uuid', $data->get('uuid'));
+
                 return $data->data();
             }
             return false;
