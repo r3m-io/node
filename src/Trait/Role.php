@@ -10,8 +10,18 @@ use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\Dir;
 use R3m\Io\Module\File;
 
+use Exception;
+
+use R3m\Io\Exception\DirectoryCreateException;
+use R3m\Io\Exception\FileWriteException;
+use R3m\Io\Exception\ObjectException;
+
 trait Role {
 
+    /**
+     * @throws ObjectException
+     * @throws Exception
+     */
     public function role_system()
     {
         $object = $this->object();
@@ -35,31 +45,38 @@ trait Role {
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function role_has_permission($role, $permission=''): bool
     {
-        $list = [];
-        $object = $this->object();
-        if(property_exists($role, 'uuid')){
-            $list = $object->data($role->uuid);
-            if(empty($list)){
-                $list = [];
-                foreach ($role->permission as $record){
-                    if(
-                        is_object($record) &&
-                        property_exists($record, 'name')
-                    ){
-                        $list[$record->name] = true;
-                    }
+        if(
+            property_exists($role, 'uuid') &&
+            property_exists($role, 'permission') &&
+            (
+                is_array($role->permission) ||
+                is_object($role->permission)
+            )
+        ){
+            foreach ($role->permission as $record){
+                if(
+                    is_object($record) &&
+                    property_exists($record, 'name') &&
+                    $permission === $record->name
+                ){
+                    return true;
                 }
-                $object->data($role->uuid, $list);
             }
-        }
-        if(array_key_exists($permission, $list)){
-            return true;
         }
         return false;
     }
 
+    /**
+     * @throws ObjectException
+     * @throws DirectoryCreateException
+     * @throws FileWriteException
+     * @throws Exception
+     */
     public function role_system_create($package=''): void
     {
         $object = $this->object();
