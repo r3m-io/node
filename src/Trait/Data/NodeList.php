@@ -286,8 +286,6 @@ trait NodeList {
                     !empty($options['sort']) &&
                     is_array($options['sort'])
                 ){
-                    d($list);
-                    d($options['sort']);
                     $list_sort = Sort::list($list)->with(
                         $options['sort'],
                         [
@@ -297,10 +295,9 @@ trait NodeList {
                 } else {
                     $list_sort = $list;
                 }
-//                d($list_sort);
                 if(
-                    !empty($options['limit']) &&
-                    $options['limit'] === '*'
+                    !empty($limit) &&
+                    $limit === '*'
                 ){
                     $list_count = 0;
                     foreach($list_sort as $index => $record){
