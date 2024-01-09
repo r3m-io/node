@@ -162,7 +162,6 @@ trait NodeList {
                     } else {
                         $is_cache_miss = true;
                     }
-                    $is_cache_miss = true;
                     if($is_cache_miss === false){
                         $response = (array) $ramdisk->get('response');
                         if($response){
