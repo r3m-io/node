@@ -116,7 +116,6 @@ trait NodeList {
                 //per role cache
                 $key_options['role'] = $role->uuid;
             } else {
-                ddd($role);
                 throw new Exception('Role not set for ramdisk');
             }
             //cache key
@@ -163,6 +162,7 @@ trait NodeList {
                     } else {
                         $is_cache_miss = true;
                     }
+                    $is_cache_miss = true;
                     if($is_cache_miss === false){
                         $response = (array) $ramdisk->get('response');
                         if($response){
@@ -295,6 +295,7 @@ trait NodeList {
                 } else {
                     $list_sort = $list;
                 }
+                d($list_sort);
                 if(
                     !empty($options['limit']) &&
                     $options['limit'] === '*'
