@@ -287,6 +287,7 @@ trait NodeList {
                     is_array($options['sort'])
                 ){
                     d($list);
+                    d($options['sort']);
                     $list_sort = Sort::list($list)->with(
                         $options['sort'],
                         [
