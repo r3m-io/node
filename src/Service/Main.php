@@ -44,7 +44,7 @@ class Main {
         if(is_array($array)){
             foreach($array as $key => $value) {
                 if(is_object($value) || is_array($value)){
-                    $array[$key] = Entity::castValue($value);
+                    $array[$key] = Main::castValue($value);
                 } else {
                     if($value === 'null'){
                         $array[$key] = null;
@@ -68,7 +68,7 @@ class Main {
         elseif(is_object($array)){
             foreach($array as $key => $value) {
                 if(is_object($value) || is_array($value)){
-                    $array->$key = Entity::castValue($value);
+                    $array->$key = Main::castValue($value);
                 } else {
                     if($value === 'null'){
                         $array->$key = null;
