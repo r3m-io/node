@@ -581,7 +581,7 @@ trait Where {
                             }
                             break;
                         default:
-                            throw Exception('Unknown operator: ' . $operator);
+                            throw new Exception('Unknown operator: ' . $operator);
                     }
                 }
                 $counter++;
