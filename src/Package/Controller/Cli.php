@@ -78,7 +78,7 @@ class Cli extends Controller {
             ) ||
             $module === Cli::MODULE_INFO ||
             $submodule === Cli::MODULE_INFO ||
-            $command === CLI::MODULE_INFO
+            $command === Cli::MODULE_INFO
         ){
             $subcommand = false;
         }
@@ -91,8 +91,8 @@ class Cli extends Controller {
             ) ||
             $module === Cli::MODULE_INFO ||
             $submodule === Cli::MODULE_INFO ||
-            $command === CLI::MODULE_INFO ||
-            $subcommand === CLI::MODULE_INFO
+            $command === Cli::MODULE_INFO ||
+            $subcommand === Cli::MODULE_INFO
         ){
             $action = false;
         }
@@ -105,9 +105,9 @@ class Cli extends Controller {
             ) ||
             $module === Cli::MODULE_INFO ||
             $submodule === Cli::MODULE_INFO ||
-            $command === CLI::MODULE_INFO ||
-            $subcommand === CLI::MODULE_INFO ||
-            $action === CLI::MODULE_INFO
+            $command === Cli::MODULE_INFO ||
+            $subcommand === Cli::MODULE_INFO ||
+            $action === Cli::MODULE_INFO
         ){
             $subaction = false;
         }
