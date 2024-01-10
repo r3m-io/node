@@ -20,7 +20,8 @@ trait NodeList {
     /**
      * @throws Exception
      */
-    public function list($class, $role, $options=[]){
+    public function list($class, $role, $options=[]): array
+    {
         $mtime = false;
         $name = Controller::name($class);
         $options = Core::object($options, Core::OBJECT_ARRAY);

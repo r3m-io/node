@@ -22,7 +22,7 @@ trait Role {
      * @throws ObjectException
      * @throws Exception
      */
-    public function role_system()
+    public function role_system(): false | object
     {
         $object = $this->object();
         if(

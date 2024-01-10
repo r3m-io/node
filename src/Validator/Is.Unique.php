@@ -25,7 +25,7 @@ use R3m\Io\Node\Model\Node;
 /**
  * @throws Exception
  */
-function validate_is_unique(App $object, $value='', $attribute='', $validate='')
+function validate_is_unique(App $object, $value='', $attribute='', $validate=''): bool
 {
     $dir_node = $object->config('project.dir.node');
     $url = false;

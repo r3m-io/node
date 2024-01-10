@@ -19,7 +19,7 @@ trait Create {
     /**
      * @throws Exception
      */
-    public function create($class, $role, $node=[], $options=[]): false|array
+    public function create($class, $role, $node=[], $options=[]): false | array
     {
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
@@ -32,7 +32,7 @@ trait Create {
     /**
      * @throws Exception
      */
-    public function create_many($class, $role, $nodeList=[], $options=[]): false|array
+    public function create_many($class, $role, $nodeList=[], $options=[]): false | array
     {
         $name = Controller::name($class);
         $object = $this->object();

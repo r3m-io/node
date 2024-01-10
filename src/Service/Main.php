@@ -40,7 +40,8 @@ class Main {
     /**
      * @throws ObjectException
      */
-    protected static function castValue($array=[]){
+    protected static function castValue($array=[]): mixed
+    {
         if(is_array($array)){
             foreach($array as $key => $value) {
                 if(is_object($value) || is_array($value)){

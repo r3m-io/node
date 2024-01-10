@@ -41,7 +41,7 @@ trait Data {
     /**
      * @throws Exception
      */
-    public function object_create($class, $role, $node=[], $options=[])
+    public function object_create($class, $role, $node=[], $options=[]): false
     {
         $name = Controller::name($class);
         $object = $this->object();
@@ -189,7 +189,6 @@ trait Data {
         if(!array_key_exists('class', $options)){
             return false;
         }
-
         $uuid = [];
         $uuid[] = (object) [
             'is.uuid' => true
@@ -236,7 +235,6 @@ trait Data {
         $item = new Storage($item);
         $expose = new Storage();
         $expose->set('role', 'ROLE_SYSTEM');
-
         $attributes = [];
         $attributes[] = 'uuid';
         $attributes[] = '#class';
@@ -478,31 +476,4 @@ trait Data {
         }
         return $properties;
     }
-
-    /*
-    private function sync_file($options=[]): void
-    {
-        $object = $this->object();
-        if ($object->config(Config::POSIX_ID) === 0) {
-            foreach ($options as $key => $value) {
-                if (File::exist($value)) {
-                    $command = 'chown www-data:www-data ' . $value;
-                    exec($command);
-                }
-            }
-        }
-        if ($object->config('framework.environment') === Config::MODE_DEVELOPMENT) {
-            foreach($options as $key => $value){
-                if(Dir::is($value)){
-                    $command = 'chmod 777 ' . $value;
-                    exec($command);
-                }
-                elseif(File::is($value)) {
-                    $command = 'chmod 666 ' . $value;
-                    exec($command);
-                }
-            }
-        }
-    }
-    */
 }

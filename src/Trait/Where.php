@@ -69,7 +69,8 @@ trait Where {
     /**
      * @throws Exception
      */
-    private function where_convert($input=[]){
+    private function where_convert($input=[]): array
+    {
         if(is_array($input)){
             $is_string = true;
             foreach($input as $nr => $line){
@@ -228,7 +229,8 @@ trait Where {
         return $tree;
     }
 
-    private function where_get_depth($where=[]){
+    private function where_get_depth($where=[]): int
+    {
         $depth = 0;
         $deepest = 0;
         if(!is_array($where)){
@@ -248,7 +250,8 @@ trait Where {
         return $deepest;
     }
 
-    private function where_get_set(&$where=[], &$key=null, $deep=0){
+    private function where_get_set(&$where=[], &$key=null, $deep=0): array
+    {
         $set = [];
         $depth = 0;
         //convert where to array.
@@ -293,7 +296,8 @@ trait Where {
     /**
      * @throws Exception
      */
-    private function where_process($record=[], $set=[], &$where=[], &$key=null, &$operator=null, $options=[]){
+    private function where_process($record=[], $set=[], &$where=[], &$key=null, &$operator=null, $options=[]): array
+    {
         $count = count($set);
         if(
             array_key_exists(0, $set) &&
@@ -527,7 +531,8 @@ trait Where {
     /**
      * @throws Exception
      */
-    private function where($record=[], $where=[], $options=[]){
+    private function where($record=[], $where=[], $options=[]): array | object
+    {
         if(empty($where)){
             return $record;
         }

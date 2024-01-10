@@ -19,7 +19,8 @@ trait Relation {
     /**
      * @throws Exception
      */
-    private function relation($record, $data, $role, $options=[]){
+    private function relation($record, $data, $role, $options=[]): array | object
+    {
         $object = $this->object();
         if(!$role){
             return $record;

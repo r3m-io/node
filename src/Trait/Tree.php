@@ -10,7 +10,8 @@ use R3m\Io\Exception\ObjectException;
 
 trait Tree {
 
-    private function tree_max_depth($tree=[]){
+    private function tree_max_depth($tree=[]): int
+    {
         $depth = 0;
         if(!is_array($tree)){
             return $depth;
@@ -53,7 +54,8 @@ trait Tree {
         return $set;
     }
 
-    private function tree_set_replace($tree=[], $set=[], $depth=0){
+    private function tree_set_replace($tree=[], $set=[], $depth=0): array
+    {
         $is_collect = false;
         foreach($tree as $nr => $record){
             if(
@@ -85,7 +87,7 @@ trait Tree {
      * @throws ObjectException
      * @throws FileWriteException
      */
-    private function tree_record_attribute($record=[])
+    private function tree_record_attribute($record=[]): mixed
     {
         $attribute = '';
         if(!array_key_exists('collection', $record)){

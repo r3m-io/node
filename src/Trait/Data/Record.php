@@ -9,14 +9,12 @@ use R3m\Io\Node\Service\Security;
 
 use Exception;
 
-use R3m\Io\Exception\FileWriteException;
 use R3m\Io\Exception\ObjectException;
 
 trait Record {
 
     /**
      * @throws ObjectException
-     * @throws FileWriteException
      * @throws Exception
      */
     public function record($class, $role, $options=[]): ?array

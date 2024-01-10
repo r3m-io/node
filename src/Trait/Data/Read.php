@@ -18,7 +18,7 @@ trait Read {
      * @throws FileWriteException
      * @throws Exception
      */
-    public function read($class, $role, $options=[]): false|array|object
+    public function read($class, $role, $options=[]): false | array | object
     {
         $object = $this->object();
         $name = Controller::name($class);

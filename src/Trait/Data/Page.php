@@ -19,7 +19,8 @@ trait Page {
     /**
      * @throws Exception
      */
-    public function page($class, $role, $options=[]){
+    public function page($class, $role, $options=[]): false | int
+    {
         $name = Controller::name($class);
         $options = Core::object($options, Core::OBJECT_ARRAY);
         if(!array_key_exists('function', $options)){

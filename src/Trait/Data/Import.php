@@ -26,7 +26,7 @@ trait Import {
      * @throws FileWriteException
      * @throws Exception
      */
-    public function import($class, $role, $options=[]): false|array
+    public function import($class, $role, $options=[]): false | array
     {
         $name = Controller::name($class);
         $object = $this->object();

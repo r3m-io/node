@@ -15,7 +15,7 @@ trait Patch {
     /**
      * @throws Exception
      */
-    public function patch($class, $role, $node=[], $options=[]): false|array
+    public function patch($class, $role, $node=[], $options=[]): false | array
     {
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
@@ -28,7 +28,7 @@ trait Patch {
     /**
      * @throws Exception
      */
-    public function patch_many($class, $role, $nodeList=[], $options=[]): false|array
+    public function patch_many($class, $role, $nodeList=[], $options=[]): false | array
     {
         $name = Controller::name($class);
         $object = $this->object();

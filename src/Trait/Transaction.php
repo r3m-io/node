@@ -33,7 +33,7 @@ Trait Transaction {
      * @throws FileWriteException
      * @throws Exception
      */
-    public function commit($class, $role, $options=[]): false|array
+    public function commit($class, $role, $options=[]): false | array
     {
         $start = microtime(true);
         $name = Controller::name($class);

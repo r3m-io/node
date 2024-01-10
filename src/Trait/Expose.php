@@ -12,12 +12,11 @@ use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\File;
 use R3m\Io\Module\Parse;
 
-//use R3m\Io\Node\Service\User;
-
 use Exception;
 
 use R3m\Io\Exception\FileWriteException;
 use R3m\Io\Exception\ObjectException;
+use R3m\Io\Exception\AuthorizationException;
 
 trait Expose {
 
@@ -231,7 +230,8 @@ trait Expose {
      * @throws ObjectException
      * @throws Exception
      */
-    public function expose_get(App $object, $name='', $attribute=''){
+    public function expose_get(App $object, $name='', $attribute=''): mixed
+    {
         $dir_expose = $object->config('project.dir.node') .
             'Expose' .
             $object->config('ds')
@@ -256,7 +256,8 @@ trait Expose {
     /**
      * @throws ObjectException
      */
-    private function expose_object_create_cli($depth=0){
+    private function expose_object_create_cli($depth=0): array
+    {
 
         $result = [];
         $attribute = Cli::read('input', 'Object name (depth (' . $depth . ')): ');
@@ -307,6 +308,7 @@ trait Expose {
     /**
      * @throws ObjectException
      * @throws FileWriteException
+     * @throws Exception
      */
     public function expose_create_cli(): void
     {

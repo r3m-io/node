@@ -2,7 +2,7 @@
 namespace R3m\Io\Node\Trait\Data;
 trait Single {
 
-    public function single($response=[]): false|array
+    public function single($response=[]): false | array
     {
         if(
             $response &&

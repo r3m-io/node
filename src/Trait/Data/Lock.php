@@ -60,6 +60,9 @@ trait Lock {
         return true;
     }
 
+    /**
+     * @throws Exception
+     */
     public function unlock($class): bool
     {
         $name = Controller::name($class);

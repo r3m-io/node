@@ -15,7 +15,7 @@ trait Property {
     /**
      * @throws Exception
      */
-    public function property_delete($class, $role, $node=[], $options=[]): false|array
+    public function property_delete($class, $role, $node=[], $options=[]): false | array
     {
         $name = Controller::name($class);
         $object = $this->object();
