@@ -13,7 +13,8 @@ trait Validate {
     /**
      * @throws Exception
      */
-    protected function validate(App $object, $url, $type){
+    protected function validate(App $object, $url, $type): object | false
+    {
         $data = $object->data(sha1($url));
         if($data === null){
             $data = $object->parse_read($url, sha1($url));

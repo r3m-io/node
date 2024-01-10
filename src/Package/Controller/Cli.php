@@ -32,7 +32,8 @@ class Cli extends Controller {
      * @throws ObjectException
      * @throws Exception
      */
-    public static function run(App $object){
+    public static function run(App $object): mixed
+    {
         $autoload = [];
         $data = new Data();
         $data->set('prefix', 'Node');

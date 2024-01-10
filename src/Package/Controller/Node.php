@@ -24,7 +24,8 @@ class Node extends Controller {
      * @throws FileWriteException
      * @throws Exception
      */
-    public static function list(App $object){
+    public static function list(App $object): Response
+    {
         $model = new Model($object);
 
         $sort = $object->request('sort');
@@ -71,7 +72,11 @@ class Node extends Controller {
 //        d($debug[2]['file'] . ' ' . $debug[2]['line'] . ' ' . $debug[2]['function']);
     }
 
-    public static function object_tree(App $object){
+    /**
+     * @throws Exception
+     */
+    public static function object_tree(App $object): Response
+    {
         $dir = new Dir();
         $read = $dir->read(
             $object->config('project.dir.data') .
