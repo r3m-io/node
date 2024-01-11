@@ -350,12 +350,7 @@ trait Expose {
                     array_key_exists('role', $record)
                 ){
                     if($record['role'] === $role){
-                        if(is_array($list)){
-                            unset($list[$nr]);
-                        }
-                        elseif(is_object($list)){
-                            unset($list->$nr);
-                        }
+                        unset($list[$nr]);
                     }
                 }
                 elseif(
@@ -363,12 +358,7 @@ trait Expose {
                     property_exists($record, 'role')
                 ){
                     if($record->role === $role){
-                        if(is_array($list)){
-                            unset($list[$nr]);
-                        }
-                        elseif(is_object($list)){
-                            unset($list->$nr);
-                        }
+                        unset($list[$nr]);
                     }
                 }
             }
