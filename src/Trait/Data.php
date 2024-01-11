@@ -249,9 +249,7 @@ trait Data {
                 }
             }
         }
-        if(!empty($attributes)){
-            $expose->set('property', $attributes);
-        }
+        $expose->set('property', $attributes);
         $objects = $this->object_create_expose_object($object, $class, $item->get('Node.property'));
         if(
             !empty($objects) &&

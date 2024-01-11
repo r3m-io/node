@@ -262,6 +262,7 @@ trait Expose {
 
         $result = [];
         $attribute = Cli::read('input', 'Object name (depth (' . $depth . ')): ');
+        $attributes = [];
         while(!empty($attribute)){
             $multiple = Cli::read('input', 'Multiple (boolean): ');
             if(
