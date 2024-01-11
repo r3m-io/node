@@ -9,7 +9,7 @@ use Exception;
 
 trait Where {
 
-    private function operator($tree=[]): array
+    private function operator($tree=[]): mixed
     {
         if(!is_array($tree)){
             return $tree;
