@@ -130,7 +130,10 @@ trait Data {
                     ){
                         $is_class = true;
                     }
-                    if($is_uuid && $is_class){
+                    if(
+                        $is_uuid &&
+                        $is_class
+                    ){
                         break;
                     }
                 }
