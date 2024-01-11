@@ -41,7 +41,7 @@ trait Data {
     /**
      * @throws Exception
      */
-    public function object_create($class, $role, $node=[], $options=[]): false
+    public function object_create($class, $role, $node=[], $options=[]): void
     {
         $name = Controller::name($class);
         $object = $this->object();
@@ -77,7 +77,7 @@ trait Data {
             $role,
             $options
         )){
-            return false;
+            return;
         }
         $url = $dir_data .
             $name .

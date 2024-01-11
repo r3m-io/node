@@ -244,13 +244,14 @@ trait Expose {
             throw new Exception('Expose: url (' . $url . ') not found for class: ' . $name);
         }
         $data = $object->data_read($url);
+        $get = false;
         if($data){
             $get = $data->get($attribute);
-            if(empty($get)){
-                throw new Exception('Expose: cannot find attribute (' . $attribute .') in class: ' . $name);
-            }
-            return $get;
         }
+        if(empty($get)){
+            throw new Exception('Expose: cannot find attribute (' . $attribute .') in class: ' . $name);
+        }
+        return $get;
     }
 
     /**

@@ -159,5 +159,6 @@ trait Page {
                 return $page;
             }
         }
+        return false;
     }
 }

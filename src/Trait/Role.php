@@ -41,8 +41,8 @@ trait Role {
                 $object->config('framework.role.system.uuid', $data->get('uuid'));
                 return $data->data();
             }
-            return false;
         }
+        return false;
     }
 
     /**

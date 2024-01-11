@@ -400,6 +400,27 @@ trait NodeList {
                 return $result;
             }
         }
+        $list = [];
+        $result = [];
+        $result['page'] = $options['page'] ?? 1;
+        $result['limit'] = $options['limit'] ?? 1000;
+        $result['count'] = 0;
+        $result['max'] = 0;
+        $result['list'] = $list;
+        $result['sort'] = $options['sort'] ?? [];
+        if(!empty($options['filter'])) {
+            $result['filter'] = $options['filter'];
+        }
+        if(!empty($options['where'])) {
+            $result['where'] = $options['where'];
+        }
+        $result['relation'] = $options['relation'];
+        $result['parse'] = $options['parse'];
+        $result['ramdisk'] = $options['ramdisk'] ?? false;
+        $result['mtime'] = $mtime;
+        $result['transaction'] = $options['transaction'] ?? false;
+        $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+        return $result;
     }
 
     private function nodeList_output_filter(App $object, $list, $options=[]): mixed
