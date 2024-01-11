@@ -296,7 +296,7 @@ trait Where {
     /**
      * @throws Exception
      */
-    private function where_process($record=[], $set=[], &$where=[], &$key=null, &$operator=null, $options=[]): array
+    private function where_process($record=[], $set=[], &$where=[], &$key=null, &$operator=null, $options=[]): ?array
     {
         $count = count($set);
         if(
@@ -476,7 +476,6 @@ trait Where {
                     $left = null;
                     foreach ($set as $nr => $true) {
                         if(
-                            is_string($true) &&
                             in_array($true, [
                                 'and',
                                 'or'
@@ -485,7 +484,6 @@ trait Where {
                             throw new Exception('And or Or not allowed in Xor, use sets instead.');
                         }
                         elseif (
-                            is_bool($true) &&
                             $true === true
                         ) {
                             $is_true++;
@@ -526,12 +524,13 @@ trait Where {
 
             }
         }
+        return null;
     }
 
     /**
      * @throws Exception
      */
-    private function where($record=[], $where=[], $options=[]): array | object
+    private function where($record=[], $where=[], $options=[]): false | array | object
     {
         if(empty($where)){
             return $record;
