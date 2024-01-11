@@ -43,6 +43,7 @@ trait Relation {
             }
             foreach($relations as $relation){
                 if(
+                    is_object($relation) &&
                     property_exists($relation, 'type') &&
                     property_exists($relation, 'class') &&
                     property_exists($relation, 'attribute')
@@ -171,10 +172,7 @@ trait Relation {
                                     $record = $node->data();
                                     break;
                                 }
-                                elseif(
-                                    is_string($one_many) &&
-                                    $one_many === '*'
-                                ){
+                                elseif($one_many === '*'){
                                     $one_many = (object) [
                                         'limit' => '*',
                                         'page' => 1,

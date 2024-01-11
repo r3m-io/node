@@ -54,7 +54,7 @@ Trait Transaction {
             $role,
             $options
         )) {
-            $this->unlock($name, $options);
+            $this->unlock($name);
             return false;
         }
         if (property_exists($app_options, 'force')) {
@@ -62,7 +62,7 @@ Trait Transaction {
         }
         $is_transaction = $object->config('node.transaction.' . $name);
         if(!$is_transaction){
-            $this->unlock($name, $options);
+            $this->unlock($name);
             return false;
         }
         $result = [];
@@ -93,7 +93,7 @@ Trait Transaction {
             throw new Exception('Commit-data not found for url: ' . $data);
         }
         $object->config('delete', 'node.transaction.' . $name);
-        $this->unlock($name, $options);
+        $this->unlock($name);
         return $result;
     }
 }

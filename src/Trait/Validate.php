@@ -4,6 +4,7 @@ namespace R3m\Io\Node\Trait;
 
 use R3m\Io\App;
 
+use R3m\Io\Module\Core;
 use R3m\Io\Module\Validate as Module;
 
 use Exception;
@@ -23,7 +24,7 @@ trait Validate {
             $clone = $data->data($type . '.validate');
             if(is_object($clone)){
                 $validate = clone $clone;
-                if(empty($validate)){
+                if(Core::object_is_empty($validate)){
                     throw new Exception('No validation found for ' . $type . ' in ' . $url . '.');
                 }
                 return Module::validate($object, $validate);
