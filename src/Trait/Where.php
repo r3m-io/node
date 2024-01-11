@@ -32,12 +32,12 @@ trait Where {
                 array_key_exists('type', $tree[$previous]) &&
                 $tree[$previous]['type'] !== Token::TYPE_WHITESPACE
             ) {
-                if($previous || $previous === 0){
+                if($previous >= 0){
                     $operator = $tree[$previous]['value'];
                 }
                 $operator .= $record['value'];
                 $is_collect = $nr;
-                if($previous || $previous === 0){
+                if($previous >= 0){
                     $tree[$nr]['column'] = $tree[$previous]['column'];
                     $tree[$nr]['row'] = $tree[$previous]['row'];
                     unset($tree[$previous]);
