@@ -61,6 +61,7 @@ trait Create {
             $options['import'] === false &&
             empty($transaction)
         ){
+            //too early, first validate
             $this->lock($name, $options);
         }
         $dir_data = $object->config('project.dir.node') .
@@ -107,7 +108,12 @@ trait Create {
             ){
                 $validate = (object) ['success' => true];
             } else {
-                $validate = $this->validate($object, $validate_url,  $name . '.create');
+                try {
+                    $validate = $this->validate($object, $validate_url,  $name . '.create');
+                }
+                catch (Exception $exception){
+                    ddd($exception);
+                }
             }
             if($validate) {
                 if ($validate->success === true) {

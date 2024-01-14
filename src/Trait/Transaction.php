@@ -90,7 +90,7 @@ Trait Transaction {
                 'url' => $url,
             ]);
         } else {
-            throw new Exception('Commit-data not found for url: ' . $data);
+            throw new Exception('Commit-data not found for url: ');
         }
         $object->config('delete', 'node.transaction.' . $name);
         $this->unlock($name);
