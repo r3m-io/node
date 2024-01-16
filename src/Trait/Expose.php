@@ -118,8 +118,6 @@ trait Expose {
                                         if ($compare) {
                                             $parse = new Parse($object, $object->data());
                                             $compare = $parse->compile($compare, $object->data());
-                                            d($node);
-                                            ddd($compare);
                                             if ($record_property !== $compare) {
                                                 throw new Exception('Assertion failed: ' . $assertion . ' values [' . $record_property . ', ' . $compare . ']');
                                             }
@@ -221,6 +219,7 @@ trait Expose {
                 }
             }
         }
+        d($record);
         if($is_expose === false){
             throw new Exception('No permission found for ' . str_replace('.', ':', Controller::name($class)) . ':' . str_replace('_', '.', $function));
         }
