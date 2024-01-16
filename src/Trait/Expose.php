@@ -28,7 +28,6 @@ trait Expose {
     public function expose($node, $expose=[], $class='', $function='', $internalRole=false, $parentRole=false): Storage
     {
         $object = $this->object();
-        d($expose);
         if (!is_array($expose)) {
             return new Storage();
         }
@@ -97,8 +96,6 @@ trait Expose {
                             )
                         ) {
                             $is_expose = true;
-                            d('yes');
-                            d($action);
                             if (
                                 property_exists($action, 'property') &&
                                 is_array($action->property)
@@ -221,7 +218,6 @@ trait Expose {
                 }
             }
         }
-        d($record);
         if($is_expose === false){
             throw new Exception('No permission found for ' . str_replace('.', ':', Controller::name($class)) . ':' . str_replace('_', '.', $function));
         }
