@@ -130,7 +130,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
             ]
         ];
     }
-    ddd(validate);
+    ddd($validate);
     $node = new Node($object);
     $response = $node->record($name, $node->role_system(), $options);
     if(
