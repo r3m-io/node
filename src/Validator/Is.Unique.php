@@ -25,7 +25,7 @@ use R3m\Io\Node\Model\Node;
 /**
  * @throws Exception
  */
-function validate_is_unique(App $object, $value='', $attribute='', $validate=''): bool
+function validate_is_unique(App $object, $value='', $attribute='', $validate='', $function=false): bool
 {
     $dir_node = $object->config('project.dir.node');
     $url = false;
@@ -130,6 +130,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='')
             ]
         ];
     }
+    d($function);
     d($validate);
     $debug = debug_backtrace(1);
     d($debug[0]['file'] . ':' . $debug[0]['line'] . ':' . $debug[0]['function']);
