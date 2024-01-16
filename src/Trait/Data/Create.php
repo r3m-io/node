@@ -139,6 +139,7 @@ trait Create {
                             $options['function'],
                             $role
                         );
+                        d($options);
                         d($object->request());
                         ddd($node);
                         $record = $node->data();
