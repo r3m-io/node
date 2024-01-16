@@ -24,7 +24,7 @@ trait Validate {
             $clone = $data->data($type . '.validate');
             if(is_object($clone)){
                 $validate = clone $clone;
-                ddd($validate);
+                d($validate);
                 if(Core::object_is_empty($validate)){
                     throw new Exception('No validation found for ' . $type . ' in ' . $url . '.');
                 }
