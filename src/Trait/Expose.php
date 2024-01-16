@@ -97,6 +97,8 @@ trait Expose {
                             )
                         ) {
                             $is_expose = true;
+                            d('yes');
+                            d($action);
                             if (
                                 property_exists($action, 'property') &&
                                 is_array($action->property)
