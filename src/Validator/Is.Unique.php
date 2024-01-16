@@ -137,7 +137,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
     }
     $node = new Node($object);
     $response = $node->record($name, $node->role_system(), $options);
-    ddd($response);
+    d($response);
     if(
         !empty($response) &&
         is_array($response) &&
