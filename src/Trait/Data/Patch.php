@@ -114,7 +114,7 @@ trait Patch {
             ){
                 $validate = (object) ['success' => true];
             } else {
-                $validate = $this->validate($object, $validate_url,  $name . '.patch', __FUNCTION__);
+                $validate = $this->validate($object, $validate_url,  $name . '.patch', $options['function']);
             }
             if($validate) {
                 if ($validate->success === true) {
