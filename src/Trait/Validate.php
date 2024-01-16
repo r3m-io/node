@@ -14,7 +14,7 @@ trait Validate {
     /**
      * @throws Exception
      */
-    protected function validate(App $object, $url, $type): object | false
+    protected function validate(App $object, $url, $type, $function=''): object | false
     {
         $data = $object->data(sha1($url));
         if($data === null){
@@ -24,6 +24,7 @@ trait Validate {
             $clone = $data->data($type . '.validate');
             if(is_object($clone)){
                 $validate = clone $clone;
+                ddd($validate);
                 if(Core::object_is_empty($validate)){
                     throw new Exception('No validation found for ' . $type . ' in ' . $url . '.');
                 }
