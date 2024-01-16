@@ -64,12 +64,16 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
             $allow_empty = explode(':', $validate->allow_empty);
         }
     }
+    if(empty($function)){
+        $function = 'record';
+    }
     if (
         is_array($attribute) &&
         is_array($value)
     ) {
         $options = [
-            'filter' => []
+            'filter' => [],
+            'function' => $function
         ];
         foreach ($attribute as $nr => $record) {
             if (array_key_exists($nr, $value)) {
@@ -127,7 +131,8 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
                     'operator' => Filter::OPERATOR_STRICTLY_EXACT,
                     'value' => $value
                 ]
-            ]
+            ],
+            'function' => $function
         ];
     }
     d($function);
