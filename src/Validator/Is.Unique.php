@@ -135,14 +135,9 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
             'function' => $function
         ];
     }
-    d($function);
-    d($validate);
-    $debug = debug_backtrace(1);
-    d($debug[0]['file'] . ':' . $debug[0]['line'] . ':' . $debug[0]['function']);
-    d($debug[1]['file'] . ':' . $debug[1]['line'] . ':' . $debug[1]['function']);
-    d($debug[2]['file'] . ':' . $debug[2]['line'] . ':' . $debug[2]['function']);
     $node = new Node($object);
     $response = $node->record($name, $node->role_system(), $options);
+    ddd($response);
     if(
         !empty($response) &&
         is_array($response) &&
