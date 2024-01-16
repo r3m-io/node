@@ -140,7 +140,7 @@ trait Create {
                             $role
                         );
                         d($object->request());
-                        d($node);
+                        ddd($node);
                         $record = $node->data();
                         if(Core::object_is_empty($record)){
                             throw new Exception('Empty node after expose...');
