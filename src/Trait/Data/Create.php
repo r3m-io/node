@@ -132,7 +132,6 @@ trait Create {
                         $expose &&
                         $role
                     ) {
-                        ddd($node);
                         $node = $this->expose(
                             $node,
                             $expose,
