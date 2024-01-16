@@ -27,7 +27,7 @@ trait Validate {
                 if(Core::object_is_empty($validate)){
                     throw new Exception('No validation found for ' . $type . ' in ' . $url . '.');
                 }
-                return Module::validate($object, $validate, $function);
+                return Module::validate($object, $validate, false, $function);
             } else {
                 throw new Exception('No validation found for ' . $type . ' in ' . $url . '.');
             }
