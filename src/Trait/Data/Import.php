@@ -232,11 +232,12 @@ trait Import {
                     'duration' => (microtime(true) - $start) * 1000
                 ];
             }
-            $this->unlock($name);
             $commit = [];
             if($create > 0 || $put > 0 || $patch > 0){
                 $object->config('time.limit', 0);
                 $commit = $this->commit($class, $role);
+            } else {
+                $this->unlock($name);
             }
             $duration = microtime(true) - $start;
             $total = $put + $patch + $create;
