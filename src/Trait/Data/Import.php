@@ -232,6 +232,7 @@ trait Import {
                     'duration' => (microtime(true) - $start) * 1000
                 ];
             }
+            $this->unlock($name);
             $commit = [];
             if($create > 0 || $put > 0 || $patch > 0){
                 $object->config('time.limit', 0);
