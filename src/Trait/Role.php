@@ -80,20 +80,15 @@ trait Role {
     public function role_system_create($package=''): void
     {
         $object = $this->object();
-        $skip = 0;
         if($object->config(Config::POSIX_ID) === 0){
             $url = $object->config('project.dir.data') . 'Account' . $object->config('ds') . 'Role.System.json';
             $url_package = $object->config('project.dir.vendor') . $package . '/Data/Role.System.json';
-            d($url);
-            d($url_package);
             if(File::exist($url_package)){
                 if(File::exist($url)){
                     $data = $object->data_read($url);
                     $data_package = $object->data_read($url_package);
                     if($data && $data_package){
                         $name = $data_package->get('name');
-                        d($name);
-                        d($data->get('name'));
                         if($data->get('name') === $name){
                             $permissions = $data->get('permission');
                             $list = [];
@@ -106,7 +101,6 @@ trait Role {
                                 }
                             }
                             $package_permissions = $data_package->get('permission');
-                            d($package_permissions);
                             if($package_permissions){
                                 foreach($package_permissions as $permission){
                                     if(
@@ -115,13 +109,10 @@ trait Role {
                                     ){
                                         if(!in_array($permission->name, $list, true)){
                                             $permissions[] = $permission;
-                                        } else {
-                                            $skip++;
                                         }
                                     }
                                 }
                             }
-                            d($skip);
                             $uuid = $data->get('uuid');
                             if(empty($uuid)){
                                 $data->set('uuid', Core::uuid());
