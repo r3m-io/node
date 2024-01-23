@@ -80,6 +80,7 @@ trait Role {
     public function role_system_create($package=''): void
     {
         $object = $this->object();
+        $skip = 0;
         if($object->config(Config::POSIX_ID) === 0){
             $url = $object->config('project.dir.data') . 'Account' . $object->config('ds') . 'Role.System.json';
             $url_package = $object->config('project.dir.vendor') . $package . '/Data/Role.System.json';
@@ -110,14 +111,17 @@ trait Role {
                                 foreach($package_permissions as $permission){
                                     if(
                                         is_object($permission) &&
-                                        property_exists($permission, 'name') &&
-                                        !in_array($permission->name, $list, true)
+                                        property_exists($permission, 'name')
                                     ){
-                                        $permissions[] = $permission;
-                                        d('yes');
+                                        if(!in_array($permission->name, $list, true)){
+                                            $permissions[] = $permission;
+                                        } else {
+                                            $skip++;
+                                        }
                                     }
                                 }
                             }
+                            d($skip);
                             $uuid = $data->get('uuid');
                             if(empty($uuid)){
                                 $data->set('uuid', Core::uuid());
