@@ -91,6 +91,8 @@ trait Role {
                     $data_package = $object->data_read($url_package);
                     if($data && $data_package){
                         $name = $data_package->get('name');
+                        d($name);
+                        d($data->get('name'));
                         if($data->get('name') === $name){
                             $permissions = $data->get('permission');
                             $list = [];
