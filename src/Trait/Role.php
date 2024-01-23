@@ -113,6 +113,7 @@ trait Role {
                                         !in_array($permission->name, $list, true)
                                     ){
                                         $permissions[] = $permission;
+                                        d('yes');
                                     }
                                 }
                             }
