@@ -386,9 +386,12 @@ trait NodeList {
                     $ramdisk->set('relation', $relation_mtime);
                     $ramdisk->write($ramdisk_url_node);
                     if($object->config('posix.id') === 0){
+                        //nothing
+                        /*
                         File::permission($object, [
                             'ramdisk_dir' => $ramdisk_dir
                         ]);
+                        */
                     } else {
                         File::permission($object, [
                             'ramdisk_dir' => $ramdisk_dir,
