@@ -135,6 +135,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
             'function' => $function
         ];
     }
+    d($options);
     $node = new Node($object);
     $response = $node->record($name, $node->role_system(), $options);
     if(
