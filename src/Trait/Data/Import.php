@@ -71,6 +71,7 @@ trait Import {
             ;
             $this->startTransaction($name, $options);
             $data = $object->data_read($options['url']);
+            ddd(count($data));
             if($data){
                 $list = $data->data($name);
                 if(!is_array($list)){
