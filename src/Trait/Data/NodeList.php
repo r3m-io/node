@@ -42,6 +42,9 @@ trait NodeList {
         if(!array_key_exists('lock', $options)){
             $options['lock'] = false;
         }
+        if(!array_key_exists('with_null', $options)){
+            $options['with_null'] = false;
+        }
         if(!Security::is_granted(
             $name,
             $role,
@@ -53,6 +56,11 @@ trait NodeList {
             $result['limit'] = $options['limit'] ?? 1000;
             $result['count'] = 0;
             $result['max'] = 0;
+            if($options['with_null'] === true) {
+                for ($i=0; $i < $result['limit']; $i++){
+                    $list[] = null;
+                }
+            }
             $result['list'] = $list;
             $result['sort'] = $options['sort'];
             if(!empty($options['filter'])) {
@@ -82,6 +90,11 @@ trait NodeList {
             $result['limit'] = $options['limit'] ?? 1000;
             $result['count'] = 0;
             $result['max'] = 0;
+            if($options['with_null'] === true) {
+                for ($i=0; $i < $result['limit']; $i++){
+                    $list[] = null;
+                }
+            }
             $result['list'] = $list;
             $result['sort'] = $options['sort'] ?? [];
             if(!empty($options['filter'])) {
@@ -239,6 +252,7 @@ trait NodeList {
                     $is_where = true;
                 }
                 $limit = $options['limit'] ?? 4096;
+                $need_array_values = false;
                 foreach($list as $nr => $record) {
                     if(
                         is_object($record) &&
@@ -266,25 +280,37 @@ trait NodeList {
                         if($is_filter){
                             $record = $this->filter($record, $options['filter'], $options);
                             if(!$record){
-                                unset($list[$nr]);
+                                if($options['with_null'] === true){
+                                    $list[$nr] = null;
+                                } else {
+                                    unset($list[$nr]);
+                                    $need_array_values = true;
+                                }
                                 continue;
                             }
                         }
                         elseif($is_where){
                             $record = $this->where($record, $options['where'], $options);
                             if(!$record){
-                                unset($list[$nr]);
+                                if($options['with_null'] === true){
+                                    $list[$nr] = null;
+                                } else {
+                                    unset($list[$nr]);
+                                    $need_array_values = true;
+                                }
                                 continue;
                             }
                         }
                         $count++;
-                        $list_filtered[] = $record;
+                        $list[$nr] = $record;
                         if($count === $limit){
                             break;
                         }
                     }
                 }
-                $list = $list_filtered;
+                if($need_array_values){
+                    $list = array_values($list);
+                }
                 if(
                     !empty($options['sort']) &&
                     is_array($options['sort'])

@@ -144,25 +144,6 @@ trait Import {
                                             } else {
                                                 throw new Exception('Unique value cannot be empty...');
                                             }
-                                            /*
-                                            $record = $this->record(
-                                                $name,
-                                                $role,
-                                                [
-                                                    'filter' => [
-                                                        $explode[0] => [
-                                                            'value' => $node->get($explode[0]),
-                                                            'operator' => '==='
-                                                        ],
-                                                        $explode[1] => [
-                                                            'value' => $node->get($explode[1]),
-                                                            'operator' => '==='
-                                                        ]
-                                                    ],
-                                                    'transaction' => true,
-                                                ]
-                                            );
-                                            */
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
@@ -178,21 +159,6 @@ trait Import {
                                             } else {
                                                 throw new Exception('Unique value cannot be empty...');
                                             }
-                                            /*
-                                            $record = $this->record(
-                                                $name,
-                                                $role,
-                                                [
-                                                    'filter' => [
-                                                        $explode[0] => [
-                                                            'value' => $node->get($explode[0]),
-                                                            'operator' => '==='
-                                                        ]
-                                                    ],
-                                                    'transaction' => true
-                                                ]
-                                            );
-                                            */
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
@@ -246,10 +212,10 @@ trait Import {
                                                     ]
                                                 ],
                                                 'transaction' => true,
-                                                'limit' => $options['chunk-size']
+                                                'limit' => $options['chunk-size'],
+                                                'with_null' => true
                                             ]
                                         );
-                                        ddd($select);
                                         if(
                                             $select &&
                                             array_key_exists('list', $select)
@@ -261,13 +227,14 @@ trait Import {
                                                     $select['list'][$nr] = false;
                                                     $select['count']--;
                                                 } else {
+                                                    /*
                                                     $patch = new Storage();
                                                     $patch->data($record);
                                                     $patch->set('uuid', $select['list'][$nr]->uuid);
                                                     //patch || put
                                                     $put_many[] = $patch->data();
+                                                    */
                                                 }
-
                                             }
                                         }
                                     }
@@ -281,6 +248,10 @@ trait Import {
                             foreach($chunk as $nr => $record){
                                 $node = new Storage();
                                 $node->data($record);
+
+                                //need index
+
+
                                 if(
                                     array_key_exists('force', $options) &&
                                     $options['force'] === true &&
