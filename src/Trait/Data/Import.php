@@ -231,6 +231,28 @@ trait Import {
                                     !empty($filter_value_1) &&
                                     !empty($filter_value_2)
                                 ){
+                                    if(
+                                        !empty($explode[0]) &&
+                                        !empty($filter_value_1)
+                                    ){
+                                        $select = $this->list(
+                                            $name,
+                                            $role,
+                                            [
+                                                'filter' => [
+                                                    $explode[0] => [
+                                                        'value' => $filter_value_1,
+                                                        'operator' => 'in'
+                                                    ]
+                                                ],
+                                                'transaction' => true,
+                                                'limit' => $options['chunk-size']
+                                            ]
+                                        );
+                                        ddd($select);
+                                    }
+                                    // a where is to slow
+
                                     $where = [];
                                     foreach($filter_value_1 as $nr => $value){
                                         d($value);
