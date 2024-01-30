@@ -285,7 +285,7 @@ trait NodeList {
                         }
                         if($count === $limit){
                             d($class);
-                            d($options);
+                            d($list_filtered);
                             break;
                         }
                     }
