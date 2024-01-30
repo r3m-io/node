@@ -246,9 +246,6 @@ trait Import {
                                             $where[] = 'or';
                                         }
                                     }
-                                    ddd($where);
-
-
                                     $select = $this->list(
                                         $name,
                                         $role,
@@ -259,7 +256,6 @@ trait Import {
                                     );
                                     ddd($select);
                                 }
-
                                 break;
                         }
 
