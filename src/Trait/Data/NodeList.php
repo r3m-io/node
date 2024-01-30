@@ -239,10 +239,6 @@ trait NodeList {
                     $is_where = true;
                 }
                 $limit = $options['limit'] ?? 4096;
-                d($limit);
-                if($limit === 1000){
-                    ddd($options);
-                }
                 foreach($list as $nr => $record) {
                     if(
                         is_object($record) &&
@@ -283,6 +279,10 @@ trait NodeList {
                         }
                         $count++;
                         $list_filtered[] = $record;
+                        d($limit);
+                        if($limit === 1000){
+                            ddd($options);
+                        }
                         if($count === $limit){
                             d($class);
                             d($options);
