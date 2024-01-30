@@ -89,6 +89,8 @@ trait Import {
                     foreach($list as $chunk){
                         $filter_value_1 = [];
                         $filter_value_2 = [];
+                        $count = 0;
+                        $explode = [];
                         foreach($chunk as $record){
                             $node = new Storage();
                             $node->data($record);
@@ -96,7 +98,6 @@ trait Import {
                                 $data_object &&
                                 $data_object->has('is.unique')
                             ) {
-                                $record = false;
                                 $unique = (array)$data_object->get('is.unique');
                                 $unique = array_shift($unique);
                                 $explode = explode(',', $unique);
@@ -168,6 +169,33 @@ trait Import {
                                 }
                             }
                         }
+                        switch($count){
+                            case 1 :
+                                if(
+                                    !empty($explode[0]) &&
+                                    !empty($filter_value_1)
+                                ){
+                                    $select = $this->list(
+                                        $name,
+                                        $role,
+                                        [
+                                            'filter' => [
+                                                $explode[0] => [
+                                                    'value' => $filter_value_1,
+                                                    'operator' => 'in'
+                                                ]
+                                            ],
+                                            'transaction' => true
+                                        ]
+                                    );
+                                    ddd($select);
+                                }
+
+                                break;
+                            case 2:
+                                break;
+                        }
+
                         d($filter_value_1);
                         ddd($filter_value_2);
                     }
