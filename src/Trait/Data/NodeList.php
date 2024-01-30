@@ -281,6 +281,7 @@ trait NodeList {
                         $list_filtered[] = $record;
                         d($limit);
                         if($limit === 1000){
+                            d($count);
                             d($record);
                         }
                         if($count === $limit){
