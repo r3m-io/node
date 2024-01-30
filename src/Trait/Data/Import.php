@@ -200,6 +200,7 @@ trait Import {
                                 }
                             }
                         }
+                        $select = null;
                         switch($count){
                             case 1 :
                                 if(
@@ -220,9 +221,7 @@ trait Import {
                                             'limit' => $options['chunk-size']
                                         ]
                                     );
-                                    ddd($select);
                                 }
-
                                 break;
                             case 2:
                                 if(
@@ -231,6 +230,7 @@ trait Import {
                                     !empty($filter_value_1) &&
                                     !empty($filter_value_2)
                                 ){
+                                    // a where is to slow because it needs to use nested where
                                     if(
                                         !empty($explode[0]) &&
                                         !empty($filter_value_1)
@@ -249,62 +249,77 @@ trait Import {
                                                 'limit' => $options['chunk-size']
                                             ]
                                         );
+                                        ddd($select);
                                         if(
                                             $select &&
                                             array_key_exists('list', $select)
                                         ){
-                                            foreach($select['list'] as $nr => $record){
+                                            foreach($select['list'] as $nr => $item){
                                                 $node = new Storage();
-                                                $node->data($record);
+                                                $node->data($item);
                                                 if($node->get($explode[1]) !== $filter_value_2[$nr]){
-                                                    unset($select['list'][$nr]);
+                                                    $select['list'][$nr] = false;
                                                     $select['count']--;
+                                                } else {
+                                                    $patch = new Storage();
+                                                    $patch->data($record);
+                                                    $patch->set('uuid', $select['list'][$nr]->uuid);
+                                                    //patch || put
+                                                    $put_many[] = $patch->data();
                                                 }
+
                                             }
                                         }
-                                        ddd($select);
                                     }
-                                    // a where is to slow because it needs to use nested where
-
-                                    $where = [];
-                                    foreach($filter_value_1 as $nr => $value){
-                                        d($value);
-                                        d($explode[0]);
-                                        d($filter_value_2[$nr]);
-                                        d($explode[1]);
-                                        $where[] = '(';
-                                        $where[] = [
-                                            'value' => $value,
-                                            'attribute' => $explode[0],
-                                            'operator' => '==='
-                                        ];
-                                        $where[] = 'and';
-                                        $where[] = [
-                                            'value' => $filter_value_2[$nr],
-                                            'attribute' => $explode[1],
-                                            'operator' => '==='
-                                        ];
-                                        $where[] = ')';
-                                        if($nr < count($filter_value_1) - 1){
-                                            $where[] = 'or';
-                                        }
-                                    }
-                                    $select = $this->list(
-                                        $name,
-                                        $role,
-                                        [
-                                            'where' => $where,
-                                            'transaction' => true,
-                                            'limit' => $options['chunk-size']
-                                        ]
-                                    );
-                                    ddd($select);
                                 }
                                 break;
                         }
-
-                        d($filter_value_1);
-                        ddd($filter_value_2);
+                        if(
+                            $chunk &&
+                            is_array($chunk)
+                        ){
+                            foreach($chunk as $nr => $record){
+                                $node = new Storage();
+                                $node->data($record);
+                                if(
+                                    array_key_exists('force', $options) &&
+                                    $options['force'] === true &&
+                                    is_array($select) &&
+                                    array_key_exists('list', $select) &&
+                                    is_array($select['list']) &&
+                                    array_key_exists($nr, $select['list']) &&
+                                    $select['list'][$nr]  !== false &&
+                                    is_object($select['list'][$nr]) &&
+                                    property_exists($select['list'][$nr], 'uuid') &&
+                                    !empty($select['list'][$nr]->uuid)
+                                ){
+                                    $node->set('uuid', $select['list'][$nr]->uuid);
+                                    $put_many[] = $node->data();
+                                }
+                                elseif(
+                                    array_key_exists('patch', $options) &&
+                                    $options['patch'] === true &&
+                                    is_array($select) &&
+                                    array_key_exists('list', $select) &&
+                                    is_array($select['list']) &&
+                                    array_key_exists($nr, $select['list']) &&
+                                    $select['list'][$nr]  !== false &&
+                                    is_object($select['list'][$nr]) &&
+                                    property_exists($select['list'][$nr], 'uuid') &&
+                                    !empty($select['list'][$nr]->uuid)
+                                ){
+                                    $node->set('uuid', $select['list'][$nr]->uuid);
+                                    $patch_many[] = $node->data();
+                                }
+                                elseif(
+                                    $select['list'][$nr] === false
+                                ){
+                                    $create_many[] = $node->data();
+                                } else {
+                                    $skip++;
+                                }
+                            }
+                        }
                     }
                 } else {
                     foreach($list as $record){
