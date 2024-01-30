@@ -145,7 +145,7 @@ trait Import {
                                         if ($node->has($explode[0])) {
                                             $match_1 = $node->get($explode[0]);
                                             if($match_1){
-                                                $filter_value_1[] = $match_1;
+                                                $filter_value_1[] = (int) $match_1 + 10000;
                                             } else {
                                                 throw new Exception('Unique value cannot be empty...');
                                             }
