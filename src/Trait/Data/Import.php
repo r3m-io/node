@@ -259,43 +259,48 @@ trait Import {
 //                            $start = (($chunk_nr + 1) * $options['chunk-size']) - $options['chunk-size'];
                             d($start);
                             d(array_keys($chunk));
+                            $keys = [];
+                            if(array_key_exists('list', $select)){
+                                $keys = array_keys($select['list']);
+                            }
+
                             foreach($chunk as $nr => $record){
                                 $node = new Storage();
                                 $node->data($record);
-                                //need index
+                                if(array_key_exists($nr, $keys)){
+                                    $select_nr = $keys[$nr];
+                                } else {
+                                    $select_nr = null;
+                                }
                                 if(
                                     array_key_exists('force', $options) &&
                                     $options['force'] === true &&
-                                    is_array($select) &&
-                                    array_key_exists('list', $select) &&
-                                    is_array($select['list']) &&
-                                    array_key_exists($nr, $select['list']) &&
-                                    is_object($select['list'][$nr]) &&
-                                    property_exists($select['list'][$nr], 'uuid') &&
-                                    !empty($select['list'][$nr]->uuid)
+                                    !empty($select_nr) &&
+                                    array_key_exists($select_nr, $select['list']) &&
+                                    is_object($select['list'][$select_nr]) &&
+                                    property_exists($select['list'][$select_nr], 'uuid') &&
+                                    !empty($select['list'][$select_nr]->uuid)
                                 ){
-                                    $node->set('uuid', $select['list'][$nr]->uuid);
+                                    $node->set('uuid', $select['list'][$select_nr]->uuid);
                                     $put_many[] = $node->data();
                                 }
                                 elseif(
                                     array_key_exists('patch', $options) &&
                                     $options['patch'] === true &&
-                                    is_array($select) &&
-                                    array_key_exists('list', $select) &&
-                                    is_array($select['list']) &&
-                                    array_key_exists($nr, $select['list']) &&
-                                    is_object($select['list'][$nr]) &&
-                                    property_exists($select['list'][$nr], 'uuid') &&
-                                    !empty($select['list'][$nr]->uuid)
+                                    !empty($select_nr) &&
+                                    array_key_exists($select_nr, $select['list']) &&
+                                    is_object($select['list'][$select_nr]) &&
+                                    property_exists($select['list'][$select_nr], 'uuid') &&
+                                    !empty($select['list'][$select_nr]->uuid)
                                 ){
-                                    $node->set('uuid', $select['list'][$nr]->uuid);
+                                    $node->set('uuid', $select['list'][$select_nr]->uuid);
                                     $patch_many[] = $node->data();
                                 }
-                                elseif(!array_key_exists($nr, $select['list'])){
+                                elseif(!array_key_exists($select_nr, $select['list'])){
                                     $create_many[] = $node->data();
                                 }
                                 elseif(
-                                    $select['list'][$nr] === null
+                                    $select['list'][$select_nr] === null
                                 ){
                                     $create_many[] = $node->data();
                                 } else {
