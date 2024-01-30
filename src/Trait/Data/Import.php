@@ -296,9 +296,10 @@ trait Import {
                                     $skip++;
                                 }
                             }
-                            d('create: ' . $create_many);
-                            d('patch: ' . $patch_many);
-                            d('put: ' . $put_many);
+                            d('create: ' . count($create_many));
+                            d('patch: ' . count($patch_many));
+                            d('put: ' . count($put_many));
+                            d('skip: ' . $skip);
                             /*
                             if(!empty($create_many)) {
                                 $response = $this->create_many($class, $role, $create_many, [
