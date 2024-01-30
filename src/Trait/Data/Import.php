@@ -98,6 +98,7 @@ trait Import {
                 $list_count = count($list);
                 if($list_count > $options['chunk-size']){
                     $list = array_chunk($list, $options['chunk-size']);
+                    d(array_keys($list));
                     foreach($list as $chunk){
                         $filter_value_1 = [];
                         $filter_value_2 = [];
@@ -216,17 +217,16 @@ trait Import {
                                                 'with_null' => true
                                             ]
                                         );
-                                        d(count($select));
                                         if(
                                             $select &&
                                             array_key_exists('list', $select)
                                         ){
                                             foreach($filter_value_2 as $nr => $value){
-                                                $node = new Storage();
                                                 if(
                                                     array_key_exists($nr, $select['list']) &&
                                                     is_object($select['list'][$nr])
                                                 ){
+                                                    $node = new Storage();
                                                     $node->data($select['list'][$nr]);
                                                     if($node->get($explode[1]) !== $value) {
                                                         $select['list'][$nr] = null;
