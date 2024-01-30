@@ -255,9 +255,10 @@ trait Import {
                             $chunk &&
                             is_array($chunk)
                         ){
-                            ddd($select);
+//                            ddd($select);
 //                            $start = (($chunk_nr + 1) * $options['chunk-size']) - $options['chunk-size'];
                             d($start);
+                            d(array_keys($chunk));
                             foreach($chunk as $nr => $record){
                                 $node = new Storage();
                                 $node->data($record);
