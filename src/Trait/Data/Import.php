@@ -86,7 +86,7 @@ trait Import {
                 $list_count = count($list);
                 if($list_count > 1000){
                     $list = array_chunk($list, 1000);
-                    $index = 1000;
+                    $index = 0;
                     foreach($list as $chunk){
                         $filter_value_1 = [];
                         $filter_value_2 = [];
