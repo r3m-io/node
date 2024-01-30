@@ -233,7 +233,6 @@ trait Import {
                                 ){
                                     $where = [];
                                     foreach($filter_value_1 as $nr => $value){
-                                        $where[] = '(';
                                         $where[] = [
                                             'value' => $value,
                                             'attribute' => $explode[0],
@@ -245,7 +244,6 @@ trait Import {
                                             'attribute' => $explode[1],
                                             'operator' => '==='
                                         ];
-                                        $where[] = ')';
                                         if($nr < count($filter_value_1) - 1){
                                             $where[] = 'or';
                                         }
