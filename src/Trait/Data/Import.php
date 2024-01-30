@@ -149,6 +149,8 @@ trait Import {
                                                 ]
                                             );
                                             */
+                                        } else {
+                                            throw new Exception('Unique value cannot be empty...');
                                         }
                                         break;
                                     case 1:
@@ -177,6 +179,8 @@ trait Import {
                                                 ]
                                             );
                                             */
+                                        } else {
+                                            throw new Exception('Unique value cannot be empty...');
                                         }
                                         break;
                                 }
