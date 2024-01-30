@@ -307,7 +307,7 @@ trait NodeList {
                         }
                     }
                 }
-                dump(array_keys($list_result));
+                d(array_keys($list_result));
                 if(
                     !empty($options['sort']) &&
                     is_array($options['sort'])
