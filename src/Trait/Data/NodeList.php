@@ -281,28 +281,33 @@ trait NodeList {
                         if($is_filter){
                             $record = $this->filter($record, $options['filter'], $options);
                             if(!$record){
+                                /*
                                 if($options['with_null'] === true){
                                     $list_result[] = null;
                                 }
+                                */
                                 continue;
                             }
                         }
                         elseif($is_where){
                             $record = $this->where($record, $options['where'], $options);
                             if(!$record){
+                                /*
                                 if($options['with_null'] === true){
                                     $list_result[] = null;
                                 }
+                                */
                                 continue;
                             }
                         }
                         $count++;
-                        $list_result[] = $record;
+                        $list_result[$nr] = $record;
                         if($count === $limit){
                             break;
                         }
                     }
                 }
+                ddd(array_keys($list_result));
                 if(
                     !empty($options['sort']) &&
                     is_array($options['sort'])
