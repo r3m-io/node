@@ -87,82 +87,86 @@ trait Import {
                 if($list_count > 1000){
                     $list = array_chunk($list, 1000);
                     ddd($list);
-                    foreach($list as $record) {
-                        $node = new Storage();
-                        $node->data($record);
-                        if (
-                            $data_object &&
-                            $data_object->has('is.unique')
-                        ) {
-                            $record = false;
-                            $unique = (array)$data_object->get('is.unique');
-                            $unique = array_shift($unique);
-                            $explode = explode(',', $unique);
-                            $count = 0;
-                            foreach ($explode as $nr => $value) {
-                                $explode[$nr] = trim($value);
-                                $count++;
-                            }
-                            switch ($count) {
-                                case 2:
-                                    if (
-                                        $node->has($explode[0]) &&
-                                        $node->has($explode[1])
-                                    ) {
-                                        $match_1 = $node->get($explode[0]);
-                                        $match_2 = $node->get($explode[1]);
-                                        if($match_1 && $match_2){
-                                            $filtter_value_1[] = $match_1;
-                                            $filtter_value_2[] = $match_2;
-                                        }
-                                        /*
-                                        $record = $this->record(
-                                            $name,
-                                            $role,
-                                            [
-                                                'filter' => [
-                                                    $explode[0] => [
-                                                        'value' => $node->get($explode[0]),
-                                                        'operator' => '==='
+                    foreach($list as $chunk){
+                        $filter_value_1 = [];
+                        $filter_value_2 = [];
+                        foreach($chunk as $record){
+                            $node = new Storage();
+                            $node->data($record);
+                            if (
+                                $data_object &&
+                                $data_object->has('is.unique')
+                            ) {
+                                $record = false;
+                                $unique = (array)$data_object->get('is.unique');
+                                $unique = array_shift($unique);
+                                $explode = explode(',', $unique);
+                                $count = 0;
+                                foreach ($explode as $nr => $value) {
+                                    $explode[$nr] = trim($value);
+                                    $count++;
+                                }
+                                switch ($count) {
+                                    case 2:
+                                        if (
+                                            $node->has($explode[0]) &&
+                                            $node->has($explode[1])
+                                        ) {
+                                            $match_1 = $node->get($explode[0]);
+                                            $match_2 = $node->get($explode[1]);
+                                            if($match_1 && $match_2){
+                                                $filter_value_1[] = $match_1;
+                                                $filter_value_2[] = $match_2;
+                                            }
+                                            /*
+                                            $record = $this->record(
+                                                $name,
+                                                $role,
+                                                [
+                                                    'filter' => [
+                                                        $explode[0] => [
+                                                            'value' => $node->get($explode[0]),
+                                                            'operator' => '==='
+                                                        ],
+                                                        $explode[1] => [
+                                                            'value' => $node->get($explode[1]),
+                                                            'operator' => '==='
+                                                        ]
                                                     ],
-                                                    $explode[1] => [
-                                                        'value' => $node->get($explode[1]),
-                                                        'operator' => '==='
-                                                    ]
-                                                ],
-                                                'transaction' => true,
-                                            ]
-                                        );
-                                        */
-                                    }
-                                    break;
-                                case 1:
-                                    if ($node->has($explode[0])) {
-                                        $match_1 = $node->get($explode[0]);
-                                        if($match_1){
-                                            $filtter_value_1[] = $match_1;
+                                                    'transaction' => true,
+                                                ]
+                                            );
+                                            */
                                         }
-                                        /*
-                                        $record = $this->record(
-                                            $name,
-                                            $role,
-                                            [
-                                                'filter' => [
-                                                    $explode[0] => [
-                                                        'value' => $node->get($explode[0]),
-                                                        'operator' => '==='
-                                                    ]
-                                                ],
-                                                'transaction' => true
-                                            ]
-                                        );
-                                        */
-                                    }
-                                    break;
+                                        break;
+                                    case 1:
+                                        if ($node->has($explode[0])) {
+                                            $match_1 = $node->get($explode[0]);
+                                            if($match_1){
+                                                $filter_value_1[] = $match_1;
+                                            }
+                                            /*
+                                            $record = $this->record(
+                                                $name,
+                                                $role,
+                                                [
+                                                    'filter' => [
+                                                        $explode[0] => [
+                                                            'value' => $node->get($explode[0]),
+                                                            'operator' => '==='
+                                                        ]
+                                                    ],
+                                                    'transaction' => true
+                                                ]
+                                            );
+                                            */
+                                        }
+                                        break;
+                                }
                             }
-                        } else {
-                            $record = ['node' => $record];
                         }
+                        d($filter_value_1);
+                        ddd($filter_value_2);
                     }
                 } else {
                     foreach($list as $record){
