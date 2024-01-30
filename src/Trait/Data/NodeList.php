@@ -319,14 +319,22 @@ trait NodeList {
                 }
                 if(count($list_sort) > 1000){
                     $first_record = false;
+                    $last_record = false;
                     foreach($list_sort as $index => $record){
                         if(
                             $record === null &&
                             $first_record === false
                         ){
                             unset($list_sort[$index]);
-                        } else {
+                        }
+                        elseif($first_record === false) {
                             $first_record = true;
+                        }
+                        elseif($record === null && $first_record === true){
+                            $last_record = true;
+                        }
+                        if($last_record){
+                            unset($list_sort[$index]);
                         }
                     }
                     $debug_backtrace =  debug_backtrace(1);
