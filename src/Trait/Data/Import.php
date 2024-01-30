@@ -256,10 +256,7 @@ trait Import {
                             foreach($chunk as $nr => $record){
                                 $node = new Storage();
                                 $node->data($record);
-
                                 //need index
-
-
                                 if(
                                     array_key_exists('force', $options) &&
                                     $options['force'] === true &&
@@ -292,16 +289,17 @@ trait Import {
                                     $create_many[] = $node->data();
                                 }
                                 elseif(
-                                    $select['list'][$nr] === false
+                                    $select['list'][$nr] === null
                                 ){
                                     $create_many[] = $node->data();
                                 } else {
                                     $skip++;
                                 }
                             }
-                            d(count($create_many));
-                            d(count($put_many));
-                            ddd(count($patch_many));
+                            d('create: ' . $create_many);
+                            d('patch: ' . $patch_many);
+                            d('put: ' . $put_many);
+                            /*
                             if(!empty($create_many)) {
                                 $response = $this->create_many($class, $role, $create_many, [
                                     'import' => true,
@@ -358,6 +356,7 @@ trait Import {
                                     'duration' => (microtime(true) - $start) * 1000
                                 ];
                             }
+                            */
                         }
                     }
                     $commit = [];
