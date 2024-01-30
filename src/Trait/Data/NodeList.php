@@ -239,6 +239,7 @@ trait NodeList {
                     $is_where = true;
                 }
                 $limit = $options['limit'] ?? 4096;
+                d($limit);
                 if($limit === 1000){
                     ddd($options);
                 }
