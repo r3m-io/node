@@ -216,6 +216,7 @@ trait Import {
                                                 'with_null' => true
                                             ]
                                         );
+                                        d(count($select));
                                         if(
                                             $select &&
                                             array_key_exists('list', $select)

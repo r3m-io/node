@@ -253,7 +253,6 @@ trait NodeList {
                     $is_where = true;
                 }
                 $limit = $options['limit'] ?? 4096;
-                $need_array_values = false;
                 $list_result = [];
                 foreach($list as $nr => $record) {
                     if(
@@ -323,6 +322,8 @@ trait NodeList {
                     d($debug_backtrace[1]['file'] . ':' . $debug_backtrace[1]['line'] . ':' . $debug_backtrace[1]['function']);
                     d($debug_backtrace[2]['file'] . ':' . $debug_backtrace[2]['line'] . ':' . $debug_backtrace[2]['function']);
                     d(count($list_sort));
+                    d($limit);
+                    d($count);
                     ddd($list_sort[0]);
                 }
 
