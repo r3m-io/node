@@ -195,6 +195,8 @@ trait NodeList {
             $object_data = $object->data_read($object_url);
         }
         $has_relation = false;
+        $count = 0;
+        $list_filtered = [];
         if($data){
             $list = $data->data($name);
             if(
@@ -235,8 +237,7 @@ trait NodeList {
                     }
                     $is_where = true;
                 }
-                d($class);
-                ddd($options);
+                $limit = $options['limit'] ?? 4096;
                 foreach($list as $nr => $record) {
                     if(
                         is_object($record) &&
@@ -275,15 +276,14 @@ trait NodeList {
                                 continue;
                             }
                         }
-                        $list[$nr] = $record;
-                    }
-                    elseif(is_object($record)){
-                        //objects which doesn't belong there
-                        unset($list[$nr]);
+                        $count++;
+                        $list_filtered[] = $record;
+                        if($count === $limit){
+                            break;
+                        }
                     }
                 }
-                $list = array_values($list);
-                $limit = $options['limit'] ?? 4096;
+                $list = $list_filtered;
                 if(
                     !empty($options['sort']) &&
                     is_array($options['sort'])
