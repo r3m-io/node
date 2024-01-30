@@ -28,6 +28,15 @@ trait Import {
      */
     public function import($class, $role, $options=[]): false | array
     {
+        /**
+         * need virtual system which manage read operations and read them on the fly
+         * with an input directory and an output directory
+         * then you get 2 polling scripts
+         * - one polls for the input directory for new files
+         * - if a file is placed in the input directory wait for it in the output directory with a time-out
+         * - create an index of all unique values
+         *
+         */
         $name = Controller::name($class);
         $object = $this->object();
         try {
@@ -99,7 +108,6 @@ trait Import {
                             } else {
                                 $node->data('#class', 'test');
                             }
-
                             if (
                                 $data_object &&
                                 $data_object->has('is.unique')
@@ -219,20 +227,33 @@ trait Import {
                                     !empty($filter_value_1) &&
                                     !empty($filter_value_2)
                                 ){
+                                    $where = [];
+                                    foreach($filter_value_1 as $nr => $value){
+                                        $where[] = '(';
+                                        $where[] = [
+                                            'value' => $value,
+                                            'attribute' => $explode[0],
+                                            'operator' => '==='
+                                        ];
+                                        $where[] = 'and';
+                                        $where[] = [
+                                            'value' => $filter_value_2[$nr],
+                                            'attribute' => $explode[1],
+                                            'operator' => '==='
+                                        ];
+                                        $where[] = ')';
+                                        if($nr < count($filter_value_1) - 1){
+                                            $where[] = 'or';
+                                        }
+                                    }
+                                    ddd($where);
+
+
                                     $select = $this->list(
                                         $name,
                                         $role,
                                         [
-                                            'filter' => [
-                                                $explode[0] => [
-                                                    'value' => $filter_value_1,
-                                                    'operator' => 'in'
-                                                ],
-                                                $explode[1] => [
-                                                    'value' => $filter_value_2,
-                                                    'operator' => 'in'
-                                                ]
-                                            ],
+                                            'where' => $where,
                                             'transaction' => true
                                         ]
                                     );
