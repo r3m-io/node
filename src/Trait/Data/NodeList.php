@@ -57,7 +57,8 @@ trait NodeList {
             $result['count'] = 0;
             $result['max'] = 0;
             if($options['with_null'] === true) {
-                for ($i=0; $i < $result['limit']; $i++){
+                $start = ($result['page'] - 1) * $result['limit'];
+                for ($i=$start; $i < $result['limit']; $i++){
                     $list[] = null;
                 }
             }
@@ -282,7 +283,7 @@ trait NodeList {
                             $record = $this->filter($record, $options['filter'], $options);
                             if(!$record){
                                 if($options['with_null'] === true){
-                                    $list_result[$nr] = null;
+                                    $list_result[] = null;
                                 }
                                 continue;
                             }
@@ -291,13 +292,13 @@ trait NodeList {
                             $record = $this->where($record, $options['where'], $options);
                             if(!$record){
                                 if($options['with_null'] === true){
-                                    $list_result[$nr] = null;
+                                    $list_result[] = null;
                                 }
                                 continue;
                             }
                         }
                         $count++;
-                        $list_result[$nr] = $record;
+                        $list_result[] = $record;
                         if($count === $limit){
                             break;
                         }
