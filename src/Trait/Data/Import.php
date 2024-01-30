@@ -106,6 +106,7 @@ trait Import {
                                     $explode[$nr] = trim($value);
                                     $count++;
                                 }
+                                $explode[1] = 'uuid';
                                 switch ($count) {
                                     case 2:
                                         if (
@@ -145,7 +146,7 @@ trait Import {
                                         if ($node->has($explode[0])) {
                                             $match_1 = $node->get($explode[0]);
                                             if($match_1){
-                                                $filter_value_1[] = (int) $match_1 + 10000;
+                                                $filter_value_1[] = $match_1;
                                             } else {
                                                 throw new Exception('Unique value cannot be empty...');
                                             }
@@ -193,6 +194,32 @@ trait Import {
 
                                 break;
                             case 2:
+                                if(
+                                    !empty($explode[0]) &&
+                                    !empty($explode[1]) &&
+                                    !empty($filter_value_1) &&
+                                    !empty($filter_value_2)
+                                ){
+                                    $select = $this->list(
+                                        $name,
+                                        $role,
+                                        [
+                                            'filter' => [
+                                                $explode[0] => [
+                                                    'value' => $filter_value_1,
+                                                    'operator' => 'in'
+                                                ],
+                                                $explode[1] => [
+                                                    'value' => $filter_value_2,
+                                                    'operator' => 'in'
+                                                ]
+                                            ],
+                                            'transaction' => true
+                                        ]
+                                    );
+                                    ddd($select);
+                                }
+
                                 break;
                         }
 
