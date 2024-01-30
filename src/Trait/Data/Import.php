@@ -116,6 +116,8 @@ trait Import {
                                         ) {
                                             $match_1 = $node->get($explode[0]);
                                             $match_2 = $node->get($explode[1]);
+                                            d($match_2);
+                                            ddd($match_1);
                                             if(
                                                 $match_1 !== null &&
                                                 $match_1 !== '' &&
