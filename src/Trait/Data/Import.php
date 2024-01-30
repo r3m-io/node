@@ -272,23 +272,23 @@ trait Import {
                                 } else {
                                     $select_nr = null;
                                 }
-                                d($select_nr);
                                 if(
                                     array_key_exists('force', $options) &&
                                     $options['force'] === true &&
-                                    !empty($select_nr) &&
+                                    $select_nr !== null &&
                                     array_key_exists($select_nr, $select['list']) &&
                                     is_object($select['list'][$select_nr]) &&
                                     property_exists($select['list'][$select_nr], 'uuid') &&
                                     !empty($select['list'][$select_nr]->uuid)
                                 ){
+                                    ddd('yes');
                                     $node->set('uuid', $select['list'][$select_nr]->uuid);
                                     $put_many[] = $node->data();
                                 }
                                 elseif(
                                     array_key_exists('patch', $options) &&
                                     $options['patch'] === true &&
-                                    !empty($select_nr) &&
+                                    $select_nr !== null &&
                                     array_key_exists($select_nr, $select['list']) &&
                                     is_object($select['list'][$select_nr]) &&
                                     property_exists($select['list'][$select_nr], 'uuid') &&
@@ -298,6 +298,7 @@ trait Import {
                                     $patch_many[] = $node->data();
                                 }
                                 elseif(!array_key_exists($select_nr, $select['list'])){
+                                    d('not found');
                                     $create_many[] = $node->data();
                                 }
                                 elseif(
