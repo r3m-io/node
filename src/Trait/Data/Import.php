@@ -86,6 +86,7 @@ trait Import {
                 $list_count = count($list);
                 if($list_count > 1000){
                     $list = array_chunk($list, 1000);
+                    $index = 1000;
                     foreach($list as $chunk){
                         $filter_value_1 = [];
                         $filter_value_2 = [];
@@ -94,6 +95,8 @@ trait Import {
                         foreach($chunk as $record){
                             $node = new Storage();
                             $node->data($record);
+                            $node->data('#index', $index);
+                            $index++;
                             if (
                                 $data_object &&
                                 $data_object->has('is.unique')
@@ -106,6 +109,8 @@ trait Import {
                                     $explode[$nr] = trim($value);
                                     $count++;
                                 }
+                                $explode[1] = '#index';
+                                $count = 2;
                                 switch ($count) {
                                     case 2:
                                         if (
