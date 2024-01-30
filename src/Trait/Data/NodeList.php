@@ -306,14 +306,14 @@ trait NodeList {
                     !empty($options['sort']) &&
                     is_array($options['sort'])
                 ){
-                    $list_sort = Sort::list($list)->with(
+                    $list_sort = Sort::list($list_result)->with(
                         $options['sort'],
                         [
                             'key_reset' => true,
                         ]
                     );
                 } else {
-                    $list_sort = $list;
+                    $list_sort = $list_result;
                 }
                 d(count($list_sort));
                 $debug_backtrace =  debug_backtrace(1);
