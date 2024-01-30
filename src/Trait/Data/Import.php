@@ -249,9 +249,14 @@ trait Import {
                                                 'limit' => $options['chunk-size']
                                             ]
                                         );
+                                        if($select && array_key_exists('list', $select)){
+                                            foreach($select['list'] as $nr => $record){
+                                                ddd($record);
+                                            }
+                                        }
                                         ddd($select);
                                     }
-                                    // a where is to slow
+                                    // a where is to slow because it needs to use nested where
 
                                     $where = [];
                                     foreach($filter_value_1 as $nr => $value){
