@@ -301,12 +301,15 @@ trait NodeList {
                             }
                         }
                         $count++;
-                        $list_result[] = $record;
+                        $list_result[$nr] = $record;
                         if($count === $limit){
                             break;
                         }
                     }
                 }
+                d($nr);
+                d($count);
+                d($limit);
                 d(array_keys($list_result));
                 if(
                     !empty($options['sort']) &&
