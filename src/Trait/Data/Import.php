@@ -106,7 +106,7 @@ trait Import {
                                     $explode[$nr] = trim($value);
                                     $count++;
                                 }
-                                $explode[1] = 'uuid';
+                                $explode[1] = 'string.value';
                                 $count = 2;
                                 switch ($count) {
                                     case 2:
