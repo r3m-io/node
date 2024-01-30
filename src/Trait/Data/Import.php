@@ -106,7 +106,7 @@ trait Import {
                                     $explode[$nr] = trim($value);
                                     $count++;
                                 }
-                                $explode[1] = 'id';
+                                $explode[1] = '#class';
                                 $count = 2;
                                 switch ($count) {
                                     case 2:
@@ -123,7 +123,7 @@ trait Import {
                                                 $match_2 !== ''
                                             ){
                                                 $filter_value_1[] = $match_1;
-                                                $filter_value_2[] = (int) $match_2 + 1;
+                                                $filter_value_2[] = $match_2;
                                             } else {
                                                 throw new Exception('Unique value cannot be empty...');
                                             }
