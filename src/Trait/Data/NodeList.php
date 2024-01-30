@@ -301,7 +301,7 @@ trait NodeList {
                             }
                         }
                         $count++;
-                        $list_result[$nr] = $record;
+                        $list_result[] = $record;
                         if($count === $limit){
                             break;
                         }

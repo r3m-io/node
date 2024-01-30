@@ -103,11 +103,13 @@ trait Import {
                         $filter_value_1 = [];
                         $filter_value_2 = [];
                         $count = 0;
+                        $count_record = 0;
                         $explode = [];
                         foreach($chunk as $chunk_nr => $record){
                             $node = new Storage();
                             $node->data($record);
-                            if($chunk_nr > 750){
+                            $count_record++;
+                            if($count_record > 750){
                                 $node->data('#class', 'RaXon.Php.Word.Embedding');
                             } else {
                                 $node->data('#class', 'test');
