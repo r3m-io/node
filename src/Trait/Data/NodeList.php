@@ -311,7 +311,6 @@ trait NodeList {
                         }
                     }
                 }
-                d($nr);
                 d($count);
                 d($limit);
                 d(array_keys($list_result));
