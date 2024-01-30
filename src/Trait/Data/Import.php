@@ -91,10 +91,15 @@ trait Import {
                         $filter_value_2 = [];
                         $count = 0;
                         $explode = [];
-                        foreach($chunk as $record){
+                        foreach($chunk as $chunk_nr => $record){
                             $node = new Storage();
                             $node->data($record);
-                            $node->data('#class', 'test');
+                            if($chunk_nr > 750){
+                                $node->data('#class', 'RaXon.Php.Word.Embedding');
+                            } else {
+                                $node->data('#class', 'test');
+                            }
+
                             if (
                                 $data_object &&
                                 $data_object->has('is.unique')
