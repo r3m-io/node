@@ -258,6 +258,7 @@ trait Import {
                                                 $node->data($record);
                                                 if($node->get($explode[1]) !== $filter_value_2[$nr]){
                                                     unset($select['list'][$nr]);
+                                                    $select['count']--;
                                                 }
                                             }
                                         }
