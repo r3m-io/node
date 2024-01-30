@@ -210,7 +210,6 @@ trait NodeList {
         }
         $has_relation = false;
         $count = 0;
-        $list_filtered = [];
         if($data){
             $list = $data->data($name);
             if(
@@ -324,6 +323,7 @@ trait NodeList {
                 } else {
                     $list_sort = $list;
                 }
+                ddd(count($list_sort));
                 if(
                     !empty($limit) &&
                     $limit === '*'
