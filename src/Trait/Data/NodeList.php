@@ -313,7 +313,7 @@ trait NodeList {
                 }
                 d($count);
                 d($limit);
-                d(array_keys($list_result));
+                d($list_result);
                 if(
                     !empty($options['sort']) &&
                     is_array($options['sort'])
