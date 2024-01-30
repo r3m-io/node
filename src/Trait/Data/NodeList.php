@@ -235,6 +235,7 @@ trait NodeList {
                     }
                     $is_where = true;
                 }
+                ddd($options['limit']);
                 foreach($list as $nr => $record) {
                     if(
                         is_object($record) &&
