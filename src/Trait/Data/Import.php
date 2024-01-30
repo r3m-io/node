@@ -119,7 +119,12 @@ trait Import {
                                         ) {
                                             $match_1 = $node->get($explode[0]);
                                             $match_2 = $node->get($explode[1]);
-                                            if($match_1 && $match_2){
+                                            if(
+                                                $match_1 !== null &&
+                                                $match_1 !== '' &&
+                                                $match_2 !== null &&
+                                                $match_2 !== ''
+                                            ){
                                                 $filter_value_1[] = $match_1;
                                                 $filter_value_2[] = $match_2;
                                             } else {
@@ -149,7 +154,10 @@ trait Import {
                                     case 1:
                                         if ($node->has($explode[0])) {
                                             $match_1 = $node->get($explode[0]);
-                                            if($match_1){
+                                            if(
+                                                $match_1 !== null &&
+                                                $match_1 !== ''
+                                            ){
                                                 $filter_value_1[] = $match_1;
                                             } else {
                                                 throw new Exception('Unique value cannot be empty...');
