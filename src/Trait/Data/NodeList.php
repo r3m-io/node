@@ -323,7 +323,7 @@ trait NodeList {
                 } else {
                     $list_sort = $list;
                 }
-                ddd(count($list_sort));
+                d(count($list_sort));
                 if(
                     !empty($limit) &&
                     $limit === '*'
