@@ -50,6 +50,9 @@ trait Import {
             if(!array_key_exists('uuid', $options)){
                 $options['uuid'] = false;
             }
+            if(!array_key_exists('chunk-size', $options)){
+                $options['chunk-size'] = 1000;
+            }
             $options['import'] = true;
             set_time_limit(0);
             $start = microtime(true);
@@ -93,8 +96,8 @@ trait Import {
                 ;
                 $data_object = $object->data_read($url_object, sha1($url_object));
                 $list_count = count($list);
-                if($list_count > 1000){
-                    $list = array_chunk($list, 1000);
+                if($list_count > $options['chunk-size']){
+                    $list = array_chunk($list, $options['chunk-size']);
                     foreach($list as $chunk){
                         $filter_value_1 = [];
                         $filter_value_2 = [];
@@ -213,7 +216,8 @@ trait Import {
                                                     'operator' => 'in'
                                                 ]
                                             ],
-                                            'transaction' => true
+                                            'transaction' => true,
+                                            'limit' => $options['chunk-size']
                                         ]
                                     );
                                     ddd($select);
@@ -251,7 +255,8 @@ trait Import {
                                         $role,
                                         [
                                             'where' => $where,
-                                            'transaction' => true
+                                            'transaction' => true,
+                                            'limit' => $options['chunk-size']
                                         ]
                                     );
                                     ddd($select);
