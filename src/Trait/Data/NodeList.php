@@ -301,7 +301,7 @@ trait NodeList {
                             }
                         }
                         $count++;
-                        $list_result[$nr] = $record;
+                        $list_result[$record->uuid] = $record;
                         if($count === $limit){
                             break;
                         }
@@ -332,9 +332,8 @@ trait NodeList {
                     d(count($list_sort));
                     d($limit);
                     d($count);
-                    ddd($list_sort[0]);
+//                    ddd($list_sort[0]);
                 }
-
                 if(
                     !empty($limit) &&
                     $limit === '*'
@@ -379,21 +378,41 @@ trait NodeList {
                 $limit = $options['limit'] ?? 4096;
                 $list_temp = [];
                 $list_count = 0;
+                $number = 0;
                 foreach($list_sort as $index => $record){
-                    if(
-                        $index < ($page - 1) * $limit
-                    ){
-                        //nothing
-                    }
-                    elseif($index >= $page * $limit){
-                        break;
-                    }
-                    else {
-                        if(is_object($record)){
-                            $record->{'#index'} = $index;
+                    if(is_numeric($index)){
+                        if(
+                            $index < ($page - 1) * $limit
+                        ){
+                            unset($list_sort[$index]);
                         }
-                        $list_temp[] = $record;
-                        $list_count++;
+                        elseif($index >= $page * $limit){
+                            break;
+                        }
+                        else {
+                            if(is_object($record)){
+                                $record->{'#index'} = $index;
+                            }
+                            $list_temp[] = $record;
+                            $list_count++;
+                        }
+                    } else {
+                        if(
+                            $number < ($page - 1) * $limit
+                        ){
+                            unset($list_sort[$number]);
+                        }
+                        elseif($number >= $page * $limit){
+                            break;
+                        }
+                        else {
+                            if(is_object($record)){
+                                $record->{'#index'} = $index;
+                            }
+                            $list_temp[] = $record;
+                            $list_count++;
+                        }
+                        $number++;
                     }
                 }
                 $list = $list_temp;
