@@ -325,7 +325,9 @@ trait NodeList {
                     $list_sort = $list_result;
                 }
                 if(count($list_sort) > 1000){
-
+                    foreach($list_sort as $index => $record){
+                        ddd($record);
+                    }
                     $debug_backtrace =  debug_backtrace(1);
                     d($debug_backtrace[0]['file'] . ':' . $debug_backtrace[0]['line'] . ':' . $debug_backtrace[0]['function']);
                     d($debug_backtrace[1]['file'] . ':' . $debug_backtrace[1]['line'] . ':' . $debug_backtrace[1]['function']);
