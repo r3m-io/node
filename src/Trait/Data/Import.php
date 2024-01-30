@@ -262,7 +262,6 @@ trait Import {
                             if(array_key_exists('list', $select)){
                                 $keys = array_keys($select['list']);
                             }
-                            d(array_keys($keys));
                             foreach($chunk as $nr => $record){
                                 $node = new Storage();
                                 $node->data($record);
@@ -271,6 +270,7 @@ trait Import {
                                 } else {
                                     $select_nr = null;
                                 }
+                                d($select_nr);
                                 if(
                                     array_key_exists('force', $options) &&
                                     $options['force'] === true &&
