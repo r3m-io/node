@@ -221,21 +221,28 @@ trait Import {
                                             $select &&
                                             array_key_exists('list', $select)
                                         ){
-                                            foreach($select['list'] as $nr => $item){
+                                            foreach($filter_value_2 as $nr => $value){
                                                 $node = new Storage();
-                                                $node->data($item);
-                                                if($node->get($explode[1]) !== $filter_value_2[$nr]){
-                                                    $select['list'][$nr] = false;
-                                                    $select['count']--;
+                                                if(
+                                                    array_key_exists($nr, $select['list']) &&
+                                                    is_object($select['list'][$nr])
+                                                ){
+                                                    $node->data($select['list'][$nr]);
+                                                    if($node->get($explode[1]) !== $value) {
+                                                        $select['list'][$nr] = null;
+                                                        $select['count']--;
+                                                    }
                                                 } else {
-                                                    /*
-                                                    $patch = new Storage();
-                                                    $patch->data($record);
-                                                    $patch->set('uuid', $select['list'][$nr]->uuid);
-                                                    //patch || put
-                                                    $put_many[] = $patch->data();
-                                                    */
+                                                    $select['list'][$nr] = null;
+                                                    $select['count']--;
                                                 }
+                                                /*
+                                                $patch = new Storage();
+                                                $patch->data($record);
+                                                $patch->set('uuid', $select['list'][$nr]->uuid);
+                                                //patch || put
+                                                $put_many[] = $patch->data();
+                                                */
                                             }
                                         }
                                     }
@@ -260,7 +267,6 @@ trait Import {
                                     array_key_exists('list', $select) &&
                                     is_array($select['list']) &&
                                     array_key_exists($nr, $select['list']) &&
-                                    $select['list'][$nr]  !== false &&
                                     is_object($select['list'][$nr]) &&
                                     property_exists($select['list'][$nr], 'uuid') &&
                                     !empty($select['list'][$nr]->uuid)
@@ -275,13 +281,15 @@ trait Import {
                                     array_key_exists('list', $select) &&
                                     is_array($select['list']) &&
                                     array_key_exists($nr, $select['list']) &&
-                                    $select['list'][$nr]  !== false &&
                                     is_object($select['list'][$nr]) &&
                                     property_exists($select['list'][$nr], 'uuid') &&
                                     !empty($select['list'][$nr]->uuid)
                                 ){
                                     $node->set('uuid', $select['list'][$nr]->uuid);
                                     $patch_many[] = $node->data();
+                                }
+                                elseif(!array_key_exists($nr, $select['list'])){
+                                    $create_many[] = $node->data();
                                 }
                                 elseif(
                                     $select['list'][$nr] === false
@@ -291,8 +299,90 @@ trait Import {
                                     $skip++;
                                 }
                             }
+                            d(count($create_many));
+                            d(count($put_many));
+                            ddd(count($patch_many));
+                            if(!empty($create_many)) {
+                                $response = $this->create_many($class, $role, $create_many, [
+                                    'import' => true,
+                                    'uuid' => $options['uuid']
+                                ]);
+                                if (
+                                    array_key_exists('list', $response) &&
+                                    is_array($response['list'])
+                                ) {
+                                    $create = count($response['list']);
+                                } elseif (
+                                    array_key_exists('error', $response)
+                                ) {
+                                    $error = $response['error'];
+                                }
+                            }
+                            if(!empty($put_many)){
+                                $response = $this->put_many($class, $role, $put_many, [
+                                    'import' => true
+                                ]);
+                                if(
+                                    array_key_exists('list', $response) &&
+                                    is_array($response['list'])
+                                ) {
+                                    $put = count($response['list']);
+                                }
+                                elseif(
+                                    array_key_exists('error', $response)
+                                ){
+                                    $error = array_merge($error, $response['error']);
+                                }
+                            }
+                            if(!empty($patch_many)){
+                                $response = $this->patch_many($class, $role, $patch_many, [
+                                    'import' => true
+                                ]);
+                                if(
+                                    array_key_exists('list', $response) &&
+                                    is_array($response['list'])
+                                ) {
+                                    $patch = count($response['list']);
+                                }
+                                elseif(
+                                    array_key_exists('error', $response)
+                                ){
+                                    $error = array_merge($error, $response['error']);
+                                }
+                            }
+                            if(!empty($error)){
+                                $this->unlock($name);
+                                return [
+                                    'error' => $error,
+                                    'transaction' => true,
+                                    'duration' => (microtime(true) - $start) * 1000
+                                ];
+                            }
                         }
                     }
+                    $commit = [];
+                    if($create > 0 || $put > 0 || $patch > 0){
+                        $object->config('time.limit', 0);
+                        $commit = $this->commit($class, $role);
+                    } else {
+                        $this->unlock($name);
+                    }
+                    $duration = microtime(true) - $start;
+                    $total = $put + $patch + $create;
+                    $item_per_second = round($total / $duration, 2);
+
+                    $object->config('delete', 'node.transaction.' . $name);
+                    return [
+                        'skip' => $skip,
+                        'put' => $put,
+                        'patch' => $patch,
+                        'create' => $create,
+                        'commit' => $commit,
+                        'mtime' => File::mtime($url),
+                        'duration' => $duration * 1000,
+                        'item_per_second' => $item_per_second,
+                        'transaction' => true
+                    ];
                 } else {
                     foreach($list as $record){
                         $node = new Storage();
