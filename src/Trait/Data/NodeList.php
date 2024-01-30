@@ -318,6 +318,8 @@ trait NodeList {
                     $list_sort = $list_result;
                 }
                 d(count($list_sort));
+                d($count);
+                d($limit);
                 $debug_backtrace =  debug_backtrace(1);
                 d($debug_backtrace[0]['file'] . ':' . $debug_backtrace[0]['line'] . ':' . $debug_backtrace[0]['function']);
                 d($debug_backtrace[1]['file'] . ':' . $debug_backtrace[1]['line'] . ':' . $debug_backtrace[1]['function']);
