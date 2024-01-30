@@ -94,7 +94,7 @@ trait Import {
                         foreach($chunk as $record){
                             $node = new Storage();
                             $node->data($record);
-                            ddd($node);
+                            $node->data('#class', 'test');
                             if (
                                 $data_object &&
                                 $data_object->has('is.unique')
