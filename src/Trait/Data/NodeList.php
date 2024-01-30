@@ -252,6 +252,7 @@ trait NodeList {
                 }
                 $limit = $options['limit'] ?? 4096;
                 $need_array_values = false;
+                $list_result = [];
                 foreach($list as $nr => $record) {
                     if(
                         is_object($record) &&
@@ -280,10 +281,7 @@ trait NodeList {
                             $record = $this->filter($record, $options['filter'], $options);
                             if(!$record){
                                 if($options['with_null'] === true){
-                                    $list[$nr] = null;
-                                } else {
-                                    unset($list[$nr]);
-                                    $need_array_values = true;
+                                    $list_result[$nr] = null;
                                 }
                                 continue;
                             }
@@ -292,23 +290,17 @@ trait NodeList {
                             $record = $this->where($record, $options['where'], $options);
                             if(!$record){
                                 if($options['with_null'] === true){
-                                    $list[$nr] = null;
-                                } else {
-                                    unset($list[$nr]);
-                                    $need_array_values = true;
+                                    $list_result[$nr] = null;
                                 }
                                 continue;
                             }
                         }
                         $count++;
-                        $list[$nr] = $record;
+                        $list_result[$nr] = $record;
                         if($count === $limit){
                             break;
                         }
                     }
-                }
-                if($need_array_values){
-                    $list = array_values($list);
                 }
                 if(
                     !empty($options['sort']) &&
