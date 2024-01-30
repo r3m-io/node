@@ -249,7 +249,10 @@ trait Import {
                                                 'limit' => $options['chunk-size']
                                             ]
                                         );
-                                        if($select && array_key_exists('list', $select)){
+                                        if(
+                                            $select &&
+                                            array_key_exists('list', $select)
+                                        ){
                                             foreach($select['list'] as $nr => $record){
                                                 d($explode[1]);
                                                 d($filter_value_2[$nr]);
