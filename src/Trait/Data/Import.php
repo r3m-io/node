@@ -254,9 +254,11 @@ trait Import {
                                             array_key_exists('list', $select)
                                         ){
                                             foreach($select['list'] as $nr => $record){
-                                                d($explode[1]);
-                                                d($filter_value_2[$nr]);
-                                                ddd($record);
+                                                $node = new Storage();
+                                                $node->data($record);
+                                                if($node->get($explode[1]) !== $filter_value_2[$nr]){
+                                                    unset($select['list'][$nr]);
+                                                }
                                             }
                                         }
                                         ddd($select);
