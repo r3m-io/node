@@ -325,9 +325,15 @@ trait NodeList {
                     $list_sort = $list_result;
                 }
                 if(count($list_sort) > 1000){
+                    $first_record = false;
                     foreach($list_sort as $index => $record){
-                        if($record === null){
-                            d($index);
+                        if(
+                            $record === null &&
+                            $first_record === false
+                        ){
+                            unset($list_sort[$index]);
+                        } else {
+                            $first_record = true;
                         }
                     }
                     $debug_backtrace =  debug_backtrace(1);
