@@ -91,7 +91,8 @@ trait NodeList {
             $result['count'] = 0;
             $result['max'] = 0;
             if($options['with_null'] === true) {
-                for ($i=0; $i < $result['limit']; $i++){
+                $start = ($result['page'] - 1) * $result['limit'];
+                for ($i=$start; $i < $result['limit']; $i++){
                     $list[] = null;
                 }
             }
