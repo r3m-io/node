@@ -83,96 +83,101 @@ trait Import {
                     $object->config('extension.json')
                 ;
                 $data_object = $object->data_read($url_object, sha1($url_object));
-                foreach($list as $record){
-                    $node = new Storage();
-                    $node->data($record);
-                    if(
-                        $data_object &&
-                        $data_object->has('is.unique')
-                    ){
-                        $record = false;
-                        $unique = (array) $data_object->get('is.unique');
-                        $unique = array_shift($unique);
-                        $explode = explode(',', $unique);
-                        $count = 0;
-                        foreach($explode as $nr => $value){
-                            $explode[$nr] = trim($value);
-                            $count++;
-                        }
-                        switch ($count){
-                            case 2:
-                                if(
-                                    $node->has($explode[0]) &&
-                                    $node->has($explode[1])
-                                ){
-                                    $record = $this->record(
-                                        $name,
-                                        $role,
-                                        [
-                                            'filter' => [
-                                                $explode[0] => [
-                                                    'value' => $node->get($explode[0]),
-                                                    'operator' => '==='
-                                                ],
-                                                $explode[1] => [
-                                                    'value' => $node->get($explode[1]),
-                                                    'operator' => '==='
-                                                ]
-                                            ],
-                                            'transaction' => true,
-                                        ]
-                                    );
-                                }
-                                break;
-                            case 1:
-                                if($node->has($explode[0])){
-                                    $record = $this->record(
-                                        $name,
-                                        $role,
-                                        [
-                                            'filter' => [
-                                                $explode[0] => [
-                                                    'value' => $node->get($explode[0]),
-                                                    'operator' => '==='
-                                                ]
-                                            ],
-                                            'transaction' => true
-                                        ]
-                                    );
-                                }
-                                break;
-                        }
-                    } else {
-                        $record = ['node' => $record];
-                    }
-                    if($record){
+                $list_count = count($list);
+                if(count($list_count) > 1000){
+                    ddd($list_count);
+                } else {
+                    foreach($list as $record){
+                        $node = new Storage();
+                        $node->data($record);
                         if(
-                            array_key_exists('force', $options) &&
-                            $options['force'] === true &&
-                            array_key_exists('node', $record) &&
-                            property_exists($record['node'], 'uuid') &&
-                            !empty($record['node']->uuid)
+                            $data_object &&
+                            $data_object->has('is.unique')
                         ){
-                            $node->set('uuid', $record['node']->uuid);
-                            $put_many[] = $node->data();
-                        }
-                        elseif(
-                            array_key_exists('patch', $options) &&
-                            $options['patch'] === true &&
-                            array_key_exists('node', $record) &&
-                            property_exists($record['node'], 'uuid') &&
-                            !empty($record['node']->uuid)
-                        ){
-                            $node->set('uuid', $record['node']->uuid);
-                            $patch_many[] = $node->data();
+                            $record = false;
+                            $unique = (array) $data_object->get('is.unique');
+                            $unique = array_shift($unique);
+                            $explode = explode(',', $unique);
+                            $count = 0;
+                            foreach($explode as $nr => $value){
+                                $explode[$nr] = trim($value);
+                                $count++;
+                            }
+                            switch ($count){
+                                case 2:
+                                    if(
+                                        $node->has($explode[0]) &&
+                                        $node->has($explode[1])
+                                    ){
+                                        $record = $this->record(
+                                            $name,
+                                            $role,
+                                            [
+                                                'filter' => [
+                                                    $explode[0] => [
+                                                        'value' => $node->get($explode[0]),
+                                                        'operator' => '==='
+                                                    ],
+                                                    $explode[1] => [
+                                                        'value' => $node->get($explode[1]),
+                                                        'operator' => '==='
+                                                    ]
+                                                ],
+                                                'transaction' => true,
+                                            ]
+                                        );
+                                    }
+                                    break;
+                                case 1:
+                                    if($node->has($explode[0])){
+                                        $record = $this->record(
+                                            $name,
+                                            $role,
+                                            [
+                                                'filter' => [
+                                                    $explode[0] => [
+                                                        'value' => $node->get($explode[0]),
+                                                        'operator' => '==='
+                                                    ]
+                                                ],
+                                                'transaction' => true
+                                            ]
+                                        );
+                                    }
+                                    break;
+                            }
                         } else {
-                            $skip++;
+                            $record = ['node' => $record];
                         }
-                    } else {
-                        if(!$options['uuid'] === true){
-                            $node->delete('uuid');
+                        if($record){
+                            if(
+                                array_key_exists('force', $options) &&
+                                $options['force'] === true &&
+                                array_key_exists('node', $record) &&
+                                property_exists($record['node'], 'uuid') &&
+                                !empty($record['node']->uuid)
+                            ){
+                                $node->set('uuid', $record['node']->uuid);
+                                $put_many[] = $node->data();
+                            }
+                            elseif(
+                                array_key_exists('patch', $options) &&
+                                $options['patch'] === true &&
+                                array_key_exists('node', $record) &&
+                                property_exists($record['node'], 'uuid') &&
+                                !empty($record['node']->uuid)
+                            ){
+                                $node->set('uuid', $record['node']->uuid);
+                                $patch_many[] = $node->data();
+                            } else {
+                                $skip++;
+                            }
+                        } else {
+                            if(!$options['uuid'] === true){
+                                $node->delete('uuid');
+                            }
+                            $create_many[] = $node->data();
                         }
-                        $create_many[] = $node->data();
                     }
                 }
             }
