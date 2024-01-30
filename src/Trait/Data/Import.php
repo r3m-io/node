@@ -84,7 +84,7 @@ trait Import {
                 ;
                 $data_object = $object->data_read($url_object, sha1($url_object));
                 $list_count = count($list);
-                if(count($list_count) > 1000){
+                if($list_count > 1000){
                     ddd($list_count);
                 } else {
                     foreach($list as $record){
