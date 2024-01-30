@@ -116,6 +116,8 @@ trait Import {
                                             if($match_1 && $match_2){
                                                 $filter_value_1[] = $match_1;
                                                 $filter_value_2[] = $match_2;
+                                            } else {
+                                                throw new Exception('Unique value cannot be empty...');
                                             }
                                             /*
                                             $record = $this->record(
@@ -143,6 +145,8 @@ trait Import {
                                             $match_1 = $node->get($explode[0]);
                                             if($match_1){
                                                 $filter_value_1[] = $match_1;
+                                            } else {
+                                                throw new Exception('Unique value cannot be empty...');
                                             }
                                             /*
                                             $record = $this->record(
