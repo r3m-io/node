@@ -249,6 +249,10 @@ trait Import {
                                         $skip
                                     );
                                     $response_list[] = $response;
+                                    $create_many = [];
+                                    $put_many = [];
+                                    $patch_many = [];
+                                    $skip = 0;
                                 }
                                 break;
                             case 2:
@@ -322,6 +326,10 @@ trait Import {
                                         $skip
                                     );
                                     $response_list[] = $response;
+                                    $create_many = [];
+                                    $put_many = [];
+                                    $patch_many = [];
+                                    $skip = 0;
                                 }
                                 break;
                         }
