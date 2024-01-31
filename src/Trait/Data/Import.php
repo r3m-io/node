@@ -88,271 +88,51 @@ trait Import {
                     $object->config('extension.json')
                 ;
                 $data_object = $object->data_read($url_object, sha1($url_object));
-                $list_count = count($list);
-                d($list_count);
-                if($list_count > $options['chunk-size']){
-                    $list = array_chunk($list, $options['chunk-size']);
-                    foreach($list as $chunk_nr => $chunk){
-                        $filter_value_1 = [];
-                        $filter_value_2 = [];
-                        $count = 0;
-                        $explode = [];
-                        $create_many = [];
-                        $put_many = [];
-                        $patch_many = [];
-                        $skip = 0;
-                        foreach($chunk as $record_nr => $record){
-                            $node = new Storage();
-                            $node->data($record);
-                            if (
-                                $data_object &&
-                                $data_object->has('is.unique')
-                            ) {
-                                $unique = (array) $data_object->get('is.unique');
-                                $unique = array_shift($unique);
-                                $explode = explode(',', $unique);
-                                $count = 0;
-                                foreach ($explode as $nr => $value) {
-                                    $explode[$nr] = trim($value);
-                                    $count++;
-                                }
-                                switch ($count) {
-                                    case 2:
-                                        if (
-                                            $node->has($explode[0]) &&
-                                            $node->has($explode[1])
-                                        ) {
-                                            $match_1 = $node->get($explode[0]);
-                                            $match_2 = $node->get($explode[1]);
-                                            if(
-                                                $match_1 !== null &&
-                                                $match_1 !== '' &&
-                                                $match_2 !== null &&
-                                                $match_2 !== ''
-                                            ){
-                                                $filter_value_1[$record_nr] = $match_1;
-                                                $filter_value_2[$record_nr] = $match_2;
-                                            } else {
-                                                throw new Exception('Unique value cannot be empty...');
-                                            }
-                                            /*
-                                            $record = $this->record(
-                                                $name,
-                                                $role,
-                                                [
-                                                    'filter' => [
-                                                        $explode[0] => [
-                                                            'value' => $node->get($explode[0]),
-                                                            'operator' => '==='
-                                                        ],
-                                                        $explode[1] => [
-                                                            'value' => $node->get($explode[1]),
-                                                            'operator' => '==='
-                                                        ]
-                                                    ],
-                                                    'transaction' => true,
-                                                ]
-                                            );
-                                            */
-                                        } else {
-                                            throw new Exception('Unique value cannot be empty...');
-                                        }
-                                        break;
-                                    case 1:
-                                        if ($node->has($explode[0])) {
-                                            $match_1 = $node->get($explode[0]);
-                                            if(
-                                                $match_1 !== null &&
-                                                $match_1 !== ''
-                                            ){
-                                                $filter_value_1[$record_nr] = $match_1;
-                                            } else {
-                                                throw new Exception('Unique value cannot be empty...');
-                                            }
-                                            /*
-                                            $record = $this->record(
-                                                $name,
-                                                $role,
-                                                [
-                                                    'filter' => [
-                                                        $explode[0] => [
-                                                            'value' => $node->get($explode[0]),
-                                                            'operator' => '==='
-                                                        ]
-                                                    ],
-                                                    'transaction' => true
-                                                ]
-                                            );
-                                            */
-                                        } else {
-                                            throw new Exception('Unique value cannot be empty...');
-                                        }
-                                        break;
-                                }
-                            }
-                        }
-                        switch($count){
-                            case 1 :
-                                if(
-                                    !empty($explode[0]) &&
-                                    !empty($filter_value_1)
-                                ) {
-                                    $select = $this->list(
-                                        $name,
-                                        $role,
-                                        [
-                                            'filter' => [
-                                                $explode[0] => [
-                                                    'value' => $filter_value_1,
-                                                    'operator' => 'in'
-                                                ]
-                                            ],
-                                            'key' => [
-                                                $explode[0]
-                                            ],
-                                            'transaction' => true,
-                                            'limit' => $options['chunk-size'],
-                                            'page' => 1
-                                        ]
-                                    );
-                                    foreach ($filter_value_1 as $nr => $key) {
-                                        if (
-                                            is_array($select) &&
-                                            array_key_exists('list', $select) &&
-                                            array_key_exists($key, $select['list'])
-                                        ) {
-                                            if (
-                                                array_key_exists('force', $options) &&
-                                                $options['force'] === true
-                                            ) {
-                                                $node = new Storage($select['list'][$key]);
-                                                $node->set('uuid', $select['list'][$key]->uuid);
-                                                $put_many[] = $node->data();
-                                            } elseif (
-                                                array_key_exists('patch', $options) &&
-                                                $options['patch'] === true
-                                            ) {
-                                                $node = new Storage($select['list'][$key]);
-                                                $node->set('uuid', $select['list'][$key]->uuid);
-                                                $patch_many[] = $node->data();
-                                            } else {
-                                                $skip++;
-                                            }
-                                        } else {
-                                            $create_many[] = $chunk[$nr];
-                                        }
-                                    }
-                                    $response = $this->update(
-                                        $class,
-                                        $role,
-                                        $options,
-                                        $create_many,
-                                        $put_many,
-                                        $patch_many,
-                                        $skip
-                                    );
-                                    $response_list[] = $response;
-                                }
-                                break;
-                            case 2:
-                                if(
-                                    !empty($explode[0]) &&
-                                    !empty($explode[1]) &&
-                                    !empty($filter_value_1) &&
-                                    !empty($filter_value_2)
-                                ){
-//                                    d($filter_value_1); //id
-//                                    ddd($filter_value_2); //class
-                                    $select = $this->list(
-                                        $name,
-                                        $role,
-                                        [
-                                            'filter' => [
-                                                $explode[0] => [
-                                                    'value' => $filter_value_1,
-                                                    'operator' => 'in'
-                                                ]
-                                            ],
-                                            'key' => [
-                                                $explode[0]
-                                            ],
-                                            'transaction' => true,
-                                            'limit' => $options['chunk-size'],
-                                            'page' => 1
-                                        ]
-                                    );
-                                    $select_filter = [];
-                                    foreach($filter_value_1 as $nr => $key){
-                                        if(
-                                            is_array($select) &&
-                                            array_key_exists('list', $select) &&
-                                            array_key_exists($key, $select['list'])
-                                        ){
-                                            //do check with filter var 2
-                                            $node = new Storage($select['list'][$key]);
-                                            if($node->get($explode[1]) === $filter_value_2[$nr]){
-                                                if(
-                                                    array_key_exists('force', $options) &&
-                                                    $options['force'] === true
-                                                ){
-                                                    $node->set('uuid', $select['list'][$key]->uuid);
-                                                    $put_many[] = $node->data();
-                                                }
-                                                elseif(
-                                                    array_key_exists('patch', $options) &&
-                                                    $options['patch'] === true
-                                                ){
-                                                    $node->set('uuid', $select['list'][$key]->uuid);
-                                                    $patch_many[] = $node->data();
-                                                }
-                                                else {
-                                                    $skip++;
-                                                }
-                                            } else {
-                                                $create_many[] = $chunk[$nr];
-                                            }
-                                        } else {
-                                            $create_many[] = $chunk[$nr];
-                                        }
-                                    }
-                                    $response = $this->update(
-                                        $class,
-                                        $role,
-                                        $options,
-                                        $create_many,
-                                        $put_many,
-                                        $patch_many,
-                                        $skip
-                                    );
-                                    $response_list[] = $response;
-                                }
-                                break;
-                        }
-                    }
-                    return $response_list;
-                } else {
-                    foreach($list as $record){
+                $list = array_chunk($list, $options['chunk-size']);
+                foreach($list as $chunk_nr => $chunk){
+                    $filter_value_1 = [];
+                    $filter_value_2 = [];
+                    $count = 0;
+                    $explode = [];
+                    $create_many = [];
+                    $put_many = [];
+                    $patch_many = [];
+                    $skip = 0;
+                    foreach($chunk as $record_nr => $record){
                         $node = new Storage();
                         $node->data($record);
-                        if(
+                        if (
                             $data_object &&
                             $data_object->has('is.unique')
-                        ){
-                            $record = false;
+                        ) {
                             $unique = (array) $data_object->get('is.unique');
                             $unique = array_shift($unique);
                             $explode = explode(',', $unique);
                             $count = 0;
-                            foreach($explode as $nr => $value){
+                            foreach ($explode as $nr => $value) {
                                 $explode[$nr] = trim($value);
                                 $count++;
                             }
-                            switch ($count){
+                            switch ($count) {
                                 case 2:
-                                    if(
+                                    if (
                                         $node->has($explode[0]) &&
                                         $node->has($explode[1])
-                                    ){
+                                    ) {
+                                        $match_1 = $node->get($explode[0]);
+                                        $match_2 = $node->get($explode[1]);
+                                        if(
+                                            $match_1 !== null &&
+                                            $match_1 !== '' &&
+                                            $match_2 !== null &&
+                                            $match_2 !== ''
+                                        ){
+                                            $filter_value_1[$record_nr] = $match_1;
+                                            $filter_value_2[$record_nr] = $match_2;
+                                        } else {
+                                            throw new Exception('Unique value cannot be empty...');
+                                        }
+                                        /*
                                         $record = $this->record(
                                             $name,
                                             $role,
@@ -370,10 +150,23 @@ trait Import {
                                                 'transaction' => true,
                                             ]
                                         );
+                                        */
+                                    } else {
+                                        throw new Exception('Unique value cannot be empty...');
                                     }
                                     break;
                                 case 1:
-                                    if($node->has($explode[0])){
+                                    if ($node->has($explode[0])) {
+                                        $match_1 = $node->get($explode[0]);
+                                        if(
+                                            $match_1 !== null &&
+                                            $match_1 !== ''
+                                        ){
+                                            $filter_value_1[$record_nr] = $match_1;
+                                        } else {
+                                            throw new Exception('Unique value cannot be empty...');
+                                        }
+                                        /*
                                         $record = $this->record(
                                             $name,
                                             $role,
@@ -387,59 +180,165 @@ trait Import {
                                                 'transaction' => true
                                             ]
                                         );
+                                        */
+                                    } else {
+                                        throw new Exception('Unique value cannot be empty...');
                                     }
                                     break;
                             }
-                        } else {
-                            $record = ['node' => $record];
-                        }
-                        if($record){
-                            if(
-                                array_key_exists('force', $options) &&
-                                $options['force'] === true &&
-                                array_key_exists('node', $record) &&
-                                property_exists($record['node'], 'uuid') &&
-                                !empty($record['node']->uuid)
-                            ){
-                                $node->set('uuid', $record['node']->uuid);
-                                $put_many[] = $node->data();
-                            }
-                            elseif(
-                                array_key_exists('patch', $options) &&
-                                $options['patch'] === true &&
-                                array_key_exists('node', $record) &&
-                                property_exists($record['node'], 'uuid') &&
-                                !empty($record['node']->uuid)
-                            ){
-                                $node->set('uuid', $record['node']->uuid);
-                                $patch_many[] = $node->data();
-                            } else {
-                                $skip++;
-                            }
-                        } else {
-                            if(!$options['uuid'] === true){
-                                $node->delete('uuid');
-                            }
-                            $create_many[] = $node->data();
                         }
                     }
+                    switch($count){
+                        case 1 :
+                            if(
+                                !empty($explode[0]) &&
+                                !empty($filter_value_1)
+                            ) {
+                                $select = $this->list(
+                                    $name,
+                                    $role,
+                                    [
+                                        'filter' => [
+                                            $explode[0] => [
+                                                'value' => $filter_value_1,
+                                                'operator' => 'in'
+                                            ]
+                                        ],
+                                        'key' => [
+                                            $explode[0]
+                                        ],
+                                        'transaction' => true,
+                                        'limit' => $options['chunk-size'],
+                                        'page' => 1
+                                    ]
+                                );
+                                foreach ($filter_value_1 as $nr => $key) {
+                                    if (
+                                        is_array($select) &&
+                                        array_key_exists('list', $select) &&
+                                        array_key_exists($key, $select['list'])
+                                    ) {
+                                        if (
+                                            array_key_exists('force', $options) &&
+                                            $options['force'] === true
+                                        ) {
+                                            $node = new Storage($select['list'][$key]);
+                                            $node->set('uuid', $select['list'][$key]->uuid);
+                                            $put_many[] = $node->data();
+                                        } elseif (
+                                            array_key_exists('patch', $options) &&
+                                            $options['patch'] === true
+                                        ) {
+                                            $node = new Storage($select['list'][$key]);
+                                            $node->set('uuid', $select['list'][$key]->uuid);
+                                            $patch_many[] = $node->data();
+                                        } else {
+                                            $skip++;
+                                        }
+                                    } else {
+                                        $create_many[] = $chunk[$nr];
+                                    }
+                                }
+                                $response = $this->update(
+                                    $class,
+                                    $role,
+                                    $options,
+                                    $create_many,
+                                    $put_many,
+                                    $patch_many,
+                                    $skip
+                                );
+                                $response_list[] = $response;
+                            }
+                            break;
+                        case 2:
+                            if(
+                                !empty($explode[0]) &&
+                                !empty($explode[1]) &&
+                                !empty($filter_value_1) &&
+                                !empty($filter_value_2)
+                            ){
+//                                    d($filter_value_1); //id
+//                                    ddd($filter_value_2); //class
+                                $select = $this->list(
+                                    $name,
+                                    $role,
+                                    [
+                                        'filter' => [
+                                            $explode[0] => [
+                                                'value' => $filter_value_1,
+                                                'operator' => 'in'
+                                            ]
+                                        ],
+                                        'key' => [
+                                            $explode[0]
+                                        ],
+                                        'transaction' => true,
+                                        'limit' => $options['chunk-size'],
+                                        'page' => 1
+                                    ]
+                                );
+                                $select_filter = [];
+                                foreach($filter_value_1 as $nr => $key){
+                                    if(
+                                        is_array($select) &&
+                                        array_key_exists('list', $select) &&
+                                        array_key_exists($key, $select['list'])
+                                    ){
+                                        //do check with filter var 2
+                                        $node = new Storage($select['list'][$key]);
+                                        if($node->get($explode[1]) === $filter_value_2[$nr]){
+                                            if(
+                                                array_key_exists('force', $options) &&
+                                                $options['force'] === true
+                                            ){
+                                                $node->set('uuid', $select['list'][$key]->uuid);
+                                                $put_many[] = $node->data();
+                                            }
+                                            elseif(
+                                                array_key_exists('patch', $options) &&
+                                                $options['patch'] === true
+                                            ){
+                                                $node->set('uuid', $select['list'][$key]->uuid);
+                                                $patch_many[] = $node->data();
+                                            }
+                                            else {
+                                                $skip++;
+                                            }
+                                        } else {
+                                            $create_many[] = $chunk[$nr];
+                                        }
+                                    } else {
+                                        $create_many[] = $chunk[$nr];
+                                    }
+                                }
+                                $response = $this->update(
+                                    $class,
+                                    $role,
+                                    $options,
+                                    $create_many,
+                                    $put_many,
+                                    $patch_many,
+                                    $skip
+                                );
+                                $response_list[] = $response;
+                            }
+                            break;
+                    }
+                }
+                if(count($response_list) === 1){
+                    return $response_list[0];
+                } else {
+                    return $response_list;
                 }
             }
-            return $this->update(
-                $class,
-                $role,
-                $options,
-                $create_many,
-                $put_many,
-                $patch_many,
-                $skip
-            );
         }
         catch(Exception $exception){
             $this->unlock($name);
             $object->config('delete', 'node.transaction.' . $name);
             throw $exception;
         }
+        return false;
     }
 
     /**
@@ -481,8 +380,6 @@ trait Import {
                 $error = $response['error'];
             }
         }
-        d($create);
-        d(count($error));
         if(!empty($put_many)){
             $response = $this->put_many($name, $role, $put_many, [
                 'import' => true
@@ -499,8 +396,6 @@ trait Import {
                 $error = array_merge($error, $response['error']);
             }
         }
-        d($put);
-        d(count($error));
         if(!empty($patch_many)){
             $response = $this->patch_many($name, $role, $patch_many, [
                 'import' => true
@@ -517,8 +412,6 @@ trait Import {
                 $error = array_merge($error, $response['error']);
             }
         }
-        d($patch);
-        d(count($error));
         if(!empty($error)){
             $this->unlock($name);
             return [
@@ -537,7 +430,6 @@ trait Import {
         $duration = microtime(true) - $object->config('r3m.io.node.import.start');
         $total = $put + $patch + $create;
         $item_per_second = round($total / $duration, 2);
-
         $object->config('delete', 'node.transaction.' . $name);
         return [
             'skip' => $skip,
