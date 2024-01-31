@@ -42,6 +42,9 @@ trait NodeList {
         if(!array_key_exists('lock', $options)){
             $options['lock'] = false;
         }
+        if(!array_key_exists('key', $options)){
+            $options['key'] = null; //numeric
+        }
         if(!Security::is_granted(
             $name,
             $role,
@@ -281,7 +284,26 @@ trait NodeList {
                             }
                         }
                         $count++;
-                        $list_filtered[] = $record;
+                        if($options['key'] === null){
+                            $list_filtered[] = $record;
+                        } elseif(is_array($options['key'])) {
+                            //node = record
+                            $key = [];
+                            foreach($options['key'] as $attribute){
+                                $value = $node->get($attribute);
+                                if(is_scalar($value) || $value === null){
+                                    if(is_string($value)){
+                                        $key[] = '\'' . $value . '\'';
+                                    } else {
+                                        $key[] = $value;
+                                    }
+                                } else {
+                                    $key[] = Core::object($value, Core::OBJECT_JSON);
+                                }
+                            }
+                            $key = implode(';', $key);
+                            $list_filtered[$key] = $record;
+                        }
                         if($count === $limit){
                             d($class);
                             d($options);

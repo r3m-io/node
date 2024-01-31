@@ -227,10 +227,8 @@ trait Import {
                                     !empty($filter_value_1) &&
                                     !empty($filter_value_2)
                                 ){
-                                    d($explode[0]);
-                                    d($explode[1]);
-                                    d($filter_value_1);
-                                    ddd($filter_value_2);
+//                                    d($filter_value_1); //id
+//                                    ddd($filter_value_2); //class
                                     $select = $this->list(
                                         $name,
                                         $role,
@@ -240,6 +238,9 @@ trait Import {
                                                     'value' => $filter_value_1,
                                                     'operator' => 'in'
                                                 ]
+                                            ],
+                                            'key' => [
+                                                $explode[0]
                                             ],
                                             'transaction' => true
                                         ]
