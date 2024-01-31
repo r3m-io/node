@@ -55,17 +55,13 @@ trait Import {
             }
             $options['import'] = true;
             set_time_limit(0);
-            $start = microtime(true);
+            $object->config('r3m.io.node.import.start', microtime(true));
             $options['function'] = __FUNCTION__;
             $options['relation'] = false;
             $skip = 0;
-            $put = 0;
-            $patch = 0;
-            $create = 0;
             $put_many = [];
             $patch_many = [];
             $create_many = [];
-            $error = [];
             if(!Security::is_granted(
                 $name,
                 $role,
@@ -285,53 +281,19 @@ trait Import {
                                             $create_many[] = $chunk[$nr];
                                         }
                                     }
-                                    d('create: ' . count($create_many));
-                                    d('put: ' . count($put_many));
-                                    d('patch: ' . count($patch_many));
-                                    ddd('skip: ' . $skip);
-                                }
-                            /*
-                                if(
-                                    !empty($explode[0]) &&
-                                    !empty($explode[1]) &&
-                                    !empty($filter_value_1) &&
-                                    !empty($filter_value_2)
-                                ){
-                                    $where = [];
-                                    foreach($filter_value_1 as $nr => $value){
-                                        $where[] = '(';
-                                        $where[] = [
-                                            'value' => $value,
-                                            'attribute' => $explode[0],
-                                            'operator' => '==='
-                                        ];
-                                        $where[] = 'and';
-                                        $where[] = [
-                                            'value' => $filter_value_2[$nr],
-                                            'attribute' => $explode[1],
-                                            'operator' => '==='
-                                        ];
-                                        $where[] = ')';
-                                        if($nr < count($filter_value_1) - 1){
-                                            $where[] = 'or';
-                                        }
-                                    }
-                                    $select = $this->list(
-                                        $name,
+                                    $response = $this->update(
+                                        $class,
                                         $role,
-                                        [
-                                            'where' => $where,
-                                            'transaction' => true
-                                        ]
+                                        $options,
+                                        $create_many,
+                                        $put_many,
+                                        $patch_many,
+                                        $skip
                                     );
-                                    ddd($select);
+                                    d($response);
                                 }
-                            */
                                 break;
                         }
-
-                        d($filter_value_1);
-                        ddd($filter_value_2);
                     }
                 } else {
                     foreach($list as $record){
@@ -428,90 +390,123 @@ trait Import {
                     }
                 }
             }
-            if(!empty($create_many)) {
-                $response = $this->create_many($class, $role, $create_many, [
-                    'import' => true,
-                    'uuid' => $options['uuid']
-                ]);
-                if (
-                    array_key_exists('list', $response) &&
-                    is_array($response['list'])
-                ) {
-                    $create = count($response['list']);
-                } elseif (
-                    array_key_exists('error', $response)
-                ) {
-                    $error = $response['error'];
-                }
-            }
-            if(!empty($put_many)){
-                $response = $this->put_many($class, $role, $put_many, [
-                    'import' => true
-                ]);
-                if(
-                    array_key_exists('list', $response) &&
-                    is_array($response['list'])
-                ) {
-                    $put = count($response['list']);
-                }
-                elseif(
-                    array_key_exists('error', $response)
-                ){
-                    $error = array_merge($error, $response['error']);
-                }
-            }
-            if(!empty($patch_many)){
-                $response = $this->patch_many($class, $role, $patch_many, [
-                    'import' => true
-                ]);
-                if(
-                    array_key_exists('list', $response) &&
-                    is_array($response['list'])
-                ) {
-                    $patch = count($response['list']);
-                }
-                elseif(
-                    array_key_exists('error', $response)
-                ){
-                    $error = array_merge($error, $response['error']);
-                }
-            }
-            if(!empty($error)){
-                $this->unlock($name);
-                return [
-                    'error' => $error,
-                    'transaction' => true,
-                    'duration' => (microtime(true) - $start) * 1000
-                ];
-            }
-            $commit = [];
-            if($create > 0 || $put > 0 || $patch > 0){
-                $object->config('time.limit', 0);
-                $commit = $this->commit($class, $role);
-            } else {
-                $this->unlock($name);
-            }
-            $duration = microtime(true) - $start;
-            $total = $put + $patch + $create;
-            $item_per_second = round($total / $duration, 2);
-
-            $object->config('delete', 'node.transaction.' . $name);
-            return [
-                'skip' => $skip,
-                'put' => $put,
-                'patch' => $patch,
-                'create' => $create,
-                'commit' => $commit,
-                'mtime' => File::mtime($url),
-                'duration' => $duration * 1000,
-                'item_per_second' => $item_per_second,
-                'transaction' => true
-            ];
+            return $this->update(
+                $class,
+                $role,
+                $options,
+                $create_many,
+                $put_many,
+                $patch_many,
+                $skip
+            );
         }
         catch(Exception $exception){
             $this->unlock($name);
             $object->config('delete', 'node.transaction.' . $name);
             throw $exception;
         }
+    }
+
+    /**
+     * @throws ObjectException
+     * @throws FileWriteException
+     * @throws Exception
+     */
+    private function update($class, $role, $options=[], $create_many=[], $put_many=[], $patch_many=[], $skip=0): array
+    {
+        $name = Controller::name($class);
+        $object = $this->object();
+        $options = Core::object($options, Core::OBJECT_ARRAY);
+        $error = [];
+        $dir_data = $object->config('project.dir.node') .
+            'Data' .
+            $object->config('ds')
+        ;
+        $url = $dir_data .
+            $name .
+            $object->config('extension.json')
+        ;
+        $put = 0;
+        $patch = 0;
+        $create = 0;
+        if(!empty($create_many)) {
+            $response = $this->create_many($name, $role, $create_many, [
+                'import' => true,
+                'uuid' => $options['uuid']
+            ]);
+            if (
+                array_key_exists('list', $response) &&
+                is_array($response['list'])
+            ) {
+                $create = count($response['list']);
+            } elseif (
+                array_key_exists('error', $response)
+            ) {
+                $error = $response['error'];
+            }
+        }
+        if(!empty($put_many)){
+            $response = $this->put_many($name, $role, $put_many, [
+                'import' => true
+            ]);
+            if(
+                array_key_exists('list', $response) &&
+                is_array($response['list'])
+            ) {
+                $put = count($response['list']);
+            }
+            elseif(
+                array_key_exists('error', $response)
+            ){
+                $error = array_merge($error, $response['error']);
+            }
+        }
+        if(!empty($patch_many)){
+            $response = $this->patch_many($name, $role, $patch_many, [
+                'import' => true
+            ]);
+            if(
+                array_key_exists('list', $response) &&
+                is_array($response['list'])
+            ) {
+                $patch = count($response['list']);
+            }
+            elseif(
+                array_key_exists('error', $response)
+            ){
+                $error = array_merge($error, $response['error']);
+            }
+        }
+        if(!empty($error)){
+            $this->unlock($name);
+            return [
+                'error' => $error,
+                'transaction' => true,
+                'duration' => (microtime(true) - $object->config('r3m.io.node.import.start')) * 1000
+            ];
+        }
+        $commit = [];
+        if($create > 0 || $put > 0 || $patch > 0){
+            $object->config('time.limit', 0);
+            $commit = $this->commit($class, $role);
+        } else {
+            $this->unlock($name);
+        }
+        $duration = microtime(true) - $object->config('r3m.io.node.import.start');
+        $total = $put + $patch + $create;
+        $item_per_second = round($total / $duration, 2);
+
+        $object->config('delete', 'node.transaction.' . $name);
+        return [
+            'skip' => $skip,
+            'put' => $put,
+            'patch' => $patch,
+            'create' => $create,
+            'commit' => $commit,
+            'mtime' => File::mtime($url),
+            'duration' => $duration * 1000,
+            'item_per_second' => $item_per_second,
+            'transaction' => true
+        ];
     }
 }
