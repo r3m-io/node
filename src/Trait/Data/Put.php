@@ -127,7 +127,6 @@ trait Put {
                         $expose &&
                         $role
                     ) {
-                        d($node);
                         $node = $this->expose(
                             $node,
                             $expose,
@@ -136,7 +135,6 @@ trait Put {
                             $role
                         );
                         $record = $node->data();
-                        ddd($record);
                         if(Core::object_is_empty($record)){
                             throw new Exception('Empty node after expose...');
                         }
