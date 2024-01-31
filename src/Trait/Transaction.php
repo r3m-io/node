@@ -76,7 +76,8 @@ Trait Transaction {
             $name .
             $object->config('extension.json')
         ;
-        $data = $object->data(sha1($url));
+        $cache = $object->data(App::CACHE);
+        $data = $cache->data(sha1($url));
         if($data){
             $start = microtime(true);
             $bytes = $data->write($url);
