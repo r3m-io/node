@@ -224,6 +224,8 @@ trait Import {
                                             array_key_exists('force', $options) &&
                                             $options['force'] === true
                                         ) {
+                                            d($chunk[$nr]);
+                                            ddd($select['list'][$key]);
                                             $node = new Storage($select['list'][$key]);
                                             $node->set('uuid', $select['list'][$key]->uuid);
                                             $put_many[] = $node->data();
