@@ -224,16 +224,14 @@ trait Import {
                                             array_key_exists('force', $options) &&
                                             $options['force'] === true
                                         ) {
-                                            d($chunk[$nr]);
-                                            ddd($select['list'][$key]);
-                                            $node = new Storage($select['list'][$key]);
+                                            $node = new Storage($chunk[$nr]);
                                             $node->set('uuid', $select['list'][$key]->uuid);
                                             $put_many[] = $node->data();
                                         } elseif (
                                             array_key_exists('patch', $options) &&
                                             $options['patch'] === true
                                         ) {
-                                            $node = new Storage($select['list'][$key]);
+                                            $node = new Storage($chunk[$nr]);
                                             $node->set('uuid', $select['list'][$key]->uuid);
                                             $patch_many[] = $node->data();
                                         } else {
@@ -291,9 +289,7 @@ trait Import {
                                     ){
                                         //do check with filter var 2
                                         //need record // chunk[chunk_nr]
-                                        d($chunk[$nr]);
-                                        ddd($select['list'][$key]);
-                                        $node = new Storage($select['list'][$key]);
+                                        $node = new Storage($chunk[$nr]);
                                         if($node->get($explode[1]) === $filter_value_2[$nr]){
                                             if(
                                                 array_key_exists('force', $options) &&
