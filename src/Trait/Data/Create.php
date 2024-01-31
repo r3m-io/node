@@ -4,6 +4,7 @@ namespace R3m\Io\Node\Trait\Data;
 
 use R3m\Io\App;
 
+use R3m\Io\Module\Cli;
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
@@ -161,6 +162,10 @@ trait Create {
                             $object->config('r3m.io.node.import.list.number', $number);
                             $amount = $object->config('r3m.io.node.import.list.count');
                             if($amount > 0){
+                                if($number > 1){
+                                    Cli::tput('cursor.home');
+                                    Cli::tput('cursor.up');
+                                }
                                 echo 'Imported (CREATE) ' . $number . ' of ' . $amount . ' nodes ('. round($number / $amount , 2) .' %)...' . PHP_EOL;
                             }
                         }
