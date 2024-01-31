@@ -393,7 +393,6 @@ trait NodeList {
                         elseif(is_array($options['key'])) {
                             $list_temp[$index] = $record;
                         }
-                        $list_temp[] = $record;
                         $list_count++;
                     }
                     $index_counter++;
