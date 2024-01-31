@@ -161,9 +161,8 @@ trait Put {
                                     $amount = $object->config('r3m.io.node.import.list.count');
                                     if($amount > 0){
                                         if($number > 1){
-                                            Cli::tput('cursor.home');
-                                            $pos = Cli::tput('cursor.up', [1]);
-                                            ddd($pos);
+                                            echo Cli::tput('cursor.home');
+                                            echo Cli::tput('cursor.up', [1]);
                                         }
                                         echo 'Imported (PUT) ' . $number . ' of ' . $amount . ' nodes ('. round(($number / $amount) * 100 , 2) .' %)...' . PHP_EOL;
                                     }

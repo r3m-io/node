@@ -163,8 +163,8 @@ trait Create {
                             $amount = $object->config('r3m.io.node.import.list.count');
                             if($amount > 0){
                                 if($number > 1){
-                                    Cli::tput('cursor.home');
-                                    Cli::tput('cursor.up');
+                                    echo Cli::tput('cursor.home');
+                                    echo Cli::tput('cursor.up');
                                 }
                                 echo 'Imported (CREATE) ' . $number . ' of ' . $amount . ' nodes ('. round($number / $amount , 2) .' %)...' . PHP_EOL;
                             }
