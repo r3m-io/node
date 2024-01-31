@@ -93,6 +93,7 @@ trait Import {
                 ;
                 $data_object = $object->data_read($url_object, sha1($url_object));
                 $list_count = count($list);
+                ddd($list_count);
                 if($list_count > 1000){
                     $list = array_chunk($list, 1000);
                     foreach($list as $chunk){
