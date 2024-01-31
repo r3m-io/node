@@ -200,7 +200,6 @@ trait NodeList {
         }
         $has_relation = false;
         $count = 0;
-        $is_debug = false;
         $list_filtered = [];
         if($data){
             $list = $data->data($name);
@@ -289,8 +288,6 @@ trait NodeList {
                             $list_filtered[] = $record;
                         }
                         elseif(is_array($options['key'])) {
-                            $is_debug = true;
-                            //node = record
                             $key = [];
                             foreach($options['key'] as $attribute){
                                 $value = $node->get($attribute);
@@ -317,9 +314,6 @@ trait NodeList {
                     !empty($options['sort']) &&
                     is_array($options['sort'])
                 ){
-                    if($is_debug){
-                        ddd('found');
-                    }
                     $list_sort = Sort::list($list)->with(
                         $options['sort'],
                         [
