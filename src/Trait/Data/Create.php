@@ -152,10 +152,16 @@ trait Create {
                             $result[] = $record;
                         }
                         if($options['import'] === true){
-                            $number = $nr + 1;
+                            $number = $object->config('r3m.io.node.import.list.number');
+                            if(empty($number)){
+                                $number = 1;
+                            } else {
+                                $number++;
+                                $object->config('r3m.io.node.import.list.number', $number);
+                            }
                             $amount = $object->config('r3m.io.node.import.list.count');
                             if($amount > 0){
-                                echo 'Imported (CREATE) ' . $number . ' of ' . $amount . ' nodes ('. round($number / $amount , 2) .')...' . PHP_EOL;
+                                echo 'Imported (CREATE) ' . $number . ' of ' . $amount . ' nodes ('. round($number / $amount , 2) .' %)...' . PHP_EOL;
                             }
                         }
 
