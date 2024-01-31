@@ -136,6 +136,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
         ];
     }
     $node = new Node($object);
+    //add cache dir to record
     $response = $node->record($name, $node->role_system(), $options);
     if(
         !empty($response) &&

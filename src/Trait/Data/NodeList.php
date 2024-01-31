@@ -147,7 +147,11 @@ trait NodeList {
                 $object->config('extension.json')
             ;
             if(File::exist($ramdisk_url_node)){
-                $ramdisk = $object->data_read($ramdisk_url_node);
+                if($options['transaction'] === true){
+                    $ramdisk = $object->data_read($ramdisk_url_node, sha1($ramdisk_url_node));
+                } else {
+                    $ramdisk = $object->data_read($ramdisk_url_node);
+                }
                 if($ramdisk){
                     $is_cache_miss = false;
                     if($mtime === $ramdisk->get('mtime')) {

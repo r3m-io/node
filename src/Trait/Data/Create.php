@@ -174,7 +174,6 @@ trait Create {
             }
             return false;
         }
-        ddd(count($list));
         if($transaction === true){
             $data = $object->data_read($url, sha1($url));
         } else {
