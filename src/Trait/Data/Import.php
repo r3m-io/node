@@ -239,10 +239,15 @@ trait Import {
                                             $create_many[] = $chunk[$nr];
                                         }
                                     }
-                                    d(count($put_many));
-                                    d(count($patch_many));
-                                    d(count($create_many));
-                                    ddd($skip);
+                                    $response = $this->update(
+                                        $class,
+                                        $role,
+                                        $options,
+                                        $create_many,
+                                        $put_many,
+                                        $patch_many,
+                                        $skip
+                                    );
                                 }
                                 break;
                             case 2:
