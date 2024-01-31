@@ -290,7 +290,6 @@ trait Import {
                                         $patch_many,
                                         $skip
                                     );
-                                    d($response);
                                 }
                                 break;
                         }
@@ -445,6 +444,8 @@ trait Import {
                 $error = $response['error'];
             }
         }
+        d($create);
+        d(count($error));
         if(!empty($put_many)){
             $response = $this->put_many($name, $role, $put_many, [
                 'import' => true
@@ -461,6 +462,8 @@ trait Import {
                 $error = array_merge($error, $response['error']);
             }
         }
+        d($put);
+        d(count($error));
         if(!empty($patch_many)){
             $response = $this->patch_many($name, $role, $patch_many, [
                 'import' => true
@@ -477,6 +480,8 @@ trait Import {
                 $error = array_merge($error, $response['error']);
             }
         }
+        d($patch);
+        d(count($error));
         if(!empty($error)){
             $this->unlock($name);
             return [
