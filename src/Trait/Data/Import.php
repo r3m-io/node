@@ -261,16 +261,27 @@ trait Import {
                                             //do check with filter var 2
                                             $node = new Storage($select['list'][$key]);
                                             if($node->get($explode[1]) === $filter_value_2[$nr]){
-                                                d($node);
-                                                d($filter_value_2[$nr]);
-                                                ddd('found');
+                                                if(
+                                                    array_key_exists('force', $options) &&
+                                                    $options['force'] === true
+                                                ){
+                                                    $node->set('uuid', $select['list'][$key]->uuid);
+                                                    $put_many[] = $node->data();
+                                                }
+                                                elseif(
+                                                    array_key_exists('patch', $options) &&
+                                                    $options['patch'] === true
+                                                ){
+                                                    $node->set('uuid', $select['list'][$key]->uuid);
+                                                    $patch_many[] = $node->data();
+                                                }
+                                                else {
+                                                    $skip++;
+                                                }
                                             } else {
-                                                d($node);
-                                                d($filter_value_2[$nr]);
-                                                ddd('found 2');
+                                                $create_many[] = $chunk[$nr];
                                             }
                                         } else {
-//                                                $node->set('uuid', $record['node']->uuid);
                                             $create_many[] = $chunk[$nr];
                                         }
                                     }
