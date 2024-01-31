@@ -104,11 +104,6 @@ trait Import {
                         foreach($chunk as $record_nr => $record){
                             $node = new Storage();
                             $node->data($record);
-                            if($record_nr > 750){
-                                $node->data('#class', 'RaXon.Php.Word.Embedding');
-                            } else {
-                                $node->data('#class', 'test');
-                            }
                             if (
                                 $data_object &&
                                 $data_object->has('is.unique')
@@ -121,8 +116,6 @@ trait Import {
                                     $explode[$nr] = trim($value);
                                     $count++;
                                 }
-                                $explode[1] = '#class';
-                                $count = 2;
                                 switch ($count) {
                                     case 2:
                                         if (
@@ -277,19 +270,9 @@ trait Import {
                                                     $skip++;
                                                 }
                                             } else {
-                                                if($chunk_nr > 0){
-                                                    d($explode[1]);
-                                                    d($node->get($explode[1]));
-                                                    d($filter_value_2[$nr]);
-                                                }
                                                 $create_many[] = $chunk[$nr];
                                             }
                                         } else {
-                                            if($chunk_nr > 0){
-                                                d($nr);
-                                                d($key);
-                                                ddd($select);
-                                            }
                                             $create_many[] = $chunk[$nr];
                                         }
                                     }
