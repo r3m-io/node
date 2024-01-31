@@ -22,7 +22,7 @@ trait Put {
             $options['function'] = __FUNCTION__;
         }
         $nodeList = [$node];
-        $response = $this->patch_many($class, $role, $nodeList, $options);
+        $response = $this->put_many($class, $role, $nodeList, $options);
         return $this->single($response);
     }
 
@@ -135,6 +135,7 @@ trait Put {
                             $role
                         );
                         $record = $node->data();
+                        ddd($record);
                         if(Core::object_is_empty($record)){
                             throw new Exception('Empty node after expose...');
                         }
