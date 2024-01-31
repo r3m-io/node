@@ -200,6 +200,7 @@ trait NodeList {
         }
         $has_relation = false;
         $count = 0;
+        $is_debug = false;
         $list_filtered = [];
         if($data){
             $list = $data->data($name);
@@ -288,7 +289,7 @@ trait NodeList {
                             $list_filtered[] = $record;
                         }
                         elseif(is_array($options['key'])) {
-                            ddd($options);
+                            $is_debug = true;
                             //node = record
                             $key = [];
                             foreach($options['key'] as $attribute){
@@ -307,13 +308,14 @@ trait NodeList {
                             $list_filtered[$key] = $record;
                         }
                         if($count === $limit){
-                            d($class);
-                            d($options);
                             break;
                         }
                     }
                 }
                 $list = $list_filtered;
+                if($is_debug){
+                    ddd($list);
+                }
                 if(
                     !empty($options['sort']) &&
                     is_array($options['sort'])
@@ -334,7 +336,7 @@ trait NodeList {
                     $list_count = 0;
                     foreach($list_sort as $index => $record){
                         if(is_object($record)){
-                            $record->{'#index'} = $index;
+                            $record->{'#index'} = $list_count;
                         }
                         $list_count++;
                     }
