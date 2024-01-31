@@ -243,7 +243,7 @@ trait NodeList {
                 }
                 $limit = $options['limit'] ?? 4096;
                 if($limit === 1000){
-                    d($options);
+//                    d($options);
                 }
                 foreach($list as $nr => $record) {
                     if(
