@@ -191,7 +191,8 @@ trait Create {
         $response = [];
         $response['list'] = $result;
         if ($transaction === true){
-            $object->data(sha1($url), $data);
+            $cache = $object->data(App::CACHE);
+            $cache->set(sha1($url), $data);
             $response['transaction'] = true;
         } else {
             $write = $data->write($url);
