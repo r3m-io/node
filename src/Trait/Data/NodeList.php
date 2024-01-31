@@ -317,6 +317,9 @@ trait NodeList {
                     !empty($options['sort']) &&
                     is_array($options['sort'])
                 ){
+                    if($is_debug){
+                        ddd('found');
+                    }
                     $list_sort = Sort::list($list)->with(
                         $options['sort'],
                         [
