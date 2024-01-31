@@ -284,10 +284,11 @@ trait NodeList {
                             }
                         }
                         $count++;
-                        d($options);
                         if($options['key'] === null){
                             $list_filtered[] = $record;
-                        } elseif(is_array($options['key'])) {
+                        }
+                        elseif(is_array($options['key'])) {
+                            ddd($options);
                             //node = record
                             $key = [];
                             foreach($options['key'] as $attribute){
