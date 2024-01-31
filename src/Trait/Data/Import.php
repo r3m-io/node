@@ -254,7 +254,8 @@ trait Import {
                                         if(
                                             is_array($select) &&
                                             array_key_exists('list', $select) &&
-                                            array_key_exists($key, $select['list'])){
+                                            array_key_exists($key, $select['list'])
+                                        ){
                                             //do check with filter var 2
                                             $node = new Storage($select['list'][$key]);
                                             if($node->get($explode[1]) === $filter_value_2[$nr]){
@@ -284,6 +285,11 @@ trait Import {
                                                 $create_many[] = $chunk[$nr];
                                             }
                                         } else {
+                                            if($chunk_nr > 0){
+                                                d($nr);
+                                                d($key);
+                                                ddd($select);
+                                            }
                                             $create_many[] = $chunk[$nr];
                                         }
                                     }
