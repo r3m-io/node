@@ -340,6 +340,9 @@ trait NodeList {
                         }
                         $list_count++;
                     }
+                    if($is_debug){
+                        ddd($list_sort);
+                    }
                     $result = [];
                     $result['page'] = 1;
                     $result['limit'] = $list_count;
