@@ -262,11 +262,17 @@ trait Import {
                                                 //do check with filter var 2
                                                 $node = new Storage($select['list'][$key]);
                                                 if($node->get($explode[1]) === $filter_value_2[$nr]){
-                                                    $select_filter[$key] = $select['list'][$key];
+                                                    d($node);
+                                                    d($filter_value_2[$nr]);
+                                                    ddd('found');
+                                                } else {
+                                                    d($node);
+                                                    d($filter_value_2[$nr]);
+                                                    ddd('found 2');
                                                 }
                                             } else {
-                                                ddd($chunk[$nr]);
-                                                $select_filter[$key] = null;
+//                                                $node->set('uuid', $record['node']->uuid);
+                                                $create_many[] = $chunk[$nr];
                                             }
                                         }
                                     }
