@@ -25,6 +25,7 @@ $class,
 R3m.Io.Node:Role:role.system(),
 $options
 )}}
+{{dd($response)}}
 {{$response|json.encode:'JSON_PRETTY_PRINT'}}
 
 {{/if}}

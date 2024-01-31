@@ -62,6 +62,7 @@ trait Import {
             $put_many = [];
             $patch_many = [];
             $create_many = [];
+            $response_list = [];
             if(!Security::is_granted(
                 $name,
                 $role,
@@ -290,10 +291,12 @@ trait Import {
                                         $patch_many,
                                         $skip
                                     );
+                                    $response_list[] = $response;
                                 }
                                 break;
                         }
                     }
+                    return $response_list;
                 } else {
                     foreach($list as $record){
                         $node = new Storage();
