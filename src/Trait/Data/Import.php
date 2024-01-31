@@ -196,7 +196,7 @@ trait Import {
                                 if(
                                     !empty($explode[0]) &&
                                     !empty($filter_value_1)
-                                ){
+                                ) {
                                     $select = $this->list(
                                         $name,
                                         $role,
@@ -212,7 +212,37 @@ trait Import {
                                             'page' => 1
                                         ]
                                     );
-                                    ddd($select);
+                                    foreach ($filter_value_1 as $nr => $key) {
+                                        if (
+                                            is_array($select) &&
+                                            array_key_exists('list', $select) &&
+                                            array_key_exists($key, $select['list'])
+                                        ) {
+                                            if (
+                                                array_key_exists('force', $options) &&
+                                                $options['force'] === true
+                                            ) {
+                                                $node = new Storage($select['list'][$key]);
+                                                $node->set('uuid', $select['list'][$key]->uuid);
+                                                $put_many[] = $node->data();
+                                            } elseif (
+                                                array_key_exists('patch', $options) &&
+                                                $options['patch'] === true
+                                            ) {
+                                                $node = new Storage($select['list'][$key]);
+                                                $node->set('uuid', $select['list'][$key]->uuid);
+                                                $patch_many[] = $node->data();
+                                            } else {
+                                                $skip++;
+                                            }
+                                        } else {
+                                            $create_many[] = $chunk[$nr];
+                                        }
+                                    }
+                                    d(count($put_many));
+                                    d(count($patch_many));
+                                    d(count($create_many));
+                                    ddd($skip);
                                 }
                                 break;
                             case 2:
