@@ -140,8 +140,8 @@ trait Import {
                                                 $match_2 !== null &&
                                                 $match_2 !== ''
                                             ){
-                                                $filter_value_1[] = $match_1;
-                                                $filter_value_2[] = $match_2;
+                                                $filter_value_1[$record_nr] = $match_1;
+                                                $filter_value_2[$record_nr] = $match_2;
                                             } else {
                                                 throw new Exception('Unique value cannot be empty...');
                                             }
@@ -175,7 +175,7 @@ trait Import {
                                                 $match_1 !== null &&
                                                 $match_1 !== ''
                                             ){
-                                                $filter_value_1[] = $match_1;
+                                                $filter_value_1[$record_nr] = $match_1;
                                             } else {
                                                 throw new Exception('Unique value cannot be empty...');
                                             }
@@ -252,6 +252,7 @@ trait Import {
                                             'page' => $chunk_nr + 1
                                         ]
                                     );
+                                    $select_filter = [];
                                     if(
                                         is_array($select) &&
                                         array_key_exists('list', $select)
@@ -259,18 +260,19 @@ trait Import {
                                         foreach($filter_value_1 as $nr => $key){
                                             if(array_key_exists($key, $select['list'])){
                                                 //do check with filter var 2
+                                                $node = new Storage($select['list'][$key]);
+                                                if($node->get($explode[1]) === $filter_value_2[$nr]){
+                                                    $select_filter[$key] = $select['list'][$key];
+                                                }
                                             } else {
-                                                ddd($key);
+                                                ddd($chunk[$nr]);
+                                                $select_filter[$key] = null;
                                             }
                                         }
-
-                                        /*
-                                        foreach($select as $key => $record){
-                                            $node = new Storage($record);
-                                            if($node->get($explode[1]) ===)
-                                        }
-                                        */
                                     }
+
+
+
                                     ddd($select);
                                 }
                             /*
