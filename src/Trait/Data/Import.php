@@ -28,6 +28,7 @@ trait Import {
      */
     public function import($class, $role, $options=[]): false | array
     {
+        Core::interactive();
         /**
          * need virtual system which manage read operations and read them on the fly
          * with an input directory and an output directory
