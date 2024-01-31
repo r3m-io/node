@@ -252,6 +252,25 @@ trait Import {
                                             'page' => $chunk_nr + 1
                                         ]
                                     );
+                                    if(
+                                        is_array($select) &&
+                                        array_key_exists('list', $select)
+                                    ){
+                                        foreach($filter_value_1 as $nr => $key){
+                                            if(array_key_exists($key, $select['list'])){
+                                                //do check with filter var 2
+                                            } else {
+                                                ddd($key);
+                                            }
+                                        }
+
+                                        /*
+                                        foreach($select as $key => $record){
+                                            $node = new Storage($record);
+                                            if($node->get($explode[1]) ===)
+                                        }
+                                        */
+                                    }
                                     ddd($select);
                                 }
                             /*
