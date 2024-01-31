@@ -288,7 +288,7 @@ trait Import {
                                     d('create: ' . count($create_many));
                                     d('put: ' . count($put_many));
                                     d('patch: ' . count($patch_many));
-                                    ddd('skip: ' .count($skip));
+                                    ddd('skip: ' . $skip);
                                 }
                             /*
                                 if(
