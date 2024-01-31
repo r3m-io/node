@@ -227,6 +227,7 @@ trait Import {
                                             $node = new Storage($chunk[$nr]);
                                             $node->set('uuid', $select['list'][$key]->uuid);
                                             $put_many[] = $node->data();
+                                            ddd($put_many);
                                         } elseif (
                                             array_key_exists('patch', $options) &&
                                             $options['patch'] === true
