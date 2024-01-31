@@ -216,7 +216,7 @@ trait Import {
                                             ],
                                             'transaction' => true,
                                             'limit' => $options['chunk-size'],
-                                            'page' => $chunk_nr + 1
+                                            'page' => 1
                                         ]
                                     );
                                     ddd($select);
@@ -246,7 +246,7 @@ trait Import {
                                             ],
                                             'transaction' => true,
                                             'limit' => $options['chunk-size'],
-                                            'page' => $chunk_nr + 1
+                                            'page' => 1
                                         ]
                                     );
                                     $select_filter = [];
