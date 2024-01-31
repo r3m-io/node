@@ -285,9 +285,9 @@ trait Import {
                                             $create_many[] = $chunk[$nr];
                                         }
                                     }
-                                    ddd('create: ' . count($create_many));
-                                    ddd('put: ' . count($put_many));
-                                    ddd('patch: ' . count($patch_many));
+                                    d('create: ' . count($create_many));
+                                    d('put: ' . count($put_many));
+                                    d('patch: ' . count($patch_many));
                                     ddd('skip: ' .count($skip));
                                 }
                             /*
