@@ -159,7 +159,7 @@ trait Put {
                                     $object->config('r3m.io.node.import.list.number', $number);
                                     $amount = $object->config('r3m.io.node.import.list.count');
                                     if($amount > 0){
-                                        echo 'Imported (PUT) ' . $number . ' of ' . $amount . ' nodes ('. round($number / $amount , 2) .' %)...' . PHP_EOL;
+                                        echo 'Imported (PUT) ' . $number . ' of ' . $amount . ' nodes ('. round(($number / $amount) * 100 , 2) .' %)...' . PHP_EOL;
                                     }
                                 }
                             }
