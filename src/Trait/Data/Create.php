@@ -151,6 +151,14 @@ trait Create {
                         } else {
                             $result[] = $record;
                         }
+                        if($options['import'] === true){
+                            $number = $nr + 1;
+                            $amount = $object->config('r3m.io.node.import.list.count');
+                            if($amount > 0){
+                                echo 'Imported ' . $number . ' of ' . $amount . ' nodes ('. round($number / $amount , 2) .')...' . PHP_EOL;
+                            }
+                        }
+
                     }
                 } else {
                     $error[] = $validate->test;

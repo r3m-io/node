@@ -88,6 +88,8 @@ trait Import {
                     $object->config('extension.json')
                 ;
                 $data_object = $object->data_read($url_object, sha1($url_object));
+                $list_count = count($list);
+                $object->config('r3m.io.node.import.list.count', $list_count);
                 $list = array_chunk($list, $options['chunk-size']);
                 foreach($list as $chunk_nr => $chunk){
                     $filter_value_1 = [];
