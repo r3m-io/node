@@ -284,7 +284,7 @@ trait NodeList {
                             }
                         }
                         $count++;
-                        ddd($options);
+                        d($options);
                         if($options['key'] === null){
                             $list_filtered[] = $record;
                         } elseif(is_array($options['key'])) {
