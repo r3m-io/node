@@ -248,6 +248,7 @@ trait Import {
                                         $patch_many,
                                         $skip
                                     );
+                                    $response_list[] = $response;
                                 }
                                 break;
                             case 2:
