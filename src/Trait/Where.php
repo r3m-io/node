@@ -535,9 +535,6 @@ trait Where {
         if(empty($where)){
             return $record;
         }
-        d($record);
-        d($where);
-        ddd($options);
         $deepest = $this->where_get_depth($where);
         $counter =0;
         while($deepest >= 0){
