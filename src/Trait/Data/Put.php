@@ -169,6 +169,10 @@ trait Put {
                                             }
                                             echo 'Imported (PUT) ' . $number . ' of ' . $amount . ' nodes ('. round(($number / $amount) * 100 , 2) .' %)...' . PHP_EOL;
                                         }
+                                        elseif($number === $amount){
+                                            echo Cli::tput('cursor.up');
+                                            echo 'Imported (PUT) ' . $number . ' of ' . $amount . ' nodes ('. round(($number / $amount) * 100 , 2) .' %)...' . PHP_EOL;
+                                        }
                                     }
                                 }
                             }
