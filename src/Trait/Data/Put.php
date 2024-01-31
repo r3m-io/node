@@ -127,6 +127,7 @@ trait Put {
                         $expose &&
                         $role
                     ) {
+                        d($node);
                         $node = $this->expose(
                             $node,
                             $expose,
