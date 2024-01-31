@@ -384,7 +384,8 @@ trait Import {
         }
         if(!empty($put_many)){
             $response = $this->put_many($name, $role, $put_many, [
-                'import' => true
+                'import' => true,
+                'validation' => $options['validation'] ?? true
             ]);
             if(
                 array_key_exists('list', $response) &&
@@ -400,7 +401,8 @@ trait Import {
         }
         if(!empty($patch_many)){
             $response = $this->patch_many($name, $role, $patch_many, [
-                'import' => true
+                'import' => true,
+                'validation' => $options['validation'] ?? true
             ]);
             if(
                 array_key_exists('list', $response) &&
