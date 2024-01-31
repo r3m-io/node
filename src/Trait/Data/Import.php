@@ -431,7 +431,8 @@ trait Import {
         if(!empty($create_many)) {
             $response = $this->create_many($name, $role, $create_many, [
                 'import' => true,
-                'uuid' => $options['uuid']
+                'uuid' => $options['uuid'],
+                'validation' => $options['validation'] ?? true
             ]);
             if (
                 array_key_exists('list', $response) &&
