@@ -8,7 +8,7 @@
         "ext-posix": "*",
         "ext-zlib": "*",
         "ext-iconv": "*",
-        "r3m_io/framework": "dev-root"
+        "r3m_io/framework": "dev-main"
     },
     "minimum-stability": "dev",
     "license" : "MIT",
