@@ -340,9 +340,6 @@ trait NodeList {
                         }
                         $list_count++;
                     }
-                    if($is_debug){
-                        ddd($list_sort);
-                    }
                     $result = [];
                     $result['page'] = 1;
                     $result['limit'] = $list_count;
@@ -376,22 +373,30 @@ trait NodeList {
                 $limit = $options['limit'] ?? 4096;
                 $list_temp = [];
                 $list_count = 0;
+                $index_counter =0;
                 foreach($list_sort as $index => $record){
                     if(
-                        $index < ($page - 1) * $limit
+                        $index_counter < ($page - 1) * $limit
                     ){
                         //nothing
                     }
-                    elseif($index >= $page * $limit){
+                    elseif($index_counter >= $page * $limit){
                         break;
                     }
                     else {
                         if(is_object($record)){
-                            $record->{'#index'} = $index;
+                            $record->{'#index'} = $index_counter;
+                        }
+                        if($options['key'] === null){
+                            $list_temp[] = $record;
+                        }
+                        elseif(is_array($options['key'])) {
+                            $list_temp[$index] = $record;
                         }
                         $list_temp[] = $record;
                         $list_count++;
                     }
+                    $index_counter++;
                 }
                 $list = $list_temp;
                 $result = [];
