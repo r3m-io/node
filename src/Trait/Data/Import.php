@@ -253,33 +253,31 @@ trait Import {
                                         ]
                                     );
                                     $select_filter = [];
-                                    if(
-                                        is_array($select) &&
-                                        array_key_exists('list', $select)
-                                    ){
-                                        foreach($filter_value_1 as $nr => $key){
-                                            if(array_key_exists($key, $select['list'])){
-                                                //do check with filter var 2
-                                                $node = new Storage($select['list'][$key]);
-                                                if($node->get($explode[1]) === $filter_value_2[$nr]){
-                                                    d($node);
-                                                    d($filter_value_2[$nr]);
-                                                    ddd('found');
-                                                } else {
-                                                    d($node);
-                                                    d($filter_value_2[$nr]);
-                                                    ddd('found 2');
-                                                }
+                                    foreach($filter_value_1 as $nr => $key){
+                                        if(
+                                            is_array($select) &&
+                                            array_key_exists('list', $select) &&
+                                            array_key_exists($key, $select['list'])){
+                                            //do check with filter var 2
+                                            $node = new Storage($select['list'][$key]);
+                                            if($node->get($explode[1]) === $filter_value_2[$nr]){
+                                                d($node);
+                                                d($filter_value_2[$nr]);
+                                                ddd('found');
                                             } else {
-//                                                $node->set('uuid', $record['node']->uuid);
-                                                $create_many[] = $chunk[$nr];
+                                                d($node);
+                                                d($filter_value_2[$nr]);
+                                                ddd('found 2');
                                             }
+                                        } else {
+//                                                $node->set('uuid', $record['node']->uuid);
+                                            $create_many[] = $chunk[$nr];
                                         }
                                     }
-
-
-
-                                    ddd($select);
+                                    ddd('create: ' . count($create_many));
+                                    ddd('put: ' . count($put_many));
+                                    ddd('patch: ' . count($patch_many));
+                                    ddd('skip: ' .count($skip));
                                 }
                             /*
                                 if(
