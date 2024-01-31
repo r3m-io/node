@@ -42,7 +42,8 @@ Trait Transaction {
         $app_options = App::options($object);
         if (array_key_exists('time_limit', $options)) {
             set_time_limit((int)$options['time_limit']);
-        } elseif ($object->config('time.limit')) {
+        }
+        elseif ($object->config('time.limit')) {
             set_time_limit((int)$object->config('time.limit')); // 10 minutes
         } else {
             set_time_limit(600); // 10 minutes
