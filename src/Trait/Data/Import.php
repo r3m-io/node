@@ -58,10 +58,6 @@ trait Import {
             $object->config('r3m.io.node.import.start', microtime(true));
             $options['function'] = __FUNCTION__;
             $options['relation'] = false;
-            $skip = 0;
-            $put_many = [];
-            $patch_many = [];
-            $create_many = [];
             $response_list = [];
             if(!Security::is_granted(
                 $name,
@@ -101,6 +97,10 @@ trait Import {
                         $filter_value_2 = [];
                         $count = 0;
                         $explode = [];
+                        $create_many = [];
+                        $put_many = [];
+                        $patch_many = [];
+                        $skip = 0;
                         foreach($chunk as $record_nr => $record){
                             $node = new Storage();
                             $node->data($record);
@@ -108,7 +108,7 @@ trait Import {
                                 $data_object &&
                                 $data_object->has('is.unique')
                             ) {
-                                $unique = (array)$data_object->get('is.unique');
+                                $unique = (array) $data_object->get('is.unique');
                                 $unique = array_shift($unique);
                                 $explode = explode(',', $unique);
                                 $count = 0;
@@ -207,6 +207,9 @@ trait Import {
                                                     'operator' => 'in'
                                                 ]
                                             ],
+                                            'key' => [
+                                                $explode[0]
+                                            ],
                                             'transaction' => true,
                                             'limit' => $options['chunk-size'],
                                             'page' => 1
@@ -249,10 +252,6 @@ trait Import {
                                         $skip
                                     );
                                     $response_list[] = $response;
-                                    $create_many = [];
-                                    $put_many = [];
-                                    $patch_many = [];
-                                    $skip = 0;
                                 }
                                 break;
                             case 2:
@@ -326,10 +325,6 @@ trait Import {
                                         $skip
                                     );
                                     $response_list[] = $response;
-                                    $create_many = [];
-                                    $put_many = [];
-                                    $patch_many = [];
-                                    $skip = 0;
                                 }
                                 break;
                         }
