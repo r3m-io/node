@@ -288,6 +288,9 @@ trait Import {
                                         array_key_exists($key, $select['list'])
                                     ){
                                         //do check with filter var 2
+                                        //need record // chunk[chunk_nr]
+                                        d($chunk[$nr]);
+                                        ddd($select['list'][$key]);
                                         $node = new Storage($select['list'][$key]);
                                         if($node->get($explode[1]) === $filter_value_2[$nr]){
                                             if(
