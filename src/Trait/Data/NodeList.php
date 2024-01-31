@@ -313,9 +313,6 @@ trait NodeList {
                     }
                 }
                 $list = $list_filtered;
-                if($is_debug){
-                    ddd($list);
-                }
                 if(
                     !empty($options['sort']) &&
                     is_array($options['sort'])
