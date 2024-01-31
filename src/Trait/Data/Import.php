@@ -50,6 +50,9 @@ trait Import {
             if(!array_key_exists('uuid', $options)){
                 $options['uuid'] = false;
             }
+            if(!array_key_exists('chunk-size', $options)){
+                $options['chunk-size'] = 1000;
+            }
             $options['import'] = true;
             set_time_limit(0);
             $start = microtime(true);
@@ -94,17 +97,17 @@ trait Import {
                 $data_object = $object->data_read($url_object, sha1($url_object));
                 $list_count = count($list);
                 d($list_count);
-                if($list_count > 1000){
-                    $list = array_chunk($list, 1000);
-                    foreach($list as $chunk){
+                if($list_count > $options['chunk-size']){
+                    $list = array_chunk($list, $options['chunk-size']);
+                    foreach($list as $chunk_nr => $chunk){
                         $filter_value_1 = [];
                         $filter_value_2 = [];
                         $count = 0;
                         $explode = [];
-                        foreach($chunk as $chunk_nr => $record){
+                        foreach($chunk as $record_nr => $record){
                             $node = new Storage();
                             $node->data($record);
-                            if($chunk_nr > 750){
+                            if($record_nr > 750){
                                 $node->data('#class', 'RaXon.Php.Word.Embedding');
                             } else {
                                 $node->data('#class', 'test');
@@ -214,7 +217,9 @@ trait Import {
                                                     'operator' => 'in'
                                                 ]
                                             ],
-                                            'transaction' => true
+                                            'transaction' => true,
+                                            'limit' => $options['chunk-size'],
+                                            'page' => $chunk_nr + 1
                                         ]
                                     );
                                     ddd($select);
@@ -242,7 +247,9 @@ trait Import {
                                             'key' => [
                                                 $explode[0]
                                             ],
-                                            'transaction' => true
+                                            'transaction' => true,
+                                            'limit' => $options['chunk-size'],
+                                            'page' => $chunk_nr + 1
                                         ]
                                     );
                                     ddd($select);
