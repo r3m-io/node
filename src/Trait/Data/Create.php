@@ -83,6 +83,7 @@ trait Create {
         $list = [];
         $result = [];
         $error = [];
+        $total = count($nodeList);
         foreach($nodeList as $nr => $node){
             if(
                 is_object($node) &&
@@ -92,6 +93,7 @@ trait Create {
             } else {
                 $node = Core::object($node, Core::OBJECT_OBJECT);
             }
+            echo 'Node: ' . ($nr + 1) . ' of ' . $total . PHP_EOL;
             $object->request('node', $node);
             if(
                 $options['uuid'] === true &&
