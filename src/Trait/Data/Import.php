@@ -276,6 +276,11 @@ trait Import {
                                                     $skip++;
                                                 }
                                             } else {
+                                                if($chunk_nr > 0){
+                                                    d($explode[1]);
+                                                    d($node->get($explode[1]));
+                                                    d($filter_value_2[$nr]);
+                                                }
                                                 $create_many[] = $chunk[$nr];
                                             }
                                         } else {
