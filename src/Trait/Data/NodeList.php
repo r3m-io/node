@@ -42,6 +42,9 @@ trait NodeList {
         if(!array_key_exists('lock', $options)){
             $options['lock'] = false;
         }
+        if(!array_key_exists('with_null', $options)){
+            $options['with_null'] = false;
+        }
         if(!Security::is_granted(
             $name,
             $role,
@@ -53,6 +56,12 @@ trait NodeList {
             $result['limit'] = $options['limit'] ?? 1000;
             $result['count'] = 0;
             $result['max'] = 0;
+            if($options['with_null'] === true) {
+                $start = ($result['page'] - 1) * $result['limit'];
+                for ($i=$start; $i < $result['limit']; $i++){
+                    $list[] = null;
+                }
+            }
             $result['list'] = $list;
             $result['sort'] = $options['sort'];
             if(!empty($options['filter'])) {
@@ -82,6 +91,12 @@ trait NodeList {
             $result['limit'] = $options['limit'] ?? 1000;
             $result['count'] = 0;
             $result['max'] = 0;
+            if($options['with_null'] === true) {
+                $start = ($result['page'] - 1) * $result['limit'];
+                for ($i=$start; $i < $result['limit']; $i++){
+                    $list[] = null;
+                }
+            }
             $result['list'] = $list;
             $result['sort'] = $options['sort'] ?? [];
             if(!empty($options['filter'])) {
@@ -197,7 +212,6 @@ trait NodeList {
         }
         $has_relation = false;
         $count = 0;
-        $list_filtered = [];
         if($data){
             $list = $data->data($name);
             if(
@@ -239,9 +253,7 @@ trait NodeList {
                     $is_where = true;
                 }
                 $limit = $options['limit'] ?? 4096;
-                if($limit === 1000){
-                    d($options);
-                }
+                $list_result = [];
                 foreach($list as $nr => $record) {
                     if(
                         is_object($record) &&
@@ -269,39 +281,70 @@ trait NodeList {
                         if($is_filter){
                             $record = $this->filter($record, $options['filter'], $options);
                             if(!$record){
-                                unset($list[$nr]);
+                                if($options['with_null'] === true){
+                                    $list_result[] = null;
+                                }
                                 continue;
                             }
                         }
                         elseif($is_where){
                             $record = $this->where($record, $options['where'], $options);
                             if(!$record){
-                                unset($list[$nr]);
+                                if($options['with_null'] === true){
+                                    $list_result[] = null;
+                                }
+
                                 continue;
                             }
                         }
                         $count++;
-                        $list_filtered[] = $record;
+                        $list_result[] = $record;
                         if($count === $limit){
-                            d($class);
-                            d($options);
                             break;
                         }
                     }
                 }
-                $list = $list_filtered;
                 if(
                     !empty($options['sort']) &&
                     is_array($options['sort'])
                 ){
-                    $list_sort = Sort::list($list)->with(
+                    $list_sort = Sort::list($list_result)->with(
                         $options['sort'],
                         [
                             'key_reset' => true,
                         ]
                     );
                 } else {
-                    $list_sort = $list;
+                    $list_sort = $list_result;
+                }
+                if(count($list_sort) > 1000){
+                    $first_record = false;
+                    $last_record = false;
+                    foreach($list_sort as $index => $record){
+                        if(
+                            $record === null &&
+                            $first_record === false
+                        ){
+                            unset($list_sort[$index]);
+                        }
+                        elseif($first_record === false) {
+                            $first_record = true;
+                        }
+                        elseif($record === null && $first_record === true){
+                            $last_record = true;
+                        }
+                        if($last_record){
+                            unset($list_sort[$index]);
+                        }
+                    }
+                    $debug_backtrace =  debug_backtrace(1);
+                    d($debug_backtrace[0]['file'] . ':' . $debug_backtrace[0]['line'] . ':' . $debug_backtrace[0]['function']);
+                    d($debug_backtrace[1]['file'] . ':' . $debug_backtrace[1]['line'] . ':' . $debug_backtrace[1]['function']);
+                    d($debug_backtrace[2]['file'] . ':' . $debug_backtrace[2]['line'] . ':' . $debug_backtrace[2]['function']);
+                    d(count($list_sort));
+                    d($limit);
+                    d($count);
+//                    ddd($list_sort[0]);
                 }
                 if(
                     !empty($limit) &&
@@ -310,7 +353,7 @@ trait NodeList {
                     $list_count = 0;
                     foreach($list_sort as $index => $record){
                         if(is_object($record)){
-                            $record->{'#index'} = $index;
+                            $record->{'#index'} = $list_count;
                         }
                         $list_count++;
                     }
@@ -347,11 +390,12 @@ trait NodeList {
                 $limit = $options['limit'] ?? 4096;
                 $list_temp = [];
                 $list_count = 0;
+                $number = 0;
                 foreach($list_sort as $index => $record){
                     if(
                         $index < ($page - 1) * $limit
                     ){
-                        //nothing
+                        unset($list_sort[$index]);
                     }
                     elseif($index >= $page * $limit){
                         break;
