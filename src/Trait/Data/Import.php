@@ -219,9 +219,34 @@ trait Import {
                                     );
                                     ddd($select);
                                 }
-
                                 break;
                             case 2:
+                                if(
+                                    !empty($explode[0]) &&
+                                    !empty($explode[1]) &&
+                                    !empty($filter_value_1) &&
+                                    !empty($filter_value_2)
+                                ){
+                                    d($explode[0]);
+                                    d($explode[1]);
+                                    d($filter_value_1);
+                                    ddd($filter_value_2);
+                                    $select = $this->list(
+                                        $name,
+                                        $role,
+                                        [
+                                            'filter' => [
+                                                $explode[0] => [
+                                                    'value' => $filter_value_1,
+                                                    'operator' => 'in'
+                                                ]
+                                            ],
+                                            'transaction' => true
+                                        ]
+                                    );
+                                    ddd($select);
+                                }
+                            /*
                                 if(
                                     !empty($explode[0]) &&
                                     !empty($explode[1]) &&
@@ -257,6 +282,7 @@ trait Import {
                                     );
                                     ddd($select);
                                 }
+                            */
                                 break;
                         }
 
