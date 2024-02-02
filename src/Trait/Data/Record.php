@@ -26,6 +26,9 @@ trait Record {
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
+        if(!array_key_exists('memory', $options)){
+            $options['memory'] = false;
+        }
         if(!Security::is_granted(
             $name,
             $role,

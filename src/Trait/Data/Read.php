@@ -35,6 +35,9 @@ trait Read {
         if(!array_key_exists('parse', $options)){
             $options['parse'] = false;
         }
+        if(!array_key_exists('memory', $options)){
+            $options['memory'] = false;
+        }
         $options_record = [
             'filter' => [
                 "uuid" => [
@@ -45,6 +48,7 @@ trait Read {
             'function' => $options['function'],
             'relation' => $options['relation'],
             'parse' => $options['parse'],
+            'memory' => $options['memory'],
         ];
 
         if(!Security::is_granted(

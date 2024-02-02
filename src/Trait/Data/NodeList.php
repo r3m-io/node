@@ -44,6 +44,9 @@ trait NodeList {
         if(!array_key_exists('key', $options)){
             $options['key'] = null; //numeric
         }
+        if(!array_key_exists('memory', $options)){
+            $options['memory'] = false; //numeric
+        }
         if(!Security::is_granted(
             $name,
             $role,
@@ -184,7 +187,10 @@ trait NodeList {
                 }
             }
         }
-        if($options['transaction'] === true){
+        if(
+            $options['transaction'] === true ||
+            $options['memory'] === true
+        ){
             //keep an eye on memory usage of this script, because it grows here...
             $data = $object->data_read($data_url, sha1($data_url));
         } else {
@@ -196,7 +202,10 @@ trait NodeList {
             $name .
             $object->config('extension.json')
         ;
-        if($options['transaction'] === true){
+        if(
+            $options['transaction'] === true ||
+            $options['memory'] === true
+        ){
             $object_data = $object->data_read($object_url, sha1($object_url));
         } else {
             $object_data = $object->data_read($object_url);
