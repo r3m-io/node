@@ -28,5 +28,3 @@ $options
 {{$response|json.encode:'JSON_PRETTY_PRINT'}}
 
 {{/if}}
-
-
