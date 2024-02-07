@@ -106,7 +106,8 @@ trait Import {
                         $node->data($record);
                         if (
                             $data_object &&
-                            $data_object->has('is.unique')
+                            $data_object->has('is.unique') &&
+                            !empty($data_object->get('is.unique'))
                         ) {
                             $unique = (array) $data_object->get('is.unique');
                             $unique = array_shift($unique);
