@@ -80,10 +80,10 @@ trait Patch {
         if($data){
             $list = $data->get($name);
             if(!is_array($list)){
-                throw new Exception('Array expected');
+                throw new Exception('Array expected...');
             }
         } else {
-            $list = [];
+            throw new Exception('Data expected...');
         }
         $uuid = [];
         foreach($list as $nr => $record){
