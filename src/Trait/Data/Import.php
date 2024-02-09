@@ -296,6 +296,14 @@ trait Import {
                             break;
                         case 2:
                             if(
+                                !empty($explode[1]) &&
+                                empty($filter_value_1) &&
+                                !empty($filter_value_2)
+                            ){
+                                d($explode);
+                                ddd($filter_value_2);
+                            }
+                            if(
                                 !empty($explode[0]) &&
                                 !empty($explode[1]) &&
                                 !empty($filter_value_1) &&
