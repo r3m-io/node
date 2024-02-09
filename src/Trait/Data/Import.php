@@ -126,6 +126,7 @@ trait Import {
                                 $explode[$nr] = trim($value);
                                 $count++;
                             }
+                            $allow_empty = $this->allow_empty($data_validate, $explode);
                             d($node);
                             d($explode);
                             d($data_validate);
@@ -356,6 +357,12 @@ trait Import {
             throw $exception;
         }
         return false;
+    }
+
+    private function allow_empty($data_validate, $attribute=[]): bool
+    {
+        d($data_validate);
+        d($attribute);
     }
 
     /**
