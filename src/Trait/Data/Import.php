@@ -359,21 +359,24 @@ trait Import {
         return false;
     }
 
-    private function allow_empty($data_validate, $attribute_list=[]): bool
+    private function allow_empty($data_validate, $attribute_list=[]): array
     {
+        $allow_empty = [];
         foreach($attribute_list as $nr => $attribute){
             $attribute_validate = $data_validate->get('System.Route.create.validate.' . $attribute);
             if(is_array($attribute_validate)){
                 foreach($attribute_validate as $attribute_validate_nr => $attribute_validate_value){
-                    if(is_object($attribute_validate_value)){
-                        ddd($attribute_validate_value);
+                    if(
+                        is_object($attribute_validate_value) &&
+                        property_exists($attribute_validate_value, 'is.unique') &&
+                        property_exists($attribute_validate_value->{'is.unique'}, 'allow_empty')
+                    ){
+                        $allow_empty[] = $attribute_validate_value->{'is.unique'}->allow_empty;
                     }
                 }
             }
-            d($attribute_validate);
         }
-        d($data_validate);
-        return true;
+        return $allow_empty;
     }
 
     /**
