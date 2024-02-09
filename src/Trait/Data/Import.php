@@ -358,7 +358,7 @@ trait Import {
 
     private function allow_empty($class, $data_validate, $attribute_list=[]): array
     {
-        ddd($class);
+        d($class);
         $allow_empty = [];
         foreach($attribute_list as $nr => $attribute){
             $attribute_validate = $data_validate->get('System.Route.create.validate.' . $attribute);
