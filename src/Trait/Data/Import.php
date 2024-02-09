@@ -138,7 +138,21 @@ trait Import {
                                     }
                                     elseif(
                                         $allow_empty[0] !== false &&
-                                        $allow_empty[1] === false
+                                        $allow_empty[1] === false &&
+                                        $node->has($explode[1])
+                                    ){
+                                        //1 attribute is allowed to be empty
+                                        d($allow_empty);
+
+
+
+                                        d($explode);
+                                        ddd($node);
+                                    }
+                                    elseif(
+                                        $allow_empty[0] === false &&
+                                        $allow_empty[1] !== false &&
+                                        $node->has($explode[0])
                                     ){
                                         //1 attribute is allowed to be empty
                                         d($allow_empty);
@@ -147,26 +161,11 @@ trait Import {
                                     }
                                     elseif(
                                         $allow_empty[0] === false &&
-                                        $allow_empty[1] !== false
-                                    ){
-                                        //1 attribute is allowed to be empty
-                                        d($allow_empty);
-                                        d($explode);
-                                        ddd($node);
-                                    }
-                                    elseif(
-                                        $allow_empty[0] === false &&
-                                        $allow_empty[1] === false
-                                    ){
-                                        //both attributes should not be empty
-                                        d($allow_empty);
-                                        d($explode);
-                                        ddd($node);
-                                    }
-                                    if (
+                                        $allow_empty[1] === false &&
                                         $node->has($explode[0]) &&
                                         $node->has($explode[1])
-                                    ) {
+                                    ){
+                                        //both attributes should not be empty
                                         $match_1 = $node->get($explode[0]);
                                         $match_2 = $node->get($explode[1]);
                                         if(
@@ -180,25 +179,6 @@ trait Import {
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
-                                        /*
-                                        $record = $this->record(
-                                            $name,
-                                            $role,
-                                            [
-                                                'filter' => [
-                                                    $explode[0] => [
-                                                        'value' => $node->get($explode[0]),
-                                                        'operator' => '==='
-                                                    ],
-                                                    $explode[1] => [
-                                                        'value' => $node->get($explode[1]),
-                                                        'operator' => '==='
-                                                    ]
-                                                ],
-                                                'transaction' => true,
-                                            ]
-                                        );
-                                        */
                                     } else {
                                         throw new Exception('Unique value cannot be empty...');
                                     }
