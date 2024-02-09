@@ -71,10 +71,19 @@ trait Import {
                 'Data' .
                 $object->config('ds')
             ;
+            $dir_validate = $object->config('project.dir.node') .
+                'Validate' .
+                $object->config('ds')
+            ;
             $url = $dir_data .
                 $name .
                 $object->config('extension.json')
             ;
+            $url_validate = $dir_validate .
+                $name .
+                $object->config('extension.json')
+            ;
+            $data_validate = $object->data_read($url_validate, sha1($url_validate));
             $this->startTransaction($name, $options);
             $data = $object->data_read($options['url']);
             if($data){
@@ -119,6 +128,7 @@ trait Import {
                             }
                             d($node);
                             d($explode);
+                            d($data_validate);
                             switch ($count) {
                                 case 2:
                                     if (
