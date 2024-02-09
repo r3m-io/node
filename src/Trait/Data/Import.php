@@ -358,12 +358,11 @@ trait Import {
 
     private function allow_empty($class, $data_validate, $attribute_list=[]): array
     {
-        d($class);
         $allow_empty = [];
         foreach($attribute_list as $nr => $attribute){
-            $attribute_validate = $data_validate->get('System.Route.create.validate.' . $attribute);
+            $attribute_validate = $data_validate->get($class . '.create.validate.' . $attribute);
             if(empty($attribute_validate)){
-                return $allow_empty;
+                continue;
             }
             elseif(is_array($attribute_validate)){
                 foreach($attribute_validate as $attribute_validate_nr => $attribute_validate_value){
