@@ -363,6 +363,7 @@ trait Import {
     {
         d($data_validate);
         d($attribute);
+        return true;
     }
 
     /**
