@@ -129,7 +129,7 @@ trait Import {
                             $allow_empty = $this->allow_empty($data_validate, $explode);
                             d($node);
                             d($explode);
-                            d($data_validate);
+                            d($allow_empty);
                             switch ($count) {
                                 case 2:
                                     if (
@@ -364,7 +364,10 @@ trait Import {
         $allow_empty = [];
         foreach($attribute_list as $nr => $attribute){
             $attribute_validate = $data_validate->get('System.Route.create.validate.' . $attribute);
-            if(is_array($attribute_validate)){
+            if(empty($attribute_validate)){
+                return $allow_empty;
+            }
+            elseif(is_array($attribute_validate)){
                 foreach($attribute_validate as $attribute_validate_nr => $attribute_validate_value){
                     if(
                         is_object($attribute_validate_value) &&
