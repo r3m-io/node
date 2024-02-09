@@ -135,6 +135,7 @@ trait Import {
                                         $allow_empty[1] !== false
                                     ){
                                         //2 attributes are allowed to be empty
+                                        throw new Exception('Unique value cannot be empty...');
                                     }
                                     elseif(
                                         $allow_empty[0] !== false &&
@@ -142,12 +143,26 @@ trait Import {
                                         $node->has($explode[1])
                                     ){
                                         //1 attribute is allowed to be empty
-                                        d($allow_empty);
-
-
-
-                                        d($explode);
-                                        ddd($node);
+                                        $match_1 = $node->get($explode[0]);
+                                        $match_2 = $node->get($explode[1]);
+                                        if(
+                                            $match_1 !== null &&
+                                            $match_1 !== '' &&
+                                            $match_2 !== null &&
+                                            $match_2 !== ''
+                                        ){
+                                            $filter_value_1[$record_nr] = $match_1;
+                                            $filter_value_2[$record_nr] = $match_2;
+                                        }
+                                        elseif(
+                                            $match_1 === null &&
+                                            $match_2 !== null &&
+                                            $match_2 !== ''
+                                        ){
+                                            $filter_value_2[$record_nr] = $match_2;
+                                        } else {
+                                            throw new Exception('Unique value cannot be empty...');
+                                        }
                                     }
                                     elseif(
                                         $allow_empty[0] === false &&
