@@ -363,10 +363,16 @@ trait Import {
     {
         foreach($attribute_list as $nr => $attribute){
             $attribute_validate = $data_validate->get('System.Route.create.validate.' . $attribute);
+            if(is_array($attribute_validate)){
+                foreach($attribute_validate as $attribute_validate_nr => $attribute_validate_value){
+                    if(is_object($attribute_validate_value)){
+                        ddd($attribute_validate_value);
+                    }
+                }
+            }
             d($attribute_validate);
         }
         d($data_validate);
-        d($attribute);
         return true;
     }
 
