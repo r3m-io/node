@@ -362,6 +362,7 @@ trait Import {
         foreach($attribute_list as $nr => $attribute){
             $attribute_validate = $data_validate->get($class . '.create.validate.' . $attribute);
             if(empty($attribute_validate)){
+                $allow_empty[$nr] = false;
                 continue;
             }
             elseif(is_array($attribute_validate)){
@@ -371,7 +372,7 @@ trait Import {
                         property_exists($attribute_validate_value, 'is.unique') &&
                         property_exists($attribute_validate_value->{'is.unique'}, 'allow_empty')
                     ){
-                        $allow_empty[] = $attribute_validate_value->{'is.unique'}->allow_empty;
+                        $allow_empty[$nr] = $attribute_validate_value->{'is.unique'}->allow_empty;
                     }
                 }
             }
