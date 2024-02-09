@@ -127,8 +127,42 @@ trait Import {
                                 $count++;
                             }
                             $allow_empty = $this->allow_empty($name, $data_validate, $explode);
+
                             switch ($count) {
                                 case 2:
+                                    if(
+                                        $allow_empty[0] !== false &&
+                                        $allow_empty[1] !== false
+                                    ){
+                                        //2 attributes are allowed to be empty
+                                    }
+                                    elseif(
+                                        $allow_empty[0] !== false &&
+                                        $allow_empty[1] === false
+                                    ){
+                                        //1 attribute is allowed to be empty
+                                        d($allow_empty);
+                                        d($explode);
+                                        ddd($node);
+                                    }
+                                    elseif(
+                                        $allow_empty[0] === false &&
+                                        $allow_empty[1] !== false
+                                    ){
+                                        //1 attribute is allowed to be empty
+                                        d($allow_empty);
+                                        d($explode);
+                                        ddd($node);
+                                    }
+                                    elseif(
+                                        $allow_empty[0] === false &&
+                                        $allow_empty[1] === false
+                                    ){
+                                        //both attributes should not be empty
+                                        d($allow_empty);
+                                        d($explode);
+                                        ddd($node);
+                                    }
                                     if (
                                         $node->has($explode[0]) &&
                                         $node->has($explode[1])
