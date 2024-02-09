@@ -159,7 +159,9 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
-                                            $filter_value_2[$record_nr] = $match_2;
+                                            $explode[0] = $explode[1];
+                                            $filter_value_1[$record_nr] = $match_2;
+                                            $count = 1;
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
@@ -295,14 +297,6 @@ trait Import {
                             }
                             break;
                         case 2:
-                            if(
-                                !empty($explode[1]) &&
-                                empty($filter_value_1) &&
-                                !empty($filter_value_2)
-                            ){
-                                d($explode);
-                                ddd($filter_value_2);
-                            }
                             if(
                                 !empty($explode[0]) &&
                                 !empty($explode[1]) &&
