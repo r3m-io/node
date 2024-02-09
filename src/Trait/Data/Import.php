@@ -117,6 +117,8 @@ trait Import {
                                 $explode[$nr] = trim($value);
                                 $count++;
                             }
+                            d($node);
+                            d($explode);
                             switch ($count) {
                                 case 2:
                                     if (
