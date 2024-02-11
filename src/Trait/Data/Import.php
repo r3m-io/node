@@ -110,7 +110,6 @@ trait Import {
                     $put_many = [];
                     $patch_many = [];
                     $skip = 0;
-                    d($chunk);
                     foreach($chunk as $record_nr => $record){
                         $node = new Storage();
                         $node->data($record);
@@ -128,7 +127,6 @@ trait Import {
                                 $count++;
                             }
                             $allow_empty = $this->allow_empty($name, $data_validate, $explode);
-
                             switch ($count) {
                                 case 2:
                                     if(
@@ -172,9 +170,28 @@ trait Import {
                                         $node->has($explode[0])
                                     ){
                                         //1 attribute is allowed to be empty
-                                        d($allow_empty);
-                                        d($explode);
-                                        ddd($node);
+                                        $match_1 = $node->get($explode[0]);
+                                        $match_2 = $node->get($explode[1]);
+                                        if(
+                                            $match_1 !== null &&
+                                            $match_1 !== '' &&
+                                            $match_2 !== null &&
+                                            $match_2 !== ''
+                                        ){
+                                            $filter_value_1[$record_nr] = $match_1;
+                                            $filter_value_2[$record_nr] = $match_2;
+                                        }
+                                        elseif(
+                                            $match_1 !== null &&
+                                            $match_1 !== '' &&
+                                            $match_2 === null
+                                        ){
+                                            $explode[0] = $explode[1];
+                                            $filter_value_1[$record_nr] = $match_2;
+                                            $count = 1;
+                                        } else {
+                                            throw new Exception('Unique value cannot be empty...');
+                                        }
                                     }
                                     elseif(
                                         $allow_empty[0] === false &&
@@ -211,21 +228,6 @@ trait Import {
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
-                                        /*
-                                        $record = $this->record(
-                                            $name,
-                                            $role,
-                                            [
-                                                'filter' => [
-                                                    $explode[0] => [
-                                                        'value' => $node->get($explode[0]),
-                                                        'operator' => '==='
-                                                    ]
-                                                ],
-                                                'transaction' => true
-                                            ]
-                                        );
-                                        */
                                     } else {
                                         throw new Exception('Unique value cannot be empty...');
                                     }
