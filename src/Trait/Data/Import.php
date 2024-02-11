@@ -110,6 +110,7 @@ trait Import {
                     $put_many = [];
                     $patch_many = [];
                     $skip = 0;
+                    d($chunk);
                     foreach($chunk as $record_nr => $record){
                         $node = new Storage();
                         $node->data($record);
