@@ -232,10 +232,26 @@ trait Import {
                                     }
                                     break;
                             }
+                        } else {
+                            $explode[0] = 'uuid';
+                            if ($node->has($explode[0])) {
+                                $match_1 = $node->get($explode[0]);
+                                if (
+                                    $match_1 !== null &&
+                                    $match_1 !== ''
+                                ) {
+                                    $filter_value_1[$record_nr] = $match_1;
+                                } else {
+                                    throw new Exception('Unique value cannot be empty...');
+                                }
+                            }
+                            ddd($filter_value_1);
                         }
                     }
                     switch($count){
                         case 0 :
+                            $explode[0] = 'uuid';
+
                             $create_many = $chunk;
                             $response = $this->update(
                                 $class,
