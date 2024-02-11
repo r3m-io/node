@@ -234,6 +234,7 @@ trait Import {
                             }
                         }
                     }
+                    ddd($count);
                     switch($count){
                         case 1 :
                             if(
