@@ -135,7 +135,6 @@ trait Import {
                                         $allow_empty[0] !== false &&
                                         $allow_empty[1] !== false
                                     ){
-                                        //2 attributes are allowed to be empty
                                         throw new Exception('Unique value cannot be empty...');
                                     }
                                     elseif(
@@ -245,23 +244,12 @@ trait Import {
                                     throw new Exception('Unique value cannot be empty...');
                                 }
                                 $count = 1;
+                            } else {
+                                throw new Exception('Unique value cannot be empty...');
                             }
                         }
                     }
                     switch($count){
-                        case 0 :
-                            $create_many = $chunk;
-                            $response = $this->update(
-                                $class,
-                                $role,
-                                $options,
-                                $create_many,
-                                $put_many,
-                                $patch_many,
-                                $skip
-                            );
-                            $response_list[] = $response;
-                            break;
                         case 1 :
                             if(
                                 !empty($explode[0]) &&
@@ -331,8 +319,6 @@ trait Import {
                                 !empty($filter_value_1) &&
                                 !empty($filter_value_2)
                             ){
-//                                    d($filter_value_1); //id
-//                                    ddd($filter_value_2); //class
                                 $select = $this->list(
                                     $name,
                                     $role,
@@ -351,7 +337,6 @@ trait Import {
                                         'page' => 1
                                     ]
                                 );
-                                $select_filter = [];
                                 foreach($filter_value_1 as $nr => $key){
                                     if(
                                         is_array($select) &&
