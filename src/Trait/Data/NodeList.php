@@ -306,16 +306,12 @@ trait NodeList {
                             foreach($options['key'] as $attribute){
                                 $value = $node->get($attribute);
                                 if(is_scalar($value) || $value === null){
-                                    if(is_string($value)){
-                                        $key[] = '\'' . $value . '\'';
-                                    } else {
-                                        $key[] = $value;
-                                    }
+                                    $key[] = $value;
                                 } else {
                                     $key[] = Core::object($value, Core::OBJECT_JSON);
                                 }
                             }
-                            $key = implode(';', $key);
+                            $key = implode('', $key);
                             $list_filtered[$key] = $record;
                         }
                         if($count === $limit){
