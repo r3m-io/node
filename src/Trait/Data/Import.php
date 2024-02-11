@@ -244,10 +244,13 @@ trait Import {
                                 } else {
                                     throw new Exception('Unique value cannot be empty...');
                                 }
+                                $count = 1;
                             }
-                            ddd($filter_value_1);
                         }
                     }
+                    d($count);
+                    d($explode);
+                    ddd($filter_value_1);
                     switch($count){
                         case 0 :
                             $explode[0] = 'uuid';
