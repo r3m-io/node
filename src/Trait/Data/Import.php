@@ -236,7 +236,21 @@ trait Import {
                     }
                     switch($count){
                         case 0 :
-                            $create_many = $chunk;
+                            if (
+                                array_key_exists('force', $options) &&
+                                $options['force'] === true
+                            ) {
+                                $put_many[] = $chunk;
+                            } elseif (
+                                array_key_exists('patch', $options) &&
+                                $options['patch'] === true
+                            ){
+                                $patch_many[] = $chunk;
+                            } else {
+                                $create_many = $chunk;
+                            }
+                            d($put_many);
+                            d($patch_many);
                             ddd($create_many);
                             $response = $this->update(
                                 $class,
