@@ -234,7 +234,6 @@ trait Import {
                             }
                         }
                     }
-                    ddd($count);
                     switch($count){
                         case 0 :
                             $create_many = $chunk;
