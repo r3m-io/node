@@ -236,6 +236,20 @@ trait Import {
                     }
                     ddd($count);
                     switch($count){
+                        case 0 :
+                            $create_many = $chunk;
+                            ddd($create_many);
+                            $response = $this->update(
+                                $class,
+                                $role,
+                                $options,
+                                $create_many,
+                                $put_many,
+                                $patch_many,
+                                $skip
+                            );
+                            $response_list[] = $response;
+                            break;
                         case 1 :
                             if(
                                 !empty($explode[0]) &&
