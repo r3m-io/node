@@ -248,13 +248,8 @@ trait Import {
                             }
                         }
                     }
-                    d($count);
-                    d($explode);
-                    ddd($filter_value_1);
                     switch($count){
                         case 0 :
-                            $explode[0] = 'uuid';
-
                             $create_many = $chunk;
                             $response = $this->update(
                                 $class,
