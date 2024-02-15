@@ -310,19 +310,25 @@ trait Where {
             }
             $list = [];
             $list[] = $record;
-            $filter_where = [
-                $set[0]['attribute'] => [
-                    'value' => $set[0]['value'],
-                    'operator' => $set[0]['operator']
-                ]
-            ];
-            $left = Filter::list($list)->where($filter_where);
-            if(!empty($left)){
-                $where[$key] = true;
-                $set[0] = true;
-            } else {
-                $where[$key] = false;
-                $set[0] = false;
+            if(
+                array_key_exists('attribute', $set[0]) &&
+                array_key_exists('value', $set[0]) &&
+                array_key_exists('operator', $set[0])
+            ){
+                $filter_where = [
+                    $set[0]['attribute'] => [
+                        'value' => $set[0]['value'],
+                        'operator' => $set[0]['operator']
+                    ]
+                ];
+                $left = Filter::list($list)->where($filter_where);
+                if(!empty($left)){
+                    $where[$key] = true;
+                    $set[0] = true;
+                } else {
+                    $where[$key] = false;
+                    $set[0] = false;
+                }
             }
             return $set;
         }
