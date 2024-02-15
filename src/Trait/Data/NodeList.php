@@ -269,12 +269,14 @@ trait NodeList {
                                     }
                                     if(
                                         $char === ' ' &&
+                                        $is_quote === false &&
                                         $is_attribute === false
                                     ){
                                         $is_attribute = $attribute;
                                         continue;
                                     }
                                     elseif($char === ' ' &&
+                                        $is_quote === false &&
                                         $is_operator === false
                                     ){
                                         $is_operator = $operator;
