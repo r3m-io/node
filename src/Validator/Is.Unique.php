@@ -136,6 +136,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
         ];
     }
     $node = new Node($object);
+    d($object->request());
     //add cache dir to record
     $response = $node->record($name, $node->role_system(), $options);
     if(
@@ -150,6 +151,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
             !empty($record->uuid)
         ){
             $uuid = $object->request('node.uuid');
+            d($record->uuid);
             if($uuid === $record->uuid){
                 //can patch, can put
                 return true;
