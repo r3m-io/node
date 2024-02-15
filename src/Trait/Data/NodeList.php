@@ -303,9 +303,11 @@ trait NodeList {
                                         $value .= $char;
                                     }
                                 }
-                                d($attribute);
-                                d($operator);
-                                d($value);
+                                $options['where'][$key] = [
+                                    'attribute' => $attribute,
+                                    'operator' => $operator,
+                                    'value' => $value
+                                ];
                             }
                         }
                         d($options['where']);
