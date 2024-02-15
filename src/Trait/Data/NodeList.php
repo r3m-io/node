@@ -264,7 +264,11 @@ trait NodeList {
                                 $is_value = false;
                                 foreach($split as $nr => $char){
                                     if($char === '\''){
-                                        $is_quote != $is_quote;
+                                        if($is_quote === false){
+                                            $is_quote = true;
+                                        } else {
+                                            $is_quote = false;
+                                        }
                                         continue;
                                     }
                                     if(
