@@ -251,6 +251,14 @@ trait NodeList {
                     if(is_string($options['where'])){
                         $options['where'] = $this->where_convert($options['where']);
                     }
+                    if(is_array($options['where'])){
+                        foreach($options['where'] as $key => $where){
+                            if(is_string($where)){
+                                $options['where'][$key] = $this->where_convert($where);
+                            }
+                        }
+                        d($options['where']);
+                    }
                     $is_where = true;
                 }
                 $limit = $options['limit'] ?? 4096;
