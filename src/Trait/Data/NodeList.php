@@ -303,14 +303,16 @@ trait NodeList {
                                         $value .= $char;
                                     }
                                 }
-                                $options['where'][$key] = [
-                                    'attribute' => $attribute,
-                                    'operator' => $operator,
-                                    'value' => $value
-                                ];
+                                if($attribute && $operator && $value){
+                                    $options['where'][$key] = [
+                                        'attribute' => $attribute,
+                                        'operator' => $operator,
+                                        'value' => $value
+                                    ];
+                                }
+
                             }
                         }
-                        d($options['where']);
                     }
                     $is_where = true;
                 }
@@ -352,7 +354,6 @@ trait NodeList {
                             }
                         }
                         elseif($is_where){
-                            d($options['where']);
                             $record = $this->where($record, $options['where'], $options);
                             if(!$record){
                                 unset($list[$nr]);
