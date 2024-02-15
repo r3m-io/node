@@ -291,6 +291,7 @@ trait NodeList {
                             }
                         }
                         elseif($is_where){
+                            $options['where'] = $this->where_convert($options['where']);
                             d($options['where']);
                             $record = $this->where($record, $options['where'], $options);
                             if(!$record){
