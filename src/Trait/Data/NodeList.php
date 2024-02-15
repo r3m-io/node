@@ -254,7 +254,42 @@ trait NodeList {
                     if(is_array($options['where'])){
                         foreach($options['where'] as $key => $where){
                             if(is_string($where)){
-//                                $options['where'][$key] = $this->where_convert($where);
+                                $split = mb_str_split($where);
+                                $is_quote = false;
+                                $attribute = '';
+                                $operator = '';
+                                $is_attribute = false;
+                                $is_operator = false;
+                                foreach($split as $nr => $value){
+                                    if($value === '\''){
+                                        $is_quote != $is_quote;
+                                        continue;
+                                    }
+                                    if(
+                                        $value === ' ' &&
+                                        $is_attribute === false
+                                    ){
+                                        $is_attribute = $attribute;
+                                        continue;
+                                    }
+                                    elseif($value === ' ' &&
+                                        $is_operator === false
+                                    ){
+                                        $is_operator = $operator;
+                                        continue;
+                                    }
+                                    if($is_attribute === false){
+                                        $attribute .= $value;
+                                    }
+                                    elseif(
+                                        $is_attribute &&
+                                        $is_operator === false
+                                    ){
+                                        $operator .= $value;
+                                    }
+                                }
+                                d($attribute);
+                                d($operator);
                             }
                         }
                         d($options['where']);
