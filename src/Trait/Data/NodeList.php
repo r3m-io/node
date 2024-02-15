@@ -258,38 +258,48 @@ trait NodeList {
                                 $is_quote = false;
                                 $attribute = '';
                                 $operator = '';
+                                $value = '';
                                 $is_attribute = false;
                                 $is_operator = false;
-                                foreach($split as $nr => $value){
-                                    if($value === '\''){
+                                $is_value = false;
+                                foreach($split as $nr => $char){
+                                    if($char === '\''){
                                         $is_quote != $is_quote;
                                         continue;
                                     }
                                     if(
-                                        $value === ' ' &&
+                                        $char === ' ' &&
                                         $is_attribute === false
                                     ){
                                         $is_attribute = $attribute;
                                         continue;
                                     }
-                                    elseif($value === ' ' &&
+                                    elseif($char === ' ' &&
                                         $is_operator === false
                                     ){
                                         $is_operator = $operator;
                                         continue;
                                     }
                                     if($is_attribute === false){
-                                        $attribute .= $value;
+                                        $attribute .= $char;
                                     }
                                     elseif(
                                         $is_attribute &&
                                         $is_operator === false
                                     ){
-                                        $operator .= $value;
+                                        $operator .= $char;
+                                    }
+                                    elseif(
+                                        $is_attribute &&
+                                        $is_operator &&
+                                        $is_value === false
+                                    ){
+                                        $value .= $char;
                                     }
                                 }
                                 d($attribute);
                                 d($operator);
+                                d($value);
                             }
                         }
                         d($options['where']);
