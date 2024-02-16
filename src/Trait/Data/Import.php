@@ -339,6 +339,7 @@ trait Import {
                                         'page' => 1
                                     ]
                                 );
+                                ddd($filter_value_1);
                                 foreach($filter_value_1 as $nr => $key){
                                     if(
                                         is_array($select) &&
