@@ -336,12 +336,12 @@ trait Import {
                                         'page' => 1
                                     ]
                                 );
-                                ddd($select);
-                                ddd($filter_value_1);
                                 foreach($filter_value_1 as $nr => $key){
                                     if(
                                         is_array($select) &&
-                                        array_key_exists('list', $select)
+                                        array_key_exists('list', $select) &&
+                                        array_key_exists($nr, $select['list']) &&
+                                        property_exists($select['list'][$nr], 'uuid')
                                     ){
                                         //do check with filter var 2
                                         //need record // chunk[chunk_nr]
@@ -351,15 +351,14 @@ trait Import {
                                                 array_key_exists('force', $options) &&
                                                 $options['force'] === true
                                             ){
-                                                $node->set('uuid', $select['list'][$key]->uuid);
+                                                $node->set('uuid', $select['list'][$nr]->uuid);
                                                 $put_many[] = $node->data();
                                             }
                                             elseif(
                                                 array_key_exists('patch', $options) &&
                                                 $options['patch'] === true
                                             ){
-                                                d($select['list'][$key]->uuid);
-                                                $node->set('uuid', $select['list'][$key]->uuid);
+                                                $node->set('uuid', $select['list'][$nr]->uuid);
                                                 $patch_many[] = $node->data();
                                             }
                                             else {
