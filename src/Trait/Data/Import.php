@@ -360,6 +360,7 @@ trait Import {
                                                 array_key_exists('patch', $options) &&
                                                 $options['patch'] === true
                                             ){
+                                                d($select['list'][$key]->uuid);
                                                 $node->set('uuid', $select['list'][$key]->uuid);
                                                 $patch_many[] = $node->data();
                                             }
