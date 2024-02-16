@@ -332,7 +332,7 @@ trait Import {
                                             ]
                                         ],
                                         'key' => [
-                                            $explode[0]
+                                            'uuid'
                                         ],
                                         'transaction' => true,
                                         'limit' => $options['chunk-size'],
