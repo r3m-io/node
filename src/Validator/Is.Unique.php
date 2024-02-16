@@ -150,11 +150,13 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
             !empty($record->uuid)
         ){
             $uuid = $object->request('node.uuid');
+            //match must be on unique attribute instead of comparing uuids.
             if($uuid === $record->uuid){
                 //can patch, can put
                 return true;
             }
             $options = App::options($object);
+            /*
             if(
                 property_exists($options, 'force') ||
                 property_exists($options, 'patch')
@@ -162,6 +164,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
                 //uuid !== $record->uuid but we have -force or -patch options
                 return true;
             }
+            */
             return false;
         } else {
             return true;
