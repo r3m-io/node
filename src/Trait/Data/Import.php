@@ -331,9 +331,6 @@ trait Import {
                                                 'operator' => 'in'
                                             ]
                                         ],
-                                        'key' => [
-                                            'uuid'
-                                        ],
                                         'transaction' => true,
                                         'limit' => $options['chunk-size'],
                                         'page' => 1
@@ -344,8 +341,7 @@ trait Import {
                                 foreach($filter_value_1 as $nr => $key){
                                     if(
                                         is_array($select) &&
-                                        array_key_exists('list', $select) &&
-                                        array_key_exists($key, $select['list'])
+                                        array_key_exists('list', $select)
                                     ){
                                         //do check with filter var 2
                                         //need record // chunk[chunk_nr]
