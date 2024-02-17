@@ -373,7 +373,8 @@ trait Import {
                                             $create_many[] = $chunk[$record_nr];
                                         }
                                     } else {
-                                        ddd($record);
+                                        //wrong type
+                                        $skip++;
                                     }
                                 }
                                 break;
