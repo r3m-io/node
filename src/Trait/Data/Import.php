@@ -342,7 +342,7 @@ trait Import {
                             case 0:
                                 foreach($list_sub_filter['list'] as $record_nr => $record){
                                     if(
-                                        array_key_exists('attribute', $record) &&
+                                        array_key_exists('value', $record) &&
                                         array_key_exists(0, $record['value']) &&
                                         array_key_exists(1, $record['value'])
                                     ){
@@ -367,9 +367,11 @@ trait Import {
                                                 $node->set('uuid', $source_index[0][$key]);
                                                 $patch_many[] = $node->data();
                                             } else {
+                                                //skipping
                                                 $skip++;
                                             }
                                         } else {
+                                            //create
                                             $create_many[] = $chunk[$record_nr];
                                         }
                                     } else {
@@ -380,11 +382,78 @@ trait Import {
                                 break;
                             case 1:
                                 foreach($list_sub_filter['list'] as $record_nr => $record){
-                                    ddd($record);
+                                    if(
+                                        array_key_exists('attribute', $record) &&
+                                        array_key_exists('value', $record)
+                                    ) {
+                                        $key = $record['value'];
+                                        if (
+                                            array_key_exists($key, $source_index[1]) &&
+                                            !empty($source_index[1][$key])
+                                        ) {
+                                            //put or patch
+                                            if (
+                                                array_key_exists('force', $options) &&
+                                                $options['force'] === true
+                                            ) {
+                                                $node = new Storage($chunk[$record_nr]);
+                                                $node->set('uuid', $source_index[1][$key]);
+                                                $put_many[] = $node->data();
+                                            } elseif (
+                                                array_key_exists('patch', $options) &&
+                                                $options['patch'] === true
+                                            ) {
+                                                $node = new Storage($chunk[$record_nr]);
+                                                $node->set('uuid', $source_index[1][$key]);
+                                                $patch_many[] = $node->data();
+                                            } else {
+                                                //skipping
+                                                $skip++;
+                                            }
+                                        } else {
+                                            //create
+                                            $create_many[] = $chunk[$record_nr];
+                                        }
+                                    }
                                 }
                                 break;
                             case 2:
-                                ddd($list_sub_filter);
+                                foreach($list_sub_filter['list'] as $record_nr => $record){
+                                    if(
+                                        array_key_exists('attribute', $record) &&
+                                        array_key_exists('value', $record)
+                                    ) {
+                                        $key = $record['value'];
+                                        if (
+                                            array_key_exists($key, $source_index[2]) &&
+                                            !empty($source_index[2][$key])
+                                        ) {
+                                            //put or patch
+                                            if (
+                                                array_key_exists('force', $options) &&
+                                                $options['force'] === true
+                                            ) {
+                                                $node = new Storage($chunk[$record_nr]);
+                                                $node->set('uuid', $source_index[1][$key]);
+                                                $put_many[] = $node->data();
+                                            } elseif (
+                                                array_key_exists('patch', $options) &&
+                                                $options['patch'] === true
+                                            ) {
+                                                $node = new Storage($chunk[$record_nr]);
+                                                $node->set('uuid', $source_index[1][$key]);
+                                                $patch_many[] = $node->data();
+                                            } else {
+                                                //skipping
+                                                $skip++;
+                                            }
+                                        } else {
+                                            //create
+                                            $create_many[] = $chunk[$record_nr];
+                                        }
+                                    }
+                                }
+                                break;
                         }
                     }
                     d($put_many);
