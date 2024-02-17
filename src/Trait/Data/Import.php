@@ -464,6 +464,7 @@ trait Import {
             }
         }
         if(!empty($put_many)){
+            ddd($put_many);
             $response = $this->put_many($name, $role, $put_many, [
                 'import' => true,
                 'validation' => $options['validation'] ?? true
