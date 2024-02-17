@@ -150,6 +150,8 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
             !empty($record->uuid)
         ){
             $uuid = $object->request('node.uuid');
+            d($uuid);
+            d($record->uuid);
             if($uuid === $record->uuid){
                 //can patch, can put
                 return true;
