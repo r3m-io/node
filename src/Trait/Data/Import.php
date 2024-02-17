@@ -337,39 +337,13 @@ trait Import {
                             }
                         }
                     }
-                    ddd($source_index);
-                    ddd(count($select['list']));
+                    d($source_index);
+                    d(count($select['list']));
 
 
 
                     ddd($list_filter);
 
-                    foreach($filter_count as $nr => $count){
-                        switch ($count){
-                            case 1:
-                                $select = $this->list(
-                                    $name,
-                                    $role,
-                                    [
-                                        'filter' => [
-                                            $explode[0] => [
-                                                'value' => $filter_value_1,
-                                                'operator' => 'in'
-                                            ]
-                                        ],
-                                        'key' => [
-                                            $explode[0]
-                                        ],
-                                        'transaction' => true,
-                                        'limit' => $options['chunk-size'],
-                                        'page' => 1
-                                    ]
-                                );
-                            break;
-                            case 2:
-                            break;
-                        }
-                    }
 
 
 
