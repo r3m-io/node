@@ -337,17 +337,16 @@ trait Import {
                             }
                         }
                     }
-                    d($source_index);
-                    d(count($select['list']));
-
-
-
+                    foreach($list_filter as $type => $list_sub_filter){
+                        switch($type){
+                            case 0:
+                                foreach($list_sub_filter['list'] as $nr => $record){
+                                    d($source_index);
+                                    ddd($record);
+                                }
+                        }
+                    }
                     ddd($list_filter);
-
-
-
-
-
                     switch($count){
                         case 1 :
                             if(
