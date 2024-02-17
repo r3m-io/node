@@ -169,7 +169,7 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
-                                            $list_filter[0]['list'][] = [
+                                            $list_filter[0]['list'][$record_nr] = [
                                                 'attribute' => [
                                                     $attribute[0],
                                                     $attribute[1]
@@ -186,7 +186,7 @@ trait Import {
                                             $match_2 !== ''
                                         ){
                                             $list_filter[2]['allow_empty'] = $attribute[0];
-                                            $list_filter[2]['list'][] = [
+                                            $list_filter[2]['list'][$record_nr] = [
                                                 'attribute' => $attribute[1],
                                                 'value' => $match_2,
                                             ];
@@ -225,7 +225,7 @@ trait Import {
                                             $match_2 === null
                                         ){
                                             $list_filter[1]['allow_empty'] = $attribute[1];
-                                            $list_filter[1]['list'][] = [
+                                            $list_filter[1]['list'][$record_nr] = [
                                                 'attribute' => $attribute[0],
                                                 'value' => $match_1,
                                             ];
@@ -248,7 +248,7 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
-                                            $list_filter[0]['list'][] = [
+                                            $list_filter[0]['list'][$record_nr] = [
                                                 'attribute' => [
                                                     $attribute[0],
                                                     $attribute[1]
@@ -273,7 +273,7 @@ trait Import {
                                             $match_1 !== ''
                                         ){
                                             unset($list_filter[1]['allow_empty']);
-                                            $list_filter[1]['list'][] = [
+                                            $list_filter[1]['list'][$record_nr] = [
                                                 'attribute' => $attribute[0],
                                                 'value' => $match_1,
                                             ];
@@ -294,7 +294,7 @@ trait Import {
                                     $match_1 !== ''
                                 ) {
                                     unset($list_filter[1]['allow_empty']);
-                                    $list_filter[1]['list'][] = [
+                                    $list_filter[1]['list'][$record_nr] = [
                                         'attribute' => $attribute[0],
                                         'value' => $match_1,
                                     ];
@@ -340,7 +340,7 @@ trait Import {
                     foreach($list_filter as $type => $list_sub_filter){
                         switch($type){
                             case 0:
-                                foreach($list_sub_filter['list'] as $nr => $record){
+                                foreach($list_sub_filter['list'] as $record_nr => $record){
                                     if(
                                         array_key_exists('attribute', $record) &&
                                         array_key_exists(0, $record['value']) &&
@@ -352,8 +352,25 @@ trait Import {
                                             !empty($source_index[0][$key])
                                         ){
                                             //put or patch
-                                            ddd($source_index[0][$key]);
+                                            if (
+                                                array_key_exists('force', $options) &&
+                                                $options['force'] === true
+                                            ) {
+                                                $node = new Storage($chunk[$record_nr]);
+                                                $node->set('uuid', $select['list'][$key]->uuid);
+                                                $put_many[] = $node->data();
+                                            } elseif (
+                                                array_key_exists('patch', $options) &&
+                                                $options['patch'] === true
+                                            ) {
+                                                $node = new Storage($chunk[$record_nr]);
+                                                $node->set('uuid', $select['list'][$key]->uuid);
+                                                $patch_many[] = $node->data();
+                                            } else {
+                                                $skip++;
+                                            }
                                         } else {
+                                            $create_many[] = $chunk[$record_nr];
                                         }
                                     } else {
                                         ddd($record);
@@ -361,6 +378,9 @@ trait Import {
                                 }
                         }
                     }
+                    d($put_many);
+                    d($patch_many);
+                    ddd($create_many);
                     ddd($list_filter);
                     switch($count){
                         case 1 :
