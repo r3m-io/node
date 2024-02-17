@@ -142,11 +142,11 @@ trait Import {
                             $unique = array_shift($unique);
                             $attribute = explode(',', $unique);
                             $count = 0;
-                            foreach ($explode as $nr => $value) {
+                            foreach ($attribute as $nr => $value) {
                                 $attribute[$nr] = trim($value);
                                 $count++;
                             }
-                            $allow_empty = $this->allow_empty($name, $data_validate, $explode);
+                            $allow_empty = $this->allow_empty($name, $data_validate, $attribute);
                             switch ($count) {
                                 case 2:
                                     if(
