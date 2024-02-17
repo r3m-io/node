@@ -434,14 +434,14 @@ trait Import {
                                                 $options['force'] === true
                                             ) {
                                                 $node = new Storage($chunk[$record_nr]);
-                                                $node->set('uuid', $source_index[1][$key]);
+                                                $node->set('uuid', $source_index[2][$key]);
                                                 $put_many[] = $node->data();
                                             } elseif (
                                                 array_key_exists('patch', $options) &&
                                                 $options['patch'] === true
                                             ) {
                                                 $node = new Storage($chunk[$record_nr]);
-                                                $node->set('uuid', $source_index[1][$key]);
+                                                $node->set('uuid', $source_index[2][$key]);
                                                 $patch_many[] = $node->data();
                                             } else {
                                                 //skipping
