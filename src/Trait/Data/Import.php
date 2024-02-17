@@ -327,13 +327,13 @@ trait Import {
                                 $node->has($attribute[0]) &&
                                 $node->has($attribute[1])
                             ){
-                                $source_index[0][$node->get($attribute[0]) . ':' . $node->get($attribute[1])] = $node->get('uuid');
+                                $source_index[0][$node->get($attribute[0]) . ':' . $node->get($attribute[1])][] = $node->get('uuid');
                             }
                             elseif($node->has($attribute[0])){
-                                $source_index[1][$node->get($attribute[0])] = $node->get('uuid');
+                                $source_index[1][$node->get($attribute[0])][] = $node->get('uuid');
                             }
                             elseif($node->has($attribute[1])){
-                                $source_index[2][$node->get($attribute[1])] = $node->get('uuid');
+                                $source_index[2][$node->get($attribute[1])][] = $node->get('uuid');
                             }
                         }
                     }
