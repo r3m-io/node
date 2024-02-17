@@ -341,8 +341,23 @@ trait Import {
                         switch($type){
                             case 0:
                                 foreach($list_sub_filter['list'] as $nr => $record){
-                                    d($source_index);
-                                    ddd($record);
+                                    if(
+                                        array_key_exists('attribute', $record) &&
+                                        array_key_exists(0, $record['value']) &&
+                                        array_key_exists(1, $record['value'])
+                                    ){
+                                        $key = $record['value'][0] . ':' . $record['value'][1];
+                                        if(
+                                            array_key_exists($key, $source_index[0]) &&
+                                            !empty($source_index[0][$key])
+                                        ){
+                                            //put or patch
+                                            ddd($source_index[0][$key]);
+                                        } else {
+                                        }
+                                    } else {
+                                        ddd($record);
+                                    }
                                 }
                         }
                     }
