@@ -101,7 +101,7 @@ trait Import {
                 $list_count = count($list);
                 $object->config('r3m.io.node.import.list.count', $list_count);
                 $list = array_chunk($list, $options['chunk-size']);
-                foreach($list as $chunk_nr => $chunk){
+                foreach($list as $chunk_nr => $chunk) {
                     $filter_value_1 = [];
                     $filter_value_2 = [];
                     $filter_key_1 = [];
@@ -130,7 +130,7 @@ trait Import {
                     $patch_many = [];
                     $skip = 0;
                     $attribute = [];
-                    foreach($chunk as $record_nr => $record){
+                    foreach ($chunk as $record_nr => $record) {
                         $node = new Storage();
                         $node->data($record);
                         if (
@@ -138,7 +138,7 @@ trait Import {
                             $data_object->has('is.unique') &&
                             !empty($data_object->get('is.unique'))
                         ) {
-                            $unique = (array) $data_object->get('is.unique');
+                            $unique = (array)$data_object->get('is.unique');
                             $unique = array_shift($unique);
                             $attribute = explode(',', $unique);
                             $count = 0;
@@ -149,26 +149,25 @@ trait Import {
                             $allow_empty = $this->allow_empty($name, $data_validate, $attribute);
                             switch ($count) {
                                 case 2:
-                                    if(
+                                    if (
                                         $allow_empty[0] !== false &&
                                         $allow_empty[1] !== false
-                                    ){
+                                    ) {
                                         throw new Exception('Unique value cannot be empty...');
-                                    }
-                                    elseif(
+                                    } elseif (
                                         $allow_empty[0] !== false &&
                                         $allow_empty[1] === false &&
                                         $node->has($attribute[1])
-                                    ){
+                                    ) {
                                         //1 attribute is allowed to be empty
                                         $match_1 = $node->get($attribute[0]);
                                         $match_2 = $node->get($attribute[1]);
-                                        if(
+                                        if (
                                             $match_1 !== null &&
                                             $match_1 !== '' &&
                                             $match_2 !== null &&
                                             $match_2 !== ''
-                                        ){
+                                        ) {
                                             $list_filter[0]['list'][$record_nr] = [
                                                 'attribute' => [
                                                     $attribute[0],
@@ -179,12 +178,11 @@ trait Import {
                                                     $match_2
                                                 ]
                                             ];
-                                        }
-                                        elseif(
+                                        } elseif (
                                             $match_1 === null &&
                                             $match_2 !== null &&
                                             $match_2 !== ''
-                                        ){
+                                        ) {
                                             $list_filter[2]['allow_empty'] = $attribute[0];
                                             $list_filter[2]['list'][$record_nr] = [
                                                 'attribute' => $attribute[1],
@@ -193,21 +191,20 @@ trait Import {
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
-                                    }
-                                    elseif(
+                                    } elseif (
                                         $allow_empty[0] === false &&
                                         $allow_empty[1] !== false &&
                                         $node->has($attribute[0])
-                                    ){
+                                    ) {
                                         //1 attribute is allowed to be empty
                                         $match_1 = $node->get($attribute[0]);
                                         $match_2 = $node->get($attribute[1]);
-                                        if(
+                                        if (
                                             $match_1 !== null &&
                                             $match_1 !== '' &&
                                             $match_2 !== null &&
                                             $match_2 !== ''
-                                        ){
+                                        ) {
                                             $list_filter[0]['list'][] = [
                                                 'attribute' => [
                                                     $attribute[0],
@@ -218,12 +215,11 @@ trait Import {
                                                     $match_2
                                                 ]
                                             ];
-                                        }
-                                        elseif(
+                                        } elseif (
                                             $match_1 !== null &&
                                             $match_1 !== '' &&
                                             $match_2 === null
-                                        ){
+                                        ) {
                                             $list_filter[1]['allow_empty'] = $attribute[1];
                                             $list_filter[1]['list'][$record_nr] = [
                                                 'attribute' => $attribute[0],
@@ -232,22 +228,21 @@ trait Import {
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
-                                    }
-                                    elseif(
+                                    } elseif (
                                         $allow_empty[0] === false &&
                                         $allow_empty[1] === false &&
                                         $node->has($attribute[0]) &&
                                         $node->has($attribute[1])
-                                    ){
+                                    ) {
                                         //both attributes should not be empty
                                         $match_1 = $node->get($attribute[0]);
                                         $match_2 = $node->get($attribute[1]);
-                                        if(
+                                        if (
                                             $match_1 !== null &&
                                             $match_1 !== '' &&
                                             $match_2 !== null &&
                                             $match_2 !== ''
-                                        ){
+                                        ) {
                                             $list_filter[0]['list'][$record_nr] = [
                                                 'attribute' => [
                                                     $attribute[0],
@@ -268,10 +263,10 @@ trait Import {
                                 case 1:
                                     if ($node->has($attribute[0])) {
                                         $match_1 = $node->get($attribute[0]);
-                                        if(
+                                        if (
                                             $match_1 !== null &&
                                             $match_1 !== ''
-                                        ){
+                                        ) {
                                             unset($list_filter[1]['allow_empty']);
                                             $list_filter[1]['list'][$record_nr] = [
                                                 'attribute' => $attribute[0],
@@ -320,37 +315,35 @@ trait Import {
                         1 => [],
                         2 => []
                     ];
-                    if(array_key_exists('list', $select)){
-                        foreach($select['list'] as $nr => $record){
+                    if (array_key_exists('list', $select)) {
+                        foreach ($select['list'] as $nr => $record) {
                             $node = new Storage($record);
-                            if(
+                            if (
                                 $node->has($attribute[0]) &&
                                 $node->has($attribute[1])
-                            ){
+                            ) {
                                 $source_index[0][$node->get($attribute[0]) . ':' . $node->get($attribute[1])] = $node->get('uuid');
-                            }
-                            elseif($node->has($attribute[0])){
+                            } elseif ($node->has($attribute[0])) {
                                 $source_index[1][$node->get($attribute[0])] = $node->get('uuid');
-                            }
-                            elseif($node->has($attribute[1])){
+                            } elseif ($node->has($attribute[1])) {
                                 $source_index[2][$node->get($attribute[1])] = $node->get('uuid');
                             }
                         }
                     }
-                    foreach($list_filter as $type => $list_sub_filter){
-                        switch($type){
+                    foreach ($list_filter as $type => $list_sub_filter) {
+                        switch ($type) {
                             case 0:
-                                foreach($list_sub_filter['list'] as $record_nr => $record){
-                                    if(
+                                foreach ($list_sub_filter['list'] as $record_nr => $record) {
+                                    if (
                                         array_key_exists('value', $record) &&
                                         array_key_exists(0, $record['value']) &&
                                         array_key_exists(1, $record['value'])
-                                    ){
+                                    ) {
                                         $key = $record['value'][0] . ':' . $record['value'][1];
-                                        if(
+                                        if (
                                             array_key_exists($key, $source_index[0]) &&
                                             !empty($source_index[0][$key])
-                                        ){
+                                        ) {
                                             //put or patch
                                             if (
                                                 array_key_exists('force', $options) &&
@@ -381,8 +374,8 @@ trait Import {
                                 }
                                 break;
                             case 1:
-                                foreach($list_sub_filter['list'] as $record_nr => $record){
-                                    if(
+                                foreach ($list_sub_filter['list'] as $record_nr => $record) {
+                                    if (
                                         array_key_exists('attribute', $record) &&
                                         array_key_exists('value', $record)
                                     ) {
@@ -414,12 +407,15 @@ trait Import {
                                             //create
                                             $create_many[] = $chunk[$record_nr];
                                         }
+                                    } else {
+                                        //wrong type
+                                        $skip++;
                                     }
                                 }
                                 break;
                             case 2:
-                                foreach($list_sub_filter['list'] as $record_nr => $record){
-                                    if(
+                                foreach ($list_sub_filter['list'] as $record_nr => $record) {
+                                    if (
                                         array_key_exists('attribute', $record) &&
                                         array_key_exists('value', $record)
                                     ) {
@@ -451,157 +447,24 @@ trait Import {
                                             //create
                                             $create_many[] = $chunk[$record_nr];
                                         }
+                                    } else {
+                                        //wrong type
+                                        $skip++;
                                     }
                                 }
                                 break;
                         }
                     }
-                    d($put_many);
-                    d($patch_many);
-                    ddd($create_many);
-                    ddd($list_filter);
-                    switch($count){
-                        case 1 :
-                            if(
-                                !empty($explode[0]) &&
-                                !empty($filter_value_1)
-                            ) {
-                                $select = $this->list(
-                                    $name,
-                                    $role,
-                                    [
-                                        'filter' => [
-                                            $explode[0] => [
-                                                'value' => $filter_value_1,
-                                                'operator' => 'in'
-                                            ]
-                                        ],
-                                        'key' => [
-                                            $explode[0]
-                                        ],
-                                        'transaction' => true,
-                                        'limit' => $options['chunk-size'],
-                                        'page' => 1
-                                    ]
-                                );
-                                foreach ($filter_value_1 as $nr => $key) {
-                                    if (
-                                        is_array($select) &&
-                                        array_key_exists('list', $select) &&
-                                        array_key_exists($key, $select['list'])
-                                    ) {
-                                        if (
-                                            array_key_exists('force', $options) &&
-                                            $options['force'] === true
-                                        ) {
-                                            $node = new Storage($chunk[$nr]);
-                                            $node->set('uuid', $select['list'][$key]->uuid);
-                                            $put_many[] = $node->data();
-                                        } elseif (
-                                            array_key_exists('patch', $options) &&
-                                            $options['patch'] === true
-                                        ) {
-                                            $node = new Storage($chunk[$nr]);
-                                            $node->set('uuid', $select['list'][$key]->uuid);
-                                            $patch_many[] = $node->data();
-                                        } else {
-                                            $skip++;
-                                        }
-                                    } else {
-                                        $create_many[] = $chunk[$nr];
-                                    }
-                                }
-                                $response = $this->update(
-                                    $class,
-                                    $role,
-                                    $options,
-                                    $create_many,
-                                    $put_many,
-                                    $patch_many,
-                                    $skip
-                                );
-                                $response_list[] = $response;
-                            }
-                            break;
-                        case 2:
-                            if(
-                                !empty($explode[0]) &&
-                                !empty($explode[1]) &&
-                                !empty($filter_value_1) &&
-                                !empty($filter_value_2)
-                            ){
-                                $select = $this->list(
-                                    $name,
-                                    $role,
-                                    [
-                                        'filter' => [
-                                            $explode[0] => [
-                                                'value' => $filter_value_1,
-                                                'operator' => 'in'
-                                            ]
-                                        ],
-                                        'transaction' => true,
-                                        'limit' => $options['chunk-size'],
-                                        'page' => 1
-                                    ]
-                                );
-                                foreach($select as $nr => $record){
-
-                                    d($record);
-                                }
-
-
-                                d($select);
-                                d($filter_value_1);
-                                ddd($filter_value_2);
-                                foreach($filter_value_1 as $nr => $key){
-                                    if(
-                                        is_array($select) &&
-                                        array_key_exists('list', $select) &&
-                                        array_key_exists($nr, $select['list']) &&
-                                        property_exists($select['list'][$nr], 'uuid')
-                                    ){
-                                        //do check with filter var 2
-                                        //need record // chunk[chunk_nr]
-                                        $node = new Storage($chunk[$nr]);
-                                        if($node->get($explode[1]) === $filter_value_2[$nr]){
-                                            if(
-                                                array_key_exists('force', $options) &&
-                                                $options['force'] === true
-                                            ){
-                                                $node->set('uuid', $select['list'][$nr]->uuid);
-                                                $put_many[] = $node->data();
-                                            }
-                                            elseif(
-                                                array_key_exists('patch', $options) &&
-                                                $options['patch'] === true
-                                            ){
-                                                $node->set('uuid', $select['list'][$nr]->uuid);
-                                                $patch_many[] = $node->data();
-                                            }
-                                            else {
-                                                $skip++;
-                                            }
-                                        } else {
-                                            $create_many[] = $chunk[$nr];
-                                        }
-                                    } else {
-                                        $create_many[] = $chunk[$nr];
-                                    }
-                                }
-                                $response = $this->update(
-                                    $class,
-                                    $role,
-                                    $options,
-                                    $create_many,
-                                    $put_many,
-                                    $patch_many,
-                                    $skip
-                                );
-                                $response_list[] = $response;
-                            }
-                            break;
-                    }
+                    $response = $this->update(
+                        $class,
+                        $role,
+                        $options,
+                        $create_many,
+                        $put_many,
+                        $patch_many,
+                        $skip
+                    );
+                    $response_list[] = $response;
                 }
                 if(count($response_list) === 1){
                     return $response_list[0];
