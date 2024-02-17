@@ -136,6 +136,8 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
         ];
     }
     $node = new Node($object);
+    $uuid = $object->request('node.uuid');
+    d($options);
     //add cache dir to record
     $response = $node->record($name, $node->role_system(), $options);
     if(
@@ -149,7 +151,6 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
             property_exists($record, 'uuid') &&
             !empty($record->uuid)
         ){
-            $uuid = $object->request('node.uuid');
             d($uuid);
             d($record->uuid);
             if($uuid === $record->uuid){
