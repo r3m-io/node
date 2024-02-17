@@ -164,7 +164,7 @@ trait Import {
                                             $match_2 !== ''
                                         ){
                                             $filter_key_1[$record_nr] = $explode[1];
-                                            $filter_value_1[$record_nr] = $match_1;
+                                            $filter_value_1[$record_nr] = $match_2;
                                             $filter_count[$record_nr] = 1;
 
                                             //$explode[0] = $explode[1];
