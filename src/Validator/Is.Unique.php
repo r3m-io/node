@@ -146,6 +146,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
         array_key_exists('node', $response)
     ){
         $record = $response['node'];
+        d($record);
         if(
             is_object($record) &&
             property_exists($record, 'uuid') &&
