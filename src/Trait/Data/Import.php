@@ -336,6 +336,12 @@ trait Import {
                                         'page' => 1
                                     ]
                                 );
+                                foreach($select as $nr => $record){
+
+                                    d($record);
+                                }
+
+
                                 d($select);
                                 d($filter_value_1);
                                 d($filter_value_2);
