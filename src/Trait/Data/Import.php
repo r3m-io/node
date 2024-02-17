@@ -129,6 +129,7 @@ trait Import {
                     $put_many = [];
                     $patch_many = [];
                     $skip = 0;
+                    $attribute = [];
                     foreach($chunk as $record_nr => $record){
                         $node = new Storage();
                         $node->data($record);
@@ -139,10 +140,10 @@ trait Import {
                         ) {
                             $unique = (array) $data_object->get('is.unique');
                             $unique = array_shift($unique);
-                            $explode = explode(',', $unique);
+                            $attribute = explode(',', $unique);
                             $count = 0;
                             foreach ($explode as $nr => $value) {
-                                $explode[$nr] = trim($value);
+                                $attribute[$nr] = trim($value);
                                 $count++;
                             }
                             $allow_empty = $this->allow_empty($name, $data_validate, $explode);
@@ -157,11 +158,11 @@ trait Import {
                                     elseif(
                                         $allow_empty[0] !== false &&
                                         $allow_empty[1] === false &&
-                                        $node->has($explode[1])
+                                        $node->has($attribute[1])
                                     ){
                                         //1 attribute is allowed to be empty
-                                        $match_1 = $node->get($explode[0]);
-                                        $match_2 = $node->get($explode[1]);
+                                        $match_1 = $node->get($attribute[0]);
+                                        $match_2 = $node->get($attribute[1]);
                                         if(
                                             $match_1 !== null &&
                                             $match_1 !== '' &&
@@ -170,8 +171,8 @@ trait Import {
                                         ){
                                             $list_filter[0]['list'][] = [
                                                 'attribute' => [
-                                                    $explode[0],
-                                                    $explode[1]
+                                                    $attribute[0],
+                                                    $attribute[1]
                                                 ],
                                                 'value' => [
                                                     $match_1,
@@ -184,9 +185,9 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
-                                            $list_filter[2]['allow_empty'] = $explode[0];
+                                            $list_filter[2]['allow_empty'] = $attribute[0];
                                             $list_filter[2]['list'][] = [
-                                                'attribute' => $explode[1],
+                                                'attribute' => $attribute[1],
                                                 'value' => $match_2,
                                             ];
                                         } else {
@@ -196,11 +197,11 @@ trait Import {
                                     elseif(
                                         $allow_empty[0] === false &&
                                         $allow_empty[1] !== false &&
-                                        $node->has($explode[0])
+                                        $node->has($attribute[0])
                                     ){
                                         //1 attribute is allowed to be empty
-                                        $match_1 = $node->get($explode[0]);
-                                        $match_2 = $node->get($explode[1]);
+                                        $match_1 = $node->get($attribute[0]);
+                                        $match_2 = $node->get($attribute[1]);
                                         if(
                                             $match_1 !== null &&
                                             $match_1 !== '' &&
@@ -209,8 +210,8 @@ trait Import {
                                         ){
                                             $list_filter[0]['list'][] = [
                                                 'attribute' => [
-                                                    $explode[0],
-                                                    $explode[1]
+                                                    $attribute[0],
+                                                    $attribute[1]
                                                 ],
                                                 'value' => [
                                                     $match_1,
@@ -223,9 +224,9 @@ trait Import {
                                             $match_1 !== '' &&
                                             $match_2 === null
                                         ){
-                                            $list_filter[1]['allow_empty'] = $explode[1];
+                                            $list_filter[1]['allow_empty'] = $attribute[1];
                                             $list_filter[1]['list'][] = [
-                                                'attribute' => $explode[0],
+                                                'attribute' => $attribute[0],
                                                 'value' => $match_1,
                                             ];
                                         } else {
@@ -235,12 +236,12 @@ trait Import {
                                     elseif(
                                         $allow_empty[0] === false &&
                                         $allow_empty[1] === false &&
-                                        $node->has($explode[0]) &&
-                                        $node->has($explode[1])
+                                        $node->has($attribute[0]) &&
+                                        $node->has($attribute[1])
                                     ){
                                         //both attributes should not be empty
-                                        $match_1 = $node->get($explode[0]);
-                                        $match_2 = $node->get($explode[1]);
+                                        $match_1 = $node->get($attribute[0]);
+                                        $match_2 = $node->get($attribute[1]);
                                         if(
                                             $match_1 !== null &&
                                             $match_1 !== '' &&
@@ -249,8 +250,8 @@ trait Import {
                                         ){
                                             $list_filter[0]['list'][] = [
                                                 'attribute' => [
-                                                    $explode[0],
-                                                    $explode[1]
+                                                    $attribute[0],
+                                                    $attribute[1]
                                                 ],
                                                 'value' => [
                                                     $match_1,
@@ -265,15 +266,15 @@ trait Import {
                                     }
                                     break;
                                 case 1:
-                                    if ($node->has($explode[0])) {
-                                        $match_1 = $node->get($explode[0]);
+                                    if ($node->has($attribute[0])) {
+                                        $match_1 = $node->get($attribute[0]);
                                         if(
                                             $match_1 !== null &&
                                             $match_1 !== ''
                                         ){
                                             unset($list_filter[1]['allow_empty']);
                                             $list_filter[1]['list'][] = [
-                                                'attribute' => $explode[0],
+                                                'attribute' => $attribute[0],
                                                 'value' => $match_1,
                                             ];
                                         } else {
@@ -285,16 +286,16 @@ trait Import {
                                     break;
                             }
                         } else {
-                            $explode[0] = 'uuid';
-                            if ($node->has($explode[0])) {
-                                $match_1 = $node->get($explode[0]);
+                            $attribute[0] = 'uuid';
+                            if ($node->has($attribute[0])) {
+                                $match_1 = $node->get($attribute[0]);
                                 if (
                                     $match_1 !== null &&
                                     $match_1 !== ''
                                 ) {
                                     unset($list_filter[1]['allow_empty']);
                                     $list_filter[1]['list'][] = [
-                                        'attribute' => $explode[0],
+                                        'attribute' => $attribute[0],
                                         'value' => $match_1,
                                     ];
                                 } else {
@@ -314,7 +315,29 @@ trait Import {
                             'page' => 1
                         ]
                     );
-                    d($select);
+                    $source_index = [
+                        0 => [],
+                        1 => [],
+                        2 => []
+                    ];
+                    if(array_key_exists('list', $select)){
+                        foreach($select['list'] as $nr => $record){
+                            $node = new Storage($record);
+                            if(
+                                $node->has($attribute[0]) &&
+                                $node->has($attribute[1])
+                            ){
+                                $source_index[0][$node->get($attribute[0]) . ':' . $node->get($attribute[1])] = $node->get('uuid');
+                            }
+                            elseif($node->has($attribute[0])){
+                                $source_index[1][$node->get($attribute[0])] = $node->get('uuid');
+                            }
+                            elseif($node->has($attribute[1])){
+                                $source_index[2][$node->get($attribute[1])] = $node->get('uuid');
+                            }
+                        }
+                    }
+                    ddd($source_index);
                     ddd(count($select['list']));
 
 
