@@ -338,6 +338,7 @@ trait Import {
                                 );
                                 d($select);
                                 d($filter_value_1);
+                                d($filter_value_2);
                                 foreach($filter_value_1 as $nr => $key){
                                     if(
                                         is_array($select) &&
