@@ -184,6 +184,7 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
+                                            $list_filter[2]['allow_empty'] = $explode[0];
                                             $list_filter[2]['list'][] = [
                                                 'attribute' => $explode[1],
                                                 'value' => $match_2,
@@ -222,6 +223,7 @@ trait Import {
                                             $match_1 !== '' &&
                                             $match_2 === null
                                         ){
+                                            $list_filter[1]['allow_empty'] = $explode[1];
                                             $list_filter[1]['list'][] = [
                                                 'attribute' => $explode[0],
                                                 'value' => $match_1,
@@ -269,6 +271,7 @@ trait Import {
                                             $match_1 !== null &&
                                             $match_1 !== ''
                                         ){
+                                            unset($list_filter[1]['allow_empty']);
                                             $list_filter[1]['list'][] = [
                                                 'attribute' => $explode[0],
                                                 'value' => $match_1,
@@ -289,6 +292,7 @@ trait Import {
                                     $match_1 !== null &&
                                     $match_1 !== ''
                                 ) {
+                                    unset($list_filter[1]['allow_empty']);
                                     $list_filter[1]['list'][] = [
                                         'attribute' => $explode[0],
                                         'value' => $match_1,
