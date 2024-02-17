@@ -376,6 +376,11 @@ trait Import {
                                         ddd($record);
                                     }
                                 }
+                                break;
+                            case 1:
+                                ddd($list_sub_filter);
+                            case 2:
+                                ddd($list_sub_filter);
                         }
                     }
                     d($put_many);
