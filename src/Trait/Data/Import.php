@@ -305,6 +305,20 @@ trait Import {
                             }
                         }
                     }
+                    $select = $this->list(
+                        $name,
+                        $role,
+                        [
+                            'transaction' => true,
+                            'limit' => '*',
+                            'page' => 1
+                        ]
+                    );
+                    d($select);
+                    ddd(count($select));
+
+
+
                     ddd($list_filter);
 
                     foreach($filter_count as $nr => $count){
