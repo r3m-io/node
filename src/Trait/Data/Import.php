@@ -379,7 +379,10 @@ trait Import {
                                 }
                                 break;
                             case 1:
-                                ddd($list_sub_filter);
+                                foreach($list_sub_filter['list'] as $record_nr => $record){
+                                    ddd($record);
+                                }
+                                break;
                             case 2:
                                 ddd($list_sub_filter);
                         }
