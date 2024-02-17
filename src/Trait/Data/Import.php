@@ -104,6 +104,9 @@ trait Import {
                 foreach($list as $chunk_nr => $chunk){
                     $filter_value_1 = [];
                     $filter_value_2 = [];
+                    $filter_key_1 = [];
+                    $filter_key_2 = [];
+                    $filter_count = [];
                     $count = 0;
                     $explode = [];
                     $create_many = [];
@@ -149,17 +152,24 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
+                                            $filter_key_1[$record_nr] = $explode[0];
                                             $filter_value_1[$record_nr] = $match_1;
+                                            $filter_key_2[$record_nr] = $explode[1];
                                             $filter_value_2[$record_nr] = $match_2;
+                                            $filter_count[$record_nr] = 2;
                                         }
                                         elseif(
                                             $match_1 === null &&
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
-                                            $explode[0] = $explode[1];
-                                            $filter_value_1[$record_nr] = $match_2;
-                                            $count = 1;
+                                            $filter_key_1[$record_nr] = $explode[1];
+                                            $filter_value_1[$record_nr] = $match_1;
+                                            $filter_count[$record_nr] = 1;
+
+                                            //$explode[0] = $explode[1];
+                                            //$filter_value_1[$record_nr] = $match_2;
+                                            //$count = 1;
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
@@ -178,17 +188,20 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
+                                            $filter_key_1[$record_nr] = $explode[0];
                                             $filter_value_1[$record_nr] = $match_1;
+                                            $filter_key_2[$record_nr] = $explode[1];
                                             $filter_value_2[$record_nr] = $match_2;
+                                            $filter_count[$record_nr] = 2;
                                         }
                                         elseif(
                                             $match_1 !== null &&
                                             $match_1 !== '' &&
                                             $match_2 === null
                                         ){
-                                            $explode[0] = $explode[1];
-                                            $filter_value_1[$record_nr] = $match_2;
-                                            $count = 1;
+                                            $filter_key_1[$record_nr] = $explode[0];
+                                            $filter_value_1[$record_nr] = $match_1;
+                                            $filter_count[$record_nr] = 1;
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
@@ -208,8 +221,11 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
+                                            $filter_key_1[$record_nr] = $explode[0];
                                             $filter_value_1[$record_nr] = $match_1;
+                                            $filter_key_2[$record_nr] = $explode[1];
                                             $filter_value_2[$record_nr] = $match_2;
+                                            $filter_count[$record_nr] = 2;
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
@@ -224,7 +240,9 @@ trait Import {
                                             $match_1 !== null &&
                                             $match_1 !== ''
                                         ){
+                                            $filter_key_1[$record_nr] = $explode[0];
                                             $filter_value_1[$record_nr] = $match_1;
+                                            $filter_count[$record_nr] = 1;
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
@@ -241,16 +259,22 @@ trait Import {
                                     $match_1 !== null &&
                                     $match_1 !== ''
                                 ) {
+                                    $filter_key_1[$record_nr] = $explode[0];
                                     $filter_value_1[$record_nr] = $match_1;
+                                    $filter_count[$record_nr] = 1;;
                                 } else {
                                     throw new Exception('Unique value cannot be empty...');
                                 }
-                                $count = 1;
                             } else {
                                 throw new Exception('Unique value cannot be empty...');
                             }
                         }
                     }
+                    d($filter_key_1);
+                    d($filter_value_1);
+                    d($filter_key_2);
+                    d($filter_value_2);
+                    ddd($filter_count);
                     switch($count){
                         case 1 :
                             if(
