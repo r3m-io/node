@@ -107,6 +107,22 @@ trait Import {
                     $filter_key_1 = [];
                     $filter_key_2 = [];
                     $filter_count = [];
+                    $list_filter = [
+                        [
+                            'unique_attribute_count' => 2,
+                            'list' => []
+                        ],
+                        [
+                            'unique_attribute_count' => 1,
+                            'allow_empty' => 0,
+                            'list' => []
+                        ],
+                        [
+                            'unique_attribute_count' => 1,
+                            'allow_empty' => 1,
+                            'list' => []
+                        ]
+                    ];
                     $count = 0;
                     $explode = [];
                     $create_many = [];
@@ -152,24 +168,22 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
-                                            $filter_key_1[$record_nr] = $explode[0];
-                                            $filter_value_1[$record_nr] = $match_1;
-                                            $filter_key_2[$record_nr] = $explode[1];
-                                            $filter_value_2[$record_nr] = $match_2;
-                                            $filter_count[$record_nr] = 2;
+                                            $list_filter[0]['list'][$record_nr] = [
+                                                'attribute_left' => $explode[0],
+                                                'value_left' => $match_1,
+                                                'attribute_right' => $explode[1],
+                                                'value_right' => $match_2
+                                            ];
                                         }
                                         elseif(
                                             $match_1 === null &&
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
-                                            $filter_key_1[$record_nr] = $explode[1];
-                                            $filter_value_1[$record_nr] = $match_2;
-                                            $filter_count[$record_nr] = 1;
-
-                                            //$explode[0] = $explode[1];
-                                            //$filter_value_1[$record_nr] = $match_2;
-                                            //$count = 1;
+                                            $list_filter[2]['list'][$record_nr] = [
+                                                'attribute' => $explode[1],
+                                                'value' => $match_2,
+                                            ];
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
@@ -188,20 +202,22 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
-                                            $filter_key_1[$record_nr] = $explode[0];
-                                            $filter_value_1[$record_nr] = $match_1;
-                                            $filter_key_2[$record_nr] = $explode[1];
-                                            $filter_value_2[$record_nr] = $match_2;
-                                            $filter_count[$record_nr] = 2;
+                                            $list_filter[0]['list'][$record_nr] = [
+                                                'attribute_left' => $explode[0],
+                                                'value_left' => $match_1,
+                                                'attribute_right' => $explode[1],
+                                                'value_right' => $match_2
+                                            ];
                                         }
                                         elseif(
                                             $match_1 !== null &&
                                             $match_1 !== '' &&
                                             $match_2 === null
                                         ){
-                                            $filter_key_1[$record_nr] = $explode[0];
-                                            $filter_value_1[$record_nr] = $match_1;
-                                            $filter_count[$record_nr] = 1;
+                                            $list_filter[1]['list'][$record_nr] = [
+                                                'attribute' => $explode[0],
+                                                'value' => $match_1,
+                                            ];
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
@@ -221,11 +237,12 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
-                                            $filter_key_1[$record_nr] = $explode[0];
-                                            $filter_value_1[$record_nr] = $match_1;
-                                            $filter_key_2[$record_nr] = $explode[1];
-                                            $filter_value_2[$record_nr] = $match_2;
-                                            $filter_count[$record_nr] = 2;
+                                            $list_filter[0]['list'][$record_nr] = [
+                                                'attribute_left' => $explode[0],
+                                                'value_left' => $match_1,
+                                                'attribute_right' => $explode[1],
+                                                'value_right' => $match_2
+                                            ];
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
@@ -240,9 +257,10 @@ trait Import {
                                             $match_1 !== null &&
                                             $match_1 !== ''
                                         ){
-                                            $filter_key_1[$record_nr] = $explode[0];
-                                            $filter_value_1[$record_nr] = $match_1;
-                                            $filter_count[$record_nr] = 1;
+                                            $list_filter[1]['list'][$record_nr] = [
+                                                'attribute' => $explode[0],
+                                                'value' => $match_1,
+                                            ];
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
                                         }
@@ -259,9 +277,10 @@ trait Import {
                                     $match_1 !== null &&
                                     $match_1 !== ''
                                 ) {
-                                    $filter_key_1[$record_nr] = $explode[0];
-                                    $filter_value_1[$record_nr] = $match_1;
-                                    $filter_count[$record_nr] = 1;;
+                                    $list_filter[1]['list'][$record_nr] = [
+                                        'attribute' => $explode[0],
+                                        'value' => $match_1,
+                                    ];
                                 } else {
                                     throw new Exception('Unique value cannot be empty...');
                                 }
@@ -270,11 +289,38 @@ trait Import {
                             }
                         }
                     }
-                    d($filter_key_1);
-                    d($filter_value_1);
-                    d($filter_key_2);
-                    d($filter_value_2);
-                    ddd($filter_count);
+                    ddd($list_filter);
+
+                    foreach($filter_count as $nr => $count){
+                        switch ($count){
+                            case 1:
+                                $select = $this->list(
+                                    $name,
+                                    $role,
+                                    [
+                                        'filter' => [
+                                            $explode[0] => [
+                                                'value' => $filter_value_1,
+                                                'operator' => 'in'
+                                            ]
+                                        ],
+                                        'key' => [
+                                            $explode[0]
+                                        ],
+                                        'transaction' => true,
+                                        'limit' => $options['chunk-size'],
+                                        'page' => 1
+                                    ]
+                                );
+                            break;
+                            case 2:
+                            break;
+                        }
+                    }
+
+
+
+
                     switch($count){
                         case 1 :
                             if(
