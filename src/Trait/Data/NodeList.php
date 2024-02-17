@@ -317,11 +317,6 @@ trait NodeList {
                     $is_where = true;
                 }
                 $limit = $options['limit'] ?? 4096;
-                /*
-                if($limit === 1000){
-//                    d($options);
-                }
-                */
                 foreach($list as $nr => $record) {
                     if(
                         is_object($record) &&
