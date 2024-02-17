@@ -168,11 +168,15 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
-                                            $list_filter[0]['list'][$record_nr] = [
-                                                'attribute_left' => $explode[0],
-                                                'value_left' => $match_1,
-                                                'attribute_right' => $explode[1],
-                                                'value_right' => $match_2
+                                            $list_filter[0]['list'][] = [
+                                                'attribute' => [
+                                                    $explode[0],
+                                                    $explode[1]
+                                                ],
+                                                'value' => [
+                                                    $match_1,
+                                                    $match_2
+                                                ]
                                             ];
                                         }
                                         elseif(
@@ -180,7 +184,7 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
-                                            $list_filter[2]['list'][$record_nr] = [
+                                            $list_filter[2]['list'][] = [
                                                 'attribute' => $explode[1],
                                                 'value' => $match_2,
                                             ];
@@ -202,11 +206,15 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
-                                            $list_filter[0]['list'][$record_nr] = [
-                                                'attribute_left' => $explode[0],
-                                                'value_left' => $match_1,
-                                                'attribute_right' => $explode[1],
-                                                'value_right' => $match_2
+                                            $list_filter[0]['list'][] = [
+                                                'attribute' => [
+                                                    $explode[0],
+                                                    $explode[1]
+                                                ],
+                                                'value' => [
+                                                    $match_1,
+                                                    $match_2
+                                                ]
                                             ];
                                         }
                                         elseif(
@@ -214,7 +222,7 @@ trait Import {
                                             $match_1 !== '' &&
                                             $match_2 === null
                                         ){
-                                            $list_filter[1]['list'][$record_nr] = [
+                                            $list_filter[1]['list'][] = [
                                                 'attribute' => $explode[0],
                                                 'value' => $match_1,
                                             ];
@@ -237,11 +245,15 @@ trait Import {
                                             $match_2 !== null &&
                                             $match_2 !== ''
                                         ){
-                                            $list_filter[0]['list'][$record_nr] = [
-                                                'attribute_left' => $explode[0],
-                                                'value_left' => $match_1,
-                                                'attribute_right' => $explode[1],
-                                                'value_right' => $match_2
+                                            $list_filter[0]['list'][] = [
+                                                'attribute' => [
+                                                    $explode[0],
+                                                    $explode[1]
+                                                ],
+                                                'value' => [
+                                                    $match_1,
+                                                    $match_2
+                                                ]
                                             ];
                                         } else {
                                             throw new Exception('Unique value cannot be empty...');
@@ -257,7 +269,7 @@ trait Import {
                                             $match_1 !== null &&
                                             $match_1 !== ''
                                         ){
-                                            $list_filter[1]['list'][$record_nr] = [
+                                            $list_filter[1]['list'][] = [
                                                 'attribute' => $explode[0],
                                                 'value' => $match_1,
                                             ];
@@ -277,7 +289,7 @@ trait Import {
                                     $match_1 !== null &&
                                     $match_1 !== ''
                                 ) {
-                                    $list_filter[1]['list'][$record_nr] = [
+                                    $list_filter[1]['list'][] = [
                                         'attribute' => $explode[0],
                                         'value' => $match_1,
                                     ];
