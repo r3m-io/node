@@ -315,7 +315,7 @@ trait Import {
                         ]
                     );
                     d($select);
-                    ddd(count($select));
+                    ddd(count($select['list']));
 
 
 
