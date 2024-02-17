@@ -105,6 +105,7 @@ trait Put {
             }
             $object->request('node', $node);
             $object->request('node.#class', $name);
+            d($object->request('node'));
             if(
                 array_key_exists('validation', $options) &&
                 $options['validation'] === false
