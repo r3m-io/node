@@ -18,6 +18,11 @@ use R3m\Io\Exception\FileWriteException;
 class Node extends Controller {
     const DIR = __DIR__ . '/';
 
+    public static function object_list(App $object)
+    {
+        ddd($object->request());
+    }
+
 
     /**
      * @throws ObjectException
