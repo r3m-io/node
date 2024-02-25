@@ -319,13 +319,21 @@ trait Import {
                         foreach ($select['list'] as $nr => $record) {
                             $node = new Storage($record);
                             if (
+                                array_key_exists(0, $attribute) &&
+                                array_key_exists(1, $attribute) &&
                                 $node->has($attribute[0]) &&
                                 $node->has($attribute[1])
                             ) {
                                 $source_index[0][$node->get($attribute[0]) . ':' . $node->get($attribute[1])] = $node->get('uuid');
-                            } elseif ($node->has($attribute[0])) {
+                            } elseif (
+                                array_key_exists(0, $attribute) &&
+                                $node->has($attribute[0])
+                            ) {
                                 $source_index[1][$node->get($attribute[0])] = $node->get('uuid');
-                            } elseif ($node->has($attribute[1])) {
+                            } elseif (
+                                array_key_exists(1, $attribute) &&
+                                $node->has($attribute[1])
+                            ) {
                                 $source_index[2][$node->get($attribute[1])] = $node->get('uuid');
                             }
                         }

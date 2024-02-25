@@ -20,6 +20,7 @@ class Node extends Controller {
 
     public static function object_list(App $object)
     {
+        //need user role
         ddd($object->request());
     }
 
