@@ -53,6 +53,9 @@ trait Expose {
         $record = [];
         $is_expose = false;
         foreach ($roles as $role) {
+            if(is_array($role)){
+                ddd($role);
+            }
             if (
                 property_exists($role, 'uuid') &&
                 property_exists($role, 'name') &&
