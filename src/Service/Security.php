@@ -76,6 +76,7 @@ class Security extends Main
                 }
             }
         }
+        ddd($role);
         ddd($role_permissions);
         throw new Exception('Security: permission denied... (' . implode(', ', $permissions) . ')');
     }
