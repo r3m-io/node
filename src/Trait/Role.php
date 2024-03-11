@@ -156,12 +156,19 @@ trait Role {
         $object = $this->object();
         $result = $object->config('user.role');
         if($result === null){
+            $permissions = $role->getPermissions();
+            foreach($permissions as $nr => $permission){
+                $permissions[$nr] = (object) [
+                    'id' => $permission->getId(),
+                    'name' => $permission->getName()
+                ];
+            }
             $result = [
                 'name' => $role->getName(),
                 'rank' => $role->getRank(),
                 '#class' => 'Account.Role',
                 'uuid' => Core::uuid(),
-                'permission' => $role->getPermissions()
+                'permission' => $permissions
             ];
             $object->config('user.role', $result);
         }
