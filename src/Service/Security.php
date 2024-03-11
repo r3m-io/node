@@ -39,7 +39,7 @@ class Security extends Main
         ){
             $permissions[] = $name_permission . ':' . $function_permission . '.' . 'parse';
         }
-        $role_permissions = $role->get('permissions');
+        $role_permissions = $role->get('permission');
         if(is_array($role_permissions)){
             foreach($role_permissions as $permission){
                 $permission = new Data($permission);
@@ -75,9 +75,11 @@ class Security extends Main
                     return true;
                 }
             }
+        } else {
+            ddd($role);
+            ddd($role_permissions);
         }
-        ddd($role);
-        ddd($role_permissions);
+
         throw new Exception('Security: permission denied... (' . implode(', ', $permissions) . ')');
     }
 }
