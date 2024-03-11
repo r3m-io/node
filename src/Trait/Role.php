@@ -162,7 +162,7 @@ trait Role {
                     'name' => $permission->getName()
                 ];
             }
-            $result = [
+            $result = (object) [
                 'name' => $role->getName(),
                 'rank' => $role->getRank(),
                 '#class' => 'Account.Role',
