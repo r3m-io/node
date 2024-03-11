@@ -39,6 +39,10 @@ class Node extends Controller {
         }
         $model = new Model($object);
 
+
+
+
+
         $sort = $object->request('sort');
         if(empty($sort)){
             $sort = [

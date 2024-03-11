@@ -41,6 +41,11 @@ class Security extends Main
         }
         $role_permissions = $role->get('permission');
         if(is_array($role_permissions)){
+            $debug = debug_backtrace(true);
+            d($debug[0]['file'] . ' ' . $debug[0]['line'] . ' ' . $debug[0]['function']);
+            d($debug[1]['file'] . ' ' . $debug[1]['line'] . ' ' . $debug[1]['function']);
+            d($debug[2]['file'] . ' ' . $debug[2]['line'] . ' ' . $debug[2]['function']);
+            ddd($role);
             foreach($role_permissions as $permission){
                 $permission = new Data($permission);
 //                d($permission);
