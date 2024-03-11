@@ -219,7 +219,9 @@ trait Expose {
             }
         }
         if($is_expose === false){
-            d($role->permission);
+            if($role){
+                d($role->permission);
+            }
             throw new Exception('No permission found for ' . str_replace('.', ':', Controller::name($class)) . ':' . str_replace('_', '.', $function));
         }
         return new Storage((object) $record);
