@@ -42,7 +42,6 @@ class Security extends Main
         if(method_exists($role, 'getPermissions')){
             $role_permissions = (array) $role->getPermissions();
         } else {
-            d($role);
             $role_permissions = $role->get('permission');
         }
         if(is_array($role_permissions)){
