@@ -38,11 +38,6 @@ class Node extends Controller {
             throw new Exception('Role is empty...');
         }
         $model = new Model($object);
-
-
-
-
-
         $sort = $object->request('sort');
         if(empty($sort)){
             $sort = [
@@ -67,17 +62,9 @@ class Node extends Controller {
         if($role->getName() === 'ROLE_USER'){
             $filter['user'] = $user->getUuid();
         }
-        $role = [
-            'name' => $role->getName(),
-            'rank' => $role->getRank(),
-            '#class' => 'Account.Role',
-            'uuid' => $role->getId(),
-            'permission' => $role->getPermissions()
-        ];
-        ddd($role);
         $response = $model->list(
             $object->request('class'),
-            $role,
+            $model->role($role),
             [
                 'sort' => $sort,
                 'filter' => $filter,

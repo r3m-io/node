@@ -10,6 +10,8 @@ use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\Dir;
 use R3m\Io\Module\File;
 
+use Entity\Role as Entity;
+
 use Exception;
 
 use R3m\Io\Exception\DirectoryCreateException;
@@ -145,5 +147,24 @@ trait Role {
                 }
             }
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function role(Entity $role, $options=[]){
+        $object = $this->object();
+        $result = $object->config('user.role');
+        if($result === null){
+            $result = [
+                'name' => $role->getName(),
+                'rank' => $role->getRank(),
+                '#class' => 'Account.Role',
+                'uuid' => Core::uuid(),
+                'permission' => $role->getPermissions()
+            ];
+            $object->config('user.role', $result);
+        }
+        return $result;
     }
 }
