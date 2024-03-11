@@ -159,7 +159,6 @@ trait Role {
             $permissions = $role->getPermissions();
             foreach($permissions as $nr => $permission){
                 $permissions[$nr] = (object) [
-                    'id' => $permission->getId(),
                     'name' => $permission->getName()
                 ];
             }
