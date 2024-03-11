@@ -67,7 +67,14 @@ class Node extends Controller {
         if($role->getName() === 'ROLE_USER'){
             $filter['user'] = $user->getUuid();
         }
-        $temp = (array) $role;
+        $role = [
+            'name' => $role->getName(),
+            'rank' => $role->getRank(),
+            '#class' => 'Account.Role',
+            'uuid' => $role->getId(),
+            'permission' => $role->getPermissions()
+        ];
+        ddd($role);
         ddd($temp);
 
 
