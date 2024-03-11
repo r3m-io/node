@@ -39,7 +39,7 @@ class Security extends Main
         ){
             $permissions[] = $name_permission . ':' . $function_permission . '.' . 'parse';
         }
-        $role_permissions = $role->get('permission');
+        $role_permissions = $role->get('permissions');
         if(is_array($role_permissions)){
             $debug = debug_backtrace(true);
             d($debug[0]['file'] . ' ' . $debug[0]['line'] . ' ' . $debug[0]['function']);
