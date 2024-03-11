@@ -43,7 +43,7 @@ class Security extends Main
         if(is_array($role_permissions)){
             foreach($role->get('permission') as $permission){
                 $permission = new Data($permission);
-                d($permission);
+//                d($permission);
                 if($permission->get('name') === $name_permission . ':' .$function_permission){
                     $is_permission = true;
                 }
