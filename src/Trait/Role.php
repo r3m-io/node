@@ -171,6 +171,7 @@ trait Role {
             ];
             $object->config('user.role', $result);
         }
+        ddd($result);
         return $result;
     }
 }
