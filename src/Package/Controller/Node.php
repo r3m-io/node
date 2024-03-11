@@ -75,9 +75,6 @@ class Node extends Controller {
             'permission' => $role->getPermissions()
         ];
         ddd($role);
-        ddd($temp);
-
-
         $response = $model->list(
             $object->request('class'),
             $role,
