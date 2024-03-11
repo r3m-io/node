@@ -41,8 +41,9 @@ class Security extends Main
         }
         if(method_exists($role, 'getPermissions')){
             $role_permissions = (array) $role->getPermissions();
+        } else {
+            $role_permissions = $role->get('permission');
         }
-        $role_permissions = $role->get('permission');
         if(is_array($role_permissions)){
             foreach($role_permissions as $permission){
                 $permission = new Data($permission);
