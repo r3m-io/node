@@ -2,6 +2,7 @@
 
 namespace Package\R3m\Io\Node\Controller;
 
+use Domain\Api_Workandtravel_World\Service\Permission;
 use R3m\Io\App;
 
 
@@ -32,6 +33,10 @@ class Node extends Controller {
      */
     public static function list(App $object): Response
     {
+        $role = Permission::controller($object, $object->request('class'), __FUNCTION__, $user);
+        if(empty($role)) {
+            throw new Exception('Role is empty...');
+        }
         $model = new Model($object);
 
         $sort = $object->request('sort');
@@ -55,9 +60,12 @@ class Node extends Controller {
         if(empty($page)){
             $page = 1;
         }
+        if($role->getName() === 'ROLE_USER'){
+            $filter['user'] = $user->getUuid();
+        }
         $response = $model->list(
             $object->request('class'),
-            $model->role_system(), //leak
+            $role,
             [
                 'sort' => $sort,
                 'filter' => $filter,
