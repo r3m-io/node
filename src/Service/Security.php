@@ -39,6 +39,9 @@ class Security extends Main
         ){
             $permissions[] = $name_permission . ':' . $function_permission . '.' . 'parse';
         }
+        if(method_exists($role, 'getPermissions')){
+            $role_permissions = $role->getPermissions();
+        }
         $role_permissions = $role->get('permission');
         if(is_array($role_permissions)){
             foreach($role_permissions as $permission){
