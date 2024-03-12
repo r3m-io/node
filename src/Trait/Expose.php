@@ -251,6 +251,8 @@ trait Expose {
             $get = $data->get($attribute);
         }
         if(empty($get)){
+            d($url);
+            ddd($data);
             throw new Exception('Expose: cannot find attribute (' . $attribute .') in class: ' . $name);
         }
         return $get;
