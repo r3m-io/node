@@ -125,7 +125,7 @@ trait Expose {
                                     if (
                                         property_exists($action, 'object') &&
                                         property_exists($action->object, $property) &&
-                                        property_exists($action->object->$property, 'expose')
+                                        property_exists($action->object->$property, 'output')
                                     ) {
                                         if (
                                             property_exists($action->object->$property, 'multiple') &&
@@ -176,7 +176,7 @@ trait Expose {
                                                 $child = new Storage($child);
                                                 $child_expose =[];
                                                 if(
-                                                    property_exists($action->object->$property, 'objects')
+                                                    property_exists($action->object->$property, 'object')
                                                 ){
                                                     $child_expose[] = (object) [
                                                         'property' => $action->object->$property->expose,
