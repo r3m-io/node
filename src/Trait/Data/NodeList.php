@@ -325,7 +325,7 @@ trait NodeList {
                         $expose = $this->expose_get(
                             $object,
                             $record->{'#class'},
-                            $record->{'#class'} . '.' . $options['function'] . '.expose'
+                            $record->{'#class'} . '.' . $options['function'] . '.output'
                         );
                         $node = new Storage($record);
                         $node = $this->expose(
