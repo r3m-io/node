@@ -118,7 +118,7 @@ trait Put {
                     $expose = $this->expose_get(
                         $object,
                         $name,
-                        $name . '.' . $options['function'] . '.expose'
+                        $name . '.' . $options['function'] . '.output'
                     );
                     $node = new Storage();
                     $node->data($object->request('node'));
