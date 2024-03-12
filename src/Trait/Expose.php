@@ -143,13 +143,13 @@ trait Expose {
                                                         property_exists($action->object->$property, 'object')
                                                     ){
                                                         $child_expose[] = (object) [
-                                                            'property' => $action->object->$property->expose,
+                                                            'property' => $action->object->$property->output,
                                                             'object' => $action->object->$property->object,
                                                             'role' => $action->role,
                                                         ];
                                                     }  else {
                                                         $child_expose[] = (object) [
-                                                            'property' => $action->object->$property->expose,
+                                                            'property' => $action->object->$property->output,
                                                             'role' => $action->role,
                                                         ];
                                                     }
@@ -179,13 +179,13 @@ trait Expose {
                                                     property_exists($action->object->$property, 'object')
                                                 ){
                                                     $child_expose[] = (object) [
-                                                        'property' => $action->object->$property->expose,
+                                                        'property' => $action->object->$property->output,
                                                         'object' => $action->object->$property->objects,
                                                         'role' => $action->role,
                                                     ];
                                                 }  else {
                                                     $child_expose[] = (object) [
-                                                        'property' => $action->object->$property->expose,
+                                                        'property' => $action->object->$property->output,
                                                         'role' => $action->role,
                                                     ];
                                                 }
