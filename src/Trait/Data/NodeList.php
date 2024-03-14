@@ -126,7 +126,6 @@ trait NodeList {
                 throw new Exception('Role not set for ramdisk');
             }
             //cache key
-            d($key_options);
             $key = sha1(Core::object($key_options, Core::OBJECT_JSON));
             if(array_key_exists('ramdisk_dir', $options)){
                 $ramdisk_dir = $options['ramdisk_dir'];
@@ -139,8 +138,6 @@ trait NodeList {
             if(empty($ramdisk_dir)){
                 throw new Exception('Ramdisk dir not set');
             }
-            d($name);
-
             $ramdisk_dir_node = $ramdisk_dir .
                 'Node' .
                 $object->config('ds')
