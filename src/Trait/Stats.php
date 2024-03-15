@@ -19,7 +19,6 @@ trait Stats {
 
     public function stats($class, $response): void
     {
-        d($response);
         if(
             $response &&
             array_key_exists('create', $response) &&
