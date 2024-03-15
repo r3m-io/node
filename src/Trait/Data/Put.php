@@ -187,6 +187,7 @@ trait Put {
                 }
             }
         }
+        $object->config('delete', 'r3m.io.node.import.list');
         if(!empty($error)){
             $response = [];
             $response['error'] = $error;
@@ -196,6 +197,7 @@ trait Put {
             ){
                 $this->unlock($class);
             }
+
             return $response;
         }
         $data->set($name, $list);
