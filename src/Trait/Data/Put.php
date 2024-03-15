@@ -166,6 +166,8 @@ trait Put {
                                         elseif($number % 10 === 0){
                                             if($number > 1){
                                                 echo Cli::tput('cursor.up');
+                                                echo str_repeat(' ', Cli::tput('columns'));
+                                                echo Cli::tput('cursor.up');
                                             }
                                             echo 'Imported (PUT) ' . $number . ' of ' . $amount . ' nodes ('. round(($number / $amount) * 100 , 2) .' %)...' . PHP_EOL;
                                         }
