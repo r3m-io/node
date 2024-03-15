@@ -168,10 +168,14 @@ trait Create {
                                 elseif($number % 10 === 0){
                                     if($number > 1){
                                         echo Cli::tput('cursor.up');
+                                        echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                        echo Cli::tput('cursor.up');
                                     }
                                     echo 'Imported (CREATE) ' . $number . ' of ' . $amount . ' nodes ('. round(($number / $amount) * 100 , 2) .' %)...' . PHP_EOL;
                                 }
                                 elseif($number === $amount){
+                                    echo Cli::tput('cursor.up');
+                                    echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
                                     echo Cli::tput('cursor.up');
                                     echo 'Imported (CREATE) ' . $number . ' of ' . $amount . ' nodes ('. round(($number / $amount) * 100 , 2) .' %)...' . PHP_EOL;
                                 }
@@ -184,6 +188,7 @@ trait Create {
                 }
             }
         }
+        $object->config('delete', 'r3m.io.node.import.list');
         if(!empty($error)){
             $response = [];
             $response['error'] = $error;
