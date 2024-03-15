@@ -30,7 +30,7 @@ trait Stats {
         ) {
             $total = $response['create'] + $response['put'] + $response['patch'];
             if ($total === 1) {
-                echo 'Imported ' .
+                echo 'Imported' .
                     ' (create: ' .
                     $response['create'] .
                     ', put: ' .
@@ -47,7 +47,7 @@ trait Stats {
                     $response['commit']['speed'] . ')' .
                     PHP_EOL;
             } else {
-                echo 'Imported ' .
+                echo 'Imported' .
                     ' (create: ' .
                     $response['create'] .
                     ', put: ' .
