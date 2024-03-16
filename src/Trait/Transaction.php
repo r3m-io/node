@@ -25,7 +25,6 @@ Trait Transaction {
         $name = Controller::name($class);
         $this->lock($name, $options);
         $object = $this->object();
-        $object->config('node.transaction.' . $name, true);
     }
 
     /**
@@ -63,7 +62,6 @@ Trait Transaction {
         }
         $is_transaction = $object->config('node.transaction.' . $name);
         if(!$is_transaction){
-            $this->unlock($name);
             return false;
         }
         $result = [];
@@ -94,7 +92,6 @@ Trait Transaction {
         } else {
             throw new Exception('Commit-data not found for url: ');
         }
-        $object->config('delete', 'node.transaction.' . $name);
         $this->unlock($name);
         return $result;
     }

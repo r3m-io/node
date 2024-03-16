@@ -2,16 +2,12 @@
 
 namespace R3m\Io\Node\Trait\Data;
 
-use R3m\Io\Config;
-
+use R3m\Io\Module\Core;
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Dir;
 use R3m\Io\Module\File;
 
 use Exception;
-
-use R3m\Io\Exception\FileWriteException;
-use R3m\Io\Exception\ObjectException;
 
 trait Lock {
 
@@ -20,6 +16,7 @@ trait Lock {
      */
     public function lock($class, $options=[]): bool
     {
+        $options = Core::object($options, Core::OBJECT_ARRAY);
         if(!array_key_exists('lock_wait_timeout', $options)){
             $options['lock_wait_timeout'] = 60;
         }
@@ -57,6 +54,7 @@ trait Lock {
             'dir_lock' => $dir_lock,
             'url_lock' => $url_lock
         ]);
+        $object->config('node.transaction.' . $name, true);
         return true;
     }
 
@@ -82,6 +80,7 @@ trait Lock {
             $object->config('extension.lock')
         ;
         File::delete($url_lock);
+        $object->config('delete', 'node.transaction.' . $name);
         return true;
     }
 }

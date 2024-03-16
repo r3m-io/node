@@ -483,7 +483,6 @@ trait Import {
         }
         catch(Exception $exception){
             $this->unlock($name);
-            $object->config('delete', 'node.transaction.' . $name);
             throw $exception;
         }
         return false;
@@ -588,6 +587,7 @@ trait Import {
         }
         if(!empty($error)){
             $this->unlock($name);
+            $object->config('delete', 'node.transaction.' . $name);
             return [
                 'error' => $error,
                 'transaction' => true,
