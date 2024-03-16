@@ -150,9 +150,8 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
             property_exists($record, 'uuid') &&
             !empty($record->uuid)
         ){
-            d($uuid);
-            d($record->uuid);
             if($uuid === $record->uuid){
+                d('yes');
                 //can patch, can put
                 return true;
             }
