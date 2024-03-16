@@ -153,10 +153,13 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
             if($uuid === $record->uuid){
                 $counter = $object->config('counter.is.unique') ?? 0;
                 $counter++;
-                d($counter);                 
+                d($counter);
                 $object->config('counter.is.unique', $counter);
                 //can patch, can put
                 return true;
+            } else {
+                d($uuid);
+                d($record);
             }
             return false;
         } else {
