@@ -20,11 +20,16 @@ Trait Transaction {
     /**
      * @throws Exception
      */
-    public function startTransaction($class, $options=[]): void
+    public function startTransaction($class, $options=[]): bool
     {
         $name = Controller::name($class);
-        $this->lock($name, $options);
         $object = $this->object();
+        $has_transaction = $object->config('node.transaction.' . $name);
+        if($has_transaction){
+            throw new Exception('Transaction already started for class: ' . $name);
+        }
+        $this->lock($name, $options);
+        return true;
     }
 
     /**
