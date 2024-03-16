@@ -44,7 +44,7 @@ trait Put {
         }
         $options['relation'] = false;
         if(!Security::is_granted(
-            $class,
+            $name,
             $role,
             $options
         )){
@@ -55,7 +55,7 @@ trait Put {
             $options['import'] === false &&
             empty($transaction)
         ){
-            $this->lock($class, $options);
+            $this->lock($name, $options);
         }
         $dir_data = $object->config('project.dir.node') .
             'Data' .
@@ -195,9 +195,8 @@ trait Put {
                 $options['import'] === false &&
                 empty($transaction)
             ){
-                $this->unlock($class);
+                $this->unlock($name);
             }
-
             return $response;
         }
         $data->set($name, $list);
