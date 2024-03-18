@@ -45,7 +45,7 @@ trait NodeList {
             $options['key'] = null; //numeric
         }
         if(!array_key_exists('memory', $options)){
-            $options['memory'] = false; //numeric
+            $options['memory'] = false; //true
         }
         if(!Security::is_granted(
             $name,

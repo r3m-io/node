@@ -135,6 +135,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
             'function' => $function
         ];
     }
+    $options['memory'] = true;
     $node = new Node($object);
     $uuid = $object->request('node.uuid');
     //add cache dir to record
