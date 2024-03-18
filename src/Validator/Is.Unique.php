@@ -139,6 +139,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
     $node = new Node($object);
     $uuid = $object->request('node.uuid');
     //add cache dir to record
+    d($options);
     $response = $node->record($name, $node->role_system(), $options);
     if(
         !empty($response) &&
