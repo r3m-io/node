@@ -138,8 +138,6 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
     $options['memory'] = true;
     $node = new Node($object);
     $uuid = $object->request('node.uuid');
-    //add cache dir to record
-    d($options);
     $response = $node->record($name, $node->role_system(), $options);
     if(
         !empty($response) &&
@@ -153,15 +151,8 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
             !empty($record->uuid)
         ){
             if($uuid === $record->uuid){
-                $counter = $object->config('counter.is.unique') ?? 0;
-                $counter++;
-                d($counter);
-                $object->config('counter.is.unique', $counter);
                 //can patch, can put
                 return true;
-            } else {
-                d($uuid);
-                d($record);
             }
             return false;
         } else {
