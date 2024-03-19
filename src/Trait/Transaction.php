@@ -25,7 +25,7 @@ Trait Transaction {
         $name = Controller::name($class);
         $object = $this->object();
         $has_transaction = $object->config('node.transaction.' . $name);
-        if($has_transaction){
+        if($has_transaction === true){
             throw new Exception('Transaction already started for class: ' . $name);
         }
         $this->lock($name, $options);
