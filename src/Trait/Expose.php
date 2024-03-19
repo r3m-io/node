@@ -175,6 +175,8 @@ trait Expose {
                                                 $record[$property] = null;
                                                 $child = new Storage($child);
                                                 d($child);
+                                                d($node);
+                                                d($property);
                                                 $child_expose =[];
                                                 if(
                                                     property_exists($action->object->$property, 'object')
