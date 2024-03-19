@@ -80,7 +80,7 @@ trait Lock {
             $object->config('extension.lock')
         ;
         File::delete($url_lock);
-        $object->config('delete', 'node.transaction.' . $name);
+        $object->config('node.transaction.' . $name, false);
         return true;
     }
 }

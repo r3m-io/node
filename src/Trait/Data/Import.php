@@ -604,7 +604,6 @@ trait Import {
         $duration = microtime(true) - $object->config('r3m.io.node.import.start');
         $total = $put + $patch + $create;
         $item_per_second = round($total / $duration, 2);
-        $object->config('delete', 'node.transaction.' . $name);
         return [
             'skip' => $skip,
             'put' => $put,
