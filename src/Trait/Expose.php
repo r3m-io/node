@@ -172,6 +172,7 @@ trait Expose {
                                         ) {
                                             $child = $node->get($property);
                                             if (!empty($child)) {
+                                                d($child);
                                                 $record[$property] = null;
                                                 $child = new Storage($child);
                                                 d($child);
