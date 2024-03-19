@@ -511,12 +511,12 @@ trait Import {
                     ){
                         $allow_empty[$nr] = $attribute_validate_value->{'is.unique'}->allow_empty;
                     } else{
-                        ddd($attribute_validate);
+                        $allow_empty[$nr] = false;
                     }
                 }
-            } else {
-                d($attribute_validate);
-                ddd($attribute);
+            }
+            else{
+                $allow_empty[$nr] = false;
             }
         }
         return $allow_empty;
