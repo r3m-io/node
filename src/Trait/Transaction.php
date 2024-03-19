@@ -98,6 +98,7 @@ Trait Transaction {
         } else {
             throw new Exception('Commit-data not found for url: ');
         }
+        d('unlock');
         $this->unlock($name);
         return $result;
     }
