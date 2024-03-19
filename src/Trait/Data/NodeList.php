@@ -137,6 +137,7 @@ trait NodeList {
             }
             d($ramdisk_dir);
             if(empty($ramdisk_dir)){
+                ddd($ramdisk_dir);
                 throw new Exception('Ramdisk dir not set');
             }
             $ramdisk_dir_node = $ramdisk_dir .
