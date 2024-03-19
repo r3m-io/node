@@ -67,6 +67,7 @@ Trait Transaction {
         }
         $is_transaction = $object->config('node.transaction.' . $name);
         if(!$is_transaction){
+            ddd('yes');
             return false;
         }
         $result = [];
