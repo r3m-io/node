@@ -103,6 +103,7 @@ trait Expose {
 
                                 foreach ($action->property as $property) {
                                     $is_optional = false;
+                                    d($property);
                                     if(substr($property, 0, 1) === '?'){
                                         $is_optional = true;
                                         $property = substr($property, 1);
