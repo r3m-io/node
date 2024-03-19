@@ -67,7 +67,6 @@ Trait Transaction {
         }
         $is_transaction = $object->config('node.transaction.' . $name);
         if(!$is_transaction){
-            ddd('yes');
             return false;
         }
         $result = [];
@@ -98,8 +97,6 @@ Trait Transaction {
         } else {
             throw new Exception('Commit-data not found for url: ');
         }
-        d('unlock');
-        d($name);
         $this->unlock($name);
         return $result;
     }
