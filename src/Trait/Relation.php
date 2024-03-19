@@ -178,8 +178,7 @@ trait Relation {
                                         'page' => 1,
                                         'ramdisk' => $options['ramdisk'] ?? false,
                                         'ramdisk_dir' => $options['ramdisk_dir'] ?? false,
-                                        'relation' => $options['relation'] ?? [],
-                                        'memory' => true
+                                        'relation' => $options['relation'] ?? []
                                     ];
                                     if(property_exists($relation, 'sort')){
                                         $one_many->sort = $relation->sort;
