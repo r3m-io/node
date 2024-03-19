@@ -512,6 +512,9 @@ trait Import {
                         $allow_empty[$nr] = $attribute_validate_value->{'is.unique'}->allow_empty;
                     }
                 }
+            } else {
+                d($attribute_validate);
+                ddd($attribute);
             }
         }
         return $allow_empty;
