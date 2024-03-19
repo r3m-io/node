@@ -127,7 +127,10 @@ trait NodeList {
             }
             //cache key
             $key = sha1(Core::object($key_options, Core::OBJECT_JSON));
-            if(array_key_exists('ramdisk_dir', $options)){
+            if(
+                array_key_exists('ramdisk_dir', $options) &&
+                $options['ramdisk_dir'] !== false
+            ){
                 $ramdisk_dir = $options['ramdisk_dir'];
             } else {
                 $ramdisk_dir = $object->config('ramdisk.url') .
