@@ -100,7 +100,6 @@ trait Expose {
                                 property_exists($action, 'property') &&
                                 is_array($action->property)
                             ) {
-
                                 foreach ($action->property as $property) {
                                     $is_optional = false;
                                     if(substr($property, 0, 1) === '?'){
@@ -172,12 +171,8 @@ trait Expose {
                                         ) {
                                             $child = $node->get($property);
                                             if (!empty($child)) {
-                                                d($child);
                                                 $record[$property] = null;
                                                 $child = new Storage($child);
-                                                d($child);
-                                                d($node);
-                                                d($property);
                                                 $child_expose =[];
                                                 if(
                                                     property_exists($action->object->$property, 'object')
@@ -203,7 +198,7 @@ trait Expose {
                                                 );
                                                 $record[$property] = $child->data();
                                             }
-                                            if (empty($record[$property])) {
+                                            if (!array_key_exists($property, $record)) {
                                                 $record[$property] = null;
                                             }
                                         }
