@@ -126,6 +126,8 @@ trait Relation {
                                 $one_many = $node->get($relation->attribute);
                                 if(is_object($one_many)){
                                     if(!property_exists($one_many, 'limit')){
+                                        d($node);
+                                        d($relation);
                                         ddd($one_many);
                                         throw new Exception('Relation: ' . $relation->attribute . ' has no limit');
                                     }
