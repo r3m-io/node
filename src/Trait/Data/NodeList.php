@@ -135,6 +135,7 @@ trait NodeList {
                     $object->config('ds')
                 ;
             }
+            d($ramdisk_dir);
             if(empty($ramdisk_dir)){
                 throw new Exception('Ramdisk dir not set');
             }
