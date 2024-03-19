@@ -66,7 +66,7 @@ Trait Transaction {
             $options['force'] = $app_options->force;
         }
         $is_transaction = $object->config('node.transaction.' . $name);
-        if(!$is_transaction){
+        if($is_transaction !== true){
             return false;
         }
         $result = [];
