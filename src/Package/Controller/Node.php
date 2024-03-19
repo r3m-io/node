@@ -62,7 +62,6 @@ class Node extends Controller {
         if($role->getName() === 'ROLE_USER'){
             $filter['user'] = $user->getUuid();
         }
-        ddd($model->role($role));
         $response = $model->list(
             $object->request('class'),
             $model->role($role),
