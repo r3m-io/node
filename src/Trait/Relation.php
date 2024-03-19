@@ -178,7 +178,8 @@ trait Relation {
                                         'page' => 1,
                                         'ramdisk' => $options['ramdisk'] ?? false,
                                         'ramdisk_dir' => $options['ramdisk_dir'] ?? false,
-                                        'relation' => $options['relation'] ?? []
+                                        'relation' => $options['relation'] ?? [],
+                                        'memory' => true
                                     ];
                                     if(property_exists($relation, 'sort')){
                                         $one_many->sort = $relation->sort;
@@ -187,8 +188,6 @@ trait Relation {
                                             'uuid' => 'ASC'
                                         ];
                                     }
-                                    d($relation);
-                                    d($one_many);
                                     $response = $this->list(
                                         $relation->class,
                                         $this->role_system(),
