@@ -147,11 +147,6 @@ trait Import {
                                 $count++;
                             }
                             $allow_empty = $this->allow_empty($name, $data_validate, $attribute);
-                            d($name);
-                            d($data_validate);
-                            d($attribute);
-                            d($allow_empty);
-                            d($count);
                             switch ($count) {
                                 case 2:
                                     if (
