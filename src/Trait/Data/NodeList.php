@@ -390,10 +390,14 @@ trait NodeList {
                         };
                         $list_parallel = Parallel::new()->execute($closures);
                         foreach ($list_parallel as $item_list) {
-                            foreach ($item_list as $item) {
-                                if ($item !== null) {
-                                    $result[] = $item;
+                            if(is_array($item_list)){
+                                foreach ($item_list as $item) {
+                                    if ($item !== null) {
+                                        $result[] = $item;
+                                    }
                                 }
+                            } else {
+                                ddd($item_list);
                             }
                         }
                     }
