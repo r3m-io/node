@@ -335,6 +335,7 @@ trait NodeList {
                         $closures = [];
                         $forks = count($chunk);
                         d($forks);
+                        d($chunk_count);
                         for ($i = 0; $i < $forks; $i++) {
                             $closures[] = function () use (
                                 $object,
