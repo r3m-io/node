@@ -385,8 +385,8 @@ trait NodeList {
                                     }
                                     $list[] = $record;
                                 }
-                                return $list;
                             }
+                            return $list;
                         };
                         $list_parallel = Parallel::new()->execute($closures);
                         foreach ($list_parallel as $item_list) {
