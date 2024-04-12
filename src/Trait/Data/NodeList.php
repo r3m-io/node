@@ -333,28 +333,26 @@ trait NodeList {
                     $result = [];
                     foreach($chunks as $chunk_nr => $chunk) {
                         $closures = [];
-                        $forks = count($chunk);
-                        d($forks);
-                        d($chunk_count);
-                        for ($i = 0; $i < $forks; $i++) {
-                            $closures[] = function () use (
-                                $object,
-                                $chunk,
-                                $chunk_nr,
-                                $chunk_count,
-                                $i,
-                                $options,
-                                $role,
-                                $has_relation,
-                                $object_data,
-                                $is_filter,
-                                $is_where,
-                            ) {
+                        $closures[] = function () use (
+                            $object,
+                            $chunk,
+                            $chunk_nr,
+                            $chunk_count,
+                            $options,
+                            $role,
+                            $has_relation,
+                            $object_data,
+                            $is_filter,
+                            $is_where,
+                        ) {
+                            $list = [];
+                            $forks = count($chunk);
+                            for ($i = 0; $i < $forks; $i++) {
                                 $record = $chunk[$i];
-                                if(
+                                if (
                                     is_object($record) &&
                                     property_exists($record, '#class')
-                                ){
+                                ) {
                                     $expose = $this->expose_get(
                                         $object,
                                         $record->{'#class'},
@@ -369,32 +367,33 @@ trait NodeList {
                                         $role
                                     );
                                     $record = $node->data();
-                                    if($has_relation){
+                                    if ($has_relation) {
                                         $record = $this->relation($record, $object_data, $role, $options);
                                         //collect relation mtime
                                     }
                                     //parse the record if parse is enabled
-                                    if($is_filter){
+                                    if ($is_filter) {
                                         $record = $this->filter($record, $options['filter'], $options);
-                                        if(!$record){
-                                            return null;
+                                        if (!$record) {
+                                            continue;
                                         }
-                                    }
-                                    elseif($is_where){
+                                    } elseif ($is_where) {
                                         $record = $this->where($record, $options['where'], $options);
-                                        if(!$record){
-                                            return null;
+                                        if (!$record) {
+                                            continue;
                                         }
                                     }
-                                    return $record;
+                                    $list[] = $record;
                                 }
-                                return null;
-                            };
-                        }
+                                return $list;
+                            }
+                        };
                         $list_parallel = Parallel::new()->execute($closures);
-                        foreach($list_parallel as $item){
-                            if($item !== null){
-                                $result[] = $item;
+                        foreach ($list_parallel as $item_list) {
+                            foreach ($item_list as $item) {
+                                if ($item !== null) {
+                                    $result[] = $item;
+                                }
                             }
                         }
                     }
