@@ -323,7 +323,7 @@ trait NodeList {
                     $is_where = true;
                 }
                 $limit = $options['limit'] ?? 4096;
-                if($options['parallel'] === true){
+                if($options['parallel'] === true && Core::is_cli()){
                     ddd(count($list));
                     $list_sort = $list;
                 } else {
