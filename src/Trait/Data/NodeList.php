@@ -47,6 +47,9 @@ trait NodeList {
         if(!array_key_exists('memory', $options)){
             $options['memory'] = false; //true
         }
+        if(!array_key_exists('parallel', $options)){
+            $options['parallel'] = false; //true
+        }
         if(!Security::is_granted(
             $name,
             $role,
@@ -320,79 +323,84 @@ trait NodeList {
                     $is_where = true;
                 }
                 $limit = $options['limit'] ?? 4096;
-                foreach($list as $nr => $record) {
-                    if(
-                        is_object($record) &&
-                        property_exists($record, '#class')
-                    ){
-                        $expose = $this->expose_get(
-                            $object,
-                            $record->{'#class'},
-                            $record->{'#class'} . '.' . $options['function'] . '.output'
-                        );
-                        $node = new Storage($record);
-                        $node = $this->expose(
-                            $node,
-                            $expose,
-                            $record->{'#class'},
-                            $options['function'],
-                            $role
-                        );
-                        $record = $node->data();
-                        if($has_relation){
-                            $record = $this->relation($record, $object_data, $role, $options);
-                            //collect relation mtime
-                        }
-                        //parse the record if parse is enabled
-                        if($is_filter){
-                            $record = $this->filter($record, $options['filter'], $options);
-                            if(!$record){
-                                unset($list[$nr]);
-                                continue;
+                if($options['parallel'] === true){
+                    ddd(count($list));
+                    $list_sort = $list;
+                } else {
+                    foreach($list as $nr => $record) {
+                        if(
+                            is_object($record) &&
+                            property_exists($record, '#class')
+                        ){
+                            $expose = $this->expose_get(
+                                $object,
+                                $record->{'#class'},
+                                $record->{'#class'} . '.' . $options['function'] . '.output'
+                            );
+                            $node = new Storage($record);
+                            $node = $this->expose(
+                                $node,
+                                $expose,
+                                $record->{'#class'},
+                                $options['function'],
+                                $role
+                            );
+                            $record = $node->data();
+                            if($has_relation){
+                                $record = $this->relation($record, $object_data, $role, $options);
+                                //collect relation mtime
                             }
-                        }
-                        elseif($is_where){
-                            $record = $this->where($record, $options['where'], $options);
-                            if(!$record){
-                                unset($list[$nr]);
-                                continue;
-                            }
-                        }
-                        $count++;
-                        if($options['key'] === null){
-                            $list_filtered[] = $record;
-                        }
-                        elseif(is_array($options['key'])) {
-                            $key = [];
-                            foreach($options['key'] as $attribute){
-                                $value = $node->get($attribute);
-                                if(is_scalar($value) || $value === null){
-                                    $key[] = $value;
-                                } else {
-                                    $key[] = Core::object($value, Core::OBJECT_JSON);
+                            //parse the record if parse is enabled
+                            if($is_filter){
+                                $record = $this->filter($record, $options['filter'], $options);
+                                if(!$record){
+                                    unset($list[$nr]);
+                                    continue;
                                 }
                             }
-                            $key = implode('', $key);
-                            $list_filtered[$key] = $record;
-                        }
-                        if($count === $limit){
-                            break;
+                            elseif($is_where){
+                                $record = $this->where($record, $options['where'], $options);
+                                if(!$record){
+                                    unset($list[$nr]);
+                                    continue;
+                                }
+                            }
+                            $count++;
+                            if($options['key'] === null){
+                                $list_filtered[] = $record;
+                            }
+                            elseif(is_array($options['key'])) {
+                                $key = [];
+                                foreach($options['key'] as $attribute){
+                                    $value = $node->get($attribute);
+                                    if(is_scalar($value) || $value === null){
+                                        $key[] = $value;
+                                    } else {
+                                        $key[] = Core::object($value, Core::OBJECT_JSON);
+                                    }
+                                }
+                                $key = implode('', $key);
+                                $list_filtered[$key] = $record;
+                            }
+                            if($count === $limit){
+                                break;
+                            }
                         }
                     }
-                }
-                $list = $list_filtered;
-                if(
-                    !empty($options['sort']) &&
-                    is_array($options['sort'])
-                ){
-                    $list_sort = Sort::list($list)->with(
-                        $options['sort'],
-                        [
-                            'key_reset' => true,
-                        ]
-                    );
-                } else {
-                    $list_sort = $list;
+                    $list = $list_filtered;
+                    if(
+                        !empty($options['sort']) &&
+                        is_array($options['sort'])
+                    ){
+                        $list_sort = Sort::list($list)->with(
+                            $options['sort'],
+                            [
+                                'key_reset' => true,
+                            ]
+                        );
+                    } else {
+                        $list_sort = $list;
+                    }
                 }
                 if(
                     !empty($limit) &&
