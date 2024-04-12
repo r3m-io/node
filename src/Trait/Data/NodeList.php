@@ -341,13 +341,59 @@ trait NodeList {
                                 $chunk_nr,
                                 $chunk_count,
                                 $i,
+                                $options,
+                                $role,
+                                $has_relation,
+                                $object_data,
+                                $is_filter,
+                                $is_where,
                             ) {
+                                $record = $chunk[$i];
+                                if(
+                                    is_object($record) &&
+                                    property_exists($record, '#class')
+                                ){
+                                    $expose = $this->expose_get(
+                                        $object,
+                                        $record->{'#class'},
+                                        $record->{'#class'} . '.' . $options['function'] . '.output'
+                                    );
+                                    $node = new Storage($record);
+                                    $node = $this->expose(
+                                        $node,
+                                        $expose,
+                                        $record->{'#class'},
+                                        $options['function'],
+                                        $role
+                                    );
+                                    $record = $node->data();
+                                    if($has_relation){
+                                        $record = $this->relation($record, $object_data, $role, $options);
+                                        //collect relation mtime
+                                    }
+                                    //parse the record if parse is enabled
+                                    if($is_filter){
+                                        $record = $this->filter($record, $options['filter'], $options);
+                                        if(!$record){
+                                            return null;
+                                        }
+                                    }
+                                    elseif($is_where){
+                                        $record = $this->where($record, $options['where'], $options);
+                                        if(!$record){
+                                            return null;
+                                        }
+                                    }
+                                    return $record;
+                                }
                                 return null;
                             };
                         }
                         $list_parallel = Parallel::new()->execute($closures);
                         foreach($list_parallel as $item){
-                            $result[] = $item;
+                            if($item !== null){
+                                $result[] = $item;
+                            }
                         }
                     }
                     ddd($result);
