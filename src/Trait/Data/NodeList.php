@@ -8,6 +8,7 @@ use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\File;
+use R3m\Io\Module\Parallel;
 use R3m\Io\Module\Route;
 use R3m\Io\Module\Sort;
 
@@ -324,7 +325,32 @@ trait NodeList {
                 }
                 $limit = $options['limit'] ?? 4096;
                 if($options['parallel'] === true && Core::is_cli()){
-                    ddd(count($list));
+                    $threads = $object->config('parse.plugin.node.thread') ?? 96;
+                    $chunks = array_chunk($list, $threads);
+                    $chunk_count = count($chunks);
+                    $count = 0;
+                    $done = 0;
+                    $result = [];
+                    foreach($chunks as $chunk_nr => $chunk) {
+                        $closures = [];
+                        $forks = count($chunk);
+                        for ($i = 0; $i < $forks; $i++) {
+                            $closures[] = function () use (
+                                $object,
+                                $chunk,
+                                $chunk_nr,
+                                $chunk_count,
+                                $i,
+                            ) {
+                                return null;
+                            };
+                        }
+                        $list_parallel = Parallel::new()->execute($closures);
+                        foreach($list_parallel as $item){
+                            $result[] = $item;
+                        }
+                    }
+                    ddd($result);
                     $list_sort = $list;
                 } else {
                     foreach($list as $nr => $record) {
