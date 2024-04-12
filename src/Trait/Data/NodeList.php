@@ -325,7 +325,7 @@ trait NodeList {
                 }
                 $limit = $options['limit'] ?? 4096;
                 if($options['parallel'] === true && Core::is_cli()){
-                    $threads = $object->config('parse.plugin.node.thread') ?? 96;
+                    $threads = $object->config('parse.plugin.node.thread') ?? 32;
                     $chunks = array_chunk($list, $threads);
                     $chunk_count = count($chunks);
                     $count = 0;
