@@ -396,8 +396,20 @@ trait NodeList {
                             }
                         }
                     }
-                    ddd($result);
-                    $list_sort = $list;
+                    $list = $result;
+                    if(
+                        !empty($options['sort']) &&
+                        is_array($options['sort'])
+                    ){
+                        $list_sort = Sort::list($list)->with(
+                            $options['sort'],
+                            [
+                                'key_reset' => true,
+                            ]
+                        );
+                    } else {
+                        $list_sort = $list;
+                    }
                 } else {
                     foreach($list as $nr => $record) {
                         if(
