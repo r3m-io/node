@@ -69,6 +69,10 @@ trait Index {
                 $object->config('ds') .
                 'Index' .
                 $object->config('ds') .
+                ($chunk_nr + 1) .
+                '-' .
+                $forks .
+                '-' .
                 $record->name .
                 '-' .
                 $is_unique .
