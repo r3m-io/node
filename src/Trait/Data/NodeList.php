@@ -407,8 +407,6 @@ trait NodeList {
                             }
                         }
                     }
-                    d($count);
-                    ddd(count($result));
                     $list = $result;
                     if(
                         !empty($options['sort']) &&
