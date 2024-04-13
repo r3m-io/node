@@ -337,25 +337,35 @@ trait NodeList {
                     $result = [];
                     $expose = false;
                     $closures = [];
-                    $ramdisk_dir_parallel = $ramdisk_dir_node .
-                        'Parallel' .
-                        $object->config('ds')
-                    ;
-                    $ramdisk_dir_parallel_name = $ramdisk_dir_parallel .
-                        $name .
-                        $object->config('ds')
-                    ;
-                    ddd($ramdisk_dir_parallel_name);
+                    $ramdisk_dir_parallel = false;
+                    $ramdisk_dir_parallel_name = false;
+                    if (
+                        array_key_exists('ramdisk', $options) &&
+                        $options['ramdisk'] === true
+                    ){
+                        $ramdisk_dir_parallel = $ramdisk_dir_node .
+                            'Parallel' .
+                            $object->config('ds')
+                        ;
+                        $ramdisk_dir_parallel_name = $ramdisk_dir_parallel .
+                            $name .
+                            $object->config('ds')
+                        ;
+                    }
                     foreach ($chunks as $chunk_nr => $chunk) {
                         $forks = count($chunk);
-                        $chunk_url = $ramdisk_dir_parallel_name .
-                            'Chunk-' .
-                            ($chunk_nr + 1) .
-                            '-' .
-                            $threads .
-                            $object->config('extension.json')
-                        ;
+                        $chunk_url = null;
+                        if($ramdisk_dir_parallel_name){
+                            $chunk_url = $ramdisk_dir_parallel_name .
+                                'Chunk-' .
+                                ($chunk_nr + 1) .
+                                '-' .
+                                $threads .
+                                $object->config('extension.json')
+                            ;
+                        }
                         if(
+                            $chunk_url !== null &&
                             File::exist($chunk_url) &&
                             File::mtime($chunk_url) === $mtime
                         ){
@@ -394,16 +404,21 @@ trait NodeList {
                                     $chunk[$i] = $record;
                                 }
                             }
-                            Dir::create($ramdisk_dir_parallel_name, Dir::CHMOD);
-                            File::write($chunk_url, Core::object($chunk, Core::OBJECT_JSON));
-                            File::touch($chunk_url, $mtime);
-                            d($chunk_url);
-                            if($object->config('posix.id') !== 0){
-                                File::permission($object, [
-                                    'ramdisk_dir_parallel' => $ramdisk_dir_parallel,
-                                    'ramdisk_dir_parallel_name' => $ramdisk_dir_parallel_name,
-                                    'chunk_url' => $chunk_url,
-                                ]);
+                            if(
+                                $ramdisk_dir_parallel &&
+                                $ramdisk_dir_parallel_name
+                            ){
+                                Dir::create($ramdisk_dir_parallel_name, Dir::CHMOD);
+                                File::write($chunk_url, Core::object($chunk, Core::OBJECT_JSON));
+                                File::touch($chunk_url, $mtime);
+                                d($chunk_url);
+                                if($object->config('posix.id') !== 0){
+                                    File::permission($object, [
+                                        'ramdisk_dir_parallel' => $ramdisk_dir_parallel,
+                                        'ramdisk_dir_parallel_name' => $ramdisk_dir_parallel_name,
+                                        'chunk_url' => $chunk_url,
+                                    ]);
+                                }
                             }
                         }
                         $closures[] = function () use (
