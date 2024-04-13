@@ -482,13 +482,7 @@ trait NodeList {
                                     $count++;
                                 }
                             }
-                        } else {
-                            d($nr);
-                            d($list_parallel);
-                            ddd($list_parallel_result);
-
                         }
-
                     }
                     $list = $result;
                     if(
