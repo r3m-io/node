@@ -445,7 +445,8 @@ trait NodeList {
                                 'class' => $name,
                                 'chunk_nr' => $chunk_nr,
                                 'threads' => $threads,
-                                'mtime' => $mtime
+                                'mtime' => $mtime,
+                                'unique' => true
                             ];
                             for ($i = 0; $i < $forks; $i++) {
                                 $record = $chunk[$i];

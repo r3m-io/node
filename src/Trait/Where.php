@@ -2,8 +2,10 @@
 
 namespace R3m\Io\Node\Trait;
 
+use R3m\Io\Module\File;
 use R3m\Io\Module\Filter;
 use R3m\Io\Module\Parse\Token;
+
 
 use Exception;
 
@@ -322,7 +324,35 @@ trait Where {
                     ]
                 ];
                 if(array_key_exists('index', $options)){
-                    d($options);
+                    $object = $this->object();
+                    $ramdisk_dir_node = $object->config('ramdisk.url') .
+                        $object->config('posix.id') .
+                        $object->config('ds') .
+                        'Node' .
+                        $object->config('ds')
+                    ;
+                    $ramdisk_dir_index = $ramdisk_dir_node .
+                        'Index' .
+                        $object->config('ds')
+                    ;
+                    if(array_key_exists('unique', $options['index'])){
+                        $is_unique = 'unique';
+                    } else {
+                        $is_unique = '';
+                    }
+                    $url = $ramdisk_dir_index .
+                        ($options['index']['chunk_nr'] + 1) .
+                        '-' .
+                        $options['index']['threads'] .
+                        '-' .
+                        $set[0]['attribute'] .
+                        '-' .
+                        $is_unique .
+                        $object->config('extension.json')
+                    ;
+                    d($url);
+                    d(File::exist($url));
+                    d(File::mtime($url) === $options['index']['mtime']);
                 }
                 $left = Filter::list($list)->where($filter_where);
                 if(!empty($left)){
