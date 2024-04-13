@@ -390,6 +390,7 @@ trait NodeList {
                                 $keep[] = $record;
                             }
                         }
+                        $keep = array_reverse($keep);
                         foreach($keep as $record){
                             $result[] = $record;
                         }
@@ -408,6 +409,7 @@ trait NodeList {
                     } else {
                         $list_sort = $list;
                     }
+                    ddd(count($list_sort));
                 } else {
                     foreach($list as $nr => $record) {
                         if(
