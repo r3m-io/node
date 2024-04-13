@@ -455,14 +455,15 @@ trait NodeList {
                         };
                     }
                     $list_parallel = Parallel::new()->execute($closures);
-                    $count += count($list_parallel);
                     foreach($list_parallel as $nr => $list_parallel_result){
                         foreach($list_parallel_result as $i => $bool){
                             if($bool === 1){
                                 $result[] = $chunks[$nr][$i];
+                                $count++;
                             }
                         }
                     }
+                    ddd($count);
                     $list = $result;
                     if(
                         !empty($options['sort']) &&
