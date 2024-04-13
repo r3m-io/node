@@ -372,7 +372,13 @@ trait Where {
                             $index = $read->data($set[0]['value']);
                             if($index !== null){
                                 d($index);
+                                $where[$key] = true;
+                                $set[0] = true;
+                            } else {
+                                $where[$key] = false;
+                                $set[0] = false;
                             }
+                            return $set;
                         }
                     }
                 }
