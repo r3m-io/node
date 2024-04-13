@@ -322,7 +322,7 @@ trait Where {
                     ]
                 ];
                 if(array_key_exists('index', $options)){
-                    ddd($options);
+                    d($options);
                 }
                 $left = Filter::list($list)->where($filter_where);
                 if(!empty($left)){
