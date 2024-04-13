@@ -333,61 +333,56 @@ trait NodeList {
                     $result = [];
                     foreach($chunks as $chunk_nr => $chunk) {
                         $closures = [];
-                        $closures[] = function () use (
-                            $object,
-                            $chunk,
-                            $chunk_nr,
-                            $chunk_count,
-                            $options,
-                            $role,
-                            $has_relation,
-                            $object_data,
-                            $is_filter,
-                            $is_where,
-                        ) {
-                            $list = [];
-                            $forks = count($chunk);
-                            for ($i = 0; $i < $forks; $i++) {
-                                $record = $chunk[$i];
-                                if (
-                                    is_object($record) &&
-                                    property_exists($record, '#class')
+                        $forks = count($chunk);
+                        for ($i = 0; $i < $forks; $i++) {
+                            $record = $chunk[$i];
+                            if (
+                                is_object($record) &&
+                                property_exists($record, '#class')
+                            ) {
+                                $expose = $this->expose_get(
+                                    $object,
+                                    $record->{'#class'},
+                                    $record->{'#class'} . '.' . $options['function'] . '.output'
+                                );
+                                $node = new Storage($record);
+                                $node = $this->expose(
+                                    $node,
+                                    $expose,
+                                    $record->{'#class'},
+                                    $options['function'],
+                                    $role
+                                );
+                                $record = $node->data();
+                                if ($has_relation) {
+                                    $record = $this->relation($record, $object_data, $role, $options);
+                                    //collect relation mtime
+                                }
+                                //parse the record if parse is enabled
+                                $closures[] = function () use (
+                                    $object,
+                                    $record,
+                                    $options,
+                                    $is_filter,
+                                    $is_where,
                                 ) {
-                                    $expose = $this->expose_get(
-                                        $object,
-                                        $record->{'#class'},
-                                        $record->{'#class'} . '.' . $options['function'] . '.output'
-                                    );
-                                    $node = new Storage($record);
-                                    $node = $this->expose(
-                                        $node,
-                                        $expose,
-                                        $record->{'#class'},
-                                        $options['function'],
-                                        $role
-                                    );
-                                    $record = $node->data();
-                                    if ($has_relation) {
-                                        $record = $this->relation($record, $object_data, $role, $options);
-                                        //collect relation mtime
-                                    }
-                                    //parse the record if parse is enabled
+
                                     if ($is_filter) {
                                         $record = $this->filter($record, $options['filter'], $options);
                                         if (!$record) {
-                                            continue;
+                                            return 0;
                                         }
                                     } elseif ($is_where) {
                                         $record = $this->where($record, $options['where'], $options);
                                         if (!$record) {
-                                            continue;
+                                            return 0;
                                         }
                                     }
-                                    $list[] = $record;
-                                }
+                                    return 1;
+                                };
                             }
-                            return $list;
-                        };
+                        }
+                        ddd(count($closures));
                         $list_parallel = Parallel::new()->execute($closures);
                         foreach ($list_parallel as $item_list) {
                             if(is_array($item_list)){
