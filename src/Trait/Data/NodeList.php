@@ -27,35 +27,35 @@ trait NodeList {
         $name = Controller::name($class);
         $options = Core::object($options, Core::OBJECT_ARRAY);
         $object = $this->object();
-        if(!array_key_exists('function', $options)){
+        if (!array_key_exists('function', $options)) {
             $options['function'] = __FUNCTION__;
         }
-        if(!array_key_exists('relation', $options)){
+        if (!array_key_exists('relation', $options)) {
             $options['relation'] = false;
         }
-        if(!array_key_exists('parse', $options)){
+        if (!array_key_exists('parse', $options)) {
             $options['parse'] = false;
         }
-        if(!array_key_exists('transaction', $options)){
+        if (!array_key_exists('transaction', $options)) {
             $options['transaction'] = false;
         }
-        if(!array_key_exists('lock', $options)){
+        if (!array_key_exists('lock', $options)) {
             $options['lock'] = false;
         }
-        if(!array_key_exists('key', $options)){
+        if (!array_key_exists('key', $options)) {
             $options['key'] = null; //numeric
         }
-        if(!array_key_exists('memory', $options)){
+        if (!array_key_exists('memory', $options)) {
             $options['memory'] = false; //true
         }
-        if(!array_key_exists('parallel', $options)){
+        if (!array_key_exists('parallel', $options)) {
             $options['parallel'] = false; //true
         }
-        if(!Security::is_granted(
+        if (!Security::is_granted(
             $name,
             $role,
             $options
-        )){
+        )) {
             $list = [];
             $result = [];
             $result['page'] = $options['page'] ?? 1;
@@ -64,10 +64,10 @@ trait NodeList {
             $result['max'] = 0;
             $result['list'] = $list;
             $result['sort'] = $options['sort'];
-            if(!empty($options['filter'])) {
+            if (!empty($options['filter'])) {
                 $result['filter'] = $options['filter'];
             }
-            if(!empty($options['where'])) {
+            if (!empty($options['where'])) {
                 $result['where'] = $options['where'];
             }
             $result['relation'] = $options['relation'];
@@ -82,9 +82,8 @@ trait NodeList {
             'Data' .
             $object->config('ds') .
             $name .
-            $object->config('extension.json')
-        ;
-        if(!File::exist($data_url)){
+            $object->config('extension.json');
+        if (!File::exist($data_url)) {
             $list = [];
             $result = [];
             $result['page'] = $options['page'] ?? 1;
@@ -93,10 +92,10 @@ trait NodeList {
             $result['max'] = 0;
             $result['list'] = $list;
             $result['sort'] = $options['sort'] ?? [];
-            if(!empty($options['filter'])) {
+            if (!empty($options['filter'])) {
                 $result['filter'] = $options['filter'];
             }
-            if(!empty($options['where'])) {
+            if (!empty($options['where'])) {
                 $result['where'] = $options['where'];
             }
             $result['relation'] = $options['relation'];
@@ -111,19 +110,19 @@ trait NodeList {
         $ramdisk_dir = false;
         $ramdisk_dir_node = false;
         $ramdisk_url_node = false;
-        if(
+        if (
             array_key_exists('ramdisk', $options) &&
             $options['ramdisk'] === true &&
             (
                 !empty($object->config('ramdisk.url')) ||
                 array_key_exists('ramdisk_dir', $options)
             )
-        ){
+        ) {
             $key_options = $options;
-            if(
+            if (
                 is_object($role) &&
                 property_exists($role, 'uuid')
-            ){
+            ) {
                 //per role cache
                 $key_options['role'] = $role->uuid;
             } else {
@@ -131,39 +130,36 @@ trait NodeList {
             }
             //cache key
             $key = sha1(Core::object($key_options, Core::OBJECT_JSON));
-            if(
+            if (
                 array_key_exists('ramdisk_dir', $options) &&
                 $options['ramdisk_dir'] !== false
-            ){
+            ) {
                 $ramdisk_dir = $options['ramdisk_dir'];
             } else {
                 $ramdisk_dir = $object->config('ramdisk.url') .
                     $object->config('posix.id') .
-                    $object->config('ds')
-                ;
+                    $object->config('ds');
             }
-            if(empty($ramdisk_dir)){
+            if (empty($ramdisk_dir)) {
                 throw new Exception('Ramdisk dir not set');
             }
             $ramdisk_dir_node = $ramdisk_dir .
                 'Node' .
-                $object->config('ds')
-            ;
+                $object->config('ds');
             $ramdisk_url_node = $ramdisk_dir_node .
                 $name .
                 '.' .
                 $key .
-                $object->config('extension.json')
-            ;
-            if(File::exist($ramdisk_url_node)){
-                if($options['transaction'] === true){
+                $object->config('extension.json');
+            if (File::exist($ramdisk_url_node)) {
+                if ($options['transaction'] === true) {
                     $ramdisk = $object->data_read($ramdisk_url_node, sha1($ramdisk_url_node));
                 } else {
                     $ramdisk = $object->data_read($ramdisk_url_node);
                 }
-                if($ramdisk){
+                if ($ramdisk) {
                     $is_cache_miss = false;
-                    if($mtime === $ramdisk->get('mtime')) {
+                    if ($mtime === $ramdisk->get('mtime')) {
                         $relations = $ramdisk->get('relation');
                         if ($relations) {
                             foreach ($relations as $relation_url => $relation_mtime) {
@@ -180,12 +176,12 @@ trait NodeList {
                     } else {
                         $is_cache_miss = true;
                     }
-                    if($is_cache_miss === false){
-                        $response = (array) $ramdisk->get('response');
-                        if($response){
-                            if(
+                    if ($is_cache_miss === false) {
+                        $response = (array)$ramdisk->get('response');
+                        if ($response) {
+                            if (
                                 array_key_exists('duration', $response)
-                            ){
+                            ) {
                                 $response['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
                             }
                             return $response;
@@ -194,10 +190,10 @@ trait NodeList {
                 }
             }
         }
-        if(
+        if (
             $options['transaction'] === true ||
             $options['memory'] === true
-        ){
+        ) {
             //keep an eye on memory usage of this script, because it grows here...
             $data = $object->data_read($data_url, sha1($data_url));
         } else {
@@ -207,12 +203,11 @@ trait NodeList {
             'Object' .
             $object->config('ds') .
             $name .
-            $object->config('extension.json')
-        ;
-        if(
+            $object->config('extension.json');
+        if (
             $options['transaction'] === true ||
             $options['memory'] === true
-        ){
+        ) {
             $object_data = $object->data_read($object_url, sha1($object_url));
         } else {
             $object_data = $object->data_read($object_url);
@@ -220,47 +215,46 @@ trait NodeList {
         $has_relation = false;
         $count = 0;
         $list_filtered = [];
-        if($data){
+        if ($data) {
             $list = $data->data($name);
-            if(
+            if (
                 !empty($list) &&
                 is_array($list)
-            ){
+            ) {
                 $max = count($list);
                 $relation = [];
-                if($object_data){
+                if ($object_data) {
                     $relation = $object_data->get('relation');
                 }
-                if(
+                if (
                     !empty($relation) &&
                     is_array($relation) &&
                     array_key_exists('relation', $options) &&
                     $options['relation'] === true
-                ){
+                ) {
                     $has_relation = true;
                 }
                 $is_filter = false;
                 $is_where = false;
-                if(
+                if (
                     !empty(
                     $options['filter']) &&
                     is_array($options['filter'])
-                ){
+                ) {
                     $is_filter = true;
-                }
-                elseif(
+                } elseif (
                     !empty($options['where']) &&
                     (
                         is_string($options['where']) ||
                         is_array($options['where'])
                     )
-                ){
-                    if(is_string($options['where'])){
+                ) {
+                    if (is_string($options['where'])) {
                         $options['where'] = $this->where_convert($options['where']);
                     }
-                    if(is_array($options['where'])){
-                        foreach($options['where'] as $key => $where){
-                            if(is_string($where)){
+                    if (is_array($options['where'])) {
+                        foreach ($options['where'] as $key => $where) {
+                            if (is_string($where)) {
                                 $split = mb_str_split($where);
                                 $is_quote = false;
                                 $attribute = '';
@@ -269,48 +263,45 @@ trait NodeList {
                                 $is_attribute = false;
                                 $is_operator = false;
                                 $is_value = false;
-                                foreach($split as $nr => $char){
-                                    if($char === '\''){
-                                        if($is_quote === false){
+                                foreach ($split as $nr => $char) {
+                                    if ($char === '\'') {
+                                        if ($is_quote === false) {
                                             $is_quote = true;
                                         } else {
                                             $is_quote = false;
                                         }
                                         continue;
                                     }
-                                    if(
+                                    if (
                                         $char === ' ' &&
                                         $is_quote === false &&
                                         $is_attribute === false
-                                    ){
+                                    ) {
                                         $is_attribute = $attribute;
                                         continue;
-                                    }
-                                    elseif($char === ' ' &&
+                                    } elseif ($char === ' ' &&
                                         $is_quote === false &&
                                         $is_operator === false
-                                    ){
+                                    ) {
                                         $is_operator = $operator;
                                         continue;
                                     }
-                                    if($is_attribute === false){
+                                    if ($is_attribute === false) {
                                         $attribute .= $char;
-                                    }
-                                    elseif(
+                                    } elseif (
                                         $is_attribute &&
                                         $is_operator === false
-                                    ){
+                                    ) {
                                         $operator .= $char;
-                                    }
-                                    elseif(
+                                    } elseif (
                                         $is_attribute &&
                                         $is_operator &&
                                         $is_value === false
-                                    ){
+                                    ) {
                                         $value .= $char;
                                     }
                                 }
-                                if($attribute && $operator && $value){
+                                if ($attribute && $operator && $value) {
                                     $options['where'][$key] = [
                                         'attribute' => $attribute,
                                         'operator' => $operator,
@@ -324,7 +315,7 @@ trait NodeList {
                     $is_where = true;
                 }
                 $limit = $options['limit'] ?? 4096;
-                if($options['parallel'] === true && Core::is_cli()){
+                if ($options['parallel'] === true && Core::is_cli()) {
                     $threads = $object->config('parse.plugin.node.thread') ?? 8;
                     $chunks = array_chunk($list, count($list) / $threads);
                     $chunk_count = count($chunks);
@@ -333,7 +324,7 @@ trait NodeList {
                     $result = [];
                     $expose = false;
                     $closures = [];
-                    foreach($chunks as $chunk_nr => $chunk) {
+                    foreach ($chunks as $chunk_nr => $chunk) {
                         $forks = count($chunk);
                         for ($i = 0; $i < $forks; $i++) {
                             $record = $chunk[$i];
@@ -403,68 +394,10 @@ trait NodeList {
                     $list_parallel = Parallel::new()->execute($closures);
                     $count += count($list_parallel);
                     d($count);
-                    ddd($list_parallel);
-
-
-                        $closures = [];
-                        $process = [];
-                        /*
-                        $forks = count($chunk);
-                        for ($i = 0; $i < $forks; $i++) {
-                            $record = $chunk[$i];
-                            if (
-                                is_object($record) &&
-                                property_exists($record, '#class')
-                            ) {
-                                $expose = $this->expose_get(
-                                    $object,
-                                    $record->{'#class'},
-                                    $record->{'#class'} . '.' . $options['function'] . '.output'
-                                );
-                                $node = new Storage($record);
-                                $node = $this->expose(
-                                    $node,
-                                    $expose,
-                                    $record->{'#class'},
-                                    $options['function'],
-                                    $role
-                                );
-                                $record = $node->data();
-                                if ($has_relation) {
-                                    $record = $this->relation($record, $object_data, $role, $options);
-                                    //collect relation mtime
-                                }
-                                //parse the record if parse is enabled
-                                $process[] = $record;
-                                $closures[] = function () use (
-                                    $object,
-                                    $record,
-                                    $options,
-                                    $is_filter,
-                                    $is_where,
-                                ) {
-                                    if ($is_filter) {
-                                        $record = $this->filter($record, $options['filter'], $options);
-                                        if (!$record) {
-                                            return 0;
-                                        }
-                                    } elseif ($is_where) {
-                                        $record = $this->where($record, $options['where'], $options);
-                                        if (!$record) {
-                                            return 0;
-                                        }
-                                    }
-                                    return 1;
-                                };
-                            }
-                        }
-                        $list_parallel = Parallel::new()->execute($closures);
-                        foreach($process as $nr => $record){
-                            if($list_parallel[$nr] === 1){
-                                $result[] = $record;
-                            }
-                        }
-                        */
+                    d($list_parallel);
+                }
+            }
+                /*
                     }
                     $list = $result;
                     if(
@@ -664,6 +597,7 @@ trait NodeList {
                             'ramdisk_dir' => $ramdisk_dir
                         ]);
                         */
+        /*
                     } else {
                         File::permission($object, [
                             'ramdisk_dir' => $ramdisk_dir,
@@ -674,6 +608,7 @@ trait NodeList {
                 }
                 return $result;
             }
+        */
         }
         $list = [];
         $result = [];
