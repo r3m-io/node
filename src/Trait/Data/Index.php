@@ -88,13 +88,20 @@ trait Index {
             ){
                 ddd('found');
             } else {
-                foreach($chunk as $nr => $record){
-                    ddd($record);
+                $index = (object) [];
+                foreach($chunk as $nr => $item){
+                    $explode = explode(',', $record->name);
+                    $result = [];
+                    foreach($explode as $nr => $value){
+                        $explode[$nr] = trim($value);
+                        $result[$nr] = $item->{$explode[$nr]};
+                    }
+                    $index->{implode(',', $result)} = $nr;
+
                 }
             }
-
-
             d($url);
+            d($index);
         }
         ddd($index);
     }
