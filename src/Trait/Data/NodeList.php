@@ -421,7 +421,6 @@ trait NodeList {
                     } else {
                         $list_sort = $list;
                     }
-                    ddd(count($list_sort));
                 } else {
                     $expose = false;
                     foreach($list as $nr => $record) {
