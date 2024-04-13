@@ -31,15 +31,21 @@ trait Index {
 
         if(is_array($is_unique)){
             foreach($is_unique as $unique){
+                $explode = explode(',', $unique);
+                foreach($explode as $nr => $value){
+                    $explode[$nr] = trim($value);
+                }
                 $found = false;
                 foreach($index as $nr => $record){
-                    if(
-                        is_object($record) &&
-                        property_exists($record, 'name') &&
-                        $record->name === $unique
-                    ){
-                        $found = true;
-                        break;
+                    foreach($explode as $value){
+                        if(
+                            is_object($record) &&
+                            property_exists($record, 'name') &&
+                            $record->name === $value
+                        ){
+                            $found = true;
+                            break;
+                        }
                     }
                 }
                 if($found === false){
