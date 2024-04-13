@@ -367,7 +367,11 @@ trait Where {
                                     '===',
                                     '==',
                                     '!==',
-                                    '!='
+                                    '!=',
+                                    'strictly-exact',
+                                    'exact',
+                                    'not-strictly-exact',
+                                    'not-exact',
                                 ],
                                 true
                             )
@@ -388,19 +392,33 @@ trait Where {
                                 $set[0]['operator'],
                                 [
                                     'partial',
+                                    'not-partial'
                                 ],
                                 true
                             )
                         ){
                             foreach($read->data() as $read_nr => $read_value){
-                                if(strpos($read_value, $set[0]['value']) !== false){
-                                    $where[$key] = true;
-                                    $set[0] = true;
-                                } else {
-                                    $where[$key] = false;
-                                    $set[0] = false;
+                                if($set[0]['operator'] === 'partial'){
+                                    if(strpos($read_value, $set[0]['value']) !== false){
+                                        $where[$key] = true;
+                                        $set[0] = true;
+                                    } else {
+                                        $where[$key] = false;
+                                        $set[0] = false;
+                                    }
+                                    return $set;
                                 }
-                                return $set;
+                                elseif($set[0]['operator'] === 'not-partial'){
+                                    if(strpos($read_value, $set[0]['value']) === false){
+                                        $where[$key] = true;
+                                        $set[0] = true;
+                                    } else {
+                                        $where[$key] = false;
+                                        $set[0] = false;
+                                    }
+                                    return $set;
+                                }
+
                             }
                         }
                     }
