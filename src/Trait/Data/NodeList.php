@@ -365,6 +365,8 @@ trait NodeList {
                             $object,
                             $chunk,
                             $forks,
+                            $limit,
+                            $count,
                             $options,
                             $is_filter,
                             $is_where
@@ -385,7 +387,11 @@ trait NodeList {
                                         continue;
                                     }
                                 }
+                                $count++;
                                 $result[$i] = 1;
+                                if($count === $limit){
+                                    break;
+                                }
                             }
                             return $result;
                         };
