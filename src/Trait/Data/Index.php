@@ -22,7 +22,7 @@ trait Index {
     /**
      * @throws Exception
      */
-    public function index_create_chunk($object_data, $chunk, $forks, $chunk_nr)
+    public function index_create_chunk($object_data, $chunk, $chunk_nr, $threads)
     {
         $object = $this->object();
 
@@ -71,7 +71,7 @@ trait Index {
                 $object->config('ds') .
                 ($chunk_nr + 1) .
                 '-' .
-                $forks .
+                $threads .
                 '-' .
                 $record->name .
                 '-' .
