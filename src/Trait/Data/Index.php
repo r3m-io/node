@@ -72,7 +72,6 @@ trait Index {
                 'Index' .
                 $object->config('ds')
             ;
-            Dir::create($ramdisk_dir_index);
             $url = $ramdisk_dir_index .
                 ($chunk_nr + 1) .
                 '-' .
@@ -88,6 +87,7 @@ trait Index {
             ){
                 ddd('found');
             } else {
+                Dir::create($ramdisk_dir_index);
                 $index = (object) [];
                 foreach($chunk as $nr => $item){
                     $explode = explode(',', $record->name);
@@ -97,12 +97,9 @@ trait Index {
                         $result[$explode_nr] = $item->{$explode[$explode_nr]};
                     }
                     $index->{implode(',', $result)} = $nr;
-
                 }
+                File::write($url, Core::object($index, Core::OBJECT_JSON));
             }
-            d($url);
-            d($index);
         }
-        ddd($index);
     }
 }
