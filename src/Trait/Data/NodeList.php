@@ -8,6 +8,7 @@ use R3m\Io\Config;
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
+use R3m\Io\Module\Dir;
 use R3m\Io\Module\File;
 use R3m\Io\Module\Parallel;
 use R3m\Io\Module\Route;
@@ -337,18 +338,17 @@ trait NodeList {
                     $result = [];
                     $expose = false;
                     $closures = [];
+                    $ramdisk_dir_parallel = $ramdisk_dir_node .
+                        'Parallel' .
+                        $object->config('ds')
+                    ;
+                    $ramdisk_dir_parallel_name = $ramdisk_dir_parallel .
+                        $name .
+                        $object->config('ds')
+                    ;
                     foreach ($chunks as $chunk_nr => $chunk) {
                         $forks = count($chunk);
-
-                        $chunk_url = $object->config('ramdisk.url') .
-                            $object->config(Config::POSIX_ID) .
-                            $object->config('ds') .
-                            'Node' .
-                            $object->config('ds') .
-                            'Parallel' .
-                            $object->config('ds') .
-                            $name .
-                            $object->config('ds') .
+                        $chunk_url = $ramdisk_dir_parallel_name .
                             'Chunk-' .
                             ($chunk_nr + 1) .
                             '-' .
@@ -392,7 +392,15 @@ trait NodeList {
                                     $chunk[$i] = $record;
                                 }
                             }
+                            Dir::create($ramdisk_dir_parallel_name, Dir::CHMOD);
                             File::write($chunk_url, Core::object($chunk, Core::OBJECT_JSON));
+                            if($object->config('posix.id') !== 0){
+                                File::permission($object, [
+                                    'ramdisk_dir_parallel' => $ramdisk_dir_parallel,
+                                    'ramdisk_dir_parallel_name' => $ramdisk_dir_parallel_name,
+                                    'chunk_url' => $chunk_url,
+                                ]);
+                            }
                         }
                         $closures[] = function () use (
                             $object,
