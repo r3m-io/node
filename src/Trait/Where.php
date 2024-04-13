@@ -355,7 +355,7 @@ trait Where {
                         File::mtime($url) === $options['index']['mtime']
                     ){
                         //we have a cached index
-                        $read = $object->data_read($url);
+                        $read = $object->data_read($url, sha1($url));
                         if(
                             $read &&
                             in_array(
