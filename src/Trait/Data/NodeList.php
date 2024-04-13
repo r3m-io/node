@@ -345,6 +345,7 @@ trait NodeList {
                         $name .
                         $object->config('ds')
                     ;
+                    ddd($ramdisk_dir_parallel_name);
                     foreach ($chunks as $chunk_nr => $chunk) {
                         $forks = count($chunk);
                         $chunk_url = $ramdisk_dir_parallel_name .
