@@ -342,6 +342,7 @@ trait NodeList {
 
                         $chunk_url = $object->config('ramdisk.url') .
                             $object->config(Config::POSIX_ID) .
+                            $object->config('ds') .
                             'Node' .
                             $object->config('ds') .
                             'Parallel' .
@@ -350,6 +351,12 @@ trait NodeList {
                             $chunk_nr .
                             '-' .
                             $threads .
+                            '-' .
+                            $options['page'] ?? 1 .
+                            '-' .
+                            $limit .
+                            '.' .
+                            $name .
                             $object->config('extension.json')
                         ;
                         ddd($chunk_url);
