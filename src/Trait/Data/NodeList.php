@@ -348,7 +348,7 @@ trait NodeList {
                             'Parallel' .
                             $object->config('ds') .
                             'Chunk-' .
-                            $chunk_nr .
+                            ($chunk_nr + 1) .
                             '-' .
                             $threads .
                             '-' .
