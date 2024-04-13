@@ -323,6 +323,7 @@ trait Where {
                         'operator' => $set[0]['operator']
                     ]
                 ];
+                /*
                 if(array_key_exists('index', $options)){
                     $object = $this->object();
                     $ramdisk_dir_node = $object->config('ramdisk.url') .
@@ -434,6 +435,7 @@ trait Where {
                         }
                     }
                 }
+                */
                 $left = Filter::list($list)->where($filter_where);
                 if(!empty($left)){
                     $where[$key] = true;
