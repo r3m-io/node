@@ -326,14 +326,75 @@ trait NodeList {
                 $limit = $options['limit'] ?? 4096;
                 if($options['parallel'] === true && Core::is_cli()){
                     $threads = $object->config('parse.plugin.node.thread') ?? 8;
-                    $chunks = array_chunk($list, $threads);
+                    $chunks = array_chunk($list, count($list) / $threads);
                     $chunk_count = count($chunks);
                     $count = 0;
                     $done = 0;
                     $result = [];
                     foreach($chunks as $chunk_nr => $chunk) {
+                        $forks = count($chunk);
+                        for ($i = 0; $i < $forks; $i++) {
+                            $record = $chunk[$i];
+                            if (
+                                is_object($record) &&
+                                property_exists($record, '#class')
+                            ) {
+                                $expose = $this->expose_get(
+                                    $object,
+                                    $record->{'#class'},
+                                    $record->{'#class'} . '.' . $options['function'] . '.output'
+                                );
+                                $node = new Storage($record);
+                                $node = $this->expose(
+                                    $node,
+                                    $expose,
+                                    $record->{'#class'},
+                                    $options['function'],
+                                    $role
+                                );
+                                $record = $node->data();
+                                if ($has_relation) {
+                                    $record = $this->relation($record, $object_data, $role, $options);
+                                    //collect relation mtime
+                                }
+                                //parse the record if parse is enabled
+                                $chunk[$i] = $record;
+                            }
+                        }
+                        $closures[] = function () use (
+                            $object,
+                            $chunk,
+                            $forks,
+                            $options,
+                            $is_filter,
+                            $is_where
+                        ) {
+                            $result = [];
+                            for($i=0; $i < $forks; $i++){
+                                $record = $chunk[$i];
+                                if ($is_filter) {
+                                    $record = $this->filter($record, $options['filter'], $options);
+                                    if (!$record) {
+                                        $result[$i] = 0;
+                                        continue;
+                                    }
+                                } elseif ($is_where) {
+                                    $record = $this->where($record, $options['where'], $options);
+                                    if (!$record) {
+                                        $result[$i] = 0;
+                                        continue;
+                                    }
+                                }
+                                $result[$i] = 1;
+                            }
+                        };
+                        $list_parallel = Parallel::new()->execute($closures);
+                        ddd($list_parallel);
+
+
                         $closures = [];
                         $process = [];
+                        /*
                         $forks = count($chunk);
                         for ($i = 0; $i < $forks; $i++) {
                             $record = $chunk[$i];
@@ -389,6 +450,7 @@ trait NodeList {
                                 $result[] = $record;
                             }
                         }
+                        */
                     }
                     $list = $result;
                     if(
