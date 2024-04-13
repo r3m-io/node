@@ -385,7 +385,7 @@ trait NodeList {
                         }
                         $list_parallel = Parallel::new()->execute($closures);
                         foreach($process as $nr => $record){
-                            if($list_parallel[$i] === 1){
+                            if($list_parallel[$nr] === 1){
                                 $result[] = $record;
                             }
                         }
