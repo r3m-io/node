@@ -19,6 +19,11 @@ use Exception;
 
 trait Index {
 
+    public function index_init($options=[]){
+        ddd($options);
+    }
+
+
     /**
      * @throws Exception
      */

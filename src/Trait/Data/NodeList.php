@@ -429,14 +429,24 @@ trait NodeList {
                         $closures[] = function () use (
                             $object,
                             $chunk,
+                            $chunk_nr,
+                            $threads,
                             $forks,
                             $limit,
                             $count,
+                            $mtime,
+                            $name,
                             $options,
                             $is_filter,
                             $is_where
                         ) {
                             $result = [];
+                            $options['index'] = $this->index_init([
+                                'class' => $name,
+                                'chunk_nr' => $chunk_nr,
+                                'threads' => $threads,
+                                'mtime' => $mtime
+                            ]);
                             for ($i = 0; $i < $forks; $i++) {
                                 $record = $chunk[$i];
                                 if ($is_filter) {
