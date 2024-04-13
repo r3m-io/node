@@ -359,6 +359,7 @@ trait NodeList {
                                     //collect relation mtime
                                 }
                                 //parse the record if parse is enabled
+                                $result[] = $record;
                                 $closures[] = function () use (
                                     $object,
                                     $record,
@@ -366,7 +367,6 @@ trait NodeList {
                                     $is_filter,
                                     $is_where,
                                 ) {
-
                                     if ($is_filter) {
                                         $record = $this->filter($record, $options['filter'], $options);
                                         if (!$record) {
@@ -382,19 +382,14 @@ trait NodeList {
                                 };
                             }
                         }
-                        ddd(count($closures));
                         $list_parallel = Parallel::new()->execute($closures);
-                        foreach ($list_parallel as $item_list) {
-                            if(is_array($item_list)){
-                                foreach ($item_list as $item) {
-                                    if ($item !== null) {
-                                        $result[] = $item;
-                                    }
-                                }
-                            } else {
-                                ddd($item_list);
+                        foreach ($list_parallel as $item) {
+                            d($item);
+                            if ($item !== null) {
+                                $result[] = $item;
                             }
                         }
+                        ddd(count($result));
                     }
                     $list = $result;
                     if(
