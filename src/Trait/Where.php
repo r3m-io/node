@@ -382,6 +382,27 @@ trait Where {
                             }
                             return $set;
                         }
+                        elseif(
+                            $read &&
+                            in_array(
+                                $set[0]['operator'],
+                                [
+                                    'like',
+                                ],
+                                true
+                            )
+                        ){
+                            foreach($read->data() as $read_nr => $read_value){
+                                if(strpos($read_value, $set[0]['value']) !== false){
+                                    $where[$key] = true;
+                                    $set[0] = true;
+                                } else {
+                                    $where[$key] = false;
+                                    $set[0] = false;
+                                }
+                                return $set;
+                            }
+                        }
                     }
                 }
                 $left = Filter::list($list)->where($filter_where);
