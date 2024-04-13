@@ -450,6 +450,7 @@ trait NodeList {
                             ];
                             for ($i = 0; $i < $forks; $i++) {
                                 $record = $chunk[$i];
+                                $options['index']['iterator'] = $i;
                                 if ($is_filter) {
                                     $record = $this->filter($record, $options['filter'], $options);
                                     if (!$record) {
