@@ -17,6 +17,12 @@ use R3m\Io\Node\Service\Security;
 
 use Exception;
 
+/**
+ * app r3m_io/node list -class=RaXon.Php.Word.Embedding -page=1 -limit=10 -parallel -thread=96 -ramdisk
+ * count 960 duration: 120.88 msec
+ * app r3m_io/node list -class=RaXon.Php.Word.Embedding -page=1 -limit=100 -parallel -thread=96 -ramdisk
+ * count 9600 duration: 1050.85 msec
+ */
 trait NodeList {
 
     /**
@@ -419,6 +425,7 @@ trait NodeList {
                                 }
                             }
                         }
+                        $this->index_create_chunk($object_data, $chunk, $forks);
                         $closures[] = function () use (
                             $object,
                             $chunk,
