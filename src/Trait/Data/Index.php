@@ -22,7 +22,7 @@ trait Index {
     /**
      * @throws Exception
      */
-    public function index_create_chunk($object_data, $chunk, $chunk_nr, $threads)
+    public function index_create_chunk($object_data, $chunk, $chunk_nr, $threads, $mtime)
     {
         $object = $this->object();
 
@@ -82,6 +82,18 @@ trait Index {
                 '-' .
                 $is_unique .
                 $object->config('extension.json');
+            if(
+                File::exist($url) &&
+                File::mtime($url) === $mtime
+            ){
+                ddd('found');
+            } else {
+                foreach($chunk as $nr => $record){
+                    ddd($record);
+                }
+            }
+
+
             d($url);
         }
         ddd($index);
