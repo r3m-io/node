@@ -343,6 +343,14 @@ trait NodeList {
                         $chunk_url = $object->config('ramdisk.url') .
                             $object->config(Config::POSIX_ID) .
                             'Node' .
+                            $object->config('ds') .
+                            'Parallel' .
+                            $object->config('ds') .
+                            'Chunk-' .
+                            $chunk_nr .
+                            $object->config('extension.json')
+                        ;
+                        ddd($chunk_url);
 
 
 
