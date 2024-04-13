@@ -22,7 +22,7 @@ trait Index {
     /**
      * @throws Exception
      */
-    public function index_create_chunk($object_data, $chunk, $forks)
+    public function index_create_chunk($object_data, $chunk, $forks, $chunk_nr)
     {
         $object = $this->object();
 
@@ -35,7 +35,7 @@ trait Index {
                 foreach($explode as $nr => $value){
                     $explode[$nr] = trim($value);
                 }
-                $found = false;
+                $found = [];
                 foreach($index as $nr => $record){
                     foreach($explode as $value){
                         if(
@@ -43,18 +43,37 @@ trait Index {
                             property_exists($record, 'name') &&
                             $record->name === $value
                         ){
-                            $found = true;
-                            break;
+                            $found[] = true;
                         }
                     }
                 }
-                if($found === false){
+                if(count($found) === count($explode)){
                     $index[] = (object) [
                         'name' => $unique,
                         'unique' => true,
                     ];
                 }
             }
+        }
+        foreach($index as $nr => $record){
+            $unique = $record->unique ?? false;
+            if($unique){
+                $is_unique = 'unique';
+            } else {
+                $is_unique = '';
+            }
+            $url = $object->config('ramdisk.url') .
+                $object->config('posix.id') .
+                $object->config('ds') .
+                'Node' .
+                $object->config('ds') .
+                'Index' .
+                $object->config('ds') .
+                $record->name .
+                '-' .
+                $is_unique .
+                $object->config('extension.json');
+            d($url);
         }
         d($index);
         ddd($is_unique);
