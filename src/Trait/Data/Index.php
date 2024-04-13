@@ -26,8 +26,8 @@ trait Index {
     {
         $object = $this->object();
 
-        $is_unique = $object->data('is.unique');
-        $index = $object->data('index');
+        $is_unique = $object_data->data('is.unique');
+        $index = $object_data->data('index');
 
         d($index);
         ddd($is_unique);
