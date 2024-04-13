@@ -372,6 +372,7 @@ trait Where {
                             $index = $read->data($set[0]['value']);
                             if($index !== null){
                                 d($index);
+                                d($record);
                                 $where[$key] = true;
                                 $set[0] = true;
                             } else {
