@@ -425,7 +425,7 @@ trait NodeList {
                                 }
                             }
                         }
-                        $this->index_create_chunk($object_data, $chunk, $forks, $chunk_nr);
+                        $this->index_create_chunk($object_data, $chunk, $chunk_nr, $threads);
                         $closures[] = function () use (
                             $object,
                             $chunk,
