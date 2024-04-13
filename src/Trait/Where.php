@@ -350,9 +350,29 @@ trait Where {
                         $is_unique .
                         $object->config('extension.json')
                     ;
-                    d($url);
-                    d(File::exist($url));
-                    d(File::mtime($url) === $options['index']['mtime']);
+                    if(
+                        File::exist($url) &&
+                        File::mtime($url) === $options['index']['mtime']
+                    ){
+                        //we have a cached index
+                        $read = $object->data_read($url);
+                        if(
+                            $read &&
+                            in_array(
+                                $set[0]['operator'],
+                                [
+                                    '===',
+                                    '==',
+                                    '!==',
+                                    '!='
+                                ],
+                                true
+                            )
+                        ){
+                            $index = $read->data($set[0]['value']);
+                            d($index);
+                        }
+                    }
                 }
                 $left = Filter::list($list)->where($filter_where);
                 if(!empty($left)){
