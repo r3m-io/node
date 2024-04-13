@@ -370,7 +370,9 @@ trait Where {
                             )
                         ){
                             $index = $read->data($set[0]['value']);
-                            d($index);
+                            if($index !== null){
+                                d($index);
+                            }
                         }
                     }
                 }
