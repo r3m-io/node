@@ -353,10 +353,6 @@ trait NodeList {
                             ($chunk_nr + 1) .
                             '-' .
                             $threads .
-                            '-' .
-                            $options['page'] ?? 1 .
-                            '-' .
-                            $limit .
                             $object->config('extension.json')
                         ;
                         ddd($chunk_url);
