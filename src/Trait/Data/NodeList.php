@@ -395,6 +395,7 @@ trait NodeList {
                             Dir::create($ramdisk_dir_parallel_name, Dir::CHMOD);
                             File::write($chunk_url, Core::object($chunk, Core::OBJECT_JSON));
                             File::touch($chunk_url, $mtime);
+                            d($chunk_url);
                             if($object->config('posix.id') !== 0){
                                 File::permission($object, [
                                     'ramdisk_dir_parallel' => $ramdisk_dir_parallel,
