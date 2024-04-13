@@ -57,6 +57,7 @@ trait Index {
         }
         $url = [];
         $index_write = [];
+        $continue = [];
         foreach($chunk as $nr => $item){
             foreach($index as $index_nr => $record){
                 if(!array_key_exists($index_nr, $url)){
@@ -91,6 +92,7 @@ trait Index {
                     File::exist($url[$index_nr]) &&
                     File::mtime($url[$index_nr]) === $mtime
                 ){
+                    $continue[$index_nr] = true;
                     continue;
                 } else {
                     if(!Dir::is($ramdisk_dir_index)){
@@ -107,6 +109,9 @@ trait Index {
             }
         }
         foreach($index_write as $index_nr => $index){
+            if(array_key_exists($index_nr, $continue)){
+                continue;
+            }
             File::write($url[$index_nr], Core::object($index, Core::OBJECT_JSON));
             File::touch($url[$index_nr], $mtime);
         }
