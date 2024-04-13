@@ -387,7 +387,7 @@ trait Where {
                             in_array(
                                 $set[0]['operator'],
                                 [
-                                    'like',
+                                    'partial',
                                 ],
                                 true
                             )
