@@ -331,6 +331,7 @@ trait NodeList {
                     $count = 0;
                     $done = 0;
                     $result = [];
+                    $expose = false;
                     foreach($chunks as $chunk_nr => $chunk) {
                         $forks = count($chunk);
                         for ($i = 0; $i < $forks; $i++) {
@@ -339,11 +340,13 @@ trait NodeList {
                                 is_object($record) &&
                                 property_exists($record, '#class')
                             ) {
-                                $expose = $this->expose_get(
-                                    $object,
-                                    $record->{'#class'},
-                                    $record->{'#class'} . '.' . $options['function'] . '.output'
-                                );
+                                if(!$expose){
+                                    $expose = $this->expose_get(
+                                        $object,
+                                        $record->{'#class'},
+                                        $record->{'#class'} . '.' . $options['function'] . '.output'
+                                    );
+                                }
                                 $node = new Storage($record);
                                 $node = $this->expose(
                                     $node,
@@ -475,16 +478,19 @@ trait NodeList {
                     }
                     ddd(count($list_sort));
                 } else {
+                    $expose = false;
                     foreach($list as $nr => $record) {
                         if(
                             is_object($record) &&
                             property_exists($record, '#class')
                         ){
-                            $expose = $this->expose_get(
-                                $object,
-                                $record->{'#class'},
-                                $record->{'#class'} . '.' . $options['function'] . '.output'
-                            );
+                            if(!$expose){
+                                $expose = $this->expose_get(
+                                    $object,
+                                    $record->{'#class'},
+                                    $record->{'#class'} . '.' . $options['function'] . '.output'
+                                );
+                            }
                             $node = new Storage($record);
                             $node = $this->expose(
                                 $node,
