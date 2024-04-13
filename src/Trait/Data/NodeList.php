@@ -4,7 +4,6 @@ namespace R3m\Io\Node\Trait\Data;
 
 use R3m\Io\App;
 
-use R3m\Io\Config;
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
