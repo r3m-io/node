@@ -425,7 +425,7 @@ trait NodeList {
                                 }
                             }
                         }
-                        $this->index_create_chunk($object_data, $chunk, $chunk_nr, $threads, $mtime);
+//                        $this->index_create_chunk($object_data, $chunk, $chunk_nr, $threads, $mtime);
                         $closures[] = function () use (
                             $object,
                             $chunk,
@@ -441,6 +441,7 @@ trait NodeList {
                             $is_where
                         ) {
                             $result = [];
+                            /*
                             $options['index'] = [
                                 'class' => $name,
                                 'chunk_nr' => $chunk_nr,
@@ -448,6 +449,7 @@ trait NodeList {
                                 'mtime' => $mtime,
                                 'unique' => true
                             ];
+                            */
                             for ($i = 0; $i < $forks; $i++) {
                                 $record = $chunk[$i];
                                 $options['index']['iterator'] = $i;
