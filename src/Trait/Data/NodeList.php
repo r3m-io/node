@@ -383,13 +383,16 @@ trait NodeList {
                             }
                         }
                         $list_parallel = Parallel::new()->execute($closures);
-                        foreach ($list_parallel as $item) {
-                            d($item);
-                            if ($item !== null) {
-                                $result[] = $item;
+                        $keep = [];
+                        for($i = ($forks - 1); $i >= 0; $i--){
+                            $record = array_pop($result);
+                            if($list_parallel[$i] === 1){
+                                $keep[] = $record;
                             }
                         }
-                        ddd(count($result));
+                        foreach($keep as $record){
+                            $result[] = $record;
+                        }
                     }
                     $list = $result;
                     if(
@@ -525,7 +528,7 @@ trait NodeList {
                 $limit = $options['limit'] ?? 4096;
                 $list_temp = [];
                 $list_count = 0;
-                $index_counter =0;
+                $index_counter = 0;
                 foreach($list_sort as $index => $record){
                     if(
                         $index_counter < ($page - 1) * $limit
