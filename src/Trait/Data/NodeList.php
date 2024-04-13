@@ -347,6 +347,8 @@ trait NodeList {
                             $object->config('ds') .
                             'Parallel' .
                             $object->config('ds') .
+                            $name .
+                            $object->config('ds') .
                             'Chunk-' .
                             ($chunk_nr + 1) .
                             '-' .
@@ -355,8 +357,6 @@ trait NodeList {
                             $options['page'] ?? 1 .
                             '-' .
                             $limit .
-                            '.' .
-                            $name .
                             $object->config('extension.json')
                         ;
                         ddd($chunk_url);
