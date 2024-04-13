@@ -463,7 +463,6 @@ trait NodeList {
                             }
                         }
                     }
-                    ddd($count);
                     $list = $result;
                     if(
                         !empty($options['sort']) &&
@@ -478,6 +477,7 @@ trait NodeList {
                     } else {
                         $list_sort = $list;
                     }
+                    $limit = '*'; //handler
                 } else {
                     $expose = false;
                     foreach($list as $nr => $record) {
