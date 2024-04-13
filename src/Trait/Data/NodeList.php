@@ -4,6 +4,7 @@ namespace R3m\Io\Node\Trait\Data;
 
 use R3m\Io\App;
 
+use R3m\Io\Config;
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
@@ -152,8 +153,13 @@ trait NodeList {
             }
             $ramdisk_dir_node = $ramdisk_dir .
                 'Node' .
-                $object->config('ds');
-            $ramdisk_url_node = $ramdisk_dir_node .
+                $object->config('ds')
+            ;
+            $ramdisk_dir_list = $ramdisk_dir_node .
+                'List' .
+                $object->config('ds')
+            ;
+            $ramdisk_url_node = $ramdisk_dir_list .
                 $name .
                 '.' .
                 $key .
@@ -333,6 +339,13 @@ trait NodeList {
                     $closures = [];
                     foreach ($chunks as $chunk_nr => $chunk) {
                         $forks = count($chunk);
+
+                        $chunk_url = $object->config('ramdisk.url') .
+                            $object->config(Config::POSIX_ID) .
+                            'Node' .
+
+
+
                         for ($i = 0; $i < $forks; $i++) {
                             $record = $chunk[$i];
                             if (
@@ -608,6 +621,7 @@ trait NodeList {
                         File::permission($object, [
                             'ramdisk_dir' => $ramdisk_dir,
                             'ramdisk_dir_node' => $ramdisk_dir_node,
+                            'ramdisk_dir_list' => $ramdisk_dir_list,
                             'ramdisk_url_node' => $ramdisk_url_node,
                         ]);
                     }
