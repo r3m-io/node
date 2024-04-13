@@ -355,39 +355,44 @@ trait NodeList {
                             $threads .
                             $object->config('extension.json')
                         ;
-                        ddd($chunk_url);
-
-
-
-                        for ($i = 0; $i < $forks; $i++) {
-                            $record = $chunk[$i];
-                            if (
-                                is_object($record) &&
-                                property_exists($record, '#class')
-                            ) {
-                                if (!$expose) {
-                                    $expose = $this->expose_get(
-                                        $object,
+                        if(
+                            File::exist($chunk_url) &&
+                            File::mtime($chunk_url) === $mtime
+                        ){
+                            //we have valid cache of the chunk.
+                            $chunk = $object->data_read($chunk_url);
+                        } else {
+                            for ($i = 0; $i < $forks; $i++) {
+                                $record = $chunk[$i];
+                                if (
+                                    is_object($record) &&
+                                    property_exists($record, '#class')
+                                ) {
+                                    if (!$expose) {
+                                        $expose = $this->expose_get(
+                                            $object,
+                                            $record->{'#class'},
+                                            $record->{'#class'} . '.' . $options['function'] . '.output'
+                                        );
+                                    }
+                                    $node = new Storage($record);
+                                    $node = $this->expose(
+                                        $node,
+                                        $expose,
                                         $record->{'#class'},
-                                        $record->{'#class'} . '.' . $options['function'] . '.output'
+                                        $options['function'],
+                                        $role
                                     );
+                                    $record = $node->data();
+                                    if ($has_relation) {
+                                        $record = $this->relation($record, $object_data, $role, $options);
+                                        //collect relation mtime
+                                    }
+                                    //parse the record if parse is enabled
+                                    $chunk[$i] = $record;
                                 }
-                                $node = new Storage($record);
-                                $node = $this->expose(
-                                    $node,
-                                    $expose,
-                                    $record->{'#class'},
-                                    $options['function'],
-                                    $role
-                                );
-                                $record = $node->data();
-                                if ($has_relation) {
-                                    $record = $this->relation($record, $object_data, $role, $options);
-                                    //collect relation mtime
-                                }
-                                //parse the record if parse is enabled
-                                $chunk[$i] = $record;
                             }
+                            File::write($chunk_url, Core::object($chunk, Core::OBJECT_JSON));
                         }
                         $closures[] = function () use (
                             $object,
