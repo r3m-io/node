@@ -400,8 +400,14 @@ trait Where {
                             foreach($read->data() as $read_nr => $read_value){
                                 if($set[0]['operator'] === 'partial'){
                                     if(strpos($read_value, $set[0]['value']) !== false){
-                                        $where[$key] = true;
-                                        $set[0] = true;
+                                        $index = $read->data($set[0]['value']);
+                                        if($index === $options['index']['iterator']){
+                                            $where[$key] = true;
+                                            $set[0] = true;
+                                        } else {
+                                            $where[$key] = false;
+                                            $set[0] = false;
+                                        }
                                     } else {
                                         $where[$key] = false;
                                         $set[0] = false;
@@ -410,15 +416,20 @@ trait Where {
                                 }
                                 elseif($set[0]['operator'] === 'not-partial'){
                                     if(strpos($read_value, $set[0]['value']) === false){
-                                        $where[$key] = true;
-                                        $set[0] = true;
+                                        $index = $read->data($set[0]['value']);
+                                        if($index === $options['index']['iterator']){
+                                            $where[$key] = true;
+                                            $set[0] = true;
+                                        } else {
+                                            $where[$key] = false;
+                                            $set[0] = false;
+                                        }
                                     } else {
                                         $where[$key] = false;
                                         $set[0] = false;
                                     }
                                     return $set;
                                 }
-
                             }
                         }
                     }
