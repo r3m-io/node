@@ -29,6 +29,27 @@ trait Index {
         $is_unique = $object_data->data('is.unique');
         $index = $object_data->data('index');
 
+        if(is_array($is_unique)){
+            foreach($is_unique as $unique){
+                $found = false;
+                foreach($index as $nr => $record){
+                    if(
+                        is_object($record) &&
+                        property_exists($record, 'name') &&
+                        $record->name === $unique
+                    ){
+                        $found = true;
+                        break;
+                    }
+                }
+                if($found === false){
+                    $index[] = (object) [
+                        'name' => $unique,
+                        'unique' => true,
+                    ];
+                }
+            }
+        }
         d($index);
         ddd($is_unique);
 
