@@ -93,7 +93,6 @@ trait Index {
                     File::mtime($url[$index_nr]) === $mtime
                 ){
                     $continue[$index_nr] = true;
-                    continue;
                 } else {
                     if(!Dir::is($ramdisk_dir_index)){
                         Dir::create($ramdisk_dir_index);
