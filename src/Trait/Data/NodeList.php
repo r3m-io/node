@@ -394,11 +394,7 @@ trait NodeList {
                     $list_parallel = Parallel::new()->execute($closures);
                     $count += count($list_parallel);
                     d($count);
-                    d($list_parallel);
-                }
-            }
-                /*
-                    }
+                    ddd($list_parallel);
                     $list = $result;
                     if(
                         !empty($options['sort']) &&
@@ -597,7 +593,6 @@ trait NodeList {
                             'ramdisk_dir' => $ramdisk_dir
                         ]);
                         */
-        /*
                     } else {
                         File::permission($object, [
                             'ramdisk_dir' => $ramdisk_dir,
@@ -608,7 +603,6 @@ trait NodeList {
                 }
                 return $result;
             }
-        */
         }
         $list = [];
         $result = [];
