@@ -373,7 +373,7 @@ trait Where {
                             )
                         ){
                             $index = $read->data($set[0]['value']);
-                            if($index !== $options['index']['iterator']){
+                            if($index === $options['index']['iterator']){
                                 d($index);
                                 d($record);
                                 $where[$key] = true;
