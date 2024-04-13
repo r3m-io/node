@@ -333,6 +333,7 @@ trait NodeList {
                     $result = [];
                     foreach($chunks as $chunk_nr => $chunk) {
                         $closures = [];
+                        $process = [];
                         $forks = count($chunk);
                         for ($i = 0; $i < $forks; $i++) {
                             $record = $chunk[$i];
@@ -359,7 +360,7 @@ trait NodeList {
                                     //collect relation mtime
                                 }
                                 //parse the record if parse is enabled
-                                $result[] = $record;
+                                $process[] = $record;
                                 $closures[] = function () use (
                                     $object,
                                     $record,
@@ -383,16 +384,10 @@ trait NodeList {
                             }
                         }
                         $list_parallel = Parallel::new()->execute($closures);
-                        $keep = [];
-                        for($i = ($forks - 1); $i >= 0; $i--){
-                            $record = array_pop($result);
+                        foreach($process as $nr => $record){
                             if($list_parallel[$i] === 1){
-                                $keep[] = $record;
+                                $result[] = $record;
                             }
-                        }
-                        $keep = array_reverse($keep);
-                        foreach($keep as $record){
-                            $result[] = $record;
                         }
                     }
                     $list = $result;
