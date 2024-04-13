@@ -26,7 +26,11 @@ trait Index {
     {
         $object = $this->object();
 
-        ddd($object_data);
+        $is_unique = $object->data('is.unique');
+        $index = $object->data('index');
+
+        d($index);
+        ddd($is_unique);
 
         /*
         $data_url = $object->config('project.dir.node') .
