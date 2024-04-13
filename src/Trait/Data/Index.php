@@ -62,13 +62,18 @@ trait Index {
             } else {
                 $is_unique = '';
             }
-            $url = $object->config('ramdisk.url') .
+            $ramdisk_dir_node = $object->config('ramdisk.url') .
                 $object->config('posix.id') .
                 $object->config('ds') .
                 'Node' .
-                $object->config('ds') .
+                $object->config('ds')
+            ;
+            $ramdisk_dir_index = $ramdisk_dir_node .
                 'Index' .
-                $object->config('ds') .
+                $object->config('ds')
+            ;
+            Dir::create($ramdisk_dir_index);
+            $url = $ramdisk_dir_index .
                 ($chunk_nr + 1) .
                 '-' .
                 $threads .
@@ -79,15 +84,6 @@ trait Index {
                 $object->config('extension.json');
             d($url);
         }
-        d($index);
-        ddd($is_unique);
-
-        /*
-        $data_url = $object->config('project.dir.node') .
-            'Data' .
-            $object->config('ds') .
-            $name .
-            $object->config('extension.json');
-        */
+        ddd($index);
     }
 }
