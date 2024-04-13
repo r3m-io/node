@@ -335,7 +335,10 @@ trait Where {
                         'Index' .
                         $object->config('ds')
                     ;
-                    if(array_key_exists('unique', $options['index'])){
+                    if(
+                        array_key_exists('unique', $options['index']) &&
+                        $options['index']['unique'] === true
+                    ){
                         $is_unique = 'unique';
                     } else {
                         $is_unique = '';
@@ -370,7 +373,7 @@ trait Where {
                             )
                         ){
                             $index = $read->data($set[0]['value']);
-                            if($index !== null){
+                            if($index !== $options['index']['iterator']){
                                 d($index);
                                 d($record);
                                 $where[$key] = true;
