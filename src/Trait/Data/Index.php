@@ -55,53 +55,60 @@ trait Index {
                 }
             }
         }
+        $url = [];
+        $index_write = [];
         foreach($chunk as $nr => $item){
             foreach($index as $index_nr => $record){
-                $unique = $record->unique ?? false;
-                if($unique){
-                    $is_unique = 'unique';
-                } else {
-                    $is_unique = '';
+                if(!array_key_exists($index_nr, $url)){
+                    $unique = $record->unique ?? false;
+                    if($unique){
+                        $is_unique = 'unique';
+                    } else {
+                        $is_unique = '';
+                    }
+                    $ramdisk_dir_node = $object->config('ramdisk.url') .
+                        $object->config('posix.id') .
+                        $object->config('ds') .
+                        'Node' .
+                        $object->config('ds')
+                    ;
+                    $ramdisk_dir_index = $ramdisk_dir_node .
+                        'Index' .
+                        $object->config('ds')
+                    ;
+                    $url[$index_nr] = $ramdisk_dir_index .
+                        ($chunk_nr + 1) .
+                        '-' .
+                        $threads .
+                        '-' .
+                        $record->name .
+                        '-' .
+                        $is_unique .
+                        $object->config('extension.json');
+                    $index_write[$index_nr] = (object) [];
                 }
-                $ramdisk_dir_node = $object->config('ramdisk.url') .
-                    $object->config('posix.id') .
-                    $object->config('ds') .
-                    'Node' .
-                    $object->config('ds')
-                ;
-                $ramdisk_dir_index = $ramdisk_dir_node .
-                    'Index' .
-                    $object->config('ds')
-                ;
-                $url = $ramdisk_dir_index .
-                    ($chunk_nr + 1) .
-                    '-' .
-                    $threads .
-                    '-' .
-                    $record->name .
-                    '-' .
-                    $is_unique .
-                    $object->config('extension.json');
                 if(
-                    File::exist($url) &&
-                    File::mtime($url) === $mtime
+                    File::exist($url[$index_nr]) &&
+                    File::mtime($url[$index_nr]) === $mtime
                 ){
                     ddd('found');
                 } else {
-                    Dir::create($ramdisk_dir_index);
-                    $index_write = (object) [];
-
+                    if(!Dir::is($ramdisk_dir_index)){
+                        Dir::create($ramdisk_dir_index);
+                    }
                     $explode = explode(',', $record->name);
                     $result = [];
                     foreach($explode as $explode_nr => $value){
                         $explode[$explode_nr] = trim($value);
                         $result[$explode_nr] = $item->{$explode[$explode_nr]};
                     }
-                    $index_write->{implode(',', $result)} = $nr;
-                    File::write($url, Core::object($index_write, Core::OBJECT_JSON));
-                    File::mtime($url, $mtime);
+                    $index_write[$index_nr]->{implode(',', $result)} = $nr;
                 }
             }
+        }
+        foreach($index_write as $index_nr => $index){
+            File::write($url[$index_nr], Core::object($index, Core::OBJECT_JSON));
+            File::touch($url[$index_nr], $mtime);
         }
     }
 }
