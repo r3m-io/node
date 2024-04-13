@@ -387,6 +387,7 @@ trait NodeList {
                                 }
                                 $result[$i] = 1;
                             }
+                            return $result;
                         };
                         $list_parallel = Parallel::new()->execute($closures);
                         ddd($list_parallel);
