@@ -47,7 +47,7 @@ trait Index {
                         }
                     }
                 }
-                if(count($found) === count($explode)){
+                if(count($found) !== count($explode)){
                     $index[] = (object) [
                         'name' => $unique,
                         'unique' => true,
