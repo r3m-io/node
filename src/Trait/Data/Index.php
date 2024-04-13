@@ -91,7 +91,7 @@ trait Index {
                     File::exist($url[$index_nr]) &&
                     File::mtime($url[$index_nr]) === $mtime
                 ){
-                    ddd('found');
+                    continue;
                 } else {
                     if(!Dir::is($ramdisk_dir_index)){
                         Dir::create($ramdisk_dir_index);
