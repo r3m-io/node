@@ -92,9 +92,9 @@ trait Index {
                 foreach($chunk as $nr => $item){
                     $explode = explode(',', $record->name);
                     $result = [];
-                    foreach($explode as $nr => $value){
-                        $explode[$nr] = trim($value);
-                        $result[$nr] = $item->{$explode[$nr]};
+                    foreach($explode as $explode_nr => $value){
+                        $explode[$explode_nr] = trim($value);
+                        $result[$explode_nr] = $item->{$explode[$explode_nr]};
                     }
                     $index->{implode(',', $result)} = $nr;
 
