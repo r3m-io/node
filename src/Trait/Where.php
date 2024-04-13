@@ -321,6 +321,9 @@ trait Where {
                         'operator' => $set[0]['operator']
                     ]
                 ];
+                if(array_key_exists('index', $options)){
+                    ddd($options);
+                }
                 $left = Filter::list($list)->where($filter_where);
                 if(!empty($left)){
                     $where[$key] = true;

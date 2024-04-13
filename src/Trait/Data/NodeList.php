@@ -441,12 +441,12 @@ trait NodeList {
                             $is_where
                         ) {
                             $result = [];
-                            $options['index'] = $this->index_init([
+                            $options['index'] = [
                                 'class' => $name,
                                 'chunk_nr' => $chunk_nr,
                                 'threads' => $threads,
                                 'mtime' => $mtime
-                            ]);
+                            ];
                             for ($i = 0; $i < $forks; $i++) {
                                 $record = $chunk[$i];
                                 if ($is_filter) {
