@@ -332,6 +332,7 @@ trait NodeList {
                     $done = 0;
                     $result = [];
                     $expose = false;
+                    $closures = [];
                     foreach($chunks as $chunk_nr => $chunk) {
                         $forks = count($chunk);
                         for ($i = 0; $i < $forks; $i++) {
@@ -340,7 +341,7 @@ trait NodeList {
                                 is_object($record) &&
                                 property_exists($record, '#class')
                             ) {
-                                if(!$expose){
+                                if (!$expose) {
                                     $expose = $this->expose_get(
                                         $object,
                                         $record->{'#class'},
@@ -375,7 +376,7 @@ trait NodeList {
                             $is_where
                         ) {
                             $result = [];
-                            for($i=0; $i < $forks; $i++){
+                            for ($i = 0; $i < $forks; $i++) {
                                 $record = $chunk[$i];
                                 if ($is_filter) {
                                     $record = $this->filter($record, $options['filter'], $options);
@@ -392,14 +393,17 @@ trait NodeList {
                                 }
                                 $count++;
                                 $result[$i] = 1;
-                                if($count === $limit){
+                                if ($count === $limit) {
                                     break;
                                 }
                             }
                             return $result;
                         };
-                        $list_parallel = Parallel::new()->execute($closures);
-                        ddd($list_parallel);
+                    }
+                    $list_parallel = Parallel::new()->execute($closures);
+                    $count += count($list_parallel);
+                    d($count);
+                    ddd($list_parallel);
 
 
                         $closures = [];
