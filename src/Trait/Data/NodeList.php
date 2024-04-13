@@ -359,7 +359,8 @@ trait NodeList {
                             File::mtime($chunk_url) === $mtime
                         ){
                             //we have valid cache of the chunk.
-                            $chunk = $object->data_read($chunk_url);
+                            $read = $object->data_read($chunk_url);
+                            $chunk = $read->data();
                         } else {
                             for ($i = 0; $i < $forks; $i++) {
                                 $record = $chunk[$i];
