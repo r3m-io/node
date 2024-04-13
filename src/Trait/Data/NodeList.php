@@ -51,6 +51,13 @@ trait NodeList {
         if (!array_key_exists('parallel', $options)) {
             $options['parallel'] = false; //true
         }
+        if (!array_key_exists('thread', $options)) {
+            if(array_key_exists('threads', $options)){
+                $options['thread'] = $options['threads'];
+            } else {
+                $options['thread'] = 8;
+            }
+        }
         if (!Security::is_granted(
             $name,
             $role,
@@ -316,7 +323,7 @@ trait NodeList {
                 }
                 $limit = $options['limit'] ?? 4096;
                 if ($options['parallel'] === true && Core::is_cli()) {
-                    $threads = $object->config('parse.plugin.node.thread') ?? 8;
+                    $threads = $options['thread'];
                     $chunks = array_chunk($list, count($list) / $threads);
                     $chunk_count = count($chunks);
                     $count = 0;
