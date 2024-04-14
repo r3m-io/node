@@ -444,6 +444,7 @@ trait NodeList {
                                         $view_data = $object->data_read($view_url, sha1($view_url));
                                         if($view_data){
                                             $record = $view_data->data();
+                                            ddd($record);
                                         }
                                     }
                                     if (!$expose) {
