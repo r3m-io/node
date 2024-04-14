@@ -222,13 +222,42 @@ trait NodeList {
             'Object' .
             $object->config('ds') .
             $name .
-            $object->config('extension.json');
+            $object->config('extension.json')
+        ;
         if (
             $options['transaction'] === true ||
             $options['memory'] === true
         ) {
+            if(array_key_exists('view', $options)){
+                $object_url = $object->config('ramdisk.url') .
+                    $object->config('posix.id') .
+                    $object->config('ds') .
+                    'Node' .
+                    $object->config('ds') .
+                    'View' .
+                    $object->config('ds') .
+                    $name .
+                    '-' .
+                    $options['view'] .
+                    $object->config('extension.json')
+                ;
+            }
             $object_data = $object->data_read($object_url, sha1($object_url));
         } else {
+            if(array_key_exists('view', $options)){
+                $object_url = $object->config('ramdisk.url') .
+                    $object->config('posix.id') .
+                    $object->config('ds') .
+                    'Node' .
+                    $object->config('ds') .
+                    'View' .
+                    $object->config('ds') .
+                    $name .
+                    '-' .
+                    $options['view'] .
+                    $object->config('extension.json')
+                ;
+            }
             $object_data = $object->data_read($object_url);
         }
         $has_relation = false;
