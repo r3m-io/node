@@ -652,6 +652,7 @@ trait NodeList {
                         }
                         $list_count++;
                     }
+                    ddd($list_sort);
                     $result = [];
                     $result['page'] = 1;
                     $result['limit'] = $list_count;
