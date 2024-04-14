@@ -92,7 +92,9 @@ Trait View {
                     $node->data('uuid') .
                     $object->config('extension.json')
                 ;
-                File::write($create, Core::object($node->data(), Core::OBJECT_JSON));
+                if(!File::exist($create)){
+                    File::write($create, Core::object($node->data(), Core::OBJECT_JSON));
+                }
                 $list[] = $new->data();
             }
         }
