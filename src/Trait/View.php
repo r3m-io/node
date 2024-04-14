@@ -69,7 +69,7 @@ Trait View {
                 $list[] = $new->data();
             }
         }
-        $list = new Storage($list);
+        $storage = new Storage();
         if(
             property_exists($options, 'ramdisk') &&
             $options->ramdisk === true
@@ -85,7 +85,8 @@ Trait View {
                 '-' .
                 $options_name .
                 $object->config('extension.json');
-            $list->write($target);
+            $storage->data($name, $list);
+            $storage->write($target);
             return $target;
         }
         return null;
