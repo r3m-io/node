@@ -22,6 +22,7 @@ trait Data {
     use Transaction;
     use Tree;
     use Validate;
+    use View;
     use Where;
     use Data\Count;
     use Data\Create;
