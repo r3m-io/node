@@ -542,6 +542,7 @@ trait NodeList {
                             foreach($list_parallel_result as $i => $bool){
                                 if($bool === 1){
                                     if(array_key_exists('view', $options)){
+                                        d($chunk[$i]);
                                         ddd($chunks[$nr][$i]);
                                     }
                                     $result[] = $chunks[$nr][$i];
