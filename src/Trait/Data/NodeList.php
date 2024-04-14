@@ -228,6 +228,7 @@ trait NodeList {
                     $options['view'] .
                     $object->config('extension.json')
                 ;
+                d($view_url);
                 $data = $object->data_read($view_url, sha1($view_url));
             }
             if(!$data){
@@ -247,6 +248,7 @@ trait NodeList {
                     $options['view'] .
                     $object->config('extension.json')
                 ;
+                d($view_url);
                 $data = $object->data_read($view_url);
             }
             if(!$data) {
