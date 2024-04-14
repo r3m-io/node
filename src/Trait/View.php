@@ -85,9 +85,9 @@ Trait View {
                 '-' .
                 $options_name .
                 $object->config('extension.json');
-            d($target);
             $list->write($target);
+            return $target;
         }
-        ddd($options);
+        return null;
     }
 }
