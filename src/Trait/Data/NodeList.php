@@ -230,8 +230,6 @@ trait NodeList {
                     $options['view'] .
                     $object->config('extension.json')
                 ;
-                d($view_url);
-                d(File::exist($view_url));
                 $data = $object->data_read($view_url, sha1($view_url));
             }
             if(!$data){
@@ -253,8 +251,6 @@ trait NodeList {
                     $options['view'] .
                     $object->config('extension.json')
                 ;
-                d($view_url);
-                d(File::exist($view_url));
                 $data = $object->data_read($view_url);
             }
             if(!$data) {
@@ -271,7 +267,6 @@ trait NodeList {
             $options['transaction'] === true ||
             $options['memory'] === true
         ) {
-
             $object_data = $object->data_read($object_url, sha1($object_url));
         } else {
             $object_data = $object->data_read($object_url);
@@ -430,6 +425,29 @@ trait NodeList {
                                     is_object($record) &&
                                     property_exists($record, '#class')
                                 ) {
+                                    if(array_key_exists('view', $options)){
+                                        $view = $options['view'];
+                                        $view_url = $object->config('ramdisk.url') .
+                                            $object->config('posix.id') .
+                                            $object->config('ds') .
+                                            'Node' .
+                                            $object->config('ds') .
+                                            'View' .
+                                            $object->config('ds') .
+                                            $name .
+                                            $object->config('ds') .
+                                            'Record' .
+                                            $object->config('ds') .
+                                            $record->uuid .
+                                            $object->config('ds') .
+                                            $view .
+                                            $object->config('extension.json')
+                                        ;
+                                        $view_data = $object->data_read($view_url, sha1($view_url));
+                                        if($view_data){
+                                            $record = $view_data->data();
+                                        }
+                                    }
                                     if (!$expose) {
                                         $expose = $this->expose_get(
                                             $object,
