@@ -486,7 +486,6 @@ trait NodeList {
                                 }
                             }
                         }
-                        d($chunk);
 //                        $this->index_create_chunk($object_data, $chunk, $chunk_nr, $threads, $mtime);
                         $closures[] = function () use (
                             $object,
@@ -542,7 +541,7 @@ trait NodeList {
                         if(is_array($list_parallel_result)){
                             foreach($list_parallel_result as $i => $bool){
                                 if($bool === 1){
-                                    $result[] = $chunks[$nr][$i];
+                                    $result[] = $chunk[$i];
                                     $count++;
                                 }
                             }
