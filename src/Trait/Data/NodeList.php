@@ -124,6 +124,7 @@ trait NodeList {
         $ramdisk_dir = false;
         $ramdisk_dir_node = false;
         $ramdisk_url_node = false;
+        $data = null;
         if (
             array_key_exists('ramdisk', $options) &&
             $options['ramdisk'] === true &&
@@ -214,9 +215,43 @@ trait NodeList {
             $options['memory'] === true
         ) {
             //keep an eye on memory usage of this script, because it grows here...
-            $data = $object->data_read($data_url, sha1($data_url));
+            if(array_key_exists('view', $options)){
+                $view_url = $object->config('ramdisk.url') .
+                    $object->config('posix.id') .
+                    $object->config('ds') .
+                    'Node' .
+                    $object->config('ds') .
+                    'View' .
+                    $object->config('ds') .
+                    $name .
+                    '-' .
+                    $options['view'] .
+                    $object->config('extension.json')
+                ;
+                $data = $object->data_read($view_url, sha1($view_url));
+            }
+            if(!$data){
+                $data = $object->data_read($data_url, sha1($data_url));
+            }
         } else {
-            $data = $object->data_read($data_url);
+            if(array_key_exists('view', $options)){
+                $view_url = $object->config('ramdisk.url') .
+                    $object->config('posix.id') .
+                    $object->config('ds') .
+                    'Node' .
+                    $object->config('ds') .
+                    'View' .
+                    $object->config('ds') .
+                    $name .
+                    '-' .
+                    $options['view'] .
+                    $object->config('extension.json')
+                ;
+                $data = $object->data_read($view_url);
+            }
+            if(!$data) {
+                $data = $object->data_read($data_url);
+            }
         }
         $object_url = $object->config('project.dir.node') .
             'Object' .
@@ -228,36 +263,9 @@ trait NodeList {
             $options['transaction'] === true ||
             $options['memory'] === true
         ) {
-            if(array_key_exists('view', $options)){
-                $object_url = $object->config('ramdisk.url') .
-                    $object->config('posix.id') .
-                    $object->config('ds') .
-                    'Node' .
-                    $object->config('ds') .
-                    'View' .
-                    $object->config('ds') .
-                    $name .
-                    '-' .
-                    $options['view'] .
-                    $object->config('extension.json')
-                ;
-            }
+
             $object_data = $object->data_read($object_url, sha1($object_url));
         } else {
-            if(array_key_exists('view', $options)){
-                $object_url = $object->config('ramdisk.url') .
-                    $object->config('posix.id') .
-                    $object->config('ds') .
-                    'Node' .
-                    $object->config('ds') .
-                    'View' .
-                    $object->config('ds') .
-                    $name .
-                    '-' .
-                    $options['view'] .
-                    $object->config('extension.json')
-                ;
-            }
             $object_data = $object->data_read($object_url);
         }
         $has_relation = false;
