@@ -37,7 +37,11 @@ Trait View {
         ;
         $data = $object->data_read($url);
         if($data){
-            d(count($data->data()));
+            $count = 0;
+            foreach($data->data() as $record){
+                $count++;
+            }
+            d($count);
         }
         ddd($options);
     }
