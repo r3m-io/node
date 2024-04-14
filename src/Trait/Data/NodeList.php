@@ -224,7 +224,9 @@ trait NodeList {
                     'View' .
                     $object->config('ds') .
                     $name .
-                    '-' .
+                    $object->config('ds') .
+                    'List' .
+                    $object->config('ds') .
                     $options['view'] .
                     $object->config('extension.json')
                 ;
@@ -245,7 +247,9 @@ trait NodeList {
                     'View' .
                     $object->config('ds') .
                     $name .
-                    '-' .
+                    $object->config('ds') .
+                    'List' .
+                    $object->config('ds') .
                     $options['view'] .
                     $object->config('extension.json')
                 ;

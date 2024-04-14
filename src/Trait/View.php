@@ -66,6 +66,22 @@ Trait View {
                 }
                 $new->data('uuid', $node->data('uuid'));
                 $new->data('#class', $node->data('#class'));
+
+                $create = $object->config('ramdisk.url') .
+                    $object->config('posix.id') .
+                    $object->config('ds') .
+                    'Node' .
+                    $object->config('ds') .
+                    'View' .
+                    $object->config('ds') .
+                    $name .
+                    $object->config('ds') .
+                    'Record' .
+                    $object->config('ds') .
+                    $node->data('uuid') .
+                    $object->config('extension.json');
+                ddd($create);
+
                 $list[] = $new->data();
             }
         }
@@ -82,7 +98,9 @@ Trait View {
                 'View' .
                 $object->config('ds') .
                 $name .
-                '-' .
+                $object->config('ds') .
+                'List' .
+                $object->config('ds') .
                 $options_name .
                 $object->config('extension.json');
             $storage->data($name, $list);
