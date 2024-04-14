@@ -29,13 +29,13 @@ Trait View {
          * need
          */
 
-        $url = $object->config('project.dir.node') .
+        $source = $object->config('project.dir.node') .
             'Data' .
             $object->config('ds') .
             $name .
             $object->config('extension.json')
         ;
-        $data = $object->data_read($url);
+        $data = $object->data_read($source);
         if($data){
             $count = 0;
             foreach($data->data($name) as $record){
