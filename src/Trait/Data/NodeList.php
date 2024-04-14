@@ -440,11 +440,9 @@ trait NodeList {
                                             $record->uuid .
                                             $object->config('extension.json')
                                         ;
-                                        d($view_url);
                                         $view_data = $object->data_read($view_url, sha1($view_url));
                                         if($view_data){
                                             $record = $view_data->data();
-                                            ddd($record);
                                         }
                                     }
                                     if (!$expose) {
@@ -468,6 +466,7 @@ trait NodeList {
                                         //collect relation mtime
                                     }
                                     //parse the record if parse is enabled
+                                    ddd($record);
                                     $chunk[$i] = $record;
                                 }
                             }
