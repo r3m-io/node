@@ -36,7 +36,9 @@ Trait View {
             $object->config('extension.json')
         ;
         $data = $object->data_read($url);
-        d(count($data));
+        if($data){
+            d(count($data->data()));
+        }
         ddd($options);
     }
 }
