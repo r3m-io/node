@@ -257,7 +257,6 @@ trait NodeList {
                     $options['view'] .
                     $object->config('extension.json')
                 ;
-                d($object_url);
             }
             $object_data = $object->data_read($object_url);
         }
