@@ -24,6 +24,19 @@ Trait View {
     {
         $name = Controller::name($class);
         $object = $this->object();
+
+        /**
+         * need
+         */
+
+        $url = $object->config('project.dir.node') .
+            'Data' .
+            $object->config('ds') .
+            $name .
+            $object->config('extension.json')
+        ;
+        $data = $object->data_read($url);
+        d(count($data));
         ddd($options);
     }
 }
