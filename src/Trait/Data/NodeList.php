@@ -536,12 +536,13 @@ trait NodeList {
                             return $result;
                         };
                     }
+                    ddd($chunks);
                     $list_parallel = Parallel::new()->execute($closures);
                     foreach($list_parallel as $nr => $list_parallel_result){
                         if(is_array($list_parallel_result)){
                             foreach($list_parallel_result as $i => $bool){
                                 if($bool === 1){
-                                    $result[] = $chunk[$i];
+                                    $result[] = $chunks[$nr][$i];
                                     $count++;
                                 }
                             }
