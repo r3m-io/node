@@ -467,6 +467,7 @@ trait NodeList {
                                     }
                                     //parse the record if parse is enabled
                                     $chunks[$chunk_nr][$i] = $record;
+                                    $chunk[$i] = $record;
                                 }
                             }
                             if(
