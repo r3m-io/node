@@ -466,7 +466,10 @@ trait NodeList {
                                         //collect relation mtime
                                     }
                                     //parse the record if parse is enabled
-                                    ddd($record);
+                                    if(array_key_exists('view', $options)){
+                                        ddd($record);
+                                    }
+
                                     $chunk[$i] = $record;
                                 }
                             }
