@@ -468,9 +468,6 @@ trait NodeList {
                                     //parse the record if parse is enabled
                                     $chunks[$chunk_nr][$i] = $record;
                                     $chunk[$i] = $record;
-                                    if(array_key_exists('view', $options)){
-                                        ddd($record);
-                                    }
                                 }
                             }
                             if(
@@ -544,6 +541,9 @@ trait NodeList {
                         if(is_array($list_parallel_result)){
                             foreach($list_parallel_result as $i => $bool){
                                 if($bool === 1){
+                                    if(array_key_exists('view', $options)){
+                                        ddd($chunks[$nr][$i]);
+                                    }
                                     $result[] = $chunks[$nr][$i];
                                     $count++;
                                 }
