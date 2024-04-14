@@ -38,7 +38,7 @@ Trait View {
         $data = $object->data_read($url);
         if($data){
             $count = 0;
-            foreach($data->data() as $record){
+            foreach($data->data($name) as $record){
                 $count++;
             }
             d($count);
