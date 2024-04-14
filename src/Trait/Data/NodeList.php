@@ -466,7 +466,7 @@ trait NodeList {
                                         //collect relation mtime
                                     }
                                     //parse the record if parse is enabled
-                                    $chunk[$i] = $record;
+                                    $chunks[$nr][$i] = $record;
                                 }
                             }
                             if(
