@@ -36,13 +36,20 @@ Trait View {
             $object->config('extension.json')
         ;
         $data = $object->data_read($source);
+        $list = [];
         if($data){
             $count = 0;
             foreach($data->data($name) as $record){
                 $count++;
+                $node = new Storage($record);
+                $new = new Storage();
+                foreach($options->attribute as $nr => $attribute){
+                    $new->data($attribute, $node->data($attribute));
+                }
+                $list[] = $new->data();
             }
-            d($count);
         }
+        d(count($list));
         ddd($options);
     }
 }
