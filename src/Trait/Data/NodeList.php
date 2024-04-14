@@ -468,6 +468,9 @@ trait NodeList {
                                     //parse the record if parse is enabled
                                     $chunks[$chunk_nr][$i] = $record;
                                     $chunk[$i] = $record;
+                                    if(array_key_exists('view', $options)){
+                                        ddd($record);
+                                    }
                                 }
                             }
                             if(
@@ -513,7 +516,7 @@ trait NodeList {
                             */
                             for ($i = 0; $i < $forks; $i++) {
                                 $record = $chunk[$i];
-                                $options['index']['iterator'] = $i;
+//                                $options['index']['iterator'] = $i;
                                 if ($is_filter) {
                                     $record = $this->filter($record, $options['filter'], $options);
                                     if (!$record) {
