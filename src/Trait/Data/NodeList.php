@@ -426,7 +426,6 @@ trait NodeList {
                                     property_exists($record, '#class')
                                 ) {
                                     if(array_key_exists('view', $options)){
-                                        $view = $options['view'];
                                         $view_url = $object->config('ramdisk.url') .
                                             $object->config('posix.id') .
                                             $object->config('ds') .
@@ -439,8 +438,6 @@ trait NodeList {
                                             'Record' .
                                             $object->config('ds') .
                                             $record->uuid .
-                                            $object->config('ds') .
-                                            $view .
                                             $object->config('extension.json')
                                         ;
                                         $view_data = $object->data_read($view_url, sha1($view_url));
