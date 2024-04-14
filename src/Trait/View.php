@@ -49,6 +49,7 @@ Trait View {
                     property_exists($options, 'attribute') &&
                     is_array($options->attribute)
                 ){
+                    sort($options->attribute, SORT_NATURAL);
                     foreach($options->attribute as $nr => $attribute){
                         if(
                             $options_name_finished === false &&
