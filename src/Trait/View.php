@@ -66,22 +66,33 @@ Trait View {
                 }
                 $new->data('uuid', $node->data('uuid'));
                 $new->data('#class', $node->data('#class'));
-
-                $create = $object->config('ramdisk.url') .
+                $dir_node = $object->config('ramdisk.url') .
                     $object->config('posix.id') .
                     $object->config('ds') .
                     'Node' .
-                    $object->config('ds') .
+                    $object->config('ds')
+                ;
+                $dir_view = $dir_node .
                     'View' .
-                    $object->config('ds') .
-                    $name .
-                    $object->config('ds') .
-                    'Record' .
-                    $object->config('ds') .
-                    $node->data('uuid') .
-                    $object->config('extension.json');
-                ddd($create);
+                    $object->config('ds')
+                ;
 
+                $dir_view_class = $dir_view .
+                    $name .
+                    $object->config('ds')
+                ;
+                $dir_record = $dir_view_class .
+                    'Record' .
+                    $object->config('ds')
+                ;
+                if(!Dir::is($dir_record)) {
+                    Dir::create($dir_record, Dir::CHMOD);
+                }
+                $create = $dir_record .
+                    $node->data('uuid') .
+                    $object->config('extension.json')
+                ;
+                File::write($create, Core::object($node->data(), Core::OBJECT_JSON));
                 $list[] = $new->data();
             }
         }
