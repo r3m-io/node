@@ -20,7 +20,7 @@ Trait View {
     /**
      * @throws Exception
      */
-    public function view_create($class, $options=[])
+    public function view_create($class, $role, $options=[])
     {
         $name = Controller::name($class);
         $object = $this->object();
