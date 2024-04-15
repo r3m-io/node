@@ -696,7 +696,7 @@ trait NodeList {
                         $list_count++;
                     }
                     if(array_key_exists('view', $options)){
-                        ddd($list_sort);
+                        d($list_sort);
                     }
                     $result = [];
                     $result['page'] = 1;
