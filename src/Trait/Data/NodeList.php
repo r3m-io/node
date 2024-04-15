@@ -538,7 +538,6 @@ trait NodeList {
                             return $result;
                         };
                     }
-                    ddd($chunks);
                     $list_parallel = Parallel::new()->execute($closures);
                     foreach($list_parallel as $nr => $list_parallel_result){
                         if(is_array($list_parallel_result)){
