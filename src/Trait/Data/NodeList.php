@@ -538,6 +538,7 @@ trait NodeList {
                             return $result;
                         };
                     }
+                    $expose = false;
                     $list_parallel = Parallel::new()->execute($closures);
                     foreach($list_parallel as $nr => $list_parallel_result){
                         if(is_array($list_parallel_result)){
@@ -562,7 +563,26 @@ trait NodeList {
                                         $view_data = $object->data_read($view_url, sha1($view_url));
                                         if($view_data){
                                             $record = $view_data->data();
-                                            //add expose
+                                            if (!$expose) {
+                                                $expose = $this->expose_get(
+                                                    $object,
+                                                    $record->{'#class'},
+                                                    $record->{'#class'} . '.' . $options['function'] . '.output'
+                                                );
+                                            }
+                                            $node = new Storage($record);
+                                            $node = $this->expose(
+                                                $node,
+                                                $expose,
+                                                $record->{'#class'},
+                                                $options['function'],
+                                                $role
+                                            );
+                                            $record = $node->data();
+                                            if ($has_relation) {
+                                                $record = $this->relation($record, $object_data, $role, $options);
+                                                //collect relation mtime
+                                            }
                                         }
                                     }
                                     $result[] = $record;
