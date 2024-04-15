@@ -425,6 +425,7 @@ trait NodeList {
                                     is_object($record) &&
                                     property_exists($record, '#class')
                                 ) {
+                                    /* this can be used to implement full where on the view
                                     if(array_key_exists('view', $options)){
                                         $view_url = $object->config('ramdisk.url') .
                                             $object->config('posix.id') .
@@ -445,6 +446,7 @@ trait NodeList {
                                             $record = $view_data->data();
                                         }
                                     }
+                                    */
                                     if (!$expose) {
                                         $expose = $this->expose_get(
                                             $object,
@@ -466,7 +468,7 @@ trait NodeList {
                                         //collect relation mtime
                                     }
                                     //parse the record if parse is enabled
-                                    $chunks[$chunk_nr][$i] = $record;
+//                                    $chunks[$chunk_nr][$i] = $record;
                                     $chunk[$i] = $record;
                                 }
                             }
@@ -542,8 +544,29 @@ trait NodeList {
                         if(is_array($list_parallel_result)){
                             foreach($list_parallel_result as $i => $bool){
                                 if($bool === 1){
-                                    $result[] = $chunks[$nr][$i];
-                                    $count++;
+                                    $record = $chunks[$nr][$i];
+                                    if(array_key_exists('view', $options)){
+                                        $view_url = $object->config('ramdisk.url') .
+                                            $object->config('posix.id') .
+                                            $object->config('ds') .
+                                            'Node' .
+                                            $object->config('ds') .
+                                            'View' .
+                                            $object->config('ds') .
+                                            $name .
+                                            $object->config('ds') .
+                                            'Record' .
+                                            $object->config('ds') .
+                                            $record->uuid .
+                                            $object->config('extension.json')
+                                        ;
+                                        $view_data = $object->data_read($view_url, sha1($view_url));
+                                        if($view_data){
+                                            $record = $view_data->data();
+                                            //add expose
+                                        }
+                                    }
+                                    $result[] = $record;
                                 }
                             }
                         }
