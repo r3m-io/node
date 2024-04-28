@@ -108,7 +108,6 @@ trait Patch {
                 }
             }
             $object->request('node', Core::object_merge($record, $node));
-            ddd($object->request('node'));
             $object->request('node.#class', $name);
             if(
                 array_key_exists('validation', $options) &&
