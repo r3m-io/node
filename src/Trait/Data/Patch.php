@@ -107,6 +107,7 @@ trait Patch {
                     $record = $list[$list_nr];
                 }
             }
+            d($node);
             $temp = Core::object_merge($record, $node);
             ddd($temp);
             $object->request('node', Core::object_merge($record, $node));
