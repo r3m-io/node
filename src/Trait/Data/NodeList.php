@@ -44,22 +44,6 @@ trait NodeList {
         }
         if (!array_key_exists('parse', $options)) {
             $options['parse'] = false;
-            $controller_dir_root = $object->config('controller.dir.root');
-            if(!$controller_dir_root){
-                $object->config(
-                    'controller.dir.root',
-                    $object->config('project.dir.root') .
-                    'vendor' .
-                    $object->config('ds') .
-                    'r3m_io' .
-                    $object->config('ds') .
-                    'framework' .
-                    $object->config('ds') .
-                    'src' .
-                    $object->config('ds')
-                );
-            }
-            $parse = new Parse($object);
         }
         if (!array_key_exists('transaction', $options)) {
             $options['transaction'] = false;
@@ -88,6 +72,24 @@ trait NodeList {
             $role,
             $options
         )) {
+            if($options['parse'] === true){
+                $controller_dir_root = $object->config('controller.dir.root');
+                if(!$controller_dir_root){
+                    $object->config(
+                        'controller.dir.root',
+                        $object->config('project.dir.root') .
+                        'vendor' .
+                        $object->config('ds') .
+                        'r3m_io' .
+                        $object->config('ds') .
+                        'framework' .
+                        $object->config('ds') .
+                        'src' .
+                        $object->config('ds')
+                    );
+                }
+                $parse = new Parse($object);
+            }
             $list = [];
             $result = [];
             $result['page'] = $options['page'] ?? 1;
@@ -635,7 +637,6 @@ trait NodeList {
                                 $record = $this->relation($record, $object_data, $role, $options);
                                 //collect relation mtime
                             }
-                            d($options);
                             if(
                                 $options['parse'] === true &&
                                 $parse !== false
