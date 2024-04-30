@@ -466,12 +466,12 @@ trait NodeList {
                                         //collect relation mtime
                                     }
                                     //parse the record if parse is enabled, parsing cannot run in parallel
+                                    // this should be called: pre.compile
                                     if(
                                         $options['parse'] === true &&
                                         $parse !== false
                                     ){
                                         $record = $parse->compile($record, $object->data(), $parse->storage());
-                                        ddd($record);
                                     }
 //                                    $chunks[$chunk_nr][$i] = $record;
                                     $chunk[$i] = $record;
@@ -642,7 +642,6 @@ trait NodeList {
                                 $parse !== false
                             ){
                                 $record = $parse->compile($record, $object->data(), $parse->storage());
-                                ddd($record);
                             }
                             //parse the record if parse is enabled
                             if($is_filter){
