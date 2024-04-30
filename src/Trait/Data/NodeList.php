@@ -44,6 +44,21 @@ trait NodeList {
         }
         if (!array_key_exists('parse', $options)) {
             $options['parse'] = false;
+            $controller_dir_root = $object->config('controller.dir.root');
+            if(!$controller_dir_root){
+                $object->config(
+                    'controller.dir.root',
+                    $object->config('project.dir.root') .
+                    'vendor' .
+                    $object->config('ds') .
+                    'r3m_io' .
+                    $object->config('ds') .
+                    'framework' .
+                    $object->config('ds') .
+                    'src' .
+                    $object->config('ds')
+                );
+            }
             $parse = new Parse($object);
         }
         if (!array_key_exists('transaction', $options)) {
