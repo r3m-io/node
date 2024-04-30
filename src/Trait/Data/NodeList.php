@@ -10,6 +10,7 @@ use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\Dir;
 use R3m\Io\Module\File;
 use R3m\Io\Module\Parallel;
+use R3m\Io\Module\Parse;
 use R3m\Io\Module\Route;
 use R3m\Io\Module\Sort;
 
@@ -34,6 +35,7 @@ trait NodeList {
         $name = Controller::name($class);
         $options = Core::object($options, Core::OBJECT_ARRAY);
         $object = $this->object();
+        $parse = false;
         if (!array_key_exists('function', $options)) {
             $options['function'] = __FUNCTION__;
         }
@@ -42,6 +44,7 @@ trait NodeList {
         }
         if (!array_key_exists('parse', $options)) {
             $options['parse'] = false;
+            $parse = new Parse($object);
         }
         if (!array_key_exists('transaction', $options)) {
             $options['transaction'] = false;
@@ -445,7 +448,14 @@ trait NodeList {
                                         $record = $this->relation($record, $object_data, $role, $options);
                                         //collect relation mtime
                                     }
-                                    //parse the record if parse is enabled
+                                    //parse the record if parse is enabled, parsing cannot run in parallel
+                                    if(
+                                        $options['parse'] === true &&
+                                        $parse !== false
+                                    ){
+                                        $record = $parse->compile($record, $object->data(), $parse->storage());
+                                        ddd($record);
+                                    }
 //                                    $chunks[$chunk_nr][$i] = $record;
                                     $chunk[$i] = $record;
                                 }
@@ -609,6 +619,13 @@ trait NodeList {
                             if($has_relation){
                                 $record = $this->relation($record, $object_data, $role, $options);
                                 //collect relation mtime
+                            }
+                            if(
+                                $options['parse'] === true &&
+                                $parse !== false
+                            ){
+                                $record = $parse->compile($record, $object->data(), $parse->storage());
+                                ddd($record);
                             }
                             //parse the record if parse is enabled
                             if($is_filter){
