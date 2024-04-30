@@ -558,6 +558,12 @@ trait NodeList {
                             foreach($list_parallel_result as $i => $bool){
                                 if($bool === 1){
                                     $record = $chunks[$nr][$i];
+                                    if(
+                                        $options['parse'] === true &&
+                                        $parse !== false
+                                    ){
+                                        $record = $parse->compile($record, $object->data(), $parse->storage());
+                                    }
                                     if(array_key_exists('view', $options)){
                                         $view_url = $object->config('ramdisk.url') .
                                             $object->config('posix.id') .
@@ -652,7 +658,6 @@ trait NodeList {
                             ){
                                 $record = $parse->compile($record, $object->data(), $parse->storage());
                             }
-                            //parse the record if parse is enabled
                             if($is_filter){
                                 $record = $this->filter($record, $options['filter'], $options);
                                 if(!$record){
@@ -666,6 +671,12 @@ trait NodeList {
                                     unset($list[$nr]);
                                     continue;
                                 }
+                            }
+                            if(
+                                $options['parse'] === true &&
+                                $parse !== false
+                            ){
+                                $record = $parse->compile($record, $object->data(), $parse->storage());
                             }
                             $count++;
                             if($options['key'] === null){
