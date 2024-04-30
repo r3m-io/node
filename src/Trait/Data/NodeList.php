@@ -474,15 +474,15 @@ trait NodeList {
                                     }
                                     //parse the record if parse is enabled, parsing cannot run in parallel
                                     // this should be called: pre.compile
-                                    ddd($options);
                                     if(
                                         array_key_exists('pre-compile', $options) &&
                                         $options['pre-compile'] === true &&
                                         $parse !== false
                                     ){
                                         $record = $parse->compile($record, $object->data(), $parse->storage());
+                                        $chunks[$chunk_nr][$i] = $record;
                                     }
-//                                    $chunks[$chunk_nr][$i] = $record;
+
                                     $chunk[$i] = $record;
                                 }
                             }
