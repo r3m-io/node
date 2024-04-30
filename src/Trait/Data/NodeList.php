@@ -741,12 +741,7 @@ trait NodeList {
                     $result['where'] = $options['where'] ?? [];
                     $result['relation'] = $options['relation'] ?? true;
                     $result['parse'] = $options['parse'] ?? false;
-                    if(
-                        array_key_exists('pre-compile', $options) &&
-                        $options['pre-compile'] === true
-                    ){
-                        $result['parse'] = true;
-                    }
+                    $result['pre-compile'] = $options['pre-compile'] ?? false;
                     $result['ramdisk'] = $options['ramdisk'] ?? false;
                     $result['mtime'] = $mtime;
                     $result['transaction'] = $options['transaction'] ?? false;
@@ -805,12 +800,7 @@ trait NodeList {
                 $result['where'] = $options['where'] ?? [];
                 $result['relation'] = $options['relation'] ?? true;
                 $result['parse'] = $options['parse'] ?? false;
-                if(
-                    array_key_exists('pre-compile', $options) &&
-                    $options['pre-compile'] === true
-                ){
-                    $result['parse'] = true;
-                }
+                $result['pre-compile'] = $options['pre-compile'] ?? false;
                 $result['ramdisk'] = $options['ramdisk'] ?? false;
                 $result['mtime'] = $mtime;
                 $result['transaction'] = $options['transaction'] ?? false;
@@ -863,12 +853,7 @@ trait NodeList {
         }
         $result['relation'] = $options['relation'];
         $result['parse'] = $options['parse'];
-        if(
-            array_key_exists('pre-compile', $options) &&
-            $options['pre-compile'] === true
-        ){
-            $result['parse'] = true;
-        }
+        $result['pre-compile'] = $options['pre-compile'] ?? false;
         $result['ramdisk'] = $options['ramdisk'] ?? false;
         $result['mtime'] = $mtime;
         $result['transaction'] = $options['transaction'] ?? false;
