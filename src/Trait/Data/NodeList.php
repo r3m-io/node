@@ -94,7 +94,13 @@ trait NodeList {
             $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
             return $result;
         }
-        if($options['parse'] === true){
+        if(
+            $options['parse'] === true ||
+            (
+                array_key_exists('pre-compile', $options) &&
+                $options['pre-compile'] === true
+            )
+        ){
             $controller_dir_root = $object->config('controller.dir.root');
             if(!$controller_dir_root){
                 $object->config(
@@ -111,6 +117,7 @@ trait NodeList {
                 );
             }
             $parse = new Parse($object);
+
         }
         $data_url = $object->config('project.dir.node') .
             'Data' .
@@ -468,7 +475,8 @@ trait NodeList {
                                     //parse the record if parse is enabled, parsing cannot run in parallel
                                     // this should be called: pre.compile
                                     if(
-                                        $options['parse'] === true &&
+                                        array_key_exists('pre-compile', $options) &&
+                                        $options['pre-compile'] === true &&
                                         $parse !== false
                                     ){
                                         $record = $parse->compile($record, $object->data(), $parse->storage());
@@ -638,7 +646,8 @@ trait NodeList {
                                 //collect relation mtime
                             }
                             if(
-                                $options['parse'] === true &&
+                                array_key_exists('pre-compile', $options) &&
+                                $options['pre-compile'] === true &&
                                 $parse !== false
                             ){
                                 $record = $parse->compile($record, $object->data(), $parse->storage());
