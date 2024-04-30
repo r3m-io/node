@@ -474,7 +474,7 @@ trait NodeList {
                                     }
                                     //parse the record if parse is enabled, parsing cannot run in parallel
                                     // this should be called: pre.compile
-                                    d($options);
+                                    ddd($options);
                                     if(
                                         array_key_exists('pre-compile', $options) &&
                                         $options['pre-compile'] === true &&
