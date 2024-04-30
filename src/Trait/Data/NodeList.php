@@ -72,24 +72,6 @@ trait NodeList {
             $role,
             $options
         )) {
-            if($options['parse'] === true){
-                $controller_dir_root = $object->config('controller.dir.root');
-                if(!$controller_dir_root){
-                    $object->config(
-                        'controller.dir.root',
-                        $object->config('project.dir.root') .
-                        'vendor' .
-                        $object->config('ds') .
-                        'r3m_io' .
-                        $object->config('ds') .
-                        'framework' .
-                        $object->config('ds') .
-                        'src' .
-                        $object->config('ds')
-                    );
-                }
-                $parse = new Parse($object);
-            }
             $list = [];
             $result = [];
             $result['page'] = $options['page'] ?? 1;
@@ -111,6 +93,24 @@ trait NodeList {
             $result['transaction'] = $options['transaction'] ?? false;
             $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
             return $result;
+        }
+        if($options['parse'] === true){
+            $controller_dir_root = $object->config('controller.dir.root');
+            if(!$controller_dir_root){
+                $object->config(
+                    'controller.dir.root',
+                    $object->config('project.dir.root') .
+                    'vendor' .
+                    $object->config('ds') .
+                    'r3m_io' .
+                    $object->config('ds') .
+                    'framework' .
+                    $object->config('ds') .
+                    'src' .
+                    $object->config('ds')
+                );
+            }
+            $parse = new Parse($object);
         }
         $data_url = $object->config('project.dir.node') .
             'Data' .
