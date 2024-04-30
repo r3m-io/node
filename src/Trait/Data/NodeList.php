@@ -635,6 +635,7 @@ trait NodeList {
                                 $record = $this->relation($record, $object_data, $role, $options);
                                 //collect relation mtime
                             }
+                            d($options);
                             if(
                                 $options['parse'] === true &&
                                 $parse !== false
