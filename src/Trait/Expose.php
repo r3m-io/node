@@ -179,7 +179,7 @@ trait Expose {
                                                 ){
                                                     $child_expose[] = (object) [
                                                         'property' => $action->object->$property->output,
-                                                        'object' => $action->object->$property->objects,
+                                                        'object' => $action->object->$property->object,
                                                         'role' => $action->role,
                                                     ];
                                                 }  else {
