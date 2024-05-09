@@ -67,6 +67,7 @@ trait Import {
             )){
                 return false;
             }
+            ddd($options);
             $dir_data = $object->config('project.dir.node') .
                 'Data' .
                 $object->config('ds')
