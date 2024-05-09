@@ -141,7 +141,6 @@ trait Import {
                                 $node->set($attribute, $value);
                             }
                         }
-                        ddd($node);
                         if (
                             $data_object &&
                             $data_object->has('is.unique') &&
@@ -327,6 +326,14 @@ trait Import {
                     if (array_key_exists('list', $select)) {
                         foreach ($select['list'] as $nr => $record) {
                             $node = new Storage($record);
+                            if(
+                                array_key_exists('node', $options) &&
+                                array_key_exists('default', $options['node'])
+                            ){
+                                foreach($options['node']['default'] as $attribute => $value){
+                                    $node->set($attribute, $value);
+                                }
+                            }
                             if (
                                 array_key_exists(0, $attribute) &&
                                 array_key_exists(1, $attribute) &&
@@ -382,7 +389,7 @@ trait Import {
                                             }
                                         } else {
                                             //create
-                                            $create_many[] = $chunk[$record_nr];
+                                            $create_many[] = $node->data();
                                         }
                                     } else {
                                         //wrong type
@@ -422,7 +429,7 @@ trait Import {
                                             }
                                         } else {
                                             //create
-                                            $create_many[] = $chunk[$record_nr];
+                                            $create_many[] = $node->data();
                                         }
                                     } else {
                                         //wrong type
@@ -462,7 +469,7 @@ trait Import {
                                             }
                                         } else {
                                             //create
-                                            $create_many[] = $chunk[$record_nr];
+                                            $create_many[] = $node->data();
                                         }
                                     } else {
                                         //wrong type
