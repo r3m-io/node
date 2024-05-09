@@ -67,7 +67,6 @@ trait Import {
             )){
                 return false;
             }
-            ddd($options);
             $dir_data = $object->config('project.dir.node') .
                 'Data' .
                 $object->config('ds')
@@ -134,6 +133,15 @@ trait Import {
                     foreach ($chunk as $record_nr => $record) {
                         $node = new Storage();
                         $node->data($record);
+                        if(
+                            array_key_exists('node', $options) &&
+                            array_key_exists('default', $options['node'])
+                        ){
+                            foreach($options['node']['default'] as $attribute => $value){
+                                $node->set($attribute, $value);
+                            }
+                        }
+                        ddd($node);
                         if (
                             $data_object &&
                             $data_object->has('is.unique') &&
