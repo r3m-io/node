@@ -250,7 +250,7 @@ trait Expose {
             $get = $data->get($attribute);
         }
         if(empty($get)){
-            throw new Exception('Expose: cannot find attribute (' . $attribute .') in class: ' . $name);
+            throw new Exception('Expose: cannot find attribute (' . $attribute .') in class: ' . $name . ' url: ' . $url);
         }
         return $get;
     }
