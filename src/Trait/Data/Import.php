@@ -137,8 +137,8 @@ trait Import {
                             array_key_exists('node', $options) &&
                             array_key_exists('default', $options['node'])
                         ){
-                            foreach($options['node']['default'] as $attribute => $value){
-                                $node->set($attribute, $value);
+                            foreach($options['node']['default'] as $attribute_default => $value){
+                                $node->set($attribute_default, $value);
                             }
                         }
                         if (
@@ -330,8 +330,8 @@ trait Import {
                                 array_key_exists('node', $options) &&
                                 array_key_exists('default', $options['node'])
                             ){
-                                foreach($options['node']['default'] as $attribute => $value){
-                                    $node->set($attribute, $value);
+                                foreach($options['node']['default'] as $attribute_default => $value){
+                                    $node->set($attribute_default, $value);
                                 }
                             }
                             if (
