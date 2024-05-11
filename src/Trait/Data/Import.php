@@ -479,6 +479,9 @@ trait Import {
                                 break;
                         }
                     }
+                    d($create_many);
+                    d($patch_many);
+                    d($put_many);
                     $response = $this->update(
                         $class,
                         $role,
