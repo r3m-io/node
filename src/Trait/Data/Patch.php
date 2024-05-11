@@ -147,6 +147,14 @@ trait Patch {
                                 $list_nr = $uuid[$record->uuid];
                                 $list[$list_nr] = $record;
                                 if(
+                                    array_key_exists('event', $options) &&
+                                    $options['event'] === true
+                                ){
+                                    d($name);
+                                    d($record);
+                                    ddd('event');
+                                }
+                                if(
                                     array_key_exists('function', $options) &&
                                     $options['function'] === __FUNCTION__
                                 ){
