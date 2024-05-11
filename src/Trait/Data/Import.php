@@ -140,6 +140,7 @@ trait Import {
                             foreach($options['node']['default'] as $attribute_default => $value){
                                 $node->set($attribute_default, $value);
                             }
+                            $chunk[$record_nr] = $node->data();
                         }
                         if (
                             $data_object &&
@@ -389,7 +390,7 @@ trait Import {
                                             }
                                         } else {
                                             //create
-                                            $create_many[] = $node->data();
+                                            $create_many[] = $chunk[$record_nr];
                                         }
                                     } else {
                                         //wrong type
@@ -429,7 +430,7 @@ trait Import {
                                             }
                                         } else {
                                             //create
-                                            $create_many[] = $node->data();
+                                            $create_many[] = $chunk[$record_nr];
                                         }
                                     } else {
                                         //wrong type
@@ -469,7 +470,7 @@ trait Import {
                                             }
                                         } else {
                                             //create
-                                            $create_many[] = $node->data();
+                                            $create_many[] = $chunk[$record_nr];
                                         }
                                     } else {
                                         //wrong type
