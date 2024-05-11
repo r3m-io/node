@@ -561,7 +561,8 @@ trait Import {
                 'import' => true,
                 'uuid' => $options['uuid'],
                 'validation' => $options['validation'] ?? true,
-                'function' => $options['function'] ?? 'create'
+                'function' => $options['function'] ?? 'create',
+                'event' => $options['event'] ?? false
             ]);
             if (
                 array_key_exists('list', $response) &&
@@ -578,7 +579,8 @@ trait Import {
             $response = $this->put_many($name, $role, $put_many, [
                 'import' => true,
                 'validation' => $options['validation'] ?? true,
-                'function' => $options['function'] ?? 'put'
+                'function' => $options['function'] ?? 'put',
+                'event' => $options['event'] ?? false
             ]);
             if(
                 array_key_exists('list', $response) &&
@@ -596,7 +598,8 @@ trait Import {
             $response = $this->patch_many($name, $role, $patch_many, [
                 'import' => true,
                 'validation' => $options['validation'] ?? true,
-                'function' => $options['function'] ?? 'patch'
+                'function' => $options['function'] ?? 'patch',
+                'event' => $options['event'] ?? false
             ]);
             if(
                 array_key_exists('list', $response) &&

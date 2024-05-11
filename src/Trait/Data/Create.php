@@ -145,6 +145,12 @@ trait Create {
                         }
                         $list[] = $record;
                         if(
+                            array_key_exists('event', $options) &&
+                            $options['event'] === true
+                        ){
+                            ddd('event');
+                        }
+                        if(
                             array_key_exists('function', $options) &&
                             $options['function'] === __FUNCTION__
                         ){
