@@ -138,6 +138,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
     $options['memory'] = true;
     $node = new Node($object);
     $uuid = $object->request('node.uuid');
+    d($name);
     $response = $node->record($name, $node->role_system(), $options);
     if(
         !empty($response) &&
