@@ -7,6 +7,7 @@ use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
 
+use R3m\Io\Module\Event;
 use R3m\Io\Node\Service\Security;
 
 use Exception;
@@ -150,9 +151,12 @@ trait Patch {
                                     array_key_exists('event', $options) &&
                                     $options['event'] === true
                                 ){
-                                    d($name);
-                                    d($record);
-                                    ddd('event');
+                                    Event::trigger($object, 'r3m.io.node.patch', [
+                                        'class' => $name,
+                                        'node' => $record,
+                                        'options' => $options,
+                                        'role' => $role
+                                    ]);
                                 }
                                 if(
                                     array_key_exists('function', $options) &&

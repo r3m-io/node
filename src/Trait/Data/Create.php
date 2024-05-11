@@ -8,6 +8,7 @@ use R3m\Io\Module\Cli;
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
+use R3m\Io\Module\Event;
 use R3m\Io\Module\File;
 
 use R3m\Io\Node\Service\Security;
@@ -148,7 +149,12 @@ trait Create {
                             array_key_exists('event', $options) &&
                             $options['event'] === true
                         ){
-                            ddd('event');
+                            Event::trigger($object, 'r3m.io.node.create', [
+                                'class' => $name,
+                                'node' => $record,
+                                'options' => $options,
+                                'role' => $role
+                            ]);
                         }
                         if(
                             array_key_exists('function', $options) &&
