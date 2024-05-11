@@ -7,6 +7,7 @@ use R3m\Io\Config;
 
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
+use R3m\Io\Module\Event;
 use R3m\Io\Module\File;
 
 use R3m\Io\Node\Service\Security;
@@ -148,6 +149,17 @@ trait Delete {
                             unset($list->{$nr});
                         }
                         $result[$uuid_value] = true;
+                        if(
+                            array_key_exists('event', $options) &&
+                            $options['event'] === true
+                        ){
+                            Event::trigger($object, 'r3m.io.node.delete', [
+                                'class' => $name,
+                                'node' => $record,
+                                'options' => $options,
+                                'role' => $role
+                            ]);
+                        }
                     }
                 }
             }
