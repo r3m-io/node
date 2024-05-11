@@ -479,6 +479,8 @@ trait Import {
                                 break;
                         }
                     }
+                    d($class);
+                    d($options);
                     d($create_many);
                     d($patch_many);
                     d($put_many);
