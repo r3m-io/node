@@ -39,6 +39,13 @@ trait Init {
                 $record->mtime = time();
                 $response = $node->put($class, $node->role_system(), $record);
                 echo 'Register update ' . $object->request('package') . ' installation...' . PHP_EOL;
+            }
+            elseif(property_exists($options, 'patch')){
+                $record = $response['node'];
+                $record->mtime = time();
+                $response = $node->patch($class, $node->role_system(), $record);
+                echo 'Register update (patch) ' . $object->request('package') . ' installation...' . PHP_EOL;
+
             } else {
                 echo 'Skipping ' . $object->request('package') . ' installation...' . PHP_EOL;
             }
