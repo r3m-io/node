@@ -140,7 +140,11 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
     $uuid = $object->request('node.uuid');
     d($name);
     $response = $node->record($name, $node->role_system(), $options);
-    d($response);
+    $debug = debug_backtrace(1);
+    d($debug[0]['file'] . ':' . $debug[0]['line'] . ':' . $debug[0]['function'] . '()');
+    d($debug[1]['file'] . ':' . $debug[1]['line'] . ':' . $debug[1]['function'] . '()');
+    d($debug[2]['file'] . ':' . $debug[2]['line'] . ':' . $debug[2]['function'] . '()');
+//    d($response);
     if(
         !empty($response) &&
         is_array($response) &&
