@@ -176,7 +176,7 @@ trait Patch {
                                             $object_data = $object->data_read($object_url);
                                         }
                                     }
-                                    //need to update node here so it gets a relation.
+                                    //need to update node here, so it gets a relation.
                                     $record = $this->relation($record, $object_data, $role, $options);
                                     //collect relation mtime
                                 }

@@ -161,6 +161,7 @@ trait Relation {
                                         $this->role_system(),
                                         $one_many
                                     );
+                                    d($response);
                                     if(
                                         !empty($response) &&
                                         array_key_exists('list', $response)
