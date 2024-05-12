@@ -482,7 +482,6 @@ trait Import {
                                 break;
                         }
                     }
-                    d($options);
                     $response = $this->update(
                         $class,
                         $role,
