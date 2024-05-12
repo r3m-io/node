@@ -161,6 +161,7 @@ trait Patch {
                                 $list_nr = $uuid[$record->uuid];
                                 $list[$list_nr] = $record;
                                 if($relation === true){
+                                    $options['relation'] = true;
                                     if(!$object_data){
                                         $object_url = $object->config('project.dir.node') .
                                             'Object' .
