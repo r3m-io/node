@@ -588,7 +588,8 @@ trait Import {
                 'import' => true,
                 'validation' => $options['validation'] ?? true,
                 'function' => $options['function'] ?? 'put',
-                'event' => $options['event'] ?? false
+                'event' => $options['event'] ?? false,
+                'relation' => $options['relation'] ?? false
             ]);
             if(
                 array_key_exists('list', $response) &&
