@@ -58,11 +58,6 @@ trait Import {
             set_time_limit(0);
             $object->config('r3m.io.node.import.start', microtime(true));
             $options['function'] = __FUNCTION__;
-            $debug = debug_backtrace(1);
-            d($debug[0]['function'] . $debug[0]['line'] . $debug[0]['file']);
-            d($debug[1]['function'] . $debug[1]['line'] . $debug[1]['file']);
-            d($debug[2]['function'] . $debug[2]['line'] . $debug[2]['file']);
-            d($options);
             if(!array_key_exists('relation', $options)){
                 $options['relation'] = false;
             }
@@ -570,7 +565,8 @@ trait Import {
                 'uuid' => $options['uuid'],
                 'validation' => $options['validation'] ?? true,
                 'function' => $options['function'] ?? 'create',
-                'event' => $options['event'] ?? false
+                'event' => $options['event'] ?? false,
+                'relation' => $options['relation'] ?? false
             ]);
             if (
                 array_key_exists('list', $response) &&
