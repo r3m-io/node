@@ -179,9 +179,7 @@ trait Patch {
                                         }
                                     }
                                     //need to update node here so it gets a relation.
-                                    d($options);
                                     $record = $this->relation($record, $object_data, $role, $options);
-                                    ddd($record);
                                     //collect relation mtime
                                 }
                                 if(
