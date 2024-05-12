@@ -58,7 +58,9 @@ trait Import {
             set_time_limit(0);
             $object->config('r3m.io.node.import.start', microtime(true));
             $options['function'] = __FUNCTION__;
-            $options['relation'] = false;
+            if(!array_key_exists('relation', $options)){
+                $options['relation'] = false;
+            }
             $response_list = [];
             if(!Security::is_granted(
                 $name,
