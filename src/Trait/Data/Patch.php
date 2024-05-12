@@ -50,8 +50,7 @@ trait Patch {
             $options['memory'] = false;
         }
         $relation = $options['relation'];
-        d($relation);
-        $options['relation'] = false;
+        $options['relation'] = false; //first patching without relation
         if(!Security::is_granted(
             $class,
             $role,
@@ -152,7 +151,6 @@ trait Patch {
                             $role
                         );
                         $record = $node->data();
-                        d($record);
                         if(Core::object_is_empty($record)){
                             throw new Exception('Empty node after expose...');
                         }

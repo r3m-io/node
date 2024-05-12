@@ -43,7 +43,11 @@ trait Put {
         if(!array_key_exists('uuid', $options)){
             $options['uuid'] = false;
         }
-        $options['relation'] = false;
+        if(!array_key_exists('relation', $options)){
+            $options['relation'] = false;
+        }
+        $relation = $options['relation'];
+        $options['relation'] = false; //first put without relation
         if(!Security::is_granted(
             $name,
             $role,
@@ -95,6 +99,7 @@ trait Put {
         }
         $error = [];
         $result = [];
+        $object_data = null;
         foreach($nodeList as $nr => $node){
             if(
                 is_object($node) &&
@@ -143,6 +148,28 @@ trait Put {
                             if(array_key_exists($record->uuid, $uuid)){
                                 $list_nr = $uuid[$record->uuid];
                                 $list[$list_nr] = $record;
+                                if($relation === true){
+                                    $options['relation'] = true;
+                                    if(!$object_data){
+                                        $object_url = $object->config('project.dir.node') .
+                                            'Object' .
+                                            $object->config('ds') .
+                                            $name .
+                                            $object->config('extension.json')
+                                        ;
+                                        if (
+                                            $options['transaction'] === true ||
+                                            $options['memory'] === true
+                                        ) {
+                                            $object_data = $object->data_read($object_url, sha1($object_url));
+                                        } else {
+                                            $object_data = $object->data_read($object_url);
+                                        }
+                                    }
+                                    //need to update node here so it gets a relation.
+                                    $record = $this->relation($record, $object_data, $role, $options);
+                                    //collect relation mtime
+                                }
                                 if(
                                     array_key_exists('event', $options) &&
                                     $options['event'] === true
