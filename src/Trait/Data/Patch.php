@@ -145,6 +145,7 @@ trait Patch {
                             $role
                         );
                         $record = $node->data();
+                        d($record);
                         if(Core::object_is_empty($record)){
                             throw new Exception('Empty node after expose...');
                         }

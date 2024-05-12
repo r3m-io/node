@@ -487,7 +487,7 @@ trait Import {
                                 break;
                         }
                     }
-                    ddd($options);
+                    d($options);
                     $response = $this->update(
                         $class,
                         $role,
@@ -607,7 +607,8 @@ trait Import {
                 'import' => true,
                 'validation' => $options['validation'] ?? true,
                 'function' => $options['function'] ?? 'patch',
-                'event' => $options['event'] ?? false
+                'event' => $options['event'] ?? false,
+                'relation' => $options['relation'] ?? false
             ]);
             if(
                 array_key_exists('list', $response) &&
