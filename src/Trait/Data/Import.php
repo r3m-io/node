@@ -62,7 +62,7 @@ trait Import {
             d($debug[0]['function'] . $debug[0]['line'] . $debug[0]['file']);
             d($debug[1]['function'] . $debug[1]['line'] . $debug[1]['file']);
             d($debug[2]['function'] . $debug[2]['line'] . $debug[2]['file']);
-            ddd($options);
+            d($options);
             if(!array_key_exists('relation', $options)){
                 $options['relation'] = false;
             }
@@ -487,6 +487,7 @@ trait Import {
                                 break;
                         }
                     }
+                    ddd($options);
                     $response = $this->update(
                         $class,
                         $role,
