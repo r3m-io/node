@@ -43,6 +43,12 @@ trait Patch {
         if(!array_key_exists('relation', $options)){
             $options['relation'] = false;
         }
+        if(!array_key_exists('transaction', $options)){
+            $options['transaction'] = false;
+        }
+        if(!array_key_exists('memory', $options)){
+            $options['memory'] = false;
+        }
         $relation = $options['relation'];
         d($relation);
         $options['relation'] = false;
