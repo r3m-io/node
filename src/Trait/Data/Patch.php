@@ -40,6 +40,10 @@ trait Patch {
         if(!array_key_exists('import', $options)){
             $options['import'] = false;
         }
+        if(!array_key_exists('relation', $options)){
+            $options['relation'] = false;
+        }
+        $relation = $options['relation'];
         $options['relation'] = false;
         if(!Security::is_granted(
             $class,
@@ -147,6 +151,10 @@ trait Patch {
                             if(array_key_exists($record->uuid, $uuid)){
                                 $list_nr = $uuid[$record->uuid];
                                 $list[$list_nr] = $record;
+                                if($relation === true){
+                                    //need to update node here so it gets a relation.
+                                    ddd('yes i do');
+                                }
                                 if(
                                     array_key_exists('event', $options) &&
                                     $options['event'] === true
