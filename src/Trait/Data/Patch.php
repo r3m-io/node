@@ -44,7 +44,7 @@ trait Patch {
             $options['relation'] = false;
         }
         $relation = $options['relation'];
-        ddd($relation);
+        d($relation);
         $options['relation'] = false;
         if(!Security::is_granted(
             $class,
