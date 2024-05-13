@@ -157,8 +157,8 @@ trait Patch {
                         if(property_exists($record, 'uuid')){
                             if(array_key_exists($record->uuid, $uuid)){
                                 $list_nr = $uuid[$record->uuid];
-                                $list[$list_nr] = $record;
                                 if($relation === true){
+                                    $list[$list_nr] = clone $record; //don't need relation
                                     $options['relation'] = true;
                                     if(!$object_data){
                                         $object_url = $object->config('project.dir.node') .
@@ -179,6 +179,8 @@ trait Patch {
                                     //need to update node here, so it gets a relation.
                                     $record = $this->relation($record, $object_data, $role, $options);
                                     //collect relation mtime
+                                } else {
+                                    $list[$list_nr] = $record;
                                 }
                                 if(
                                     array_key_exists('event', $options) &&

@@ -152,8 +152,8 @@ trait Create {
                         if(Core::object_is_empty($record)){
                             throw new Exception('Empty node after expose...');
                         }
-                        $list[] = $record;
                         if($relation === true){
+                            $list[] = clone $record; //don't need relation
                             $options['relation'] = true;
                             if(!$object_data){
                                 $object_url = $object->config('project.dir.node') .
@@ -174,6 +174,8 @@ trait Create {
                             //need to update node here so it gets a relation.
                             $record = $this->relation($record, $object_data, $role, $options);
                             //collect relation mtime
+                        } else {
+                            $list[] = $record;
                         }
                         if(
                             array_key_exists('event', $options) &&
