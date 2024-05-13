@@ -253,6 +253,7 @@ trait Put {
             $object->data(sha1($url), $data);
             $response['transaction'] = true;
         } else {
+            d($list);
             $write = $data->write($url);
             $response['byte'] = $write;
             $response['transaction'] = false;
