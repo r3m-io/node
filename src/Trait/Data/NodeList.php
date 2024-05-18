@@ -546,7 +546,10 @@ trait NodeList {
                                 }
                                 $count++;
                                 $result[$i] = 1;
-                                if ($count === ($options['page'] * $limit)) {
+                                if (
+                                    $limit !=='*' &&
+                                    $count === ($options['page'] * $limit)
+                                ) {
                                     break;
                                 }
                             }
@@ -697,9 +700,10 @@ trait NodeList {
                                 $key = implode('', $key);
                                 $list_filtered[$key] = $record;
                             }
-                            d($options['page']);
-                            d($limit);
-                            if($count === ($options['page'] * $limit)){
+                            if(
+                                $limit !== '*' &&
+                                $count === ($options['page'] * $limit)
+                            ){
                                 break;
                             }
                         }
