@@ -545,7 +545,7 @@ trait NodeList {
                                 }
                                 $count++;
                                 $result[$i] = 1;
-                                if ($count === $limit) {
+                                if ($count === ($page * $limit)) {
                                     break;
                                 }
                             }
@@ -696,7 +696,7 @@ trait NodeList {
                                 $key = implode('', $key);
                                 $list_filtered[$key] = $record;
                             }
-                            if($count === $limit){
+                            if($count === ($page * $limit)){
                                 break;
                             }
                         }
