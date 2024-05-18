@@ -709,6 +709,7 @@ trait NodeList {
                         }
                     }
                     $list = $list_filtered;
+                    d($list);
                     if(
                         !empty($options['sort']) &&
                         is_array($options['sort'])
