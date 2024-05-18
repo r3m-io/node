@@ -712,6 +712,7 @@ trait NodeList {
                             */
                         }
                     }
+                    d($options['sort']);
                     $list = $list_filtered;
                     d($list);
                     if(
