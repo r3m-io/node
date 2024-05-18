@@ -142,14 +142,14 @@ trait Page {
                 $limit = $options['limit'] ?? 4096;
                 $counter = 0;
                 $page = 1;
-                $record = false;
-                d($list);
+                $is_found = false;
                 foreach($list as $index => $record){
                     if(
                         is_object($record) &&
                         property_exists($record, 'uuid') &&
                         $record->uuid === $options['uuid']
                     ){
+                        $is_found = true;
                         break;
                     }
                     if($counter >= $limit){
@@ -158,8 +158,7 @@ trait Page {
                     }
                     $counter++;
                 }
-                d($record);
-                if($record){
+                if($is_found){
                     return $page;
                 }
             }
