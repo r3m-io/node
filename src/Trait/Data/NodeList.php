@@ -765,6 +765,7 @@ trait NodeList {
                 $list_temp = [];
                 $list_count = 0;
                 $index_counter = 0;
+                d($list_sort);
                 foreach($list_sort as $index => $record){
                     if(
                         $index_counter < ($page - 1) * $limit
