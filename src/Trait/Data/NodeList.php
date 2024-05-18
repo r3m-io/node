@@ -698,6 +698,7 @@ trait NodeList {
                                 $list_filtered[$key] = $record;
                             }
                             d($options['page']);
+                            d($limit);
                             if($count === ($options['page'] * $limit)){
                                 break;
                             }
