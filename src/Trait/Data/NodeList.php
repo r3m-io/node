@@ -67,6 +67,7 @@ trait NodeList {
                 $options['thread'] = 8;
             }
         }
+        $options['page'] = $options['page'] ?? 1;
         if (!Security::is_granted(
             $name,
             $role,
