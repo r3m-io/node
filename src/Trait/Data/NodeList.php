@@ -712,9 +712,7 @@ trait NodeList {
                             */
                         }
                     }
-                    d($options['sort']);
                     $list = $list_filtered;
-                    d($list);
                     if(
                         !empty($options['sort']) &&
                         is_array($options['sort'])
@@ -778,7 +776,6 @@ trait NodeList {
                 $list_temp = [];
                 $list_count = 0;
                 $index_counter = 0;
-                d($list_sort);
                 foreach($list_sort as $index => $record){
                     if(
                         $index_counter < ($page - 1) * $limit
