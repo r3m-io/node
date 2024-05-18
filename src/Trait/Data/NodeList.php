@@ -34,6 +34,7 @@ trait NodeList {
         $mtime = false;
         $name = Controller::name($class);
         $options = Core::object($options, Core::OBJECT_ARRAY);
+        d($options);
         $object = $this->object();
         $parse = false;
         if (!array_key_exists('function', $options)) {
