@@ -118,6 +118,7 @@ trait Create {
                 $validate = (object) ['success' => true];
             } else {
                 try {
+                    d($object->request());
                     $validate = $this->validate($object, $validate_url,  $name . '.create', $options['function']);
                 }
                 catch (Exception $exception){
