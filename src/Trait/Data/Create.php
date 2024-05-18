@@ -117,7 +117,6 @@ trait Create {
             ){
                 $validate = (object) ['success' => true];
             } else {
-                d($object->request());
                 try {
                     $validate = $this->validate($object, $validate_url,  $name . '.create', $options['function']);
                 }
