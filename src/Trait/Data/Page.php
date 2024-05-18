@@ -158,6 +158,7 @@ trait Page {
                     }
                     $counter++;
                 }
+                d($record);
                 if($record){
                     return $page;
                 }
