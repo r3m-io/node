@@ -143,6 +143,7 @@ trait Page {
                 $counter = 0;
                 $page = 1;
                 $record = false;
+                d($list);
                 foreach($list as $index => $record){
                     if(
                         is_object($record) &&
