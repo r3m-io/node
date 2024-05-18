@@ -546,12 +546,14 @@ trait NodeList {
                                 }
                                 $count++;
                                 $result[$i] = 1;
+                                /*
                                 if (
                                     $limit !=='*' &&
                                     $count === ($options['page'] * $limit)
                                 ) {
                                     break;
                                 }
+                                */
                             }
                             return $result;
                         };
@@ -700,12 +702,14 @@ trait NodeList {
                                 $key = implode('', $key);
                                 $list_filtered[$key] = $record;
                             }
+                            /*
                             if(
                                 $limit !== '*' &&
                                 $count === ($options['page'] * $limit)
                             ){
                                 break;
                             }
+                            */
                         }
                     }
                     $list = $list_filtered;
