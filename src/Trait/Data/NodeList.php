@@ -483,7 +483,6 @@ trait NodeList {
                                         $record = $parse->compile($record, $object->data(), $parse->storage());
                                         $chunks[$chunk_nr][$i] = $record;
                                     }
-
                                     $chunk[$i] = $record;
                                 }
                             }

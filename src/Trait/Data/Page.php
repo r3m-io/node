@@ -142,6 +142,7 @@ trait Page {
                 $limit = $options['limit'] ?? 4096;
                 $counter = 0;
                 $page = 1;
+                $record = false;
                 foreach($list as $index => $record){
                     if(
                         is_object($record) &&
@@ -156,7 +157,9 @@ trait Page {
                     }
                     $counter++;
                 }
-                return $page;
+                if($record){
+                    return $page;
+                }
             }
         }
         return false;
