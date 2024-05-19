@@ -563,7 +563,7 @@ trait Import {
                 'import' => true,
                 'uuid' => $options['uuid'],
                 'validation' => $options['validation'] ?? true,
-                'function' => $options['function'] ?? 'create',
+                'function' => 'create',
                 'event' => $options['event'] ?? false,
                 'relation' => $options['relation'] ?? false
             ]);
