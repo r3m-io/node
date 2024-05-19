@@ -582,7 +582,7 @@ trait Import {
             $response = $this->put_many($name, $role, $put_many, [
                 'import' => true,
                 'validation' => $options['validation'] ?? true,
-                'function' => $options['function'] ?? 'put',
+                'function' => 'put',
                 'event' => $options['event'] ?? false,
                 'relation' => $options['relation'] ?? false
             ]);
@@ -602,7 +602,7 @@ trait Import {
             $response = $this->patch_many($name, $role, $patch_many, [
                 'import' => true,
                 'validation' => $options['validation'] ?? true,
-                'function' => $options['function'] ?? 'patch',
+                'function' => 'patch',
                 'event' => $options['event'] ?? false,
                 'relation' => $options['relation'] ?? false
             ]);
