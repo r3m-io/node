@@ -31,6 +31,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
     $url = false;
     $name = false;
     $allow_empty = false;
+    $uuid = $object->request('node.uuid');
     if (is_object($validate)) {
         if (property_exists($validate, 'class')) {
             $name = Controller::name($validate->class);
@@ -57,7 +58,11 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
                 $value[0] === '' &&
                 array_key_exists(0, $explode)
             ){
-                throw new Exception('Is.Unique: ' . $explode[0] . ' is empty');
+                $logger_node = $object->logger('node');
+                if($logger_node){
+                    $logger_node->info('Is.Unique: ' . $explode[0] . ' is empty', [ $uuid ]);
+                }
+                return false;
             }
         }
         if(property_exists($validate, 'allow_empty')) {
@@ -137,7 +142,6 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
     }
     $options['memory'] = true;
     $node = new Node($object);
-    $uuid = $object->request('node.uuid');
     $response = $node->record($name, $node->role_system(), $options);
     if(
         !empty($response) &&
