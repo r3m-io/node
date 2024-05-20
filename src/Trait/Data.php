@@ -70,10 +70,14 @@ trait Data {
         }
         $options['relation'] = false;
         $force = false;
-        if(array_key_exists('force', $options)){
+        if(
+            array_key_exists('force', $options) &&
+            $options['force'] === true
+        ){
             $force = $options['force'];
             unset($options['force']);
         }
+        ddd($force);
         if(!Security::is_granted(
             'Data',
             $role,
