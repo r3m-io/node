@@ -266,17 +266,17 @@ trait Data {
         ){
             $expose->set('object', $objects['object']);
         }
-        $data->set($class . '.count.expose', [ $expose->data() ]);
-        $data->set($class . '.create.expose', [ $expose->data() ]);
+        $data->set($class . '.count.output', [ $expose->data() ]);
+        $data->set($class . '.create.output', [ $expose->data() ]);
 //        $data->set($class . '.create_many.expose', [ $expose->data() ]);
-        $data->set($class . '.list.expose', [ $expose->data() ]);
-        $data->set($class . '.page.expose', [ $expose->data() ]);
-        $data->set($class . '.patch.expose', [ $expose->data() ]);
+        $data->set($class . '.list.output', [ $expose->data() ]);
+        $data->set($class . '.page.output', [ $expose->data() ]);
+        $data->set($class . '.patch.output', [ $expose->data() ]);
 //        $data->set($class . '.patch_many.expose', [ $expose->data() ]);
-        $data->set($class . '.put.expose', [ $expose->data() ]);
+        $data->set($class . '.put.output', [ $expose->data() ]);
 //        $data->set($class . '.put_many.expose', [ $expose->data() ]);
-        $data->set($class . '.read.expose', [ $expose->data() ]);
-        $data->set($class . '.record.expose', [ $expose->data() ]);
+        $data->set($class . '.read.output', [ $expose->data() ]);
+        $data->set($class . '.record.output', [ $expose->data() ]);
         return $data->data();
     }
 
@@ -311,13 +311,13 @@ trait Data {
                 if(!empty($objects)){
                     $result['object'][$property->name] = [
                         'multiple' => $multiple,
-                        'expose' => $expose,
+                        'output' => $expose,
                         'object' => $objects
                     ];
                 } else {
                     $result['object'][$property->name] = [
                         'multiple' => $multiple,
-                        'expose' => $expose
+                        'output' => $expose
                     ];
                 }
             }
