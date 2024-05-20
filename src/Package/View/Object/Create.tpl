@@ -2,7 +2,6 @@
 {{$options = options()}}
 {{$class = data.extract('options.class')}}
 {{$force = data.extract('options.force')}}
-{{dd($force)}}
 {{if(is.empty($class))}}
 You need to provide the option class for the new class name.
 {{else}}
