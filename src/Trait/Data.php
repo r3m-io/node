@@ -77,7 +77,6 @@ trait Data {
             $force = $options['force'];
             unset($options['force']);
         }
-        ddd($force);
         if(!Security::is_granted(
             'Data',
             $role,
