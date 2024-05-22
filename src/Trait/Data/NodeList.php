@@ -543,8 +543,14 @@ trait NodeList {
                                         continue;
                                     }
                                 }
-                                $count++;
                                 $result[$i] = 1;
+                                if(
+                                    $limit === 1 &&
+                                    $options['page'] === 1
+                                ){
+                                    break;
+                                }
+                                $count++;
                                 /*
                                 if (
                                     $limit !=='*' &&
@@ -700,6 +706,9 @@ trait NodeList {
                                 }
                                 $key = implode('', $key);
                                 $list_filtered[$key] = $record;
+                            }
+                            if($limit === 1 && $options['page'] === 1){
+                                break;
                             }
                             /*
                             if(

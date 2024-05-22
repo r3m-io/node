@@ -343,6 +343,30 @@ trait Data {
         return $is_unique;
     }
 
+    public function object_create_type_available(): void
+    {
+        echo 'Available types:' . PHP_EOL;
+        $array = $this->object_create_type_available_array();
+        foreach($array as $nr => $type){
+            echo '    - ' . $type . PHP_EOL;
+        }
+    }
+
+    public function object_create_type_available_array(): array
+    {
+        return [
+            'array',
+            'boolean',
+            'float',
+            'integer',
+            'null',
+            'object',
+            'string',
+            'uuid',
+            'relation'
+        ];
+    }
+
     /**
      * @throws ObjectException
      */
@@ -358,44 +382,16 @@ trait Data {
                 }
                 break;
             }
-            echo 'Available types:' . PHP_EOL;
-            echo '    - array' . PHP_EOL;
-            echo '    - boolean' . PHP_EOL;
-            echo '    - float' . PHP_EOL;
-            echo '    - int' . PHP_EOL;
-            echo '    - null' . PHP_EOL;
-            echo '    - object' . PHP_EOL;
-            echo '    - string' . PHP_EOL;
-            echo '    - uuid' . PHP_EOL;
-            echo '    - relation' . PHP_EOL;
+            $this->object_create_type_available();
             $type = Cli::read('input', 'Enter the "type" of the property: ');
             while(
             !in_array(
                 $type,
-                [
-                    'array',
-                    'boolean',
-                    'float',
-                    'int',
-                    'null',
-                    'object',
-                    'string',
-                    'uuid',
-                    'relation',
-                ],
+                $this->object_create_type_available_array(),
                 true
             )
             ){
-                echo 'Available types:' . PHP_EOL;
-                echo '    - array' . PHP_EOL;
-                echo '    - boolean' . PHP_EOL;
-                echo '    - float' . PHP_EOL;
-                echo '    - int' . PHP_EOL;
-                echo '    - null' . PHP_EOL;
-                echo '    - object' . PHP_EOL;
-                echo '    - string' . PHP_EOL;
-                echo '    - uuid' . PHP_EOL;
-                echo '    - relation' . PHP_EOL;
+                $this->object_create_type_available();
                 $type = Cli::read('input', 'Enter the "type" of the property: ');
             }
             if($type === 'relation'){
@@ -435,17 +431,18 @@ trait Data {
                     if(empty($has_property_name)){
                         break;
                     }
-                    echo 'Available types:' . PHP_EOL;
-                    echo '    - array' . PHP_EOL;
-                    echo '    - boolean' . PHP_EOL;
-                    echo '    - float' . PHP_EOL;
-                    echo '    - int' . PHP_EOL;
-                    echo '    - null' . PHP_EOL;
-                    echo '    - object' . PHP_EOL;
-                    echo '    - string' . PHP_EOL;
-                    echo '    - uuid' . PHP_EOL;
-                    echo '    - relation' . PHP_EOL;
-                    $has_property_type = Cli::read('input', 'Enter the "type" of the property: ');
+                    $this->object_create_type_available();
+                    $has_property_type = null;
+                    while(
+                        !in_array(
+                            $has_property_type,
+                            $this->object_create_type_available_array(),
+                            true
+                        )
+                    ){
+                        $this->object_create_type_available();
+                        $has_property_type = Cli::read('input', 'Enter the "type" of the property: ');
+                    }
                     if($has_property_type === 'object'){
                         $has_property_is_multiple = Cli::read('input', 'Are there multiple objects (y/n): ');
                         if($has_property_is_multiple === 'y'){
