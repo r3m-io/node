@@ -111,10 +111,6 @@ trait Create {
                 $object->request('node.uuid', Core::uuid());
             }
             $object->request('node.#class', $name);
-            d($object->request());
-
-
-
             if(
                 array_key_exists('validation', $options) &&
                 $options['validation'] === false
