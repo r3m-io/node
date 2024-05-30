@@ -554,6 +554,7 @@ trait Where {
                                 'strict' => $set[2]['strict'] ?? true
                             ]
                         ];
+                        d($filter);
                         $and = Filter::list($list)->where($filter_where);
                         if (!empty($and)) {
                             $where[$key] = true;
