@@ -232,6 +232,7 @@ trait Create {
                 }
             }
         }
+
         $object->config('delete', 'r3m.io.node.import.list');
         if(!empty($error)){
             $response = [];
