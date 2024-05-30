@@ -79,12 +79,12 @@ function validate_in_json(App $object, $request=null, $field='', $argument='', $
                         case 'record':
                             $node = new Node($object);
                             $data_where = $node->where($data_key, $where);
+                            if(!empty($data_where)){
+                                return !$inverse;
+                            }
                             break;
                         default:
                             throw new Exception('Type (' . $type . ') not supported in ' . __FUNCTION__ . ', supported types: list, record');
-                    }
-                    if(!empty($data_filter)){
-                        return !$inverse;
                     }
                 } else {
                     throw new Exception('Key (' . $key . ') is scalar in ' . __FUNCTION__ . ', expected array, object');
