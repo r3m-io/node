@@ -13,6 +13,8 @@ use R3m\Io\App;
 use R3m\Io\Module\Data;
 use R3m\Io\Module\Filter;
 
+use R3m\Io\Node\Model\Node;
+
 use R3m\Io\Exception\ObjectException;
 use R3m\Io\Exception\FileWriteException;
 
@@ -53,35 +55,29 @@ function validate_in_json(App $object, $request=null, $field='', $argument='', $
                 ddd($data_key);
             } else {
                 $data_key = $data->data();
-
-                ddd($data_key);
-
-
                 if(
                     $data_key !==null &&
                     !is_scalar($data_key)
-                ){
-                    if($type === Filter::TYPE_AUTO){
+                ) {
+                    if ($type === Filter::TYPE_AUTO) {
                         $type = Filter::is_type($data_key);
                     }
-                    switch($type){
+                    switch ($type) {
                         case 'list':
+                            ddd('list');
+                            $node = new Node();
                             $data_filter = Filter::list($data_key)->where($filter);
                             break;
                         case 'record':
+                            ddd('record');
+                            $node = new Node();
                             $data_filter = Filter::record($data_key)->where($filter);
                             break;
                         default:
                             throw new Exception('Type (' . $type . ') not supported in ' . __FUNCTION__ . ', supported types: list, record');
                     }
-                    if(!empty($data_filter)){
-                        return !$inverse;
-                    }
-                } else {
-                    throw new Exception('Key (' . $key . ') is scalar in ' . __FUNCTION__ . ', expected array, object');
                 }
             }
-
         }
         elseif($filter){
             if($key) {
