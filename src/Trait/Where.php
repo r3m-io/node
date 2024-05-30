@@ -2,10 +2,9 @@
 
 namespace R3m\Io\Node\Trait;
 
-use R3m\Io\Module\File;
+use R3m\Io\Module\Core;
 use R3m\Io\Module\Filter;
 use R3m\Io\Module\Parse\Token;
-
 
 use Exception;
 
@@ -589,6 +588,7 @@ trait Where {
                         }
                         return $set;
                     }
+                    return $set;
                 case 'xor' :
                     $operator = 'xor';
                     $list = [];
@@ -641,8 +641,6 @@ trait Where {
                     $set = [];
                     $set[0] = false;
                     return $set;
-
-
             }
         }
         return null;
@@ -656,6 +654,8 @@ trait Where {
         if(empty($where)){
             return $record;
         }
+        $where = Core::object($where, Core::OBJECT_ARRAY);
+        $options = Core::object($options, Core::OBJECT_ARRAY);
         $deepest = $this->where_get_depth($where);
         $counter =0;
         while($deepest >= 0){
