@@ -658,6 +658,7 @@ trait Where {
      */
     public function where($record, $where=[], $options=[]): false | array | object
     {
+        d($where);
         if(empty($where)){
             return $record;
         }
