@@ -64,20 +64,30 @@ function validate_in_json(App $object, $request=null, $field='', $argument='', $
                     }
                     switch ($type) {
                         case 'list':
-                            ddd('list');
+                            $list = [];
                             $node = new Node($object);
-                            $data_filter = Filter::list($data_key)->where($filter);
+                            foreach($data_key as $nr => $record){
+                                $data_where = $node->where($record, $where);
+                                if(!empty($data_where)){
+                                    $list[] = $record;
+                                }
+                            }
+                            if(!empty($list)){
+                                return !$inverse;
+                            }
                             break;
                         case 'record':
                             $node = new Node($object);
                             $data_where = $node->where($data_key, $where);
-                            ddd($data_where);
-
-                            $data_filter = Filter::record($data_key)->where($filter);
                             break;
                         default:
                             throw new Exception('Type (' . $type . ') not supported in ' . __FUNCTION__ . ', supported types: list, record');
                     }
+                    if(!empty($data_filter)){
+                        return !$inverse;
+                    }
+                } else {
+                    throw new Exception('Key (' . $key . ') is scalar in ' . __FUNCTION__ . ', expected array, object');
                 }
             }
         }
