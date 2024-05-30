@@ -299,7 +299,6 @@ trait Where {
      */
     private function where_process($record, $set=[], &$where=[], &$key=null, &$operator=null, $options=[]): ?array
     {
-        d($set);
         $count = count($set);
         if(
             array_key_exists(0, $set) &&
@@ -554,7 +553,6 @@ trait Where {
                                 'strict' => $set[2]['strict'] ?? true
                             ]
                         ];
-                        d($filter_where);
                         $and = Filter::list($list)->where($filter_where);
                         if (!empty($and)) {
                             $where[$key] = true;
@@ -660,7 +658,6 @@ trait Where {
      */
     public function where($record, $where=[], $options=[]): false | array | object
     {
-        d($where);
         if(empty($where)){
             return $record;
         }
