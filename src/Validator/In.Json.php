@@ -56,93 +56,70 @@ function validate_in_json(App $object, $request=null, $field='', $argument='', $
                 ddd($data_key);
             } else {
                 $data_key = $data->data();
-                if(
-                    $data_key !==null &&
-                    !is_scalar($data_key)
-                ) {
-                    if ($type === Filter::TYPE_AUTO) {
-                        $type = Filter::is_type($data_key);
-                    }
-                    switch ($type) {
-                        case 'list':
-                            $list = [];
-                            $node = new Node($object);
-                            foreach($data_key as $nr => $record){
-                                $data_where = $node->where($record, $where);
-                                if(!empty($data_where)){
-                                    $list[] = $record;
-                                }
-                            }
-                            if(!empty($list)){
-                                return !$inverse;
-                            }
-                            break;
-                        case 'record':
-                            $node = new Node($object);
-                            $data_where = $node->where($data_key, $where);
-                            if(!empty($data_where)){
-                                return !$inverse;
-                            }
-                            break;
-                        default:
-                            throw new Exception('Type (' . $type . ') not supported in ' . __FUNCTION__ . ', supported types: list, record');
-                    }
-                } else {
-                    throw new Exception('Key (' . $key . ') is scalar in ' . __FUNCTION__ . ', expected array, object');
+            }
+            if(
+                $data_key !==null &&
+                !is_scalar($data_key)
+            ) {
+                if ($type === Filter::TYPE_AUTO) {
+                    $type = Filter::is_type($data_key);
                 }
+                switch ($type) {
+                    case 'list':
+                        $list = [];
+                        $node = new Node($object);
+                        foreach($data_key as $nr => $record){
+                            $data_where = $node->where($record, $where);
+                            if(!empty($data_where)){
+                                $list[] = $record;
+                            }
+                        }
+                        if(!empty($list)){
+                            return !$inverse;
+                        }
+                        break;
+                    case 'record':
+                        $node = new Node($object);
+                        $data_where = $node->where($data_key, $where);
+                        if(!empty($data_where)){
+                            return !$inverse;
+                        }
+                        break;
+                    default:
+                        throw new Exception('Type (' . $type . ') not supported in ' . __FUNCTION__ . ', supported types: list, record');
+                }
+            } else {
+                throw new Exception('Key (' . $key . ') is scalar in ' . __FUNCTION__ . ', expected array, object');
             }
         }
         elseif($filter){
             if($key) {
                 $data_key = $data->data($key);
-                if (
-                    $data_key !==null &&
-                    !is_scalar($data_key)
-                ) {
-                    if($type === Filter::TYPE_AUTO){
-                        $type = Filter::is_type($data_key);
-                    }
-                    switch($type){
-                        case 'list':
-                            $data_filter = Filter::list($data_key)->where($filter);
-                            break;
-                        case 'record':
-                            $data_filter = Filter::record($data_key)->where($filter);
-                            break;
-                        default:
-                            throw new Exception('Type (' . $type . ') not supported in ' . __FUNCTION__ . ', supported types: list, record');
-                    }
-                    if(!empty($data_filter)){
-                        return !$inverse;
-                    }
-                } else {
-                    throw new Exception('Key (' . $key . ') is scalar in ' . __FUNCTION__ . ', expected array, object');
-                }
             } else {
                 $data_key = $data->data();
-                if(
-                    $data_key !==null &&
-                    !is_scalar($data_key)
-                ){
-                    if($type === Filter::TYPE_AUTO){
-                        $type = Filter::is_type($data_key);
-                    }
-                    switch($type){
-                        case 'list':
-                            $data_filter = Filter::list($data_key)->where($filter);
-                            break;
-                        case 'record':
-                            $data_filter = Filter::record($data_key)->where($filter);
-                            break;
-                        default:
-                            throw new Exception('Type (' . $type . ') not supported in ' . __FUNCTION__ . ', supported types: list, record');
-                    }
-                    if(!empty($data_filter)){
-                        return !$inverse;
-                    }
-                } else {
-                    throw new Exception('Key (' . $key . ') is scalar in ' . __FUNCTION__ . ', expected array, object');
+            }
+            if (
+                $data_key !==null &&
+                !is_scalar($data_key)
+            ) {
+                if($type === Filter::TYPE_AUTO){
+                    $type = Filter::is_type($data_key);
                 }
+                switch($type){
+                    case 'list':
+                        $data_filter = Filter::list($data_key)->where($filter);
+                        break;
+                    case 'record':
+                        $data_filter = Filter::record($data_key)->where($filter);
+                        break;
+                    default:
+                        throw new Exception('Type (' . $type . ') not supported in ' . __FUNCTION__ . ', supported types: list, record');
+                }
+                if(!empty($data_filter)){
+                    return !$inverse;
+                }
+            } else {
+                throw new Exception('Key (' . $key . ') is scalar in ' . __FUNCTION__ . ', expected array, object');
             }
         }
     }
