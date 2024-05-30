@@ -298,7 +298,7 @@ trait Where {
     /**
      * @throws Exception
      */
-    private function where_process($record=[], $set=[], &$where=[], &$key=null, &$operator=null, $options=[]): ?array
+    private function where_process($record, $set=[], &$where=[], &$key=null, &$operator=null, $options=[]): ?array
     {
         $count = count($set);
         if(
@@ -651,7 +651,7 @@ trait Where {
     /**
      * @throws Exception
      */
-    private function where($record=[], $where=[], $options=[]): false | array | object
+    public function where($record, $where=[], $options=[]): false | array | object
     {
         if(empty($where)){
             return $record;

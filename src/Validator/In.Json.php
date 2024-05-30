@@ -65,12 +65,14 @@ function validate_in_json(App $object, $request=null, $field='', $argument='', $
                     switch ($type) {
                         case 'list':
                             ddd('list');
-                            $node = new Node();
+                            $node = new Node($object);
                             $data_filter = Filter::list($data_key)->where($filter);
                             break;
                         case 'record':
-                            ddd('record');
-                            $node = new Node();
+                            $node = new Node($object);
+                            $data_where = $node->where($data_key, $where);
+                            ddd($data_where);
+
                             $data_filter = Filter::record($data_key)->where($filter);
                             break;
                         default:
