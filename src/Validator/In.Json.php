@@ -52,8 +52,6 @@ function validate_in_json(App $object, $request=null, $field='', $argument='', $
         if($where){
             if($key) {
                 $data_key = $data->data($key);
-                d($key);
-                ddd($data_key);
             } else {
                 $data_key = $data->data();
             }
