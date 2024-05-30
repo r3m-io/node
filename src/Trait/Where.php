@@ -319,7 +319,8 @@ trait Where {
                 $filter_where = [
                     $set[0]['attribute'] => [
                         'value' => $set[0]['value'],
-                        'operator' => $set[0]['operator']
+                        'operator' => $set[0]['operator'],
+                        'strict' => $set[0]['strict'] ?? true
                     ]
                 ];
                 /*
@@ -471,7 +472,8 @@ trait Where {
                         $filter_where = [
                             $set[0]['attribute'] => [
                                 'value' => $set[0]['value'],
-                                'operator' => $set[0]['operator']
+                                'operator' => $set[0]['operator'],
+                                'strict' => $set[0]['strict'] ?? true
                             ]
                         ];
                         $left = Filter::list($list)->where($filter_where);
@@ -487,7 +489,8 @@ trait Where {
                         $filter_where = [
                             $set[2]['attribute'] => [
                                 'value' => $set[2]['value'],
-                                'operator' => $set[2]['operator']
+                                'operator' => $set[2]['operator'],
+                                'strict' => $set[2]['strict'] ?? true
                             ]
                         ];
                         $right = Filter::list($list)->where($filter_where);
@@ -541,11 +544,13 @@ trait Where {
                         $filter_where = [
                             $set[0]['attribute'] => [
                                 'value' => $set[0]['value'],
-                                'operator' => $set[0]['operator']
+                                'operator' => $set[0]['operator'],
+                                'strict' => $set[0]['strict'] ?? true
                             ],
                             $set[2]['attribute'] => [
                                 'value' => $set[2]['value'],
-                                'operator' => $set[2]['operator']
+                                'operator' => $set[2]['operator'],
+                                'strict' => $set[2]['strict'] ?? true
                             ]
                         ];
                         $and = Filter::list($list)->where($filter_where);
@@ -573,7 +578,8 @@ trait Where {
                         $filter_where = [
                             $set[2]['attribute'] => [
                                 'value' => $set[2]['value'],
-                                'operator' => $set[2]['operator']
+                                'operator' => $set[2]['operator'],
+                                'strict' => $set[2]['strict'] ?? true
                             ]
                         ];
                         $and = Filter::list($list)->where($filter_where);
@@ -618,7 +624,8 @@ trait Where {
                             $filter_where = [
                                 $true['attribute'] => [
                                     'value' => $true['value'],
-                                    'operator' => $true['operator']
+                                    'operator' => $true['operator'],
+                                    'strict' => $true['strict'] ?? true
                                 ]
                             ];
                             $current = Filter::list($list)->where($filter_where);
