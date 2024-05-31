@@ -455,7 +455,6 @@ trait Data {
                     if(empty($has_property_name)){
                         break;
                     }
-                    $this->object_create_type_available();
                     $has_property_type = null;
                     while(
                         !in_array(
