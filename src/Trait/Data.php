@@ -357,14 +357,18 @@ trait Data {
         return [
             'array',
             'boolean',
+            'date',
+            'datetime',
+            'dynamic',
             'float',
             'integer',
+            'microtime',
             'null',
             'object',
-            'dynamic',
             'string',
+            'time',
             'uuid',
-            'relation'
+            'relation',
         ];
     }
 
@@ -525,6 +529,34 @@ trait Data {
                             'property' => $this->object_create_property($object, $class, ++$deep),
                             'multiple' => $has_property_is_multiple
                         ];
+                    }
+                    elseif($has_property_type==='microtime'){
+                        $has_property_properties[] = (object) [
+                            'name' => $name,
+                            'type' => 'float',
+                            'is_' . $has_property_type => true
+                        ];
+                    }
+                    elseif($has_property_type==='time'){
+                        $has_property_properties[] = (object) [
+                            'name' => $name,
+                            'type' => 'integer',
+                            'is_' . $has_property_type => true
+                        ];
+                    }
+                    elseif($has_property_type==='datetime'){
+                        $has_property_properties[] = (object) [
+                            'name' => $name,
+                            'type' => 'integer',
+                            'is_' . $has_property_type => true
+                        ];
+                    }
+                    elseif($has_property_type==='date'){
+                        $has_property_properties[] = (object) [
+                            'name' => $name,
+                            'type' => 'integer',
+                            'is_' . $has_property_type => true
+                        ];
                     } else {
                         $has_property_properties[] = (object) [
                             'name' => $has_property_name,
@@ -539,6 +571,42 @@ trait Data {
                     'multiple' => $is_multiple
                 ];
                 echo 'Object added...' . PHP_EOL;
+            }
+            elseif($type==='microtime'){
+                $properties[] = (object) [
+                    'name' => $name,
+                    'type' => [
+                        'float',
+                        $type
+                    ]
+                ];
+            }
+            elseif($type==='time'){
+                $properties[] = (object) [
+                    'name' => $name,
+                    'type' => [
+                        'integer',
+                        $type
+                    ]
+                ];
+            }
+            elseif($type==='datetime'){
+                $properties[] = (object) [
+                    'name' => $name,
+                    'type' => [
+                        'integer',
+                        $type
+                    ]
+                ];
+            }
+            elseif($type==='date'){
+                $properties[] = (object) [
+                    'name' => $name,
+                    'type' => [
+                        'integer',
+                        $type
+                    ]
+                ];
             } else {
                 $properties[] = (object) [
                     'name' => $name,
