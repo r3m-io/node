@@ -533,29 +533,37 @@ trait Data {
                     elseif($has_property_type==='microtime'){
                         $has_property_properties[] = (object) [
                             'name' => $name,
-                            'type' => 'float',
-                            'is_' . $has_property_type => true
+                            'type' => [
+                                'float',
+                                $has_property_type
+                            ]
                         ];
                     }
                     elseif($has_property_type==='time'){
                         $has_property_properties[] = (object) [
                             'name' => $name,
-                            'type' => 'integer',
-                            'is_' . $has_property_type => true
+                            'type' => [
+                                'integer',
+                                $has_property_type
+                            ]
                         ];
                     }
                     elseif($has_property_type==='datetime'){
                         $has_property_properties[] = (object) [
                             'name' => $name,
-                            'type' => 'integer',
-                            'is_' . $has_property_type => true
+                            'type' => [
+                                'integer',
+                                $has_property_type
+                            ]
                         ];
                     }
                     elseif($has_property_type==='date'){
                         $has_property_properties[] = (object) [
                             'name' => $name,
-                            'type' => 'integer',
-                            'is_' . $has_property_type => true
+                            'type' => [
+                                'integer',
+                                $has_property_type
+                            ]
                         ];
                     } else {
                         $has_property_properties[] = (object) [
