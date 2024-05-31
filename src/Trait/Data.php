@@ -395,6 +395,7 @@ trait Data {
                 $this->object_create_type_available();
                 $type = Cli::read('input', 'Enter the "type" of the property: ');
             }
+            ddd($type);
             if($type === 'relation'){
                 $is_multiple_relation = Cli::read('input', 'Are there multiple relations (y/n): ');
                 if($is_multiple_relation === 'y'){
@@ -430,14 +431,14 @@ trait Data {
                         'name' => $name,
                         'type' => 'array',
                         'dynamic' => true,
-                        'is_multiple' => $is_multiple_dynamic,
+                        'is_multiple' => true,
                     ];
                 } else {
                     $properties[] = (object) [
                         'name' => $name,
                         'type' => 'object',
                         'dynamic' => true,
-                        'is_multiple' => $is_multiple_dynamic,
+                        'is_multiple' => false,
                     ];
                 }
             }
