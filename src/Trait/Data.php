@@ -467,7 +467,53 @@ trait Data {
                         $this->object_create_type_available();
                         $has_property_type = Cli::read('input', 'Enter the "type" of the property: ');
                     }
-                    if($has_property_type === 'object'){
+                    if($has_property_type === 'relation'){
+                        $is_multiple_relation = Cli::read('input', 'Are there multiple relations (y/n): ');
+                        if($is_multiple_relation === 'y'){
+                            $is_multiple_relation = true;
+                        } else {
+                            $is_multiple_relation = false;
+                        }
+                        if($is_multiple_relation){
+                            $has_property_properties[] = (object) [
+                                'name' => $name,
+                                'type' => 'array',
+                                'relation' => true,
+                                'is_multiple' => true,
+                            ];
+                        } else {
+                            $has_property_properties[] = (object) [
+                                'name' => $name,
+                                'type' => 'uuid',
+                                'relation' => true,
+                                'is_multiple' => false,
+                            ];
+                        }
+                    }
+                    elseif($has_property_type === 'dynamic'){
+                        $is_multiple_dynamic = Cli::read('input', 'Are there multiple dynamics (y/n): ');
+                        if($is_multiple_dynamic === 'y'){
+                            $is_multiple_dynamic = true;
+                        } else {
+                            $is_multiple_dynamic = false;
+                        }
+                        if($is_multiple_dynamic){
+                            $has_property_properties[] = (object) [
+                                'name' => $name,
+                                'type' => 'array',
+                                'dynamic' => true,
+                                'is_multiple' => true,
+                            ];
+                        } else {
+                            $has_property_properties[] = (object) [
+                                'name' => $name,
+                                'type' => 'object',
+                                'dynamic' => true,
+                                'is_multiple' => false,
+                            ];
+                        }
+                    }
+                    elseif($has_property_type === 'object'){
                         $has_property_is_multiple = Cli::read('input', 'Are there multiple objects (y/n): ');
                         if($has_property_is_multiple === 'y'){
                             $has_property_is_multiple = true;
