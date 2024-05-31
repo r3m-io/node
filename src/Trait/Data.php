@@ -395,7 +395,6 @@ trait Data {
                 $this->object_create_type_available();
                 $type = Cli::read('input', 'Enter the "type" of the property: ');
             }
-            ddd($type);
             if($type === 'relation'){
                 $is_multiple_relation = Cli::read('input', 'Are there multiple relations (y/n): ');
                 if($is_multiple_relation === 'y'){
