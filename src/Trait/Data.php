@@ -361,6 +361,7 @@ trait Data {
             'integer',
             'null',
             'object',
+            'dynamic',
             'string',
             'uuid',
             'relation'
@@ -414,6 +415,29 @@ trait Data {
                         'type' => 'uuid',
                         'relation' => true,
                         'is_multiple' => $is_multiple_relation,
+                    ];
+                }
+            }
+            elseif($type === 'dynamic'){
+                $is_multiple_dynamic = Cli::read('input', 'Are there multiple dynamics (y/n): ');
+                if($is_multiple_dynamic === 'y'){
+                    $is_multiple_dynamic = true;
+                } else {
+                    $is_multiple_dynamic = false;
+                }
+                if($is_multiple_dynamic){
+                    $properties[] = (object) [
+                        'name' => $name,
+                        'type' => 'array',
+                        'dynamic' => true,
+                        'is_multiple' => $is_multiple_dynamic,
+                    ];
+                } else {
+                    $properties[] = (object) [
+                        'name' => $name,
+                        'type' => 'object',
+                        'dynamic' => true,
+                        'is_multiple' => $is_multiple_dynamic,
                     ];
                 }
             }
