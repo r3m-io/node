@@ -350,6 +350,7 @@ trait Data {
         foreach($array as $nr => $type){
             echo '    - ' . $type . PHP_EOL;
         }
+        d('yes');
     }
 
     public function object_create_type_available_array(): array
