@@ -141,8 +141,12 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
         ];
     }
 //    $options['memory'] = true;
+    $start = microtime(true);
     $node = new Node($object);
     $response = $node->record($name, $node->role_system(), $options);
+    $end = microtime(true);
+    $duration = $end - $start;
+    echo 'Is.Unique: ' . ($duration * 1000) . ' msec' . PHP_EOL;
     if(
         !empty($response) &&
         is_array($response) &&
