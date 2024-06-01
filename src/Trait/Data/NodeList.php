@@ -151,6 +151,7 @@ trait NodeList {
         $mtime = File::mtime($data_url);
         $ramdisk_dir = false;
         $ramdisk_dir_node = false;
+        $ramdisk_dir_list = false;
         $ramdisk_url_node = false;
         $data = null;
         if (
