@@ -140,7 +140,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
             'function' => $function
         ];
     }
-    $options['memory'] = true;
+//    $options['memory'] = true;
     $node = new Node($object);
     $response = $node->record($name, $node->role_system(), $options);
     if(
