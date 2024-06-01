@@ -722,6 +722,8 @@ trait NodeList {
                         }
                     }
                     $list = $list_filtered;
+                    d($limit);
+                    d($options['page']);
                     if(
                         !empty($options['sort']) &&
                         is_array($options['sort'])
