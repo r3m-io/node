@@ -722,9 +722,13 @@ trait NodeList {
                         }
                     }
                     $list = $list_filtered;
-                    d($limit);
-                    d($options['page']);
                     if(
+                        $limit === 1 &&
+                        $options['page'] === 1
+                    ){
+                        $list_sort = $list;
+                    }
+                    elseif(
                         !empty($options['sort']) &&
                         is_array($options['sort'])
                     ){
