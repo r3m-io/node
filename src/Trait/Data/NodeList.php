@@ -261,37 +261,34 @@ trait NodeList {
                                 ){
                                     $operator = $filter['operator'];
                                     $value = $filter['value'];
-                                }
-                                if(
-                                    in_array(
-                                        $operator,
-                                        [
-                                            '===',
-                                            'strictly-exact',
-                                            'strictly-equal'
-                                        ],
-                                        true
-                                    )
-                                ){
                                     if(
-                                        property_exists($record, $attribute) &&
-                                        $record->{$attribute} === $value
-                                    ) {
-                                        $is_found = true;
-                                        ddd('found');
+                                        in_array(
+                                            $operator,
+                                            [
+                                                '===',
+                                                'strictly-exact',
+                                                'strictly-equal'
+                                            ],
+                                            true
+                                        )
+                                    ){
+                                        if(
+                                            property_exists($record, $attribute) &&
+                                            $record->{$attribute} === $value
+                                        ) {
+                                            $is_found = true;
+                                            ddd('found');
+                                        }
+                                        $sort = [
+                                            $value,
+                                            $record->attribute
+                                        ];
+                                        sort($sort, SORT_NATURAL);
+                                        ddd($sort);
                                     }
-                                    $sort = [
-                                        $value,
-                                        $record->attribute
-                                    ];
-                                    sort($sort, SORT_NATURAL);
-                                    ddd($sort);
                                 }
                             }
                         }
-
-
-
                         d($options);
                         d($record);
                         d($seek);
