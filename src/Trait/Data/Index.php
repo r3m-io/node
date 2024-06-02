@@ -61,6 +61,20 @@ trait Index {
                     'page' => 1
                 ]
             );
+            if(!array_key_exists('list', $select)){
+                return false; //no-data
+            }
+            $list = [];
+            foreach($select['list'] as $nr => $record){
+                $key = [];
+                foreach($filter_name as $attribute){
+                    if(!property_exists($record, $attribute)){
+                        continue; //no-data
+                    }
+                    $key[] = $record->{$attribute};
+                }
+                d($key);
+            }
             d($filter_name);
             ddd($select);
         }
