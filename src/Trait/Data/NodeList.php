@@ -303,12 +303,46 @@ trait NodeList {
                             }
                         }
                     }
-                    d($is_found);
-                    d($counter);
-                    d($seek);
-                    d($line);
-                    d($is_filter);
-                    ddd($options);
+                    if(
+                        $is_found === false &&
+                        $options['limit'] === 1 &&
+                        $options['page'] === 1
+                    ){
+                        $list = [];
+                        $result = [];
+                        $result['page'] = $options['page'];
+                        $result['limit'] = $options['limit'];
+                        $result['count'] = 0;
+                        $result['max'] = 0;
+                        $result['list'] = $list;
+                        $result['sort'] = $options['sort'] ?? [];
+                        if(!empty($options['filter'])) {
+                            $result['filter'] = $options['filter'];
+                        }
+                        if(!empty($options['where'])) {
+                            $result['where'] = $options['where'];
+                        }
+                        $result['relation'] = $options['relation'];
+                        $result['parse'] = $options['parse'];
+                        $result['pre-compile'] = $options['pre-compile'] ?? false;
+                        $result['ramdisk'] = $options['ramdisk'] ?? false;
+                        $result['mtime'] = $mtime;
+                        $result['transaction'] = $options['transaction'] ?? false;
+                        $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+                        return $result;
+                    }
+                    elseif(
+                        $is_found === true &&
+                        $options['limit'] === 1 &&
+                        $options['page'] === 1
+                    ){
+                        d($is_found);
+                        d($counter);
+                        d($seek);
+                        d($line);
+                        d($is_filter);
+                        ddd($options);
+                    }
                 }
             }
 
