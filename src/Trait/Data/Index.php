@@ -67,9 +67,7 @@ trait Index {
                 return false; //no-data
             }
             $list = [];
-            $sort = [];
             foreach($select['list'] as $nr => $record){
-                $key = [];
                 if(
                     is_object($record) &&
                     property_exists($record, 'uuid')
@@ -92,10 +90,9 @@ trait Index {
             if($url_index){
                 Dir::create($dir_index, Dir::CHMOD);
             }
-            $list_sort = Sort::list($list)->with([
+            $list = Sort::list($list)->with([
                 '#sort' => 'asc'
             ]);
-            ddd($list_sort);
             File::write($url_index, Core::object($list, Core::OBJECT_JSON));
             //file write to url_index
             d($filter_name);
