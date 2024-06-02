@@ -282,6 +282,16 @@ trait NodeList {
                                         ) {
                                             $is_found = true;
 
+                                            d($record->uuid);
+                                            foreach($data as $key => $item){
+                                                d($item);
+                                                if($item->uuid === $record->uuid){
+                                                    $record = $item;
+                                                    d('yes2');
+                                                    break;
+                                                }
+                                            }
+
                                             if(property_exists($data, $record->uuid)){
                                                 $record = $data->{$record->uuid};
                                                 d('yes');
