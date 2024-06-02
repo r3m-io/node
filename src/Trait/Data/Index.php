@@ -42,6 +42,7 @@ trait Index {
             $object->config('ds')
         ;
         $url_index = false;
+        //url_index should be in node/index
         if($filter_name){
             $url_index = $dir_index .
                 $name .
