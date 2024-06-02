@@ -45,6 +45,9 @@ trait NodeList {
         if (!array_key_exists('parse', $options)) {
             $options['parse'] = false;
         }
+        if (!array_key_exists('index', $options)) {
+            $options['index'] = false;
+        }
         if (!array_key_exists('transaction', $options)) {
             $options['transaction'] = false;
         }
@@ -149,6 +152,18 @@ trait NodeList {
             return $result;
         }
         $mtime = File::mtime($data_url);
+        if($options['index']){
+            $is_filter = false;
+            if (
+                !empty(
+                $options['filter']) &&
+                is_array($options['filter'])
+            ) {
+                $is_filter = true;
+            }
+            d($is_filter);
+            ddd($options);
+        }
         $ramdisk_dir = false;
         $ramdisk_dir_node = false;
         $ramdisk_dir_list = false;
