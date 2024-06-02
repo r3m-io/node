@@ -60,7 +60,6 @@ trait Index {
                 $select = [
                     'list' => $cache_select->get($name)
                 ];
-                ddd($select);
             } else {
                 $select = $this->list(
                     $name,
