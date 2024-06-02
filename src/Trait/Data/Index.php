@@ -107,7 +107,7 @@ trait Index {
             $output = implode(PHP_EOL, $result);
             File::write($url_index, $output);
             $cache = $object->data(App::CACHE);
-            ddd($cache);
+            ddd($cache->get(sha1($url_data)));
             return $url_index;
         }
         elseif($where_name){
