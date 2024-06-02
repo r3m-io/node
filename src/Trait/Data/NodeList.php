@@ -282,18 +282,16 @@ trait NodeList {
                                         ) {
                                             $is_found = true;
 
-                                            $expose = $this->expose_get(
-                                                $object,
-                                                $record->{'#class'},
-                                                $record->{'#class'} . '.' . $options['function'] . '.output'
-                                            );
-
                                             $record = $data->get($record->uuid);
 
 
                                             ddd($record);
 
-
+                                            $expose = $this->expose_get(
+                                                $object,
+                                                $record->{'#class'},
+                                                $record->{'#class'} . '.' . $options['function'] . '.output'
+                                            );
 
                                             $node = new Storage($record);
                                             $node = $this->expose(
