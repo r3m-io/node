@@ -67,16 +67,22 @@ trait Index {
             $list = [];
             foreach($select['list'] as $nr => $record){
                 $key = [];
-                foreach($filter_name as $attribute){
-                    if(!property_exists($record, $attribute)){
-                        continue; //no-data
+                if(
+                    is_object($record) &&
+                    property_exists($record, 'uuid')
+                ){
+                    foreach($filter_name as $attribute){
+                        if(!property_exists($record, $attribute)){
+                            continue; //no-data
+                        }
+                        $key[] = $record->{$attribute};
                     }
-                    $key[] = $record->{$attribute};
+                    $list[implode(',', $key)] = $record->uuid;
                 }
-                d($key);
+
             }
             d($filter_name);
-            ddd($select);
+            ddd($list);
         }
         elseif($where_name){
             $url_index = $dir_index .
