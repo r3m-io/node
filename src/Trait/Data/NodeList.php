@@ -320,12 +320,11 @@ trait NodeList {
                                             ){
                                                 $list = [];
                                                 $list[] = $record;
-                                                ddd($list);
                                                 $result = [];
                                                 $result['page'] = $options['page'];
                                                 $result['limit'] = $options['limit'];
-                                                $result['count'] = 0;
-                                                $result['max'] = 0;
+                                                $result['count'] =  $options['index']['count'];
+                                                $result['max'] = $options['index']['count'];
                                                 $result['list'] = $list;
                                                 $result['sort'] = $options['sort'] ?? [];
                                                 if(!empty($options['filter'])) {
