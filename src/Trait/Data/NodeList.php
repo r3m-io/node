@@ -284,6 +284,7 @@ trait NodeList {
 
                                             if(property_exists($data, $record->uuid)){
                                                 $record = $data->{$record->uuid};
+                                                d('yes');
                                             }
                                             ddd($record);
 
