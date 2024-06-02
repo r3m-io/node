@@ -198,7 +198,17 @@ trait NodeList {
                         $end = false;
                         $collect = [];
                         $is_collect = false;
+                        $index = 0;
+                        $record = [
+                            'sort' => [],
+                        ];
+                        $uuid = [];
+                        $is_uuid = false;
                         foreach($split as $nr => $char){
+                            if($is_uuid){
+                                $uuid[] = $char;
+                                continue;
+                            }
                             if(
                                 $previous_char !== '\\' &&
                                 $char === '\'' &&
@@ -215,16 +225,27 @@ trait NodeList {
                                 $start !== false
                             ){
                                 $end = $nr;
-                                d(implode('', $collect));
+                                $record['sort'][$index] = implode('', $collect);
                                 $previous_char = $char;
                                 $is_collect = false;
                                 continue;
                             }
                             if($is_collect) {
                                 $collect[] = $char;
+                            } else {
+                                if($char === ','){
+                                    $index++;
+                                }
+                                elseif($char === ';'){
+                                    $is_uuid = true;
+                                }
                             }
                             $previous_char = $char;
                         }
+                        if(array_key_exists(0, $uuid)){
+                            $record['uuid'] = implode('', $uuid);
+                        }
+                        d($record);
                         d($seek);
                         ddd($line);
                     }
