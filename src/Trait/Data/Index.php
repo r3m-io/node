@@ -59,7 +59,7 @@ trait Index {
                 $role,
                 [
                     'transaction' => true,
-                    'limit' => 8,
+                    'limit' => '*',
                     'page' => 1
                 ]
             );
@@ -67,11 +67,13 @@ trait Index {
                 return false; //no-data
             }
             $list = [];
+            $cache = [];
             foreach($select['list'] as $nr => $record){
                 if(
                     is_object($record) &&
                     property_exists($record, 'uuid')
                 ){
+                    $cache[$record->uuid] = $record;
                     $record_index = (object) [
                         'uuid' => $record->uuid
                     ];
@@ -102,11 +104,8 @@ trait Index {
                 $result[] = $record->{'#sort'} . ';' . $uuid;
             }
             $output = implode(PHP_EOL, $result);
-
             File::write($url_index, $output);
-            //file write to url_index
-            d($filter_name);
-            ddd($list);
+            return $url_index;
         }
         elseif($where_name){
             $url_index = $dir_index .
