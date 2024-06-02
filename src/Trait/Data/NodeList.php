@@ -17,6 +17,7 @@ use R3m\Io\Module\Sort;
 use R3m\Io\Node\Service\Security;
 
 use Exception;
+use SplFileObject;
 
 /**
  * app r3m_io/node list -class=RaXon.Php.Word.Embedding -page=1 -limit=10 -parallel -thread=96 -ramdisk
@@ -155,7 +156,8 @@ trait NodeList {
         if(
             $options['index'] !== false &&
             array_key_exists('url', $options['index']) &&
-            array_key_exists('cache', $options['index'])
+            array_key_exists('cache', $options['index']) &&
+            array_key_exists('count', $options['index'])
         ){
             $is_filter = false;
             if (
@@ -169,7 +171,22 @@ trait NodeList {
             if($cache){
                 $data = $cache->get($options['index']['cache']);
                 if($data){
-                    ddd($data);
+                    $file = new SplFileObject($options['index']['url']);
+                    $options['index']['min'] = 0;
+                    $options['index']['max'] = $options['index']['count'] - 1;
+                    $max = 1024;
+                    $counter = 0;
+                    while($options['index']['min'] <= $options['index']['max']) {
+                        $seek = $options['min'] + floor(($options['max'] - $options['min']) / 2);
+                        $file->seek($seek);
+                        $line = $file->current();
+                        $counter++;
+                        if($counter > $max){
+                            break;
+                        }
+                        d($seek);
+                        ddd($line);
+                    }
                 }
             }
             d($is_filter);

@@ -77,6 +77,7 @@ trait Index {
             }
             $list = [];
             $data_cache = [];
+            $count_index = 0;
             foreach($select['list'] as $nr => $record){
                 if(
                     is_object($record) &&
@@ -86,6 +87,7 @@ trait Index {
                     $record_index = (object) [
                         'uuid' => $record->uuid
                     ];
+                    $count_index++;
                     $sort_key = [];
                     foreach($filter_name as $attribute){
                         if(!property_exists($record, $attribute)){
@@ -118,7 +120,8 @@ trait Index {
             File::write($url_index, $output);
             return [
                 'url' => $url_index,
-                'cache' => $cache_key
+                'cache' => $cache_key,
+                'count' => $count_index
             ];
         }
         elseif($where_name){
