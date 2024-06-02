@@ -188,12 +188,11 @@ trait NodeList {
                                     $options['index']['min']
                                 )
                                 / 2
-                            )
-                        ;
+                            );
                         $file->seek($seek);
                         $line = $file->current();
                         $counter++;
-                        if($counter > $max){
+                        if ($counter > $max) {
                             break;
                         }
                         $split = mb_str_split($line);
@@ -206,28 +205,27 @@ trait NodeList {
                         $record = [];
                         $uuid = [];
                         $is_uuid = false;
-                        foreach($split as $nr => $char){
-                            if($is_uuid){
+                        foreach ($split as $nr => $char) {
+                            if ($is_uuid) {
                                 $uuid[] = $char;
                                 continue;
                             }
-                            if(
+                            if (
                                 $previous_char !== '\\' &&
                                 $char === '\'' &&
                                 $start === false
-                            ){
+                            ) {
                                 $start = $nr;
                                 $previous_char = $char;
                                 $is_collect = true;
                                 continue;
-                            }
-                            elseif(
+                            } elseif (
                                 $previous_char !== '\\' &&
                                 $char === '\'' &&
                                 $start !== false
-                            ){
+                            ) {
                                 $end = $nr;
-                                if(array_key_exists($index, $options['index']['filter'])){
+                                if (array_key_exists($index, $options['index']['filter'])) {
                                     $attribute = $options['index']['filter'][$index];
                                     $record[$attribute] = implode('', $collect);
                                 }
@@ -236,24 +234,23 @@ trait NodeList {
                                 $collect = [];
                                 continue;
                             }
-                            if($is_collect) {
+                            if ($is_collect) {
                                 $collect[] = $char;
                             } else {
-                                if($char === ','){
+                                if ($char === ',') {
                                     $index++;
-                                }
-                                elseif($char === ';'){
+                                } elseif ($char === ';') {
                                     $is_uuid = true;
                                 }
                             }
                             $previous_char = $char;
                         }
-                        if(array_key_exists(0, $uuid)){
+                        if (array_key_exists(0, $uuid)) {
                             $record['uuid'] = rtrim(implode('', $uuid), PHP_EOL);
                         }
-                        $record = (object) $record;
+                        $record = (object)$record;
 
-                        foreach($options['filter'] as $attribute => $filter) {
+                        foreach ($options['filter'] as $attribute => $filter) {
                             if (is_object($filter)) {
 
                             } elseif (is_array($filter)) {
@@ -284,21 +281,21 @@ trait NodeList {
                                             $is_found[] = $value;
                                             $is_found[] = null;
                                             break;
+                                        }
                                     }
                                 }
                             }
                         }
-                        if(!in_array(null, $is_found, true)) {
-                            if(
+                        if (!in_array(null, $is_found, true)) {
+                            if (
                                 is_object($data) &&
                                 property_exists($data, $record->uuid)
-                            ){
+                            ) {
                                 $record = $data->{$record->uuid};
-                            }
-                            elseif(
+                            } elseif (
                                 is_array($data) &&
                                 array_key_exists($record->uuid, $data)
-                            ){
+                            ) {
                                 $record = $data[$record->uuid];
                             }
                             $expose = $this->expose_get(
@@ -320,23 +317,23 @@ trait NodeList {
 //                                                $record = $this->relation($record, $object_data, $role, $options);
                                 //collect relation mtime
                             }
-                            if(
+                            if (
                                 $options['limit'] === 1 &&
                                 $options['page'] === 1
-                            ){
+                            ) {
                                 $list = [];
                                 $list[] = $record;
                                 $result = [];
                                 $result['page'] = $options['page'];
                                 $result['limit'] = $options['limit'];
-                                $result['count'] =  $options['index']['count'];
+                                $result['count'] = $options['index']['count'];
                                 $result['max'] = $options['index']['count'];
                                 $result['list'] = $list;
                                 $result['sort'] = $options['sort'] ?? [];
-                                if(!empty($options['filter'])) {
+                                if (!empty($options['filter'])) {
                                     $result['filter'] = $options['filter'];
                                 }
-                                if(!empty($options['where'])) {
+                                if (!empty($options['where'])) {
                                     $result['where'] = $options['where'];
                                 }
                                 $result['relation'] = $options['relation'];
@@ -350,11 +347,11 @@ trait NodeList {
                             }
                         } else {
                             $previous = null;
-                            for($i=0; $i<count($is_found); $i++){
+                            for ($i = 0; $i < count($is_found); $i++) {
                                 $value = $is_found[$i];
-                                if($value === null){
+                                if ($value === null) {
                                     //here we need the previous
-                                    if($previous === null){
+                                    if ($previous === null) {
                                         //we don't have a match
                                         d($is_found);
                                         ddd('no match');
@@ -368,6 +365,8 @@ trait NodeList {
                                 $previous = $is_found[$i];
                             }
                         }
+                    }
+                        /*
                             if(property_exists($record, $attribute)){
                                 $sort = [
                                     $value,
@@ -385,7 +384,11 @@ trait NodeList {
                                 };
                             }
                         }
-                    }
+                        */
+
+                    //if index not is found for item continue regular list
+                    /*
+                    $is_found = false;
                     if(
                         $is_found === false &&
                         $options['limit'] === 1 &&
@@ -414,6 +417,7 @@ trait NodeList {
                         $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
                         return $result;
                     }
+                    */
                 }
             }
 
