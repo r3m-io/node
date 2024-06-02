@@ -41,6 +41,8 @@ trait Index {
             'Data' .
             $object->config('ds')
         ;
+        $url_data = $dir_data . $name . $object->config('extension.json');
+        $url_mtime = File::mtime($url_data);
         $url_index = false;
         //url_index should be in node/index
         if($filter_name){
@@ -79,8 +81,9 @@ trait Index {
                     }
                     $list[implode(',', $key)] = $record->uuid;
                 }
-
             }
+            File::write($url_index, Core::object($list, Core::OBJECT_JSON));
+            //file write to url_index
             d($filter_name);
             ddd($list);
         }
