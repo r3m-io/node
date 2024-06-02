@@ -46,7 +46,7 @@ trait Index {
         $url_mtime = File::mtime($url_data);
         $url_index = false;
         $cache = $object->data(App::CACHE);
-        ddd($cache->get(sha1($url_data)));
+        $cache_select = $cache->get(sha1($url_data));
         //url_index should be in node/index
         if($filter_name){
             $url_index = $dir_index .
@@ -56,16 +56,23 @@ trait Index {
                 //need filter keys and where attributes
                 $object->config('extension.btree');
 
+            if($cache_select){
+                $select = [
+                    'list' => $cache_select->get($name)
+                ];
+                ddd($select);
+            } else {
+                $select = $this->list(
+                    $name,
+                    $role,
+                    [
+                        'transaction' => true,
+                        'limit' => '*',
+                        'page' => 1
+                    ]
+                );
+            }
             //nodelist all records in chunks of 4096 so we can parallelize the process later on.
-            $select = $this->list(
-                $name,
-                $role,
-                [
-                    'transaction' => true,
-                    'limit' => '*',
-                    'page' => 1
-                ]
-            );
             if(!array_key_exists('list', $select)){
                 return false; //no-data
             }
