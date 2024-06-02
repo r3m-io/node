@@ -76,14 +76,14 @@ trait Index {
                 return false; //no-data
             }
             $list = [];
-            $data_cache = [];
+            $data_cache = (object) [];
             $count_index = 0;
             foreach($select['list'] as $nr => $record){
                 if(
                     is_object($record) &&
                     property_exists($record, 'uuid')
                 ){
-                    $data_cache[$record->uuid] = $record;
+                    $data_cache->{$record->uuid} = $record;
                     $record_index = (object) [
                         'uuid' => $record->uuid
                     ];
