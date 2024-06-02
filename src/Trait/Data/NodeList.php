@@ -249,7 +249,7 @@ trait NodeList {
                             $previous_char = $char;
                         }
                         if(array_key_exists(0, $uuid)){
-                            $record['uuid'] = implode('', $uuid);
+                            $record['uuid'] = rtrim(implode('', $uuid), PHP_EOL);
                         }
                         $record = (object) $record;
 
