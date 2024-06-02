@@ -281,6 +281,8 @@ trait NodeList {
                                 $role
                             );
                             $record = $node->data();
+                            $record->jump = $counter;
+                            d($record->jump);
                             if ($options['relation'] === true) {
                                 ddd('need object_data from cache?');
 //                                                $record = $this->relation($record, $object_data, $role, $options);
