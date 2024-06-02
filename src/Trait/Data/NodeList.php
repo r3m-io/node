@@ -152,7 +152,11 @@ trait NodeList {
             return $result;
         }
         $mtime = File::mtime($data_url);
-        if($options['index']){
+        if(
+            $options['index'] !== false &&
+            array_key_exists('url', $options['index']) &&
+            array_key_exists('cache', $options['index'])
+        ){
             $is_filter = false;
             if (
                 !empty(
@@ -163,7 +167,7 @@ trait NodeList {
             }
             $cache = $object->data(App::CACHE);
             if($cache){
-                $data = $cache->get(sha1($data_url));
+                $data = $cache->get($options['index']['cache']);
                 if($data){
                     ddd($data);
                 }
