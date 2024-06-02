@@ -144,6 +144,12 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
 //    $options['memory'] = true;
     $start = microtime(true);
     $node = new Node($object);
+    if(str_ends_with($options['function'], '_many')){
+        //create index
+        $index = $node->index($name, $node->role_system(), $options);
+        d($index);
+        //add index as options to record
+    }
     $response = $node->record($name, $node->role_system(), $options);
     $end = microtime(true);
     $duration = $end - $start;

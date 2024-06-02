@@ -19,7 +19,9 @@ use Exception;
 
 trait Index {
 
-    public function index_init($options=[]){
+    public function index($class, $role, $options=[]){
+        $name = Controller::name($class);
+        d($name);
         ddd($options);
     }
 
