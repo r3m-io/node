@@ -358,58 +358,6 @@ trait NodeList {
                             }
                         }
                     }
-                        /*
-                            if(property_exists($record, $attribute)){
-                                $sort = [
-                                    $value,
-                                    $record->{$attribute}
-                                ];
-                                sort($sort, SORT_NATURAL);
-                                if($sort[0] === $value){
-                                    $options['index']['max'] = $seek - 1;
-                                    break;
-                                } else {
-                                    //sort[1] === $value
-                                    //min becomes seek + 1
-                                    $options['index']['min'] = $seek + 1;
-                                    break;
-                                };
-                            }
-                        }
-                        */
-
-                    //if index not is found for item continue regular list
-                    /*
-                    $is_found = false;
-                    if(
-                        $is_found === false &&
-                        $options['limit'] === 1 &&
-                        $options['page'] === 1
-                    ){
-                        $list = [];
-                        $result = [];
-                        $result['page'] = $options['page'];
-                        $result['limit'] = $options['limit'];
-                        $result['count'] = 0;
-                        $result['max'] = 0;
-                        $result['list'] = $list;
-                        $result['sort'] = $options['sort'] ?? [];
-                        if(!empty($options['filter'])) {
-                            $result['filter'] = $options['filter'];
-                        }
-                        if(!empty($options['where'])) {
-                            $result['where'] = $options['where'];
-                        }
-                        $result['relation'] = $options['relation'];
-                        $result['parse'] = $options['parse'];
-                        $result['pre-compile'] = $options['pre-compile'] ?? false;
-                        $result['ramdisk'] = $options['ramdisk'] ?? false;
-                        $result['mtime'] = $mtime;
-                        $result['transaction'] = $options['transaction'] ?? false;
-                        $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
-                        return $result;
-                    }
-                    */
                 }
             }
 
