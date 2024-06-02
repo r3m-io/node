@@ -197,6 +197,7 @@ trait NodeList {
                         $start = false;
                         $end = false;
                         $collect = [];
+                        $is_collect = false;
                         foreach($split as $nr => $char){
                             if(
                                 $previous_char !== '\\' &&
@@ -204,8 +205,8 @@ trait NodeList {
                                 $start === false
                             ){
                                 $start = $nr;
-                                $collect[] = $char;
                                 $previous_char = $char;
+                                $is_collect = true;
                                 continue;
                             }
                             elseif(
@@ -214,12 +215,14 @@ trait NodeList {
                                 $start !== false
                             ){
                                 $end = $nr;
-                                $collect[] = $char;
-                                d($collect);
+                                d(implode('', $collect));
                                 $previous_char = $char;
+                                $is_collect = false;
                                 continue;
                             }
-                            $collect[] = $char;
+                            if($is_collect) {
+                                $collect[] = $char;
+                            }
                             $previous_char = $char;
                         }
                         d($seek);
