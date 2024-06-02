@@ -85,7 +85,6 @@ trait Role {
         if($object->config(Config::POSIX_ID) === 0){
             $url = $object->config('project.dir.data') . 'Account' . $object->config('ds') . 'Role.System.json';
             $url_package = $object->config('project.dir.vendor') . $package . '/Data/Role.System.json';
-            d($url_package);
             if(File::exist($url_package)){
                 if(File::exist($url)){
                     $data = $object->data_read($url);
@@ -104,8 +103,6 @@ trait Role {
                                 }
                             }
                             $package_permissions = $data_package->get('permission');
-                            d($package_permissions);
-                            d($list);
                             if($package_permissions){
                                 foreach($package_permissions as $permission){
                                     if(
