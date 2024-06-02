@@ -61,6 +61,7 @@ trait Index {
                     'page' => 1
                 ]
             );
+            d($filter_name);
             ddd($select);
         }
         elseif($where_name){
