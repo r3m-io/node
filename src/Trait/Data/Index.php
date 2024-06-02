@@ -101,6 +101,8 @@ trait Index {
             if($url_index){
                 Dir::create($dir_index, Dir::CHMOD);
             }
+            $cache_key = sha1('index.' . $name);
+            $cache->set($cache_key, $list);
             $list = Sort::list($list)->with([
                 '#sort' => 'asc'
             ]);
@@ -114,7 +116,10 @@ trait Index {
             }
             $output = implode(PHP_EOL, $result);
             File::write($url_index, $output);
-            return $url_index;
+            return [
+                'url' => $url_index,
+                'cache' => $cache_key
+            ];
         }
         elseif($where_name){
             $url_index = $dir_index .
