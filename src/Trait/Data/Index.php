@@ -35,7 +35,7 @@ trait Index {
                 $object->config('ds') .
                 $name .
                 '.' .
-                $filter_name . //add sha1();
+                implode('.', $filter_name) . //add sha1();
                 //need filter keys and where attributes
                 $object->config('extension.json');
         }
@@ -49,7 +49,7 @@ trait Index {
                 $object->config('ds') .
                 $name .
                 '.' .
-                $where_name . //add sha1()
+                implode('.', $where_name) . //add sha1()
                 //need filter keys and where attributes
                 $object->config('extension.json');
         }
@@ -95,21 +95,10 @@ trait Index {
                     if(
                         is_string($record) &&
                         in_array(
-                            $record,
+                            strotolower($record),
                             [
                                 '(',
                                 ')',
-                            ],
-                            true
-                        )
-                    ){
-                        $where[] = '_';
-                    }
-                    elseif(
-                        is_string($record) &&
-                        in_array(
-                            strotolower($record),
-                            [
                                 'and',
                                 'or',
                                 'xor'
