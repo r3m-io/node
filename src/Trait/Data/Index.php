@@ -102,7 +102,7 @@ trait Index {
                 Dir::create($dir_index, Dir::CHMOD);
             }
             $cache_key = sha1('index.' . $name);
-            $cache->set($cache_key, $list);
+            $cache->set($cache_key, $data_cache);
             $list = Sort::list($list)->with([
                 '#sort' => 'asc'
             ]);
