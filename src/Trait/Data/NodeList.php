@@ -280,7 +280,17 @@ trait NodeList {
                                             $record->{$attribute} === $value
                                         ) {
                                             $is_found = true;
-                                            ddd('found');
+                                            if(
+                                                $options['limit'] === 1 &&
+                                                $options['page'] === 1
+                                            ){
+                                                d($is_found);
+                                                d($counter);
+                                                d($seek);
+                                                d($line);
+                                                d($is_filter);
+                                                ddd($options);
+                                            }
                                         }
                                         if(property_exists($record, $attribute)){
                                             $sort = [
@@ -330,18 +340,6 @@ trait NodeList {
                         $result['transaction'] = $options['transaction'] ?? false;
                         $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
                         return $result;
-                    }
-                    elseif(
-                        $is_found === true &&
-                        $options['limit'] === 1 &&
-                        $options['page'] === 1
-                    ){
-                        d($is_found);
-                        d($counter);
-                        d($seek);
-                        d($line);
-                        d($is_filter);
-                        ddd($options);
                     }
                 }
             }
