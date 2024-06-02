@@ -255,7 +255,7 @@ trait NodeList {
                         $list[] = $record;
 
                         $list = Filter::list($list)->where($options['filter']);
-                        if(array_key_exists($list[0])) {
+                        if(array_key_exists(0, $list)) {
                             if (
                                 is_object($data) &&
                                 property_exists($data, $record->uuid)
