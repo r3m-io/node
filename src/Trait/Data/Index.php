@@ -73,15 +73,16 @@ trait Index {
                     is_object($record) &&
                     property_exists($record, 'uuid')
                 ){
+                    $record_index = (object) [
+                        'uuid' => $record->uuid
+                    ];
                     foreach($filter_name as $attribute){
                         if(!property_exists($record, $attribute)){
                             continue; //no-data
                         }
-                        $value = $record->{$attribute};
-                        $value = '\'' . str_replace('\'', '\\\'', $value) . '\'';
-                        $key[] = $value;
+                        $record_index->{$attribute} = $record->{$attribute};
                     }
-                    $list[implode(',', $key)] = $record->uuid;
+                    $list[] = $record->uuid;
                 }
             }
             if($url_index){
