@@ -200,9 +200,7 @@ trait NodeList {
                         $collect = [];
                         $is_collect = false;
                         $index = 0;
-                        $record = [
-                            'sort' => [],
-                        ];
+                        $record = [];
                         $uuid = [];
                         $is_uuid = false;
                         foreach($split as $nr => $char){
@@ -251,6 +249,49 @@ trait NodeList {
                             $record['uuid'] = implode('', $uuid);
                         }
                         $record = (object) $record;
+
+                        foreach($options['filter'] as $attribute => $filter){
+                            if(is_object($filter)){
+
+                            }
+                            elseif(is_array($filter)){
+                                if(
+                                    array_key_exists('operator', $filter) &&
+                                    array_key_exists('value', $filter)
+                                ){
+                                    $operator = $filter['operator'];
+                                    $value = $filter['value'];
+                                }
+                                if(
+                                    in_array(
+                                        $operator,
+                                        [
+                                            '===',
+                                            'strictly-exact',
+                                            'strictly-equal'
+                                        ],
+                                        true
+                                    )
+                                ){
+                                    if(
+                                        property_exists($record, $attribute) &&
+                                        $record->{$attribute} === $value
+                                    ) {
+                                        $is_found = true;
+                                        ddd('found');
+                                    }
+                                    $sort = [
+                                        $value,
+                                        $record->attribute
+                                    ];
+                                    sort($sort, SORT_NATURAL);
+                                    ddd($sort);
+                                }
+                            }
+                        }
+
+
+
                         d($options);
                         d($record);
                         d($seek);
