@@ -121,7 +121,8 @@ trait Index {
             return [
                 'url' => $url_index,
                 'cache' => $cache_key,
-                'count' => $count_index
+                'count' => $count_index,
+                'filter' => $filter_name,
             ];
         }
         elseif($where_name){
