@@ -281,10 +281,42 @@ trait NodeList {
                                             $record->{$attribute} === $value
                                         ) {
                                             $is_found = true;
+
+                                            $expose = $this->expose_get(
+                                                $object,
+                                                $record->{'#class'},
+                                                $record->{'#class'} . '.' . $options['function'] . '.output'
+                                            );
+
+                                            $record = $data->get($record->uuid);
+
+
+                                            ddd($record);
+
+
+
+                                            $node = new Storage($record);
+                                            $node = $this->expose(
+                                                $node,
+                                                $expose,
+                                                $record->{'#class'},
+                                                $options['function'],
+                                                $role
+                                            );
+                                            $record = $node->data();
+                                            if ($has_relation) {
+                                                $record = $this->relation($record, $object_data, $role, $options);
+                                                //collect relation mtime
+                                            }
+
+
                                             if(
                                                 $options['limit'] === 1 &&
                                                 $options['page'] === 1
                                             ){
+
+
+
                                                 $list = [];
                                                 $list[] = $record->uuid;
                                                 ddd($list);
