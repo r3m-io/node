@@ -157,7 +157,8 @@ trait NodeList {
             $options['index'] !== false &&
             array_key_exists('url', $options['index']) &&
             array_key_exists('cache', $options['index']) &&
-            array_key_exists('count', $options['index'])
+            array_key_exists('count', $options['index']) &&
+            array_key_exists('filter', $options['index'])
         ){
             $is_filter = false;
             if (
@@ -225,9 +226,13 @@ trait NodeList {
                                 $start !== false
                             ){
                                 $end = $nr;
-                                $record['sort'][$index] = implode('', $collect);
+                                if(array_key_exists($index, $options['index']['filter'])){
+                                    $attribute = $options['index']['filter'][$index];
+                                    $record['sort'][$attribute] = implode('', $collect);
+                                }
                                 $previous_char = $char;
                                 $is_collect = false;
+                                $collect = [];
                                 continue;
                             }
                             if($is_collect) {
