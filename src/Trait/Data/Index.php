@@ -77,7 +77,9 @@ trait Index {
                         if(!property_exists($record, $attribute)){
                             continue; //no-data
                         }
-                        $key[] = $record->{$attribute};
+                        $value = $record->{$attribute};
+                        $value = '\'' . str_replace('\'', '\\\'', $value) . '\'';
+                        $key[] = $value;
                     }
                     $list[implode(',', $key)] = $record->uuid;
                 }
