@@ -103,6 +103,7 @@ trait Role {
                                 }
                             }
                             $package_permissions = $data_package->get('permission');
+                            d($package_permissions);
                             if($package_permissions){
                                 foreach($package_permissions as $permission){
                                     if(
@@ -111,6 +112,7 @@ trait Role {
                                     ){
                                         if(!in_array($permission->name, $list, true)){
                                             $permissions[] = $permission;
+                                            d($permission->name);
                                         }
                                     }
                                 }
