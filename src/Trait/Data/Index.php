@@ -4,6 +4,7 @@ namespace R3m\Io\Node\Trait\Data;
 
 use R3m\Io\Config;
 
+use R3m\Io\Exception\DirectoryCreateException;
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
@@ -19,20 +20,26 @@ use Exception;
 
 trait Index {
 
+    /**
+     * @throws DirectoryCreateException
+     * @throws Exception
+     */
     public function index($class, $role, $options=[]){
         $name = Controller::name($class);
         $object = $this->object();
         $filter_name = $this->index_filter_name($name, $options);
         $where_name = $this->index_where_name($name, $options);
+        $dir_index = $object->config('ramdisk.url') .
+            $object->config(Config::POSIX_ID) .
+            $object->config('ds') .
+            'Node' .
+            $object->config('ds') .
+            'Index' .
+            $object->config('ds')
+        ;
         $url_index = false;
         if($filter_name){
-            $url_index = $object->config('ramdisk.url') .
-                $object->config(Config::POSIX_ID) .
-                $object->config('ds') .
-                'Node' .
-                $object->config('ds') .
-                'Index' .
-                $object->config('ds') .
+            $url_index = $dir_index .
                 $name .
                 '.' .
                 implode('.', $filter_name) . //add sha1();
@@ -40,18 +47,15 @@ trait Index {
                 $object->config('extension.json');
         }
         elseif($where_name){
-            $url_index = $object->config('ramdisk.url') .
-                $object->config(Config::POSIX_ID) .
-                $object->config('ds') .
-                'Node' .
-                $object->config('ds') .
-                'Index' .
-                $object->config('ds') .
+            $url_index = $dir_index .
                 $name .
                 '.' .
                 implode('.', $where_name) . //add sha1()
                 //need filter keys and where attributes
                 $object->config('extension.json');
+        }
+        if($url_index){
+            Dir::create($dir_index, Dir::CHMOD);
         }
         d($url_index);
 
