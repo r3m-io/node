@@ -9,6 +9,7 @@ use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\Dir;
 use R3m\Io\Module\File;
+use R3m\Io\Module\Filter;
 use R3m\Io\Module\Parallel;
 use R3m\Io\Module\Parse;
 use R3m\Io\Module\Route;
@@ -248,7 +249,14 @@ trait NodeList {
                         if (array_key_exists(0, $uuid)) {
                             $record['uuid'] = rtrim(implode('', $uuid), PHP_EOL);
                         }
-                        $record = (object)$record;
+                        $record = (object) $record;
+
+                        $list = [];
+                        $list[] = $record;
+
+                        $list = Filter::list($list)->where($options['filter']);
+                        ddd($list);
+
 
                         foreach ($options['filter'] as $attribute => $filter) {
                             if (is_object($filter)) {
@@ -276,9 +284,17 @@ trait NodeList {
                                             property_exists($record, $attribute) &&
                                             $record->{$attribute} === $value
                                         ) {
-                                            $is_found[] = $value;
+                                            $is_found[] = [
+                                                'attribute' => $attribute,
+                                                'operator' => $operator,
+                                                'value' => $value
+                                            ];
                                         } else {
-                                            $is_found[] = $value;
+                                            $is_found[] = [
+                                                'attribute' => $attribute,
+                                                'operator' => $operator,
+                                                'value' => $value
+                                            ];
                                             $is_found[] = null;
                                             break;
                                         }
@@ -358,6 +374,24 @@ trait NodeList {
                                     } else {
                                         d($is_found);
                                         ddd($previous);
+
+                                        if(property_exists($record, $attribute)){
+                                            $sort = [
+                                                $value,
+                                                $record->{$attribute}
+                                            ];
+                                            sort($sort, SORT_NATURAL);
+                                            if($sort[0] === $value){
+                                                $options['index']['max'] = $seek - 1;
+                                                break;
+                                            } else {
+                                                //sort[1] === $value
+                                                //min becomes seek + 1
+                                                $options['index']['min'] = $seek + 1;
+                                                break;
+                                            };
+                                        }
+
                                         //we are close to the match
                                     }
                                     break;
