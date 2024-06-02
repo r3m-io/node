@@ -2,7 +2,7 @@
 
 namespace R3m\Io\Node\Trait\Data;
 
-use R3m\Io\App;
+use R3m\Io\Config;
 
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
@@ -21,8 +21,125 @@ trait Index {
 
     public function index($class, $role, $options=[]){
         $name = Controller::name($class);
+        $object = $this->object();
+        $filter_name = $this->index_filter_name($name, $options);
+        $where_name = $this->index_where_name($name, $options);
+        $url_index = false;
+        if($filter_name){
+            $url_index = $object->config('ramdisk.url') .
+                $object->config(Config::POSIX_ID) .
+                $object->config('ds') .
+                'Node' .
+                $object->config('ds') .
+                'Index' .
+                $object->config('ds') .
+                $name .
+                '.' .
+                $filter_name . //add sha1();
+                //need filter keys and where attributes
+                $object->config('extension.json');
+        }
+        elseif($where_name){
+            $url_index = $object->config('ramdisk.url') .
+                $object->config(Config::POSIX_ID) .
+                $object->config('ds') .
+                'Node' .
+                $object->config('ds') .
+                'Index' .
+                $object->config('ds') .
+                $name .
+                '.' .
+                $where_name . //add sha1()
+                //need filter keys and where attributes
+                $object->config('extension.json');
+        }
+        d($url_index);
+
+
+
         d($name);
         ddd($options);
+    }
+
+    private function index_filter_name($class, $options=[]): false | array
+    {
+        $filter = [];
+        $is_filter = false;
+        if(array_key_exists('filter', $options)){
+            if(is_array($options['filter'])){
+                foreach($options['filter'] as $attribute => $record){
+                    $filter[] = $attribute;
+                    $is_filter = true;
+                }
+            }
+            elseif(is_object($options['filter'])){
+                foreach($options['filter'] as $attribute => $record){
+                    $filter[] = $attribute;
+                    $is_filter = true;
+                }
+            }
+            if($is_filter){
+                return $filter;
+            }
+        }
+        return false;
+    }
+
+    private function index_where_name($class, $options=[]): false | array
+    {
+        $where = [];
+        $is_where = false;
+        if(array_key_exists('where', $options)){
+            if(is_array($options['where'])){
+                foreach($options['where'] as $nr => $record){
+                    if(
+                        is_string($record) &&
+                        in_array(
+                            $record,
+                            [
+                                '(',
+                                ')',
+                            ],
+                            true
+                        )
+                    ){
+                        $where[] = '_';
+                    }
+                    elseif(
+                        is_string($record) &&
+                        in_array(
+                            strotolower($record),
+                            [
+                                'and',
+                                'or',
+                                'xor'
+                            ],
+                            true
+                        )
+                    ){
+                        $where[] = strtolower($record);
+                    }
+                    elseif(
+                        is_array($record) &&
+                        array_key_exists('attribute', $record)
+                    ){
+                        $where[] = $record['attribute'];
+                        $is_where = true;
+                    }
+                    elseif(
+                        is_object($record) &&
+                        property_exists($record, 'attribute')
+                    ){
+                        $where[] = $record->attribute;
+                        $is_where = true;
+                    }
+                }
+            }
+            if($is_where){
+                return $where;
+            }
+        }
+        return false;
     }
 
 
