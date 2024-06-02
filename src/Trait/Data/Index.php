@@ -82,7 +82,7 @@ trait Index {
                         }
                         $record_index->{$attribute} = $record->{$attribute};
                     }
-                    $list[] = $record->uuid;
+                    $list[] = $record_index;
                 }
             }
             if($url_index){
