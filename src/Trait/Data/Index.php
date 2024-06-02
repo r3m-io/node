@@ -51,7 +51,7 @@ trait Index {
                 '.' .
                 implode('.', $filter_name) . //add sha1();
                 //need filter keys and where attributes
-                $object->config('extension.json');
+                $object->config('extension.btree');
 
             //nodelist all records in chunks of 4096 so we can parallelize the process later on.
             $select = $this->list(
@@ -93,7 +93,17 @@ trait Index {
             $list = Sort::list($list)->with([
                 '#sort' => 'asc'
             ]);
-            File::write($url_index, Core::object($list, Core::OBJECT_JSON));
+            $result = [];
+            foreach($list as $uuid => $record){
+                if(array_key_exists($record->{'#sort'}, $result)) {
+                    //cannot create index, not unique
+                    return false;
+                }
+                $result[$record->{'#sort'}] = $uuid;
+            }
+            $output = implode(PHP_EOL, $result);
+
+            File::write($url_index, $output);
             //file write to url_index
             d($filter_name);
             ddd($list);
@@ -104,7 +114,7 @@ trait Index {
                 '.' .
                 implode('.', $where_name) . //add sha1()
                 //need filter keys and where attributes
-                $object->config('extension.json');
+                $object->config('extension.btree');
             if($url_index){
                 Dir::create($dir_index, Dir::CHMOD);
             }
