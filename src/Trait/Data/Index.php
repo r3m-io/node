@@ -99,7 +99,7 @@ trait Index {
                     //cannot create index, not unique
                     return false;
                 }
-                $result[$record->{'#sort'}] = $uuid;
+                $result[] = $record->{'#sort'} . ';' . $uuid;
             }
             $output = implode(PHP_EOL, $result);
 
