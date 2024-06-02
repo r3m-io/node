@@ -192,6 +192,36 @@ trait NodeList {
                         if($counter > $max){
                             break;
                         }
+                        $split = mb_str_split($line);
+                        $previous_char = false;
+                        $start = false;
+                        $end = false;
+                        $collect = [];
+                        foreach($split as $nr => $char){
+                            if(
+                                $previous_char !== '\\' &&
+                                $char === '\'' &&
+                                $start === false
+                            ){
+                                $start = $nr;
+                                $collect[] = $char;
+                                $previous_char = $char;
+                                continue;
+                            }
+                            elseif(
+                                $previous_char !== '\\' &&
+                                $char === '\'' &&
+                                $start !== false
+                            ){
+                                $end = $nr;
+                                $collect[] = $char;
+                                d($collect);
+                                $previous_char = $char;
+                                continue;
+                            }
+                            $collect[] = $char;
+                            $previous_char = $char;
+                        }
                         d($seek);
                         ddd($line);
                     }
