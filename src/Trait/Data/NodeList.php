@@ -282,7 +282,7 @@ trait NodeList {
                                         ) {
                                             $is_found = true;
 
-                                            $record = $data->get($record->uuid);
+                                            $record = $cache->get($record->uuid);
 
 
                                             ddd($record);
