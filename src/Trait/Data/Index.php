@@ -67,6 +67,7 @@ trait Index {
                 return false; //no-data
             }
             $list = [];
+            $sort = [];
             foreach($select['list'] as $nr => $record){
                 $key = [];
                 if(
@@ -76,18 +77,25 @@ trait Index {
                     $record_index = (object) [
                         'uuid' => $record->uuid
                     ];
+                    $sort_key = [];
                     foreach($filter_name as $attribute){
                         if(!property_exists($record, $attribute)){
                             continue; //no-data
                         }
                         $record_index->{$attribute} = $record->{$attribute};
+                        $sort_key[] = '\'' . $record->{$attribute} . '\'';
                     }
+                    $record_index->{'#sort'} = implode(',', $sort_key);
                     $list[] = $record_index;
                 }
             }
             if($url_index){
                 Dir::create($dir_index, Dir::CHMOD);
             }
+            $list_sort = Sort::list($list)->with([
+                '#sort' => 'asc'
+            ]);
+            ddd($list_sort);
             File::write($url_index, Core::object($list, Core::OBJECT_JSON));
             //file write to url_index
             d($filter_name);
