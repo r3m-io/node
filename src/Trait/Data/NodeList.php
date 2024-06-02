@@ -300,13 +300,14 @@ trait NodeList {
                             }
                         }
                     }
+                    d($counter);
+                    d($seek);
+                    d($line);
+                    d($is_filter);
+                    ddd($options);
                 }
             }
-            d($counter);
-            d($seek);
-            d($line);
-            d($is_filter);
-            ddd($options);
+
         }
         $ramdisk_dir = false;
         $ramdisk_dir_node = false;
