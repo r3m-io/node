@@ -52,22 +52,15 @@ trait Index {
                 $object->config('extension.json');
 
             //nodelist all records in chunks of 4096 so we can parallelize the process later on.
-            $page = 1;
-            $limit = 4096;
-            while(true){
-                $select = $this->list(
-                    $name,
-                    $role,
-                    [
-                        'transaction' => true,
-                        'limit' => 8,
-                        'page' => $page
-                    ]
-                );
-                $page++;
-                ddd($select);
-            }
-
+            $select = $this->list(
+                $name,
+                $role,
+                [
+                    'transaction' => true,
+                    'limit' => 8,
+                    'page' => 1
+                ]
+            );
             ddd($select);
         }
         elseif($where_name){
