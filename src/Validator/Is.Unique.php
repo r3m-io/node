@@ -140,7 +140,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
             'function' => $function
         ];
     }
-    d($options['filter']);
+    d($options);
 //    $options['memory'] = true;
     $start = microtime(true);
     $node = new Node($object);
