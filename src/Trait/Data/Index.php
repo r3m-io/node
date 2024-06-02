@@ -2,6 +2,7 @@
 
 namespace R3m\Io\Node\Trait\Data;
 
+use R3m\Io\App;
 use R3m\Io\Config;
 
 use R3m\Io\Exception\DirectoryCreateException;
@@ -67,13 +68,13 @@ trait Index {
                 return false; //no-data
             }
             $list = [];
-            $cache = [];
+            $data_cache = [];
             foreach($select['list'] as $nr => $record){
                 if(
                     is_object($record) &&
                     property_exists($record, 'uuid')
                 ){
-                    $cache[$record->uuid] = $record;
+                    $data_cache[$record->uuid] = $record;
                     $record_index = (object) [
                         'uuid' => $record->uuid
                     ];
@@ -105,6 +106,8 @@ trait Index {
             }
             $output = implode(PHP_EOL, $result);
             File::write($url_index, $output);
+            $cache = $object->data(App::CACHE);
+            ddd($cache);
             return $url_index;
         }
         elseif($where_name){
