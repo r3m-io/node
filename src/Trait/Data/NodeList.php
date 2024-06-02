@@ -255,54 +255,7 @@ trait NodeList {
                         $list[] = $record;
 
                         $list = Filter::list($list)->where($options['filter']);
-                        ddd($list);
-
-
-                        foreach ($options['filter'] as $attribute => $filter) {
-                            if (is_object($filter)) {
-
-                            } elseif (is_array($filter)) {
-                                if (
-                                    array_key_exists('operator', $filter) &&
-                                    array_key_exists('value', $filter)
-                                ) {
-                                    $operator = $filter['operator'];
-                                    $value = $filter['value'];
-                                    if (
-                                        in_array(
-                                            $operator,
-                                            [
-                                                '===',
-                                                'strictly-exact',
-                                                'strictly-equal'
-                                            ],
-                                            true
-                                        )
-                                    ) {
-                                        //implement filter
-                                        if (
-                                            property_exists($record, $attribute) &&
-                                            $record->{$attribute} === $value
-                                        ) {
-                                            $is_found[] = [
-                                                'attribute' => $attribute,
-                                                'operator' => $operator,
-                                                'value' => $value
-                                            ];
-                                        } else {
-                                            $is_found[] = [
-                                                'attribute' => $attribute,
-                                                'operator' => $operator,
-                                                'value' => $value
-                                            ];
-                                            $is_found[] = null;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (!in_array(null, $is_found, true)) {
+                        if(array_key_exists($list[0])) {
                             if (
                                 is_object($data) &&
                                 property_exists($data, $record->uuid)
@@ -362,41 +315,46 @@ trait NodeList {
                                 return $result;
                             }
                         } else {
-                            $previous = null;
-                            for ($i = 0; $i < count($is_found); $i++) {
-                                $value = $is_found[$i];
-                                if ($value === null) {
-                                    //here we need the previous
-                                    if ($previous === null) {
-                                        //we don't have a match
-                                        d($is_found);
-                                        ddd('no match');
-                                    } else {
-                                        d($is_found);
-                                        ddd($previous);
+                            foreach ($options['filter'] as $attribute => $filter) {
+                                if (is_object($filter)) {
 
-                                        if(property_exists($record, $attribute)){
-                                            $sort = [
-                                                $value,
-                                                $record->{$attribute}
+                                } elseif (is_array($filter)) {
+                                    if (
+                                        array_key_exists('operator', $filter) &&
+                                        array_key_exists('value', $filter)
+                                    ) {
+                                        $operator = $filter['operator'];
+                                        $value = $filter['value'];
+
+                                        if(property_exists($record, $attribute)) {
+                                            $list = [];
+                                            $list[] = $record;
+                                            $where = [
+                                                $attribute => [
+                                                    'operator' => $operator,
+                                                    'value' => $value
+                                                ]
                                             ];
-                                            sort($sort, SORT_NATURAL);
-                                            if($sort[0] === $value){
-                                                $options['index']['max'] = $seek - 1;
-                                                break;
-                                            } else {
-                                                //sort[1] === $value
-                                                //min becomes seek + 1
-                                                $options['index']['min'] = $seek + 1;
-                                                break;
-                                            };
+                                            $list = Filter::list($list)->where($where);
+                                            if(!array_key_exists(0, $list)){
+                                                $sort = [
+                                                    $value,
+                                                    $record->{$attribute}
+                                                ];
+                                                sort($sort, SORT_NATURAL);
+                                                if($sort[0] === $value){
+                                                    $options['index']['max'] = $seek - 1;
+                                                    break;
+                                                } else {
+                                                    //sort[1] === $value
+                                                    //min becomes seek + 1
+                                                    $options['index']['min'] = $seek + 1;
+                                                    break;
+                                                };
+                                            }
                                         }
-
-                                        //we are close to the match
                                     }
-                                    break;
                                 }
-                                $previous = $is_found[$i];
                             }
                         }
                     }
