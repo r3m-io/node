@@ -279,12 +279,14 @@ trait NodeList {
                                             $is_found = true;
                                             ddd('found');
                                         }
-                                        $sort = [
-                                            $value,
-                                            $record->attribute
-                                        ];
-                                        sort($sort, SORT_NATURAL);
-                                        ddd($sort);
+                                        if(property_exists($record, $attribute)){
+                                            $sort = [
+                                                $value,
+                                                $record->{$attribute}
+                                            ];
+                                            sort($sort, SORT_NATURAL);
+                                            ddd($sort);
+                                        }
                                     }
                                 }
                             }
