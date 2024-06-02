@@ -82,6 +82,9 @@ trait Index {
                     $list[implode(',', $key)] = $record->uuid;
                 }
             }
+            if($url_index){
+                Dir::create($dir_index, Dir::CHMOD);
+            }
             File::write($url_index, Core::object($list, Core::OBJECT_JSON));
             //file write to url_index
             d($filter_name);
@@ -94,9 +97,9 @@ trait Index {
                 implode('.', $where_name) . //add sha1()
                 //need filter keys and where attributes
                 $object->config('extension.json');
-        }
-        if($url_index){
-            Dir::create($dir_index, Dir::CHMOD);
+            if($url_index){
+                Dir::create($dir_index, Dir::CHMOD);
+            }
         }
         d($url_index);
 
