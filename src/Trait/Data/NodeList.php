@@ -297,7 +297,7 @@ trait NodeList {
                                                 $record = $data->{$record->uuid};
                                                 d('yes');
                                             }
-                                            d($data);
+//                                            d($data);
                                             d($record->uuid);
                                             ddd($record);
 
