@@ -287,27 +287,23 @@ trait NodeList {
                                             sort($sort, SORT_NATURAL);
                                             if($sort[0] === $value){
                                                 $options['index']['max'] = $seek - 1;
+                                                break;
                                             } else {
                                                 //sort[1] === $value
                                                 //min becomes seek + 1
                                                 $options['index']['min'] = $seek + 1;
-                                            }
-                                            d($value);
-                                            d($record);
-
-                                            d($sort);
+                                                break;
+                                            };
                                         }
                                     }
                                 }
                             }
                         }
-                        d($options);
-                        d($record);
-                        d($seek);
-                        ddd($line);
                     }
                 }
             }
+            d($seek);
+            d($line);
             d($is_filter);
             ddd($options);
         }
