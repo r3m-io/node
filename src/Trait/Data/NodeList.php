@@ -286,6 +286,7 @@ trait NodeList {
                                                 $record = $data->{$record->uuid};
                                                 d('yes');
                                             }
+                                            d($data);
                                             ddd($record);
 
                                             $expose = $this->expose_get(
