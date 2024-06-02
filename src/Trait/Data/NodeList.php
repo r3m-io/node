@@ -177,7 +177,15 @@ trait NodeList {
                     $max = 1024;
                     $counter = 0;
                     while($options['index']['min'] <= $options['index']['max']) {
-                        $seek = $options['min'] + floor(($options['max'] - $options['min']) / 2);
+                        $seek = $options['index']['min'] +
+                            floor(
+                                (
+                                    $options['index']['max'] -
+                                    $options['index']['min']
+                                )
+                                / 2
+                            )
+                        ;
                         $file->seek($seek);
                         $line = $file->current();
                         $counter++;
