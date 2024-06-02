@@ -228,7 +228,7 @@ trait NodeList {
                                 $end = $nr;
                                 if(array_key_exists($index, $options['index']['filter'])){
                                     $attribute = $options['index']['filter'][$index];
-                                    $record['sort'][$attribute] = implode('', $collect);
+                                    $record[$attribute] = implode('', $collect);
                                 }
                                 $previous_char = $char;
                                 $is_collect = false;
