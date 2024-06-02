@@ -286,14 +286,16 @@ trait NodeList {
                                             ];
                                             sort($sort, SORT_NATURAL);
                                             if($sort[0] === $value){
-
+                                                $options['index']['max'] = $seek - 1;
                                             } else {
                                                 //sort[1] === $value
+                                                //min becomes seek + 1
+                                                $options['index']['min'] = $seek + 1;
                                             }
                                             d($value);
                                             d($record);
 
-                                            ddd($sort);
+                                            d($sort);
                                         }
                                     }
                                 }
