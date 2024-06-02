@@ -45,6 +45,8 @@ trait Index {
         $url_data = $dir_data . $name . $object->config('extension.json');
         $url_mtime = File::mtime($url_data);
         $url_index = false;
+        $cache = $object->data(App::CACHE);
+        ddd($cache->get(sha1($url_data)));
         //url_index should be in node/index
         if($filter_name){
             $url_index = $dir_index .
@@ -106,8 +108,6 @@ trait Index {
             }
             $output = implode(PHP_EOL, $result);
             File::write($url_index, $output);
-            $cache = $object->data(App::CACHE);
-            ddd($cache->get(sha1($url_data)));
             return $url_index;
         }
         elseif($where_name){
