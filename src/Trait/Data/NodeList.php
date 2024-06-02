@@ -285,12 +285,12 @@ trait NodeList {
                                             d($record->uuid);
                                             foreach($data as $key => $item){
                                                 d($item);
-                                                break;
                                                 if($item->uuid === $record->uuid){
                                                     $record = $item;
                                                     d('yes2');
                                                     break;
                                                 }
+                                                break;
                                             }
 
                                             if(property_exists($data, $record->uuid)){
