@@ -161,6 +161,13 @@ trait NodeList {
             ) {
                 $is_filter = true;
             }
+            $cache = $object->data(App::CACHE);
+            if($cache){
+                $data = $cache->get(sha1($data_url));
+                if($data){
+                    ddd($data);
+                }
+            }
             d($is_filter);
             ddd($options);
         }
