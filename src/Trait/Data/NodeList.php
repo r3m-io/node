@@ -284,6 +284,7 @@ trait NodeList {
 
                                             d($record->uuid);
                                             foreach($data as $key => $item){
+                                                d($key);
                                                 d($item);
                                                 if($item->uuid === $record->uuid){
                                                     $record = $item;
