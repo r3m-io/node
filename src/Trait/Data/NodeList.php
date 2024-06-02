@@ -285,6 +285,14 @@ trait NodeList {
                                                 $record->{$attribute}
                                             ];
                                             sort($sort, SORT_NATURAL);
+                                            if($sort[0] === $value){
+
+                                            } else {
+                                                //sort[1] === $value
+                                            }
+                                            d($value);
+                                            d($record);
+
                                             ddd($sort);
                                         }
                                     }
