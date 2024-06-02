@@ -302,6 +302,7 @@ trait NodeList {
                     }
                 }
             }
+            d($counter);
             d($seek);
             d($line);
             d($is_filter);
