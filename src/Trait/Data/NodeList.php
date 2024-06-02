@@ -177,6 +177,8 @@ trait NodeList {
                     $options['index']['max'] = $options['index']['count'] - 1;
                     $max = 1024;
                     $counter = 0;
+                    $seek = false;
+                    $line = null;
                     while($options['index']['min'] <= $options['index']['max']) {
                         $seek = $options['index']['min'] +
                             floor(
