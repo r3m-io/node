@@ -171,7 +171,6 @@ trait NodeList {
             $cache = $object->data(App::CACHE);
             if($cache){
                 $data = $cache->get($options['index']['cache']);
-                ddd($data);
                 if($data){
                     $file = new SplFileObject($options['index']['url']);
                     $options['index']['min'] = 0;
@@ -283,9 +282,9 @@ trait NodeList {
                                         ) {
                                             $is_found = true;
 
-                                            $record = $cache->get($record->uuid);
-
-
+                                            if(property_exists($data, $record->uuid)){
+                                                $record = $data->{$record->uuid};
+                                            }
                                             ddd($record);
 
                                             $expose = $this->expose_get(
