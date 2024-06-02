@@ -245,6 +245,7 @@ trait NodeList {
                         if(array_key_exists(0, $uuid)){
                             $record['uuid'] = implode('', $uuid);
                         }
+                        d($options);
                         d($record);
                         d($seek);
                         ddd($line);
