@@ -281,33 +281,25 @@ trait NodeList {
                                             $record->{$attribute} === $value
                                         ) {
                                             $is_found = true;
-
-                                            d($record->uuid);
-                                            foreach($data as $key => $item){
-                                                d($key);
-                                                d($item);
-                                                if($item->uuid === $record->uuid){
-                                                    $record = $item;
-                                                    d('yes2');
-                                                    break;
-                                                }
-                                                break;
-                                            }
-
-                                            if(property_exists($data, $record->uuid)){
+                                            if(
+                                                is_object($data) &&
+                                                property_exists($data, $record->uuid)
+                                            ){
                                                 $record = $data->{$record->uuid};
                                                 d('yes');
                                             }
-//                                            d($data);
-                                            d($record->uuid);
-                                            ddd($record);
-
+                                            elseif(
+                                                is_array($data) &&
+                                                array_key_exists($record->uuid, $data)
+                                            ){
+                                                $record = $data[$record->uuid];
+                                                d('yes');
+                                            }
                                             $expose = $this->expose_get(
                                                 $object,
                                                 $record->{'#class'},
                                                 $record->{'#class'} . '.' . $options['function'] . '.output'
                                             );
-
                                             $node = new Storage($record);
                                             $node = $this->expose(
                                                 $node,
@@ -317,21 +309,17 @@ trait NodeList {
                                                 $role
                                             );
                                             $record = $node->data();
-                                            if ($has_relation) {
-                                                $record = $this->relation($record, $object_data, $role, $options);
+                                            if ($options['relation'] === true) {
+                                                ddd('need object_data from cache?');
+//                                                $record = $this->relation($record, $object_data, $role, $options);
                                                 //collect relation mtime
                                             }
-
-
                                             if(
                                                 $options['limit'] === 1 &&
                                                 $options['page'] === 1
                                             ){
-
-
-
                                                 $list = [];
-                                                $list[] = $record->uuid;
+                                                $list[] = $record;
                                                 ddd($list);
                                                 $result = [];
                                                 $result['page'] = $options['page'];
