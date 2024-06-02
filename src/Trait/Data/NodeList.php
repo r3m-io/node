@@ -181,6 +181,7 @@ trait NodeList {
                     $seek = false;
                     $line = null;
                     $is_found = [];
+                    $jump_max = 0;
                     while($options['index']['min'] <= $options['index']['max']) {
                         $seek = $options['index']['min'] +
                             floor(
@@ -282,7 +283,10 @@ trait NodeList {
                             );
                             $record = $node->data();
                             $record->jump = $counter;
-                            d($record->jump);
+                            if($record->jump > $jump_max){
+                                $jump_max = $record->jump;
+                                $record->jump_max = $jump_max;
+                            }
                             if ($options['relation'] === true) {
                                 ddd('need object_data from cache?');
 //                                                $record = $this->relation($record, $object_data, $role, $options);
