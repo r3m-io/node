@@ -249,7 +249,7 @@ trait NodeList {
                                 $result = [];
                                 $result['page'] = $options['page'];
                                 $result['limit'] = $options['limit'];
-                                $result['count'] = $options['index']['count'];
+                                $result['count'] = 1;
                                 $result['max'] = $options['index']['count'];
                                 $result['list'] = $list;
                                 $result['sort'] = $options['sort'] ?? [];
@@ -312,11 +312,35 @@ trait NodeList {
                             }
                         }
                     }
-                    d($record);
-                    d($options);
+                    if (
+                        $options['limit'] === 1 &&
+                        $options['page'] === 1
+                    ) {
+                        $list = [];
+                        $result = [];
+                        $result['page'] = $options['page'];
+                        $result['limit'] = $options['limit'];
+                        $result['count'] = 0;
+                        $result['max'] = $options['index']['count'];
+                        $result['list'] = $list;
+                        $result['sort'] = $options['sort'] ?? [];
+                        if (!empty($options['filter'])) {
+                            $result['filter'] = $options['filter'];
+                        }
+                        if (!empty($options['where'])) {
+                            $result['where'] = $options['where'];
+                        }
+                        $result['relation'] = $options['relation'];
+                        $result['parse'] = $options['parse'];
+                        $result['pre-compile'] = $options['pre-compile'] ?? false;
+                        $result['ramdisk'] = $options['ramdisk'] ?? false;
+                        $result['mtime'] = $mtime;
+                        $result['transaction'] = $options['transaction'] ?? false;
+                        $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+                        return $result;
+                    }
                 }
             }
-
         }
         $ramdisk_dir = false;
         $ramdisk_dir_node = false;
