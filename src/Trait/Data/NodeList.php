@@ -597,70 +597,10 @@ trait NodeList {
                         is_array($options['where'])
                     )
                 ) {
-                    if (is_string($options['where'])) {
-                        $options['where'] = $this->where_convert($options['where']);
+                    $options['where'] = $this->nodelist_where($options);
+                    if($options['where'] !== false){
+                        $is_where = true;
                     }
-                    if (is_array($options['where'])) {
-                        foreach ($options['where'] as $key => $where) {
-                            if (is_string($where)) {
-                                $split = mb_str_split($where);
-                                $is_quote = false;
-                                $attribute = '';
-                                $operator = '';
-                                $value = '';
-                                $is_attribute = false;
-                                $is_operator = false;
-                                $is_value = false;
-                                foreach ($split as $nr => $char) {
-                                    if ($char === '\'') {
-                                        if ($is_quote === false) {
-                                            $is_quote = true;
-                                        } else {
-                                            $is_quote = false;
-                                        }
-                                        continue;
-                                    }
-                                    if (
-                                        $char === ' ' &&
-                                        $is_quote === false &&
-                                        $is_attribute === false
-                                    ) {
-                                        $is_attribute = $attribute;
-                                        continue;
-                                    } elseif ($char === ' ' &&
-                                        $is_quote === false &&
-                                        $is_operator === false
-                                    ) {
-                                        $is_operator = $operator;
-                                        continue;
-                                    }
-                                    if ($is_attribute === false) {
-                                        $attribute .= $char;
-                                    } elseif (
-                                        $is_attribute &&
-                                        $is_operator === false
-                                    ) {
-                                        $operator .= $char;
-                                    } elseif (
-                                        $is_attribute &&
-                                        $is_operator &&
-                                        $is_value === false
-                                    ) {
-                                        $value .= $char;
-                                    }
-                                }
-                                if ($attribute && $operator && $value) {
-                                    $options['where'][$key] = [
-                                        'attribute' => $attribute,
-                                        'operator' => $operator,
-                                        'value' => $value
-                                    ];
-                                }
-
-                            }
-                        }
-                    }
-                    $is_where = true;
                 }
                 $limit = $options['limit'] ?? 4096;
                 if ($options['parallel'] === true && Core::is_cli()) {
@@ -1021,7 +961,7 @@ trait NodeList {
                     $result['limit'] = $list_count;
                     $result['count'] = $list_count;
                     $result['max'] = $max;
-                    $result['list'] = $this->nodeList_output_filter($object, $list_sort, $options);
+                    $result['list'] = $this->nodelist_output_filter($object, $list_sort, $options);
                     $result['sort'] = $options['sort'] ?? [];
                     $result['filter'] = $options['filter'] ?? [];
                     $result['where'] = $options['where'] ?? [];
@@ -1080,7 +1020,7 @@ trait NodeList {
                 $result['limit'] = $limit;
                 $result['count'] = $list_count;
                 $result['max'] = $max;
-                $result['list'] = $this->nodeList_output_filter($object, $list, $options);
+                $result['list'] = $this->nodelist_output_filter($object, $list, $options);
                 $result['sort'] = $options['sort'] ?? [];
                 $result['filter'] = $options['filter'] ?? [];
                 $result['where'] = $options['where'] ?? [];
@@ -1147,7 +1087,78 @@ trait NodeList {
         return $result;
     }
 
-    private function nodeList_output_filter(App $object, $list, $options=[]): mixed
+    private function nodelist_where($options=[]): bool | array
+    {
+        if(!array_key_exists('where', $options)){
+            return false;
+        }
+        if (is_string($options['where'])) {
+            $options['where'] = $this->where_convert($options['where']);
+        }
+        if (is_array($options['where'])) {
+            foreach ($options['where'] as $key => $where) {
+                if (is_string($where)) {
+                    $split = mb_str_split($where);
+                    $is_quote = false;
+                    $attribute = '';
+                    $operator = '';
+                    $value = '';
+                    $is_attribute = false;
+                    $is_operator = false;
+                    $is_value = false;
+                    foreach ($split as $nr => $char) {
+                        if ($char === '\'') {
+                            if ($is_quote === false) {
+                                $is_quote = true;
+                            } else {
+                                $is_quote = false;
+                            }
+                            continue;
+                        }
+                        if (
+                            $char === ' ' &&
+                            $is_quote === false &&
+                            $is_attribute === false
+                        ) {
+                            $is_attribute = $attribute;
+                            continue;
+                        } elseif ($char === ' ' &&
+                            $is_quote === false &&
+                            $is_operator === false
+                        ) {
+                            $is_operator = $operator;
+                            continue;
+                        }
+                        if ($is_attribute === false) {
+                            $attribute .= $char;
+                        } elseif (
+                            $is_attribute &&
+                            $is_operator === false
+                        ) {
+                            $operator .= $char;
+                        } elseif (
+                            $is_attribute &&
+                            $is_operator &&
+                            $is_value === false
+                        ) {
+                            $value .= $char;
+                        }
+                    }
+                    if ($attribute && $operator && $value) {
+                        $options['where'][$key] = [
+                            'attribute' => $attribute,
+                            'operator' => $operator,
+                            'value' => $value
+                        ];
+                    }
+
+                }
+            }
+        }
+        return $options['where'];
+    }
+
+    private function nodelist_output_filter(App $object, $list, $options=[]): mixed
     {
         if(!array_key_exists('output', $options)){
             return $list;
