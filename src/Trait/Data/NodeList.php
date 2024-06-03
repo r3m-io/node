@@ -10,6 +10,7 @@ use R3m\Io\Module\Data as Storage;
 use R3m\Io\Module\Dir;
 use R3m\Io\Module\File;
 use R3m\Io\Module\Filter;
+use R3m\Io\Module\Limit;
 use R3m\Io\Module\Parallel;
 use R3m\Io\Module\Parse;
 use R3m\Io\Module\Route;
@@ -215,7 +216,11 @@ trait NodeList {
                             }
                             elseif($options['index']['is_uuid'] === true){
                                 $data_sort = Sort::list($data)->with($options['sort']);
-                                d($data_sort);
+                                $data_limit = Limit::list($data_sort)->with([
+                                    'page' => $options['page'],
+                                    'limit' => $options['limit']
+                                ]);
+                                d($data_limit);
                                 d($options);
                                 ddd($data);
                                 /**
