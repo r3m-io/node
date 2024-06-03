@@ -206,6 +206,7 @@ trait NodeList {
                         }
                         d($line);
                         $record = $this->index_record($line, $options);
+                        d($record);
                         $list = [];
                         if($record){
                             if(array_key_exists('filter', $options)){
