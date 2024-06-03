@@ -256,6 +256,7 @@ trait Index {
         $where = [];
         $is_where = false;
         if(array_key_exists('where', $options)){
+            $options['where'] = $this->nodelist_where($options);
             if(is_array($options['where'])){
                 foreach($options['where'] as $nr => $record){
                     if(
