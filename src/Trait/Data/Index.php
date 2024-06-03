@@ -215,7 +215,6 @@ trait Index {
 
     public function index_record($line, $options=[]): bool|object
     {
-        d($options);
         $split = mb_str_split($line);
         $previous_char = false;
         $start = false;
