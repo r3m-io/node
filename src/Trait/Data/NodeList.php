@@ -216,6 +216,9 @@ trait NodeList {
                             ) {
                                 $record = $data[$record->uuid];
                             }
+                            ddd($cache);
+
+
                             $expose = $this->expose_get(
                                 $object,
                                 $record->{'#class'},
