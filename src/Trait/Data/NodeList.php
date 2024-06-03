@@ -215,10 +215,10 @@ trait NodeList {
                             }
                             elseif(array_key_exists('where', $options)){
                                 $options['where'] = $this->nodelist_where($options);
-                                $record = $this->where($record, $options['where'], $options);
-                                if ($record) {
-                                    ddd($record);
-                                    $list[] = $record;
+                                $record_where = $this->where($record, $options['where'], $options);
+                                if ($record_where) {
+                                    ddd($record_where);
+                                    $list[] = $record_where;
                                 }
                             }
                             elseif($options['index']['is_uuid'] === true){
