@@ -121,7 +121,6 @@ trait Index {
                 $list = Sort::list($list)->with([
                     'uuid' => 'asc'
                 ]);
-                ddd($list);
             } else {
                 $list = Sort::list($list)->with([
                     '#sort' => 'asc'
@@ -129,11 +128,15 @@ trait Index {
             }
             $result = [];
             foreach($list as $uuid => $record){
-                if(array_key_exists($record->{'#sort'}, $result)) {
-                    //cannot create index, not unique
-                    return false;
+                if($is_uuid){
+                    $result[] = $uuid;
+                } else {
+                    if(array_key_exists($record->{'#sort'}, $result)) {
+                        //cannot create index, not unique
+                        return false;
+                    }
+                    $result[] = $record->{'#sort'} . ';' . $uuid;
                 }
-                $result[] = $record->{'#sort'} . ';' . $uuid;
             }
             $output = implode(PHP_EOL, $result);
             File::write($url_index, $output);
@@ -142,6 +145,7 @@ trait Index {
                 'cache' => $cache_key,
                 'count' => $count_index,
                 'filter' => $filter_name,
+                'is_uuid' => $is_uuid
             ];
         }
         elseif($where_name){
