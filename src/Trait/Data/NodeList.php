@@ -215,7 +215,7 @@ trait NodeList {
                             elseif(array_key_exists('where', $options)){
                                 $options['where'] = $this->nodelist_where($options);
                                 $record = $this->where($record, $options['where'], $options);
-                                if (!$record) {
+                                if ($record) {
                                     ddd($record);
                                     $list[] = $record;
                                 }
