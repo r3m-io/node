@@ -179,7 +179,7 @@ trait NodeList {
                     $file = new SplFileObject($options['index']['url']);
                     $options['index']['min'] = 0;
                     $options['index']['max'] = $options['index']['count'] - 1;
-                    $max = 1024;
+                    $max = 16384;
                     $counter = 0;
                     $seek = false;
                     $line = null;
@@ -237,6 +237,7 @@ trait NodeList {
                             if($record->jump > $jump_max){
                                 $jump_max = $record->jump;
                                 $record->jump_max = $jump_max;
+                                d($record->jump_max);
                             }
                             if ($options['relation'] === true) {
                                 ddd('need object_data from cache?');
