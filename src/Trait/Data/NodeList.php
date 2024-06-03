@@ -213,10 +213,11 @@ trait NodeList {
                             }
                             elseif(array_key_exists('where', $options)){
                                 $options['where'] = $this->nodelist_where($options);
+                                d($record);
                                 ddd($options);
                             }
                             elseif($options['index']['is_uuid'] === true){
-                                //no filter, no where, only page & limit
+                                //no filter, no where, only sort, page & limit
                                 $data_sort = Sort::list($data)->with($options['sort']);
                                 $data_limit = Limit::list($data_sort)->with([
                                     'page' => $options['page'],
