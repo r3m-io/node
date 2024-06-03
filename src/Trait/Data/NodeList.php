@@ -396,6 +396,14 @@ trait NodeList {
                                         break;
                                     }
                                     $set = $this->where_get_set($where, $key, $deepest);
+                                    if(array_key_exists(0, $set)){
+                                        /*
+                                        if($set[0]['attribute'] === $attribute){
+
+                                        }
+                                        */
+                                    }
+                                    d($record);
                                     d($key);
                                     d($where);
                                     ddd($set);
