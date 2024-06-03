@@ -224,6 +224,8 @@ trait Index {
         $record = [];
         $uuid = [];
         $is_uuid = false;
+        $filter = $options['index']['filter'] ?? false;
+        $where = $options['index']['where'] ?? false;
         foreach ($split as $nr => $char) {
             if ($is_uuid) {
                 $uuid[] = $char;
@@ -244,12 +246,10 @@ trait Index {
                 $start !== false
             ) {
                 $end = $nr;
-                $filter = $options['index']['filter'] ?? false;
                 if ($filter && array_key_exists($index, $filter)) {
                     $attribute = $filter[$index];
                     $record[$attribute] = implode('', $collect);
                 }
-                $where = $options['index']['where'] ?? false;
                 if ($where) {
                     d($index);
                     d($collect);
