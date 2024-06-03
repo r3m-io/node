@@ -215,6 +215,7 @@ trait NodeList {
                                 $list = Filter::list($list)->where($options['filter']);
                             }
                             elseif($options['index']['is_uuid'] === true){
+                                //no filter, no where, only page & limit
                                 $data_sort = Sort::list($data)->with($options['sort']);
                                 $data_limit = Limit::list($data_sort)->with([
                                     'page' => $options['page'],
