@@ -606,9 +606,8 @@ trait NodeList {
                         is_array($options['where'])
                     )
                 ) {
-                    $options['where'] = $this->nodelist_where($options);
-                    d($options);
-                    if($options['where'] !== false){
+                    $where = $this->nodelist_where($options);
+                    if($where !== false){
                         $is_where = true;
                     }
                 }
