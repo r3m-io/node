@@ -204,6 +204,7 @@ trait NodeList {
                         if ($counter > $max) {
                             break;
                         }
+                        d($line);
                         $record = $this->index_record($line, $options);
                         $list = [];
                         if($record){
