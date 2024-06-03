@@ -214,6 +214,8 @@ trait NodeList {
                                 $list = Filter::list($list)->where($options['filter']);
                             }
                             elseif($options['index']['is_uuid'] === true){
+                                $data_sort = Sort::list($data)->with($options['sort']);
+                                d($data_sort);
                                 d($options);
                                 ddd($data);
                                 /**
