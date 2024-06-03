@@ -83,53 +83,16 @@ trait Index {
                     ]
                 );
             }
-            //nodelist all records in chunks of 4096 so we can parallelize the process later on.
-            if(!array_key_exists('list', $select)){
-                return false; //no-data
-            }
-            $list = [];
-            $data_cache = (object) [];
-            $count_index = 0;
-            $is_uuid = false;
-            foreach($select['list'] as $nr => $record){
-                if(
-                    is_object($record) &&
-                    property_exists($record, 'uuid')
-                ){
-                    $data_cache->{$record->uuid} = $record;
-                    $record_index = (object) [
-                        'uuid' => $record->uuid
-                    ];
-                    $count_index++;
-                    $sort_key = [];
-                    if($filter_name === false){
-                        $is_uuid = true;
-                    } else {
-                        foreach($filter_name as $attribute){
-                            if(!property_exists($record, $attribute)){
-                                continue; //no-data
-                            }
-                            $record_index->{$attribute} = $record->{$attribute};
-                            $sort_key[] = '\'' . $record->{$attribute} . '\'';
-                        }
-                        $record_index->{'#sort'} = implode(',', $sort_key);
-                    }
-                    $list[] = $record_index;
-                }
-            }
+            $list = $this->index_list(
+                $name,
+                $select,
+                $filter_name,
+                $count_index,
+                $is_uuid,
+                $cache_key
+            );
             if($url_index){
                 Dir::create($dir_index, Dir::CHMOD);
-            }
-            $cache_key = sha1('index.' . $name);
-            $cache->set($cache_key, $data_cache);
-            if($is_uuid){
-                $list = Sort::list($list)->with([
-                    'uuid' => 'asc'
-                ]);
-            } else {
-                $list = Sort::list($list)->with([
-                    '#sort' => 'asc'
-                ]);
             }
             $result = [];
             foreach($list as $uuid => $record){
@@ -162,6 +125,32 @@ trait Index {
                 $object->config('extension.btree');
             if($url_index){
                 Dir::create($dir_index, Dir::CHMOD);
+                if($cache_select){
+                    $select = [
+                        'list' => $cache_select->get($name)
+                    ];
+                } else {
+                    $select = $this->list(
+                        $name,
+                        $role,
+                        [
+                            'transaction' => true,
+                            'limit' => '*',
+                            'page' => 1
+                        ]
+                    );
+                }
+                $list = $this->index_list(
+                    $name,
+                    $select,
+                    $where_name,
+                    $count_index,
+                    $is_uuid,
+                    $cache_key
+                );
+                d($where_name);
+                ddd($list);
+
             }
         }
         d($url_index);
@@ -170,6 +159,60 @@ trait Index {
 
         d($name);
         ddd($options);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function index_list($name, $select=[], $filter_name=false, &$count_index=false, &$is_uuid=false, &$cache_key=false){
+        //nodelist all records in chunks of 4096 so we can parallelize the process later on.
+        if(!array_key_exists('list', $select)){
+            return false; //no-data
+        }
+        $object = $this->object();
+        $cache = $object->data(App::CACHE);
+        $list = [];
+        $data_cache = (object) [];
+        $count_index = 0;
+        $is_uuid = false;
+        foreach($select['list'] as $nr => $record){
+            if(
+                is_object($record) &&
+                property_exists($record, 'uuid')
+            ){
+                $data_cache->{$record->uuid} = $record;
+                $record_index = (object) [
+                    'uuid' => $record->uuid
+                ];
+                $count_index++;
+                $sort_key = [];
+                if($filter_name === false){
+                    $is_uuid = true;
+                } else {
+                    foreach($filter_name as $attribute){
+                        if(!property_exists($record, $attribute)){
+                            continue; //no-data
+                        }
+                        $record_index->{$attribute} = $record->{$attribute};
+                        $sort_key[] = '\'' . $record->{$attribute} . '\'';
+                    }
+                    $record_index->{'#sort'} = implode(',', $sort_key);
+                }
+                $list[] = $record_index;
+            }
+        }
+        $cache_key = sha1('index.' . $name);
+        $cache->set($cache_key, $data_cache);
+        if($is_uuid){
+            $list = Sort::list($list)->with([
+                'uuid' => 'asc'
+            ]);
+        } else {
+            $list = Sort::list($list)->with([
+                '#sort' => 'asc'
+            ]);
+        }
+        return $list;
     }
 
     public function index_record($line, $options=[]): bool|object
