@@ -32,6 +32,9 @@ trait Record {
         if(!array_key_exists('index', $options)){
             $options['index'] = false;
         }
+        elseif($options['index'] === true){
+            $options['index'] = $this->index($name, $role, $options);
+        }
         if(!Security::is_granted(
             $name,
             $role,
