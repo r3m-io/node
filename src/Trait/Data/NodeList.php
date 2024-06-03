@@ -209,7 +209,9 @@ trait NodeList {
                         $list = [];
                         if($record){
                             $list[] = $record;
-                            $list = Filter::list($list)->where($options['filter']);
+                            if(array_key_exists('filter', $options)){
+                                $list = Filter::list($list)->where($options['filter']);
+                            }
                         }
                         if(array_key_exists(0, $list)) {
                             if (
