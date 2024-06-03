@@ -398,11 +398,9 @@ trait NodeList {
                                     }
                                     $set = $this->where_get_set($where, $key, $deepest);
                                     if(array_key_exists(0, $set)){
-                                        /*
                                         if($set[0]['attribute'] === $attribute){
-
+                                            ddd('ye');
                                         }
-                                        */
                                     }
                                     d($record);
                                     d($key);
