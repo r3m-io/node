@@ -205,6 +205,7 @@ trait NodeList {
                         d($line);
 
                         $record = $this->index_record($line, $options);
+                        d($record);
                         $list = [];
                         if($record){
                             $list[] = $record;
