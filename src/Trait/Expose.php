@@ -233,6 +233,7 @@ trait Expose {
      */
     public function expose_get(App $object, $name='', $attribute=''): mixed
     {
+        $cache = $object->data(App::CACHE);
         $dir_expose = $object->config('project.dir.node') .
             'Expose' .
             $object->config('ds')
@@ -241,10 +242,16 @@ trait Expose {
             $name .
             $object->config('extension.json')
         ;
-        if(!File::exist($url)){
-            throw new Exception('Expose: url (' . $url . ') not found for class: ' . $name);
+        if($cache){
+            $data = $cache->get(sha1($url));
         }
-        $data = $object->data_read($url);
+        if(!$data){
+            if(!File::exist($url)){
+                throw new Exception('Expose: url (' . $url . ') not found for class: ' . $name);
+            }
+            $data = $object->data_read($url);
+            $cache->set(sha1($url), $data);
+        }
         $get = false;
         if($data){
             $get = $data->get($attribute);
