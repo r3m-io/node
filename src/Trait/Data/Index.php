@@ -323,7 +323,7 @@ trait Index {
                             true
                         )
                     ){
-                        $where[] = strtolower($record);
+//                        $where[] = strtolower($record);
                     }
                     elseif(
                         is_array($record) &&
