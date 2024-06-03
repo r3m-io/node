@@ -213,6 +213,16 @@ trait NodeList {
                             if(array_key_exists('filter', $options)){
                                 $list = Filter::list($list)->where($options['filter']);
                             }
+                            elseif($options['index']['is_uuid'] === true){
+                                ddd($data);
+
+                                $list = Filter::list($list)->where([
+                                    'uuid' => [
+                                        'operator' => Filter::OPERATOR_STRICTLY_EXACT,
+                                        'value' => $record->uuid
+                                    ]
+                                ]);
+                            }
                         }
                         if(array_key_exists(0, $list)) {
                             if (
@@ -278,6 +288,8 @@ trait NodeList {
                                 $result['transaction'] = $options['transaction'] ?? false;
                                 $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
                                 return $result;
+                            } else {
+                                ddd($record);
                             }
                         } else {
                             if(array_key_exists('filter', $options)){
