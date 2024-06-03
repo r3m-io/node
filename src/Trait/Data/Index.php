@@ -252,11 +252,8 @@ trait Index {
                     $attribute = $filter[$index];
                     $record[$attribute] = implode('', $collect);
                 }
-                if ($where) {
-                    d($index);
-                    d($collect);
-                    ddd($where);
-                    $attribute = $filter[$index];
+                elseif ($where && array_key_exists($index, $where)) {
+                    $attribute = $where[$index];
                     $record[$attribute] = implode('', $collect);
                 }
                 $previous_char = $char;
