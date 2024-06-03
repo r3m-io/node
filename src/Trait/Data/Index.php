@@ -238,8 +238,9 @@ trait Index {
                 $start !== false
             ) {
                 $end = $nr;
-                if (array_key_exists($index, $options['index']['filter'])) {
-                    $attribute = $options['index']['filter'][$index];
+                $filter = $options['index']['filter'] ?? false;
+                if ($filter && array_key_exists($index, $filter)) {
+                    $attribute = $filter[$index];
                     $record[$attribute] = implode('', $collect);
                 }
                 $previous_char = $char;
