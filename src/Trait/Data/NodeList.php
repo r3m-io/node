@@ -220,6 +220,49 @@ trait NodeList {
                                     'page' => $options['page'],
                                     'limit' => $options['limit']
                                 ]);
+                                if($data_limit){
+                                    $list = [];
+                                    $count = 0;
+                                    foreach($data_limit as $nr => $record){
+                                        $expose = $this->expose_get(
+                                            $object,
+                                            $record->{'#class'},
+                                            $record->{'#class'} . '.' . $options['function'] . '.output'
+                                        );
+                                        $node = new Storage($record);
+                                        $node = $this->expose(
+                                            $node,
+                                            $expose,
+                                            $record->{'#class'},
+                                            $options['function'],
+                                            $role
+                                        );
+                                        $record = $node->data();
+                                        $list[] = $record;
+                                        $count++;
+                                    }
+                                    $result = [];
+                                    $result['page'] = $options['page'];
+                                    $result['limit'] = $options['limit'];
+                                    $result['count'] = $count;
+                                    $result['max'] = $options['index']['count'];
+                                    $result['list'] = $list;
+                                    $result['sort'] = $options['sort'] ?? [];
+                                    if (!empty($options['filter'])) {
+                                        $result['filter'] = $options['filter'];
+                                    }
+                                    if (!empty($options['where'])) {
+                                        $result['where'] = $options['where'];
+                                    }
+                                    $result['relation'] = $options['relation'];
+                                    $result['parse'] = $options['parse'];
+                                    $result['pre-compile'] = $options['pre-compile'] ?? false;
+                                    $result['ramdisk'] = $options['ramdisk'] ?? false;
+                                    $result['mtime'] = $mtime;
+                                    $result['transaction'] = $options['transaction'] ?? false;
+                                    $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+                                    return $result;
+                                }
                                 d($data_limit);
                                 ddd($options);
                                 ddd($data);
