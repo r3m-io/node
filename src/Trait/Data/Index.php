@@ -261,7 +261,7 @@ trait Index {
                     if(
                         is_string($record) &&
                         in_array(
-                            strotolower($record),
+                            strtolower($record),
                             [
                                 '(',
                                 ')',
