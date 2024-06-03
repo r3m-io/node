@@ -251,6 +251,8 @@ trait Index {
                 }
                 $where = $options['index']['where'] ?? false;
                 if ($where) {
+                    d($index);
+                    d($collect);
                     ddd($where);
                     $attribute = $filter[$index];
                     $record[$attribute] = implode('', $collect);
