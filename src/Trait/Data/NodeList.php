@@ -214,7 +214,14 @@ trait NodeList {
                                 $list = Filter::list($list)->where($options['filter']);
                             }
                             elseif($options['index']['is_uuid'] === true){
+                                d($options);
                                 ddd($data);
+                                /**
+                                 * only have limit * page, no filter, no where
+                                 * index is sort by uuid
+                                 */
+
+
 
                                 $list = Filter::list($list)->where([
                                     'uuid' => [
