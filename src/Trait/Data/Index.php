@@ -144,6 +144,65 @@ trait Index {
         ddd($options);
     }
 
+    public function index_record($line, $options=[]): bool|object
+    {
+        $split = mb_str_split($line);
+        $previous_char = false;
+        $start = false;
+        $end = false;
+        $collect = [];
+        $is_collect = false;
+        $index = 0;
+        $record = [];
+        $uuid = [];
+        $is_uuid = false;
+        foreach ($split as $nr => $char) {
+            if ($is_uuid) {
+                $uuid[] = $char;
+                continue;
+            }
+            if (
+                $previous_char !== '\\' &&
+                $char === '\'' &&
+                $start === false
+            ) {
+                $start = $nr;
+                $previous_char = $char;
+                $is_collect = true;
+                continue;
+            } elseif (
+                $previous_char !== '\\' &&
+                $char === '\'' &&
+                $start !== false
+            ) {
+                $end = $nr;
+                if (array_key_exists($index, $options['index']['filter'])) {
+                    $attribute = $options['index']['filter'][$index];
+                    $record[$attribute] = implode('', $collect);
+                }
+                $previous_char = $char;
+                $is_collect = false;
+                $collect = [];
+                continue;
+            }
+            if ($is_collect) {
+                $collect[] = $char;
+            } else {
+                if ($char === ',') {
+                    $index++;
+                } elseif ($char === ';') {
+                    $is_uuid = true;
+                }
+            }
+            $previous_char = $char;
+        }
+        if (array_key_exists(0, $uuid)) {
+            $record['uuid'] = rtrim(implode('', $uuid), PHP_EOL);
+            return (object) $record;
+        }
+        return false;
+    }
+
     private function index_filter_name($class, $options=[]): false | array
     {
         $filter = [];

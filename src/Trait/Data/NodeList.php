@@ -182,6 +182,7 @@ trait NodeList {
                     $line = null;
                     $is_found = [];
                     $jump_max = 0;
+                    $record = false;
                     while($options['index']['min'] <= $options['index']['max']) {
                         $seek = $options['index']['min'] +
                             floor(
@@ -197,65 +198,12 @@ trait NodeList {
                         if ($counter > $max) {
                             break;
                         }
-                        $split = mb_str_split($line);
-                        $previous_char = false;
-                        $start = false;
-                        $end = false;
-                        $collect = [];
-                        $is_collect = false;
-                        $index = 0;
-                        $record = [];
-                        $uuid = [];
-                        $is_uuid = false;
-                        foreach ($split as $nr => $char) {
-                            if ($is_uuid) {
-                                $uuid[] = $char;
-                                continue;
-                            }
-                            if (
-                                $previous_char !== '\\' &&
-                                $char === '\'' &&
-                                $start === false
-                            ) {
-                                $start = $nr;
-                                $previous_char = $char;
-                                $is_collect = true;
-                                continue;
-                            } elseif (
-                                $previous_char !== '\\' &&
-                                $char === '\'' &&
-                                $start !== false
-                            ) {
-                                $end = $nr;
-                                if (array_key_exists($index, $options['index']['filter'])) {
-                                    $attribute = $options['index']['filter'][$index];
-                                    $record[$attribute] = implode('', $collect);
-                                }
-                                $previous_char = $char;
-                                $is_collect = false;
-                                $collect = [];
-                                continue;
-                            }
-                            if ($is_collect) {
-                                $collect[] = $char;
-                            } else {
-                                if ($char === ',') {
-                                    $index++;
-                                } elseif ($char === ';') {
-                                    $is_uuid = true;
-                                }
-                            }
-                            $previous_char = $char;
-                        }
-                        if (array_key_exists(0, $uuid)) {
-                            $record['uuid'] = rtrim(implode('', $uuid), PHP_EOL);
-                        }
-                        $record = (object) $record;
-
+                        $record = $this->index_record($line, $options);
                         $list = [];
-                        $list[] = $record;
-
-                        $list = Filter::list($list)->where($options['filter']);
+                        if($record){
+                            $list[] = $record;
+                            $list = Filter::list($list)->where($options['filter']);
+                        }
                         if(array_key_exists(0, $list)) {
                             if (
                                 is_object($data) &&
@@ -323,7 +271,7 @@ trait NodeList {
                         } else {
                             foreach ($options['filter'] as $attribute => $filter) {
                                 if (is_object($filter)) {
-
+                                    ddd('filter is object, implement');
                                 } elseif (is_array($filter)) {
                                     if (
                                         array_key_exists('operator', $filter) &&
@@ -364,6 +312,8 @@ trait NodeList {
                             }
                         }
                     }
+                    d($record);
+                    d($options);
                 }
             }
 
