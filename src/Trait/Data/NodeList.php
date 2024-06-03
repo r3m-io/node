@@ -208,9 +208,12 @@ trait NodeList {
                         $list = [];
                         if($record){
                             $list[] = $record;
-                            ddd($options);
                             if(array_key_exists('filter', $options)){
                                 $list = Filter::list($list)->where($options['filter']);
+                            }
+                            elseif(array_key_exists('where', $options)){
+                                $options['where'] = $this->nodelist_where($options);
+                                ddd($options);
                             }
                             elseif($options['index']['is_uuid'] === true){
                                 //no filter, no where, only page & limit
