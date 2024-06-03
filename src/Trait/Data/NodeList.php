@@ -339,7 +339,10 @@ trait NodeList {
                                 ddd($record);
                             }
                         } else {
-                            if(array_key_exists('filter', $options)){
+                            if(
+                                array_key_exists('filter', $options) &&
+                                is_array($options['filter'])
+                            ){
                                 foreach ($options['filter'] as $attribute => $filter) {
                                     if (is_object($filter)) {
                                         ddd('filter is object, implement');
@@ -380,8 +383,8 @@ trait NodeList {
                                         }
                                     }
                                 }
-                            } elseif($options['index']['is_uuid'] === true) {
-                                d($record);
+                            }
+                            elseif(array_key_exists('where', $options)){
                                 ddd($options);
                             }
 
