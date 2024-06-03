@@ -53,6 +53,7 @@ trait Index {
                 $url_index = $dir_index .
                     $name .
                     '.' .
+                    'uuid' .
                     //need filter keys and where attributes
                     $object->config('extension.btree');
             } else {
