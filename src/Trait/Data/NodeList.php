@@ -76,6 +76,7 @@ trait NodeList {
             }
         }
         $options['page'] = $options['page'] ?? 1;
+        $options['limit'] = $options['limit'] ?? 1000;
         if (!Security::is_granted(
             $name,
             $role,
@@ -83,8 +84,8 @@ trait NodeList {
         )) {
             $list = [];
             $result = [];
-            $result['page'] = $options['page'] ?? 1;
-            $result['limit'] = $options['limit'] ?? 1000;
+            $result['page'] = $options['page'];
+            $result['limit'] = $options['limit'];
             $result['count'] = 0;
             $result['max'] = 0;
             $result['list'] = $list;
@@ -136,8 +137,8 @@ trait NodeList {
         if (!File::exist($data_url)) {
             $list = [];
             $result = [];
-            $result['page'] = $options['page'] ?? 1;
-            $result['limit'] = $options['limit'] ?? 1000;
+            $result['page'] = $options['page'];
+            $result['limit'] = $options['limit'];
             $result['count'] = 0;
             $result['max'] = 0;
             $result['list'] = $list;
