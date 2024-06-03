@@ -598,6 +598,7 @@ trait NodeList {
                     )
                 ) {
                     $options['where'] = $this->nodelist_where($options);
+                    d($options);
                     if($options['where'] !== false){
                         $is_where = true;
                     }
