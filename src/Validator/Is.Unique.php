@@ -140,9 +140,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
             'function' => $function
         ];
     }
-    d($options);
 //    $options['memory'] = true;
-    $start = microtime(true);
     $node = new Node($object);
     if(str_ends_with($options['function'], '_many')){
         //create index
@@ -150,9 +148,6 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
         //add index as options to record
     }
     $response = $node->record($name, $node->role_system(), $options);
-    $end = microtime(true);
-    $duration = $end - $start;
-    echo 'Is.Unique: ' . ($duration * 1000) . ' msec' . PHP_EOL;
     if(
         !empty($response) &&
         is_array($response) &&
