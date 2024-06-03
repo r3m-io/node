@@ -221,7 +221,7 @@ trait NodeList {
                                     'limit' => $options['limit']
                                 ]);
                                 d($data_limit);
-                                d($options);
+                                ddd($options);
                                 ddd($data);
                                 /**
                                  * only have limit * page, no filter, no where
