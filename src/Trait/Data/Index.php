@@ -249,6 +249,12 @@ trait Index {
                     $attribute = $filter[$index];
                     $record[$attribute] = implode('', $collect);
                 }
+                $where = $options['index']['where'] ?? false;
+                if ($where) {
+                    ddd($where);
+                    $attribute = $filter[$index];
+                    $record[$attribute] = implode('', $collect);
+                }
                 $previous_char = $char;
                 $is_collect = false;
                 $collect = [];
