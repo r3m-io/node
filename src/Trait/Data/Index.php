@@ -91,30 +91,6 @@ trait Index {
                 $is_uuid,
                 $cache_key
             );
-            if($url_index){
-                Dir::create($dir_index, Dir::CHMOD);
-            }
-            $result = [];
-            foreach($list as $uuid => $record){
-                if($is_uuid){
-                    $result[] = ';' . $uuid;
-                } else {
-                    if(array_key_exists($record->{'#sort'}, $result)) {
-                        //cannot create index, not unique
-                        return false;
-                    }
-                    $result[] = $record->{'#sort'} . ';' . $uuid;
-                }
-            }
-            $output = implode(PHP_EOL, $result);
-            File::write($url_index, $output);
-            return [
-                'url' => $url_index,
-                'cache' => $cache_key,
-                'count' => $count_index,
-                'filter' => $filter_name,
-                'is_uuid' => $is_uuid
-            ];
         }
         elseif($where_name){
             $url_index = $dir_index .
@@ -148,17 +124,32 @@ trait Index {
                     $is_uuid,
                     $cache_key
                 );
-                d($where_name);
-                ddd($list);
-
             }
         }
-        d($url_index);
-
-
-
-        d($name);
-        ddd($options);
+        if($url_index){
+            Dir::create($dir_index, Dir::CHMOD);
+        }
+        $result = [];
+        foreach($list as $uuid => $record){
+            if($is_uuid){
+                $result[] = ';' . $uuid;
+            } else {
+                if(array_key_exists($record->{'#sort'}, $result)) {
+                    //cannot create index, not unique
+                    return false;
+                }
+                $result[] = $record->{'#sort'} . ';' . $uuid;
+            }
+        }
+        $output = implode(PHP_EOL, $result);
+        File::write($url_index, $output);
+        return [
+            'url' => $url_index,
+            'cache' => $cache_key,
+            'count' => $count_index,
+            'filter' => $filter_name,
+            'is_uuid' => $is_uuid
+        ];
     }
 
     /**
