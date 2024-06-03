@@ -28,8 +28,12 @@ trait Index {
     public function index($class, $role, $options=[]){
         $name = Controller::name($class);
         $object = $this->object();
+        if(array_key_exists('where', $options)){
+            $options['where'] = $this->nodelist_where($options);
+        }
         $filter_name = $this->index_filter_name($name, $options);
         $where_name = $this->index_where_name($name, $options);
+        d($where_name);
         $dir_index = $object->config('ramdisk.url') .
             $object->config(Config::POSIX_ID) .
             $object->config('ds') .
@@ -256,7 +260,6 @@ trait Index {
         $where = [];
         $is_where = false;
         if(array_key_exists('where', $options)){
-            $options['where'] = $this->nodelist_where($options);
             if(is_array($options['where'])){
                 foreach($options['where'] as $nr => $record){
                     if(
