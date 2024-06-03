@@ -273,6 +273,7 @@ trait NodeList {
                                 return $result;
                             }
                         } else {
+                            ddd($options);
                             foreach ($options['filter'] as $attribute => $filter) {
                                 if (is_object($filter)) {
                                     ddd('filter is object, implement');
