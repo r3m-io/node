@@ -384,8 +384,41 @@ trait NodeList {
                                     }
                                 }
                             }
-                            elseif(array_key_exists('where', $options)){
+                            elseif(
+                                array_key_exists('where', $options) &&
+                                is_array($options['where'])
+                            ){
+                                $where = $options['where'];
+                                $deepest = $this->where_get_depth($where);
+                                $max =0;
+                                while($deepest >= 0) {
+                                    if ($max > 1024) {
+                                        break;
+                                    }
+                                    $set = $this->where_get_set($where, $key, $deepest);
+                                    ddd($set);
+                                    $max++;
+                                }
+
+
+                                $sort = [
+                                    $value,
+                                    $record->{$attribute}
+                                ];
+                                sort($sort, SORT_NATURAL);
+                                if($sort[0] === $value){
+                                    $options['index']['max'] = $seek - 1;
+                                    break;
+                                } else {
+                                    //sort[1] === $value
+                                    //min becomes seek + 1
+                                    $options['index']['min'] = $seek + 1;
+                                    break;
+                                };
+
                                 ddd($options);
+
+
                             }
 
                         }
