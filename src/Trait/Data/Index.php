@@ -85,6 +85,7 @@ trait Index {
             $list = [];
             $data_cache = (object) [];
             $count_index = 0;
+            $is_uuid = false;
             foreach($select['list'] as $nr => $record){
                 if(
                     is_object($record) &&
@@ -97,8 +98,7 @@ trait Index {
                     $count_index++;
                     $sort_key = [];
                     if($filter_name === false){
-                        d($record_index);
-                        ddd('found');
+                        $is_uuid = true;
                     } else {
                         foreach($filter_name as $attribute){
                             if(!property_exists($record, $attribute)){
@@ -117,9 +117,16 @@ trait Index {
             }
             $cache_key = sha1('index.' . $name);
             $cache->set($cache_key, $data_cache);
-            $list = Sort::list($list)->with([
-                '#sort' => 'asc'
-            ]);
+            if($is_uuid){
+                $list = Sort::list($list)->with([
+                    'uuid' => 'asc'
+                ]);
+                ddd($list);
+            } else {
+                $list = Sort::list($list)->with([
+                    '#sort' => 'asc'
+                ]);
+            }
             $result = [];
             foreach($list as $uuid => $record){
                 if(array_key_exists($record->{'#sort'}, $result)) {
