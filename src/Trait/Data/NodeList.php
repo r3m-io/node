@@ -162,7 +162,8 @@ trait NodeList {
             array_key_exists('url', $options['index']) &&
             array_key_exists('cache', $options['index']) &&
             array_key_exists('count', $options['index']) &&
-            array_key_exists('filter', $options['index'])
+            array_key_exists('filter', $options['index']) &&
+            array_key_exists('is_uuid', $options['index'])
         ){
             $is_filter = false;
             if (
@@ -273,48 +274,52 @@ trait NodeList {
                                 return $result;
                             }
                         } else {
-                            ddd($options);
-                            foreach ($options['filter'] as $attribute => $filter) {
-                                if (is_object($filter)) {
-                                    ddd('filter is object, implement');
-                                } elseif (is_array($filter)) {
-                                    if (
-                                        array_key_exists('operator', $filter) &&
-                                        array_key_exists('value', $filter)
-                                    ) {
-                                        $operator = $filter['operator'];
-                                        $value = $filter['value'];
-
-                                        if(property_exists($record, $attribute)) {
-                                            $list = [];
-                                            $list[] = $record;
-                                            $where = [
-                                                $attribute => [
-                                                    'operator' => $operator,
-                                                    'value' => $value
-                                                ]
-                                            ];
-                                            $list = Filter::list($list)->where($where);
-                                            if(!array_key_exists(0, $list)){
-                                                $sort = [
-                                                    $value,
-                                                    $record->{$attribute}
+                            if(array_key_exists('filter', $options)){
+                                foreach ($options['filter'] as $attribute => $filter) {
+                                    if (is_object($filter)) {
+                                        ddd('filter is object, implement');
+                                    } elseif (is_array($filter)) {
+                                        if (
+                                            array_key_exists('operator', $filter) &&
+                                            array_key_exists('value', $filter)
+                                        ) {
+                                            $operator = $filter['operator'];
+                                            $value = $filter['value'];
+                                            if(property_exists($record, $attribute)) {
+                                                $list = [];
+                                                $list[] = $record;
+                                                $where = [
+                                                    $attribute => [
+                                                        'operator' => $operator,
+                                                        'value' => $value
+                                                    ]
                                                 ];
-                                                sort($sort, SORT_NATURAL);
-                                                if($sort[0] === $value){
-                                                    $options['index']['max'] = $seek - 1;
-                                                    break;
-                                                } else {
-                                                    //sort[1] === $value
-                                                    //min becomes seek + 1
-                                                    $options['index']['min'] = $seek + 1;
-                                                    break;
-                                                };
+                                                $list = Filter::list($list)->where($where);
+                                                if(!array_key_exists(0, $list)){
+                                                    $sort = [
+                                                        $value,
+                                                        $record->{$attribute}
+                                                    ];
+                                                    sort($sort, SORT_NATURAL);
+                                                    if($sort[0] === $value){
+                                                        $options['index']['max'] = $seek - 1;
+                                                        break;
+                                                    } else {
+                                                        //sort[1] === $value
+                                                        //min becomes seek + 1
+                                                        $options['index']['min'] = $seek + 1;
+                                                        break;
+                                                    };
+                                                }
                                             }
                                         }
                                     }
                                 }
+                            } elseif($options['index']['is_uuid'] === true) {
+                                d($record);
+                                ddd($options);
                             }
+
                         }
                     }
                     if (
