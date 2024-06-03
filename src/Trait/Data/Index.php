@@ -57,12 +57,16 @@ trait Index {
                 $url_index = $dir_index .
                     $name .
                     '.' .
+                    'Filter' .
+                    '.' .
                     'uuid' .
                     //need filter keys and where attributes
                     $object->config('extension.btree');
             } else {
                 $url_index = $dir_index .
                     $name .
+                    '.' .
+                    'Filter' .
                     '.' .
                     implode('.', $filter_name) . //add sha1();
                     //need filter keys and where attributes
@@ -95,6 +99,8 @@ trait Index {
         elseif($where_name){
             $url_index = $dir_index .
                 $name .
+                '.' .
+                'Where' .
                 '.' .
                 implode('.', $where_name) . //add sha1()
                 //need filter keys and where attributes
