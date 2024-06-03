@@ -127,10 +127,7 @@ trait Patch {
             ){
                 $validate = (object) ['success' => true];
             } else {
-                $start = microtime(true);
                 $validate = $this->validate($object, $validate_url,  $name . '.patch', $options['function']);
-                $duration = (microtime(true) - $start) * 1000;
-                echo 'Validation duration: ' . $duration . ' ms' . PHP_EOL;
             }
             if($validate) {
                 if ($validate->success === true) {
