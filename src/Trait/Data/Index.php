@@ -154,6 +154,7 @@ trait Index {
             'cache' => $cache_key,
             'count' => $count_index,
             'filter' => $filter_name,
+            'where'=> $where_name,
             'is_uuid' => $is_uuid
         ];
     }
