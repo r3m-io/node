@@ -396,6 +396,8 @@ trait NodeList {
                                         break;
                                     }
                                     $set = $this->where_get_set($where, $key, $deepest);
+                                    d($key);
+                                    d($where);
                                     ddd($set);
                                     $max++;
                                 }
