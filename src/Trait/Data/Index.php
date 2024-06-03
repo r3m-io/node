@@ -130,7 +130,7 @@ trait Index {
             $result = [];
             foreach($list as $uuid => $record){
                 if($is_uuid){
-                    $result[] = $uuid;
+                    $result[] = ';' . $uuid;
                 } else {
                     if(array_key_exists($record->{'#sort'}, $result)) {
                         //cannot create index, not unique
