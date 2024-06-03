@@ -182,7 +182,7 @@ trait NodeList {
                     $file = new SplFileObject($options['index']['url']);
                     $options['index']['min'] = 0;
                     $options['index']['max'] = $options['index']['count'] - 1;
-                    $max = 16384;
+                    $max = 4096;
                     $counter = 0;
                     $seek = false;
                     $line = null;
@@ -208,6 +208,7 @@ trait NodeList {
                         $list = [];
                         if($record){
                             $list[] = $record;
+                            ddd($options);
                             if(array_key_exists('filter', $options)){
                                 $list = Filter::list($list)->where($options['filter']);
                             }
