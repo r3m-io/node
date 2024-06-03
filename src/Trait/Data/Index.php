@@ -49,13 +49,20 @@ trait Index {
         $cache_select = $cache->get(sha1($url_data));
         //url_index should be in node/index
         if($where_name === false){
-            $url_index = $dir_index .
-                $name .
-                '.' .
-                implode('.', $filter_name) . //add sha1();
-                //need filter keys and where attributes
-                $object->config('extension.btree');
-
+            if($filter_name === false){
+                $url_index = $dir_index .
+                    $name .
+                    '.' .
+                    //need filter keys and where attributes
+                    $object->config('extension.btree');
+            } else {
+                $url_index = $dir_index .
+                    $name .
+                    '.' .
+                    implode('.', $filter_name) . //add sha1();
+                    //need filter keys and where attributes
+                    $object->config('extension.btree');
+            }
             if($cache_select){
                 $select = [
                     'list' => $cache_select->get($name)
