@@ -48,7 +48,7 @@ trait Index {
         $cache = $object->data(App::CACHE);
         $cache_select = $cache->get(sha1($url_data));
         //url_index should be in node/index
-        if($filter_name){
+        if($where_name === false){
             $url_index = $dir_index .
                 $name .
                 '.' .
@@ -89,14 +89,19 @@ trait Index {
                     ];
                     $count_index++;
                     $sort_key = [];
-                    foreach($filter_name as $attribute){
-                        if(!property_exists($record, $attribute)){
-                            continue; //no-data
+                    if($filter_name === false){
+                        d($record_index);
+                        ddd('found');
+                    } else {
+                        foreach($filter_name as $attribute){
+                            if(!property_exists($record, $attribute)){
+                                continue; //no-data
+                            }
+                            $record_index->{$attribute} = $record->{$attribute};
+                            $sort_key[] = '\'' . $record->{$attribute} . '\'';
                         }
-                        $record_index->{$attribute} = $record->{$attribute};
-                        $sort_key[] = '\'' . $record->{$attribute} . '\'';
+                        $record_index->{'#sort'} = implode(',', $sort_key);
                     }
-                    $record_index->{'#sort'} = implode(',', $sort_key);
                     $list[] = $record_index;
                 }
             }
