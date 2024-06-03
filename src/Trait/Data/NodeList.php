@@ -208,14 +208,17 @@ trait NodeList {
                         $record = $this->index_record($line, $options);
                         $list = [];
                         if($record){
-                            $list[] = $record;
                             if(array_key_exists('filter', $options)){
+                                $list[] = $record;
                                 $list = Filter::list($list)->where($options['filter']);
                             }
                             elseif(array_key_exists('where', $options)){
                                 $options['where'] = $this->nodelist_where($options);
-                                d($record);
-                                ddd($options);
+                                $record = $this->where($record, $options['where'], $options);
+                                if (!$record) {
+                                    ddd($record);
+                                    $list[] = $record;
+                                }
                             }
                             elseif($options['index']['is_uuid'] === true){
                                 //no filter, no where, only sort, page & limit
@@ -224,7 +227,6 @@ trait NodeList {
                                     'page' => $options['page'],
                                     'limit' => $options['limit']
                                 ]);
-                                $list = [];
                                 $count = 0;
                                 if($data_limit) {
                                     foreach ($data_limit as $nr => $record) {
