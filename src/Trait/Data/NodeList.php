@@ -256,32 +256,37 @@ trait NodeList {
                             $where = $options['where'];
                             $deepest = $this->where_get_depth($where);
                             $max_deep =0;
+                            if(!array_key_exists('set', $options)){
+                                $options['set'] = [];
+                                $options['set']['index'] = 0;
+                            }
+
                             while($deepest >= 0) {
                                 if ($max_deep > 1024) {
                                     break;
                                 }
                                 $set = $this->where_get_set($where, $key, $deepest);
-                                $set_max = count($set);
-                                if($set_max > 2){
+                                $options['set']['max'] = count($set);
+                                if($options['set']['max'] > 2){
                                     $operator = $set[1];
                                     switch(strtolower($operator)){
                                         case 'or' :
                                             d($options);
-                                            if(array_key_exists(0, $set)){
+                                            if(array_key_exists($options['set']['index'], $set)){
                                                 if(
                                                     in_array(
-                                                        $set[0]['attribute'],
+                                                        $set[$options['set']['index']]['attribute'],
                                                         $options['index']['where'],
                                                         true
                                                     )
                                                 ){
                                                     $sort = [
-                                                        $set[0]['value'],
-                                                        $record->{$set[0]['attribute']}
+                                                        $set[$options['set']['index']]['value'],
+                                                        $record->{$set[$options['set']['index']]['attribute']}
                                                     ];
                                                     sort($sort, SORT_NATURAL);
                                                     d($sort);
-                                                    if($sort[0] === $set[0]['value']){
+                                                    if($sort[0] === $set[$options['set']['index']]['value']){
                                                         $options['index']['max'] = $seek - 1;
                                                         break;
                                                     } else {
@@ -293,24 +298,23 @@ trait NodeList {
                                                 }
                                             }
                                         break;
-
                                     }
                                 } else {
-                                    if(array_key_exists(0, $set)){
+                                    if(array_key_exists($options['set']['index'], $set)){
                                         if(
                                             in_array(
-                                                $set[0]['attribute'],
+                                                $set[$options['set']['index']]['attribute'],
                                                 $options['index']['where'],
                                                 true
                                             )
                                         ){
                                             $sort = [
-                                                $set[0]['value'],
-                                                $record->{$set[0]['attribute']}
+                                                $set[$options['set']['index']]['value'],
+                                                $record->{$set[$options['set']['index']]['attribute']}
                                             ];
                                             sort($sort, SORT_NATURAL);
                                             d($sort);
-                                            if($sort[0] === $set[0]['value']){
+                                            if($sort[0] === $set[$options['set']['index']]['value']){
                                                 $options['index']['max'] = $seek - 1;
                                                 break;
                                             } else {
@@ -332,18 +336,15 @@ trait NodeList {
                 }
             }
         }
-        if($set_max > 2){
-            $index = $options['set']['index'];
-            if($index < $set_max){
-                $index = $index + 2;
-            }
-            if($index < $set_max){
-                $options['set']['index'] = $index;
-            } else {
-                $options['set']['index'] = $set_max;
-            }
-            for($i=$options['set']['index']; $i < $set_max; $i++){
+        if($options['set']['max'] > 2){
+            //1st record returned false
+            for($i=3; $i < $options['set']['max']; $i++){
+                $options_list_index = $options;
+                $options_list_index['set']['max'] = 1;
+                $options_list_index['set']['index'] = $i;
                 $record = $this->list_index($class, $role, $options);
+                d($record);
+                $i++;
             }
 
 
