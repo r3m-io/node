@@ -413,7 +413,7 @@ trait NodeList {
                                         ){
                                             $sort = [
                                                 $set[0]['value'],
-                                                $record->{$attribute}
+                                                $record->{$set[0]['attribute']}
                                             ];
                                             sort($sort, SORT_NATURAL);
                                             if($sort[0] === $set[0]['value']){
