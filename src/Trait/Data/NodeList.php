@@ -261,33 +261,44 @@ trait NodeList {
                                 }
                                 $set = $this->where_get_set($where, $key, $deepest);
                                 $set_max = count($set);
-                                if(array_key_exists(0, $set)){
-                                    if(
-                                        in_array(
-                                            $set[0]['attribute'],
-                                            $options['index']['where'],
-                                            true
-                                        )
-                                    ){
-                                        $sort = [
-                                            $set[0]['value'],
-                                            $record->{$set[0]['attribute']}
-                                        ];
-                                        sort($sort, SORT_NATURAL);
-                                        d($sort);
-                                        if($sort[0] === $set[0]['value']){
-                                            $options['index']['max'] = $seek - 1;
-                                            break;
-                                        } else {
-                                            //sort[1] === $value
-                                            //min becomes seek + 1
-                                            $options['index']['min'] = $seek + 1;
-                                            break;
+                                if($set_max > 2){
+                                    $operator = $set[1];
+                                    ddd($operator);
+                                    /*
+                                    switch(strtolower($operator)){
+                                        ''
+                                    }
+                                    */
+                                } else {
+                                    if(array_key_exists(0, $set)){
+                                        if(
+                                            in_array(
+                                                $set[0]['attribute'],
+                                                $options['index']['where'],
+                                                true
+                                            )
+                                        ){
+                                            $sort = [
+                                                $set[0]['value'],
+                                                $record->{$set[0]['attribute']}
+                                            ];
+                                            sort($sort, SORT_NATURAL);
+                                            d($sort);
+                                            if($sort[0] === $set[0]['value']){
+                                                $options['index']['max'] = $seek - 1;
+                                                break;
+                                            } else {
+                                                //sort[1] === $value
+                                                //min becomes seek + 1
+                                                $options['index']['min'] = $seek + 1;
+                                                break;
+                                            }
                                         }
                                     }
+                                    $max_deep++;
+                                    break;
                                 }
-                                $max_deep++;
-                                break;
+
                             }
                         }
                     }
