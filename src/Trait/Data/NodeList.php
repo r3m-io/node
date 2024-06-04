@@ -345,6 +345,7 @@ trait NodeList {
                         $options_list_index = $options;
                         $options_list_index['set']['max'] = 1;
                         $options_list_index['set']['index'] = $i;
+                        ddd($options_list_index);
                         $record = $this->list_index($class, $role, $options_list_index);
                         d($record);
                         $i++;
