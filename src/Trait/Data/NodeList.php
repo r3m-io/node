@@ -169,7 +169,6 @@ trait NodeList {
             $options['index'] !== false &&
             $options['index'] !== 'create' &&
             array_key_exists('url', $options['index']) &&
-            array_key_exists('cache', $options['index']) &&
             array_key_exists('count', $options['index']) &&
             array_key_exists('filter', $options['index']) &&
             array_key_exists('is_uuid', $options['index'])
