@@ -315,6 +315,7 @@ trait NodeList {
 //                                                $record = $this->relation($record, $object_data, $role, $options);
                                 //collect relation mtime
                             }
+                            d($record);
                             if (
                                 $options['limit'] === 1 &&
                                 $options['page'] === 1
