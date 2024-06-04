@@ -98,7 +98,6 @@ trait Index {
                 $filter_name,
                 $count_index,
                 $is_uuid,
-                $cache_key
             );
         }
         elseif($where_name){
@@ -134,7 +133,6 @@ trait Index {
                     $where_name,
                     $count_index,
                     $is_uuid,
-                    $cache_key
                 );
             }
         }
@@ -157,7 +155,6 @@ trait Index {
         File::write($url_index, $output);
         return [
             'url' => $url_index,
-            'cache' => $cache_key,
             'count' => $count_index,
             'filter' => $filter_name,
             'where'=> $where_name,
@@ -168,7 +165,7 @@ trait Index {
     /**
      * @throws Exception
      */
-    private function index_list($name, $select=[], $filter_name=false, &$count_index=false, &$is_uuid=false, &$cache_key=false){
+    private function index_list($name, $select=[], $filter_name=false, &$count_index=false, &$is_uuid=false){
         //nodelist all records in chunks of 4096 so we can parallelize the process later on.
         if(!array_key_exists('list', $select)){
             return false; //no-data
