@@ -303,18 +303,16 @@ trait NodeList {
                                 $role
                             );
                             $record = $node->data();
-                            $record->jump = $counter;
-                            if($record->jump > $jump_max){
-                                $jump_max = $record->jump;
-                                $record->jump_max = $jump_max;
-                                d($record->jump_max);
+                            $record->{'#jump'} = $counter;
+                            if($record->{'#jump'} > $jump_max){
+                                $jump_max = $record->{'#jump'};
+                                $record->{'#jump_max'} = $jump_max;
                             }
                             if ($options['relation'] === true) {
                                 ddd('need object_data from cache?');
 //                                                $record = $this->relation($record, $object_data, $role, $options);
                                 //collect relation mtime
                             }
-                            d($record);
                             if (
                                 $options['limit'] === 1 &&
                                 $options['page'] === 1
