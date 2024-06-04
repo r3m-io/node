@@ -38,6 +38,7 @@ trait NodeList {
         $name = Controller::name($class);
         $options = Core::object($options, Core::OBJECT_ARRAY);
         d($options);
+        d($name);
         $debug = debug_backtrace(1);
         d($debug[0]['function'] . ' ' . $debug[0]['line'] . ' ' . $debug[0]['file']);
         d($debug[1]['function'] . ' ' . $debug[1]['line'] . ' ' . $debug[1]['file']);
