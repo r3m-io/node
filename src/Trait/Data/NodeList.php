@@ -226,6 +226,7 @@ trait NodeList {
                                     ddd($record_where);
                                     $list[] = $record_where;
                                 }
+                                d($record_where);
                             }
                             elseif($options['index']['is_uuid'] === true){
                                 //no filter, no where, only sort, page & limit
