@@ -411,43 +411,25 @@ trait NodeList {
                                                 true
                                             )
                                         ){
-                                            d($record);
-                                            d($key);
-                                            d($options);
-                                            d($where);
-                                            d($set);
-
-                                            ddd('ye');
+                                            $sort = [
+                                                $set[0]['value'],
+                                                $record->{$attribute}
+                                            ];
+                                            sort($sort, SORT_NATURAL);
+                                            if($sort[0] === $set[0]['value']){
+                                                $options['index']['max'] = $seek - 1;
+                                                break;
+                                            } else {
+                                                //sort[1] === $value
+                                                //min becomes seek + 1
+                                                $options['index']['min'] = $seek + 1;
+                                                break;
+                                            };
                                         }
                                     }
-                                    d($record);
-                                    d($key);
-                                    d($where);
-                                    ddd($set);
                                     $max++;
                                 }
-
-
-                                $sort = [
-                                    $value,
-                                    $record->{$attribute}
-                                ];
-                                sort($sort, SORT_NATURAL);
-                                if($sort[0] === $value){
-                                    $options['index']['max'] = $seek - 1;
-                                    break;
-                                } else {
-                                    //sort[1] === $value
-                                    //min becomes seek + 1
-                                    $options['index']['min'] = $seek + 1;
-                                    break;
-                                };
-
-                                ddd($options);
-
-
                             }
-
                         }
                     }
                     if (
