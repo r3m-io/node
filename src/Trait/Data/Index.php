@@ -257,8 +257,10 @@ trait Index {
                     $attribute = $where[$index];
                     $record[$attribute] = implode('', $collect);
                 }
+
                 $previous_char = $char;
                 $is_collect = false;
+                $start = false;
                 $collect = [];
                 continue;
             }
