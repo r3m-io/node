@@ -426,7 +426,7 @@ trait NodeList {
                                                 //min becomes seek + 1
                                                 $options['index']['min'] = $seek + 1;
                                                 break;
-                                            };
+                                            }
                                         }
                                     }
                                     $max++;
@@ -434,6 +434,7 @@ trait NodeList {
                                 }
                             }
                         }
+                        d($options);
                     }
                     if (
                         $options['limit'] === 1 &&
