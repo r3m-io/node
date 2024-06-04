@@ -273,6 +273,7 @@ trait Index {
         }
         if (array_key_exists(0, $uuid)) {
             $record['uuid'] = rtrim(implode('', $uuid), PHP_EOL);
+            ddd($record);
             return (object) $record;
         }
         return false;
