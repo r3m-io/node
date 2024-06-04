@@ -591,7 +591,8 @@ trait NodeList {
                 d($options);
                 if($options['index'] === 'create'){
                     $data = $object->data_read($data_url, sha1($data_url), [
-                        'index' => 'create'
+                        'index' => 'create',
+                        'class' => $name
                     ]);
                 } else {
                     $data = $object->data_read($data_url, sha1($data_url));
