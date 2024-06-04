@@ -269,7 +269,6 @@ trait Index {
             } else {
                 if ($char === ',') {
                     $index++;
-                    d($index);
                 } elseif ($char === ';') {
                     $is_uuid = true;
                 }
@@ -278,7 +277,6 @@ trait Index {
         }
         if (array_key_exists(0, $uuid)) {
             $record['uuid'] = rtrim(implode('', $uuid), PHP_EOL);
-            ddd($record);
             return (object) $record;
         }
         return false;
