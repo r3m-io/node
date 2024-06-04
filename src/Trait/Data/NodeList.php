@@ -437,6 +437,7 @@ trait NodeList {
                         }
                         d($options);
                     }
+                    d($options);
                     if (
                         $options['limit'] === 1 &&
                         $options['page'] === 1
