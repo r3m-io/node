@@ -290,12 +290,12 @@ trait NodeList {
                                                     d($sort);
                                                     if($sort[0] === $set[$options['set']['index']]['value']){
                                                         $options['index']['max'] = $seek - 1;
-                                                        break;
+                                                        break 2;
                                                     } else {
                                                         //sort[1] === $value
                                                         //min becomes seek + 1
                                                         $options['index']['min'] = $seek + 1;
-                                                        break;
+                                                        break 2;
                                                     }
                                                 }
                                             }
