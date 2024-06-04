@@ -267,6 +267,7 @@ trait NodeList {
                                 }
                                 $set = $this->where_get_set($where, $key, $deepest);
                                 $options['set']['max'] = count($set);
+                                d($options);
                                 if($options['set']['max'] > 2){
                                     $operator = $set[1];
                                     switch(strtolower($operator)){
