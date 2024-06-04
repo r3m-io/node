@@ -477,6 +477,9 @@ trait NodeList {
                 $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
                 return $result;
             }
+            elseif($result){
+                return $result;
+            }
         }
         $ramdisk_dir = false;
         $ramdisk_dir_node = false;
