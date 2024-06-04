@@ -38,6 +38,10 @@ trait NodeList {
         $name = Controller::name($class);
         $options = Core::object($options, Core::OBJECT_ARRAY);
         d($options);
+        $debug = debug_backtrace(1);
+        d($debug[0]['function'] . ' ' . $debug[0]['line'] . ' ' . $debug[0]['file']);
+        d($debug[1]['function'] . ' ' . $debug[1]['line'] . ' ' . $debug[1]['file']);
+        d($debug[2]['function'] . ' ' . $debug[2]['line'] . ' ' . $debug[2]['file']);
         $object = $this->object();
         $parse = false;
         if (!array_key_exists('function', $options)) {
