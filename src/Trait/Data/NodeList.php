@@ -338,6 +338,7 @@ trait NodeList {
                     }
                     d($options);
                 }
+                d($options);
                 if($options['set']['max'] > 2){
                     //1st record returned false
                     for($i=3; $i < $options['set']['max']; $i++){
