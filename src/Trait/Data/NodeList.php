@@ -29,6 +29,275 @@ use SplFileObject;
  */
 trait NodeList {
 
+
+    private function list_index($class, $role, $options=[]): bool | array
+    {
+        $object = $this->object();
+        $name = Controller::name($class);
+        $data_url = $object->config('project.dir.node') .
+            'Data' .
+            $object->config('ds') .
+            $name .
+            $object->config('extension.json')
+        ;
+        $cache = $object->data(App::CACHE);
+        if($cache) {
+            $data = $cache->get(sha1($data_url) . '_index');
+            if ($data) {
+                $file = new SplFileObject($options['index']['url']);
+                $options['index']['min'] = 0;
+                $options['index']['max'] = $options['index']['count'] - 1;
+                $max = 4096;
+                $counter = 0;
+                $seek = false;
+                $line = null;
+                $is_found = [];
+                $jump_max = 0;
+                $record = false;
+                while($options['index']['min'] <= $options['index']['max']) {
+                    $seek = $options['index']['min'] +
+                        floor(
+                            (
+                                $options['index']['max'] -
+                                $options['index']['min']
+                            )
+                            / 2
+                        );
+                    $file->seek($seek);
+                    $line = $file->current();
+                    $counter++;
+                    if ($counter > $max) {
+                        break;
+                    }
+                    d($line);
+                    $record = $this->index_record($line, $options);
+                    d($record);
+                    $list = [];
+                    if($record){
+                        if(array_key_exists('filter', $options)){
+                            $list[] = $record;
+                            $list = Filter::list($list)->where($options['filter']);
+                        }
+                        elseif(array_key_exists('where', $options)){
+                            $options['where'] = $this->nodelist_where($options);
+                            $record_where = $this->where($record, $options['where'], $options);
+                            if ($record_where) {
+                                $list[] = $record_where;
+                            }
+                        }
+                        elseif($options['index']['is_uuid'] === true){
+                            //no filter, no where, only sort, page & limit
+                            $data_sort = Sort::list($data)->with($options['sort']);
+                            $data_limit = Limit::list($data_sort)->with([
+                                'page' => $options['page'],
+                                'limit' => $options['limit']
+                            ]);
+                            $count = 0;
+                            if($data_limit) {
+                                foreach ($data_limit as $nr => $record) {
+                                    $expose = $this->expose_get(
+                                        $object,
+                                        $record->{'#class'},
+                                        $record->{'#class'} . '.' . $options['function'] . '.output'
+                                    );
+                                    $node = new Storage($record);
+                                    $node = $this->expose(
+                                        $node,
+                                        $expose,
+                                        $record->{'#class'},
+                                        $options['function'],
+                                        $role
+                                    );
+                                    $record = $node->data();
+                                    $list[] = $record;
+                                    $count++;
+                                }
+                            }
+                            $result = [];
+                            $result['page'] = $options['page'];
+                            $result['limit'] = $options['limit'];
+                            $result['count'] = $count;
+                            $result['max'] = $options['index']['count'];
+                            $result['list'] = $list;
+                            $result['sort'] = $options['sort'] ?? [];
+                            if (!empty($options['filter'])) {
+                                $result['filter'] = $options['filter'];
+                            }
+                            if (!empty($options['where'])) {
+                                $result['where'] = $options['where'];
+                            }
+                            $result['relation'] = $options['relation'];
+                            $result['parse'] = $options['parse'];
+                            $result['pre-compile'] = $options['pre-compile'] ?? false;
+                            $result['ramdisk'] = $options['ramdisk'] ?? false;
+                            $result['mtime'] = $options['mtime'];
+                            $result['transaction'] = $options['transaction'] ?? false;
+                            $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+                            return $result;
+                        }
+                    }
+                    if(array_key_exists(0, $list)) {
+                        if (
+                            is_object($data) &&
+                            property_exists($data, $record->uuid)
+                        ) {
+                            $record = $data->{$record->uuid};
+                        } elseif (
+                            is_array($data) &&
+                            array_key_exists($record->uuid, $data)
+                        ) {
+                            $record = $data[$record->uuid];
+                        }
+                        $expose = $this->expose_get(
+                            $object,
+                            $record->{'#class'},
+                            $record->{'#class'} . '.' . $options['function'] . '.output'
+                        );
+                        $node = new Storage($record);
+                        $node = $this->expose(
+                            $node,
+                            $expose,
+                            $record->{'#class'},
+                            $options['function'],
+                            $role
+                        );
+                        $record = $node->data();
+                        $record->{'#jump'} = $counter;
+                        if($record->{'#jump'} > $jump_max){
+                            $jump_max = $record->{'#jump'};
+                            $record->{'#jump_max'} = $jump_max;
+                        }
+                        if ($options['relation'] === true) {
+                            ddd('need object_data from cache?');
+//                                                $record = $this->relation($record, $object_data, $role, $options);
+                            //collect relation mtime
+                        }
+                        if (
+                            $options['limit'] === 1 &&
+                            $options['page'] === 1
+                        ) {
+                            $list = [];
+                            $list[] = $record;
+                            $result = [];
+                            $result['page'] = $options['page'];
+                            $result['limit'] = $options['limit'];
+                            $result['count'] = 1;
+                            $result['max'] = $options['index']['count'];
+                            $result['list'] = $list;
+                            $result['sort'] = $options['sort'] ?? [];
+                            if (!empty($options['filter'])) {
+                                $result['filter'] = $options['filter'];
+                            }
+                            if (!empty($options['where'])) {
+                                $result['where'] = $options['where'];
+                            }
+                            $result['relation'] = $options['relation'];
+                            $result['parse'] = $options['parse'];
+                            $result['pre-compile'] = $options['pre-compile'] ?? false;
+                            $result['ramdisk'] = $options['ramdisk'] ?? false;
+                            $result['mtime'] = $options['mtime'];
+                            $result['transaction'] = $options['transaction'] ?? false;
+                            $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+                            return $result;
+                        } else {
+                            ddd($record);
+                        }
+                    } else {
+                        if(
+                            array_key_exists('filter', $options) &&
+                            is_array($options['filter'])
+                        ){
+                            foreach ($options['filter'] as $attribute => $filter) {
+                                if (is_object($filter)) {
+                                    ddd('filter is object, implement');
+                                } elseif (is_array($filter)) {
+                                    if (
+                                        array_key_exists('operator', $filter) &&
+                                        array_key_exists('value', $filter)
+                                    ) {
+                                        $operator = $filter['operator'];
+                                        $value = $filter['value'];
+                                        if(property_exists($record, $attribute)) {
+                                            $list = [];
+                                            $list[] = $record;
+                                            $where = [
+                                                $attribute => [
+                                                    'operator' => $operator,
+                                                    'value' => $value
+                                                ]
+                                            ];
+                                            $list = Filter::list($list)->where($where);
+                                            if(!array_key_exists(0, $list)){
+                                                $sort = [
+                                                    $value,
+                                                    $record->{$attribute}
+                                                ];
+                                                sort($sort, SORT_NATURAL);
+                                                if($sort[0] === $value){
+                                                    $options['index']['max'] = $seek - 1;
+                                                    break;
+                                                } else {
+                                                    //sort[1] === $value
+                                                    //min becomes seek + 1
+                                                    $options['index']['min'] = $seek + 1;
+                                                    break;
+                                                };
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        elseif(
+                            array_key_exists('where', $options) &&
+                            is_array($options['where'])
+                        ){
+                            $where = $options['where'];
+                            $deepest = $this->where_get_depth($where);
+                            $max_deep =0;
+                            while($deepest >= 0) {
+                                if ($max_deep > 1024) {
+                                    break;
+                                }
+                                $set = $this->where_get_set($where, $key, $deepest);
+                                $set_max = count($set);
+                                if(array_key_exists(0, $set)){
+                                    if(
+                                        in_array(
+                                            $set[0]['attribute'],
+                                            $options['index']['where'],
+                                            true
+                                        )
+                                    ){
+                                        $sort = [
+                                            $set[0]['value'],
+                                            $record->{$set[0]['attribute']}
+                                        ];
+                                        sort($sort, SORT_NATURAL);
+                                        d($sort);
+                                        if($sort[0] === $set[0]['value']){
+                                            $options['index']['max'] = $seek - 1;
+                                            break;
+                                        } else {
+                                            //sort[1] === $value
+                                            //min becomes seek + 1
+                                            $options['index']['min'] = $seek + 1;
+                                            break;
+                                        }
+                                    }
+                                }
+                                $max_deep++;
+                                break;
+                            }
+                        }
+                    }
+                    d($options);
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * @throws Exception
      */
@@ -39,10 +308,6 @@ trait NodeList {
         $options = Core::object($options, Core::OBJECT_ARRAY);
         d($options);
         d($name);
-        $debug = debug_backtrace(1);
-        d($debug[0]['function'] . ' ' . $debug[0]['line'] . ' ' . $debug[0]['file']);
-        d($debug[1]['function'] . ' ' . $debug[1]['line'] . ' ' . $debug[1]['file']);
-        d($debug[2]['function'] . ' ' . $debug[2]['line'] . ' ' . $debug[2]['file']);
         $object = $this->object();
         $parse = false;
         if (!array_key_exists('function', $options)) {
@@ -181,287 +446,36 @@ trait NodeList {
             ) {
                 $is_filter = true;
             }
-            $cache = $object->data(App::CACHE);
-            if($cache){
-                $data = $cache->get(sha1($data_url) . '_index');
-                if($data){
-                    $file = new SplFileObject($options['index']['url']);
-                    $options['index']['min'] = 0;
-                    $options['index']['max'] = $options['index']['count'] - 1;
-                    $max = 4096;
-                    $counter = 0;
-                    $seek = false;
-                    $line = null;
-                    $is_found = [];
-                    $jump_max = 0;
-                    $record = false;
-                    while($options['index']['min'] <= $options['index']['max']) {
-                        $seek = $options['index']['min'] +
-                            floor(
-                                (
-                                    $options['index']['max'] -
-                                    $options['index']['min']
-                                )
-                                / 2
-                            );
-                        $file->seek($seek);
-                        $line = $file->current();
-                        $counter++;
-                        if ($counter > $max) {
-                            break;
-                        }
-                        d($line);
-                        $record = $this->index_record($line, $options);
-                        d($record);
-                        $list = [];
-                        if($record){
-                            if(array_key_exists('filter', $options)){
-                                $list[] = $record;
-                                $list = Filter::list($list)->where($options['filter']);
-                            }
-                            elseif(array_key_exists('where', $options)){
-                                $options['where'] = $this->nodelist_where($options);
-                                $record_where = $this->where($record, $options['where'], $options);
-                                if ($record_where) {
-                                    $list[] = $record_where;
-                                }
-                            }
-                            elseif($options['index']['is_uuid'] === true){
-                                //no filter, no where, only sort, page & limit
-                                $data_sort = Sort::list($data)->with($options['sort']);
-                                $data_limit = Limit::list($data_sort)->with([
-                                    'page' => $options['page'],
-                                    'limit' => $options['limit']
-                                ]);
-                                $count = 0;
-                                if($data_limit) {
-                                    foreach ($data_limit as $nr => $record) {
-                                        $expose = $this->expose_get(
-                                            $object,
-                                            $record->{'#class'},
-                                            $record->{'#class'} . '.' . $options['function'] . '.output'
-                                        );
-                                        $node = new Storage($record);
-                                        $node = $this->expose(
-                                            $node,
-                                            $expose,
-                                            $record->{'#class'},
-                                            $options['function'],
-                                            $role
-                                        );
-                                        $record = $node->data();
-                                        $list[] = $record;
-                                        $count++;
-                                    }
-                                }
-                                $result = [];
-                                $result['page'] = $options['page'];
-                                $result['limit'] = $options['limit'];
-                                $result['count'] = $count;
-                                $result['max'] = $options['index']['count'];
-                                $result['list'] = $list;
-                                $result['sort'] = $options['sort'] ?? [];
-                                if (!empty($options['filter'])) {
-                                    $result['filter'] = $options['filter'];
-                                }
-                                if (!empty($options['where'])) {
-                                    $result['where'] = $options['where'];
-                                }
-                                $result['relation'] = $options['relation'];
-                                $result['parse'] = $options['parse'];
-                                $result['pre-compile'] = $options['pre-compile'] ?? false;
-                                $result['ramdisk'] = $options['ramdisk'] ?? false;
-                                $result['mtime'] = $mtime;
-                                $result['transaction'] = $options['transaction'] ?? false;
-                                $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
-                                return $result;
-                            }
-                        }
-                        if(array_key_exists(0, $list)) {
-                            if (
-                                is_object($data) &&
-                                property_exists($data, $record->uuid)
-                            ) {
-                                $record = $data->{$record->uuid};
-                            } elseif (
-                                is_array($data) &&
-                                array_key_exists($record->uuid, $data)
-                            ) {
-                                $record = $data[$record->uuid];
-                            }
-                            $expose = $this->expose_get(
-                                $object,
-                                $record->{'#class'},
-                                $record->{'#class'} . '.' . $options['function'] . '.output'
-                            );
-                            $node = new Storage($record);
-                            $node = $this->expose(
-                                $node,
-                                $expose,
-                                $record->{'#class'},
-                                $options['function'],
-                                $role
-                            );
-                            $record = $node->data();
-                            $record->{'#jump'} = $counter;
-                            if($record->{'#jump'} > $jump_max){
-                                $jump_max = $record->{'#jump'};
-                                $record->{'#jump_max'} = $jump_max;
-                            }
-                            if ($options['relation'] === true) {
-                                ddd('need object_data from cache?');
-//                                                $record = $this->relation($record, $object_data, $role, $options);
-                                //collect relation mtime
-                            }
-                            if (
-                                $options['limit'] === 1 &&
-                                $options['page'] === 1
-                            ) {
-                                $list = [];
-                                $list[] = $record;
-                                $result = [];
-                                $result['page'] = $options['page'];
-                                $result['limit'] = $options['limit'];
-                                $result['count'] = 1;
-                                $result['max'] = $options['index']['count'];
-                                $result['list'] = $list;
-                                $result['sort'] = $options['sort'] ?? [];
-                                if (!empty($options['filter'])) {
-                                    $result['filter'] = $options['filter'];
-                                }
-                                if (!empty($options['where'])) {
-                                    $result['where'] = $options['where'];
-                                }
-                                $result['relation'] = $options['relation'];
-                                $result['parse'] = $options['parse'];
-                                $result['pre-compile'] = $options['pre-compile'] ?? false;
-                                $result['ramdisk'] = $options['ramdisk'] ?? false;
-                                $result['mtime'] = $mtime;
-                                $result['transaction'] = $options['transaction'] ?? false;
-                                $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
-                                return $result;
-                            } else {
-                                ddd($record);
-                            }
-                        } else {
-                            if(
-                                array_key_exists('filter', $options) &&
-                                is_array($options['filter'])
-                            ){
-                                foreach ($options['filter'] as $attribute => $filter) {
-                                    if (is_object($filter)) {
-                                        ddd('filter is object, implement');
-                                    } elseif (is_array($filter)) {
-                                        if (
-                                            array_key_exists('operator', $filter) &&
-                                            array_key_exists('value', $filter)
-                                        ) {
-                                            $operator = $filter['operator'];
-                                            $value = $filter['value'];
-                                            if(property_exists($record, $attribute)) {
-                                                $list = [];
-                                                $list[] = $record;
-                                                $where = [
-                                                    $attribute => [
-                                                        'operator' => $operator,
-                                                        'value' => $value
-                                                    ]
-                                                ];
-                                                $list = Filter::list($list)->where($where);
-                                                if(!array_key_exists(0, $list)){
-                                                    $sort = [
-                                                        $value,
-                                                        $record->{$attribute}
-                                                    ];
-                                                    sort($sort, SORT_NATURAL);
-                                                    if($sort[0] === $value){
-                                                        $options['index']['max'] = $seek - 1;
-                                                        break;
-                                                    } else {
-                                                        //sort[1] === $value
-                                                        //min becomes seek + 1
-                                                        $options['index']['min'] = $seek + 1;
-                                                        break;
-                                                    };
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            elseif(
-                                array_key_exists('where', $options) &&
-                                is_array($options['where'])
-                            ){
-                                $where = $options['where'];
-                                $deepest = $this->where_get_depth($where);
-                                $max_deep =0;
-                                while($deepest >= 0) {
-                                    if ($max_deep > 1024) {
-                                        break;
-                                    }
-                                    $set = $this->where_get_set($where, $key, $deepest);
-                                    if(array_key_exists(0, $set)){
-                                        if(
-                                            in_array(
-                                                $set[0]['attribute'],
-                                                $options['index']['where'],
-                                                true
-                                            )
-                                        ){
-                                            $sort = [
-                                                $set[0]['value'],
-                                                $record->{$set[0]['attribute']}
-                                            ];
-                                            sort($sort, SORT_NATURAL);
-                                            d($sort);
-                                            if($sort[0] === $set[0]['value']){
-                                                $options['index']['max'] = $seek - 1;
-                                                break;
-                                            } else {
-                                                //sort[1] === $value
-                                                //min becomes seek + 1
-                                                $options['index']['min'] = $seek + 1;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    $max_deep++;
-                                    break;
-                                }
-                            }
-                        }
-                        d($options);
-                    }
-                    d($options);
-                    if (
-                        $options['limit'] === 1 &&
-                        $options['page'] === 1
-                    ) {
-                        $list = [];
-                        $result = [];
-                        $result['page'] = $options['page'];
-                        $result['limit'] = $options['limit'];
-                        $result['count'] = 0;
-                        $result['max'] = $options['index']['count'];
-                        $result['list'] = $list;
-                        $result['sort'] = $options['sort'] ?? [];
-                        if (!empty($options['filter'])) {
-                            $result['filter'] = $options['filter'];
-                        }
-                        if (!empty($options['where'])) {
-                            $result['where'] = $options['where'];
-                        }
-                        $result['relation'] = $options['relation'];
-                        $result['parse'] = $options['parse'];
-                        $result['pre-compile'] = $options['pre-compile'] ?? false;
-                        $result['ramdisk'] = $options['ramdisk'] ?? false;
-                        $result['mtime'] = $mtime;
-                        $result['transaction'] = $options['transaction'] ?? false;
-                        $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
-                        return $result;
-                    }
+            $options['mtime'] = $mtime;
+            $record = $this->list_index($class, $role, $options);
+            d($options);
+            ddd($record);
+            if (
+                $options['limit'] === 1 &&
+                $options['page'] === 1
+            ) {
+                $list = [];
+                $result = [];
+                $result['page'] = $options['page'];
+                $result['limit'] = $options['limit'];
+                $result['count'] = 0;
+                $result['max'] = $options['index']['count'];
+                $result['list'] = $list;
+                $result['sort'] = $options['sort'] ?? [];
+                if (!empty($options['filter'])) {
+                    $result['filter'] = $options['filter'];
                 }
+                if (!empty($options['where'])) {
+                    $result['where'] = $options['where'];
+                }
+                $result['relation'] = $options['relation'];
+                $result['parse'] = $options['parse'];
+                $result['pre-compile'] = $options['pre-compile'] ?? false;
+                $result['ramdisk'] = $options['ramdisk'] ?? false;
+                $result['mtime'] = $mtime;
+                $result['transaction'] = $options['transaction'] ?? false;
+                $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+                return $result;
             }
         }
         $ramdisk_dir = false;
