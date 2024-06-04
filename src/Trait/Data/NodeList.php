@@ -41,6 +41,7 @@ trait NodeList {
             $object->config('extension.json')
         ;
         $cache = $object->data(App::CACHE);
+        $set_max = false;
         if($cache) {
             $data = $cache->get(sha1($data_url) . '_index');
             if ($data) {
@@ -263,12 +264,37 @@ trait NodeList {
                                 $set_max = count($set);
                                 if($set_max > 2){
                                     $operator = $set[1];
-                                    ddd($operator);
-                                    /*
                                     switch(strtolower($operator)){
-                                        ''
+                                        case 'or' :
+                                            d($options);
+                                            if(array_key_exists(0, $set)){
+                                                if(
+                                                    in_array(
+                                                        $set[0]['attribute'],
+                                                        $options['index']['where'],
+                                                        true
+                                                    )
+                                                ){
+                                                    $sort = [
+                                                        $set[0]['value'],
+                                                        $record->{$set[0]['attribute']}
+                                                    ];
+                                                    sort($sort, SORT_NATURAL);
+                                                    d($sort);
+                                                    if($sort[0] === $set[0]['value']){
+                                                        $options['index']['max'] = $seek - 1;
+                                                        break;
+                                                    } else {
+                                                        //sort[1] === $value
+                                                        //min becomes seek + 1
+                                                        $options['index']['min'] = $seek + 1;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        break;
+
                                     }
-                                    */
                                 } else {
                                     if(array_key_exists(0, $set)){
                                         if(
@@ -305,6 +331,22 @@ trait NodeList {
                     d($options);
                 }
             }
+        }
+        if($set_max > 2){
+            $index = $options['set']['index'];
+            if($index < $set_max){
+                $index = $index + 2;
+            }
+            if($index < $set_max){
+                $options['set']['index'] = $index;
+            } else {
+                $options['set']['index'] = $set_max;
+            }
+            for($i=$options['set']['index']; $i < $set_max; $i++){
+                $record = $this->list_index($class, $role, $options);
+            }
+
+
         }
         return false;
     }
@@ -458,6 +500,7 @@ trait NodeList {
                 $is_filter = true;
             }
             $options['mtime'] = $mtime;
+            $options['set']['index'] = 0;
             $result = $this->list_index($class, $role, $options);
             d($options);
             if (
