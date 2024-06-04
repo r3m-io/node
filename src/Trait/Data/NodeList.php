@@ -267,7 +267,7 @@ trait NodeList {
                                 }
                                 $set = $this->where_get_set($where, $key, $deepest);
                                 d($set);
-                                if (!array_key_exists('max', $options['set']))
+                                if (!array_key_exists('max', $options['set'])){
                                     $options['set']['max'] = count($set);
                                 }
                                 d($options);
