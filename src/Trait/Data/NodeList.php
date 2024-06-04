@@ -416,6 +416,7 @@ trait NodeList {
                                                 $record->{$set[0]['attribute']}
                                             ];
                                             sort($sort, SORT_NATURAL);
+                                            d($sort);
                                             if($sort[0] === $set[0]['value']){
                                                 $options['index']['max'] = $seek - 1;
                                                 break;
@@ -428,6 +429,7 @@ trait NodeList {
                                         }
                                     }
                                     $max++;
+                                    break;
                                 }
                             }
                         }
