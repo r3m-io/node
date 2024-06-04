@@ -622,7 +622,7 @@ trait NodeList {
         $has_relation = false;
         $count = 0;
         $list_filtered = [];
-        d('no-index');
+        d('no-index:' . $name);
         if ($data) {
             $list = $data->data($name);
             if (
