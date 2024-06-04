@@ -505,6 +505,7 @@ trait NodeList {
             $options['mtime'] = $mtime;
             $options['set']['index'] = 0;
             $result = $this->list_index($class, $role, $options);
+            d($result);
             d($options);
             if (
                 $options['limit'] === 1 &&
