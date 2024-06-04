@@ -79,6 +79,7 @@ trait Index {
                     'list' => $cache_select->get($name)
                 ];
             } else {
+                d('yes');
                 $select = $this->list(
                     $name,
                     $role,
@@ -89,6 +90,7 @@ trait Index {
                         'index' => 'create'
                     ]
                 );
+                ddd($select);
             }
             $list = $this->index_list(
                 $name,
