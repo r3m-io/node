@@ -223,10 +223,8 @@ trait NodeList {
                                 $options['where'] = $this->nodelist_where($options);
                                 $record_where = $this->where($record, $options['where'], $options);
                                 if ($record_where) {
-                                    ddd($record_where);
                                     $list[] = $record_where;
                                 }
-                                d($record_where);
                             }
                             elseif($options['index']['is_uuid'] === true){
                                 //no filter, no where, only sort, page & limit
