@@ -447,12 +447,12 @@ trait NodeList {
                 $is_filter = true;
             }
             $options['mtime'] = $mtime;
-            $record = $this->list_index($class, $role, $options);
+            $result = $this->list_index($class, $role, $options);
             d($options);
-            ddd($record);
             if (
                 $options['limit'] === 1 &&
-                $options['page'] === 1
+                $options['page'] === 1 &&
+                $result === false
             ) {
                 $list = [];
                 $result = [];
