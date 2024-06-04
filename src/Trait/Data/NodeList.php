@@ -411,6 +411,9 @@ trait NodeList {
                                                 true
                                             )
                                         ){
+                                            d($where);
+                                            d($set);
+
                                             ddd('ye');
                                         }
                                     }
