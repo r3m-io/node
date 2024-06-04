@@ -127,7 +127,6 @@ trait Index {
                             'index' => 'create'
                         ]
                     );
-                    ddd($select);
                 }
                 $list = $this->index_list(
                     $name,
@@ -177,7 +176,6 @@ trait Index {
         $object = $this->object();
         $cache = $object->data(App::CACHE);
         $list = [];
-        $data_cache = (object) [];
         $count_index = 0;
         $is_uuid = false;
         foreach($select['list'] as $nr => $record){
@@ -185,7 +183,6 @@ trait Index {
                 is_object($record) &&
                 property_exists($record, 'uuid')
             ){
-                $data_cache->{$record->uuid} = $record;
                 $record_index = (object) [
                     'uuid' => $record->uuid
                 ];
@@ -206,8 +203,6 @@ trait Index {
                 $list[] = $record_index;
             }
         }
-        $cache_key = sha1('index.' . $name);
-        $cache->set($cache_key, $data_cache);
         if($is_uuid){
             $list = Sort::list($list)->with([
                 'uuid' => 'asc'
