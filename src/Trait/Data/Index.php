@@ -226,8 +226,6 @@ trait Index {
         $is_uuid = false;
         $filter = $options['index']['filter'] ?? false;
         $where = $options['index']['where'] ?? false;
-        d($where);
-        d($index);
         foreach ($split as $nr => $char) {
             if ($is_uuid) {
                 $uuid[] = $char;
