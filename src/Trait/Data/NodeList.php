@@ -341,7 +341,7 @@ trait NodeList {
                 d($options);
                 if($options['set']['max'] > 2){
                     //1st record returned false
-                    for($i=3; $i <= $options['set']['max']; $i++){
+                    for($i=2; $i < $options['set']['max']; $i++){
                         $options_list_index = $options;
                         $options_list_index['set']['max'] = 1;
                         $options_list_index['set']['index'] = $i;
