@@ -183,6 +183,7 @@ trait NodeList {
                 $is_filter = true;
             }
             $cache = $object->data(App::CACHE);
+            ddd($options);
             if($cache){
                 $data = $cache->get($options['index']['cache']);
                 if($data){
