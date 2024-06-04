@@ -182,9 +182,9 @@ trait NodeList {
                 $is_filter = true;
             }
             $cache = $object->data(App::CACHE);
-            ddd($options);
             if($cache){
-                $data = $cache->get($options['index']['cache']);
+                $data = $cache->get(sha1($data_url) . '_index');
+                ddd($data);
                 if($data){
                     $file = new SplFileObject($options['index']['url']);
                     $options['index']['min'] = 0;
