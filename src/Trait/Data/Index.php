@@ -52,7 +52,7 @@ trait Index {
         $cache = $object->data(App::CACHE);
         d($url_data);
         $cache_select = $cache->get(sha1($url_data));
-        ddd($cache_select);
+        d($cache_select);
         //url_index should be in node/index
         if($where_name === false){
             if($filter_name === false){
@@ -85,7 +85,8 @@ trait Index {
                     [
                         'transaction' => true,
                         'limit' => '*',
-                        'page' => 1
+                        'page' => 1,
+                        'index' => 'create'
                     ]
                 );
             }
