@@ -411,6 +411,9 @@ trait NodeList {
                                                 true
                                             )
                                         ){
+                                            d($record);
+                                            d($key);
+                                            d($options);
                                             d($where);
                                             d($set);
 
