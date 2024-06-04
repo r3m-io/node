@@ -399,9 +399,9 @@ trait NodeList {
                             ){
                                 $where = $options['where'];
                                 $deepest = $this->where_get_depth($where);
-                                $max =0;
+                                $max_deep =0;
                                 while($deepest >= 0) {
-                                    if ($max > 1024) {
+                                    if ($max_deep > 1024) {
                                         break;
                                     }
                                     $set = $this->where_get_set($where, $key, $deepest);
@@ -430,7 +430,7 @@ trait NodeList {
                                             }
                                         }
                                     }
-                                    $max++;
+                                    $max_deep++;
                                     break;
                                 }
                             }
