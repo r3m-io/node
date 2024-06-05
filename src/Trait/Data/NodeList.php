@@ -295,6 +295,7 @@ trait NodeList {
                                             d($options);
                                             if(array_key_exists($options['set']['index'], $set)){
                                                 if(
+                                                    is_array($set[$options['set']['index']]) &&
                                                     in_array(
                                                         $set[$options['set']['index']]['attribute'],
                                                         $options['index']['where'],
