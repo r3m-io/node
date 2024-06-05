@@ -526,7 +526,7 @@ trait NodeList {
                             $options_list_index['set']['index'] = $i;
                             unset($options_list_index['index']['min']);
                             unset($options_list_index['index']['max']);
-                            ddd($options_list_index);
+                            d($options_list_index);
                             $record = $this->list_index($class, $role, $options_list_index);
                             ddd($record);
                             $i++;
