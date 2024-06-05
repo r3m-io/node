@@ -433,7 +433,7 @@ trait NodeList {
                                             break;
                                     }
                                 } else {
-                                    ddd($options);
+                                    d($options);
                                     if(array_key_exists($options['set']['index'], $set)){
                                         if(
                                             in_array(
