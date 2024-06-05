@@ -30,6 +30,41 @@ use SplFileObject;
 trait NodeList {
 
 
+    private function list_index_record($data, $record, $role, $options, $counter, $jump_max){
+        $object = $this->object();
+        if (
+            is_object($data) &&
+            property_exists($data, $record->uuid)
+        ) {
+            $record = $data->{$record->uuid};
+        } elseif (
+            is_array($data) &&
+            array_key_exists($record->uuid, $data)
+        ) {
+            $record = $data[$record->uuid];
+        }
+        $expose = $this->expose_get(
+            $object,
+            $record->{'#class'},
+            $record->{'#class'} . '.' . $options['function'] . '.output'
+        );
+        $node = new Storage($record);
+        $node = $this->expose(
+            $node,
+            $expose,
+            $record->{'#class'},
+            $options['function'],
+            $role
+        );
+        $record = $node->data();
+        if ($options['relation'] === true) {
+            ddd('need object_data from cache?');
+//                                                $record = $this->relation($record, $object_data, $role, $options);
+            //collect relation mtime
+        }
+        return $record;
+    }
+
     private function list_index($class, $role, $options=[]): bool | array
     {
         $object = $this->object();
@@ -142,40 +177,11 @@ trait NodeList {
                     }
                     d($list);
                     if(array_key_exists(0, $list)) {
-                        if (
-                            is_object($data) &&
-                            property_exists($data, $record->uuid)
-                        ) {
-                            $record = $data->{$record->uuid};
-                        } elseif (
-                            is_array($data) &&
-                            array_key_exists($record->uuid, $data)
-                        ) {
-                            $record = $data[$record->uuid];
-                        }
-                        $expose = $this->expose_get(
-                            $object,
-                            $record->{'#class'},
-                            $record->{'#class'} . '.' . $options['function'] . '.output'
-                        );
-                        $node = new Storage($record);
-                        $node = $this->expose(
-                            $node,
-                            $expose,
-                            $record->{'#class'},
-                            $options['function'],
-                            $role
-                        );
-                        $record = $node->data();
+                        $record = $this->list_index_record($data, $record, $role, $options);
                         $record->{'#jump'} = $counter;
                         if($record->{'#jump'} > $jump_max){
                             $jump_max = $record->{'#jump'};
                             $record->{'#jump_max'} = $jump_max;
-                        }
-                        if ($options['relation'] === true) {
-                            ddd('need object_data from cache?');
-//                                                $record = $this->relation($record, $object_data, $role, $options);
-                            //collect relation mtime
                         }
                         if (
                             $options['limit'] === 1 &&
@@ -305,6 +311,14 @@ trait NodeList {
                                                         $set[$options['set']['index']]['value'] === $record->{$set[$options['set']['index']]['attribute']}
                                                     ){
                                                         $is_found = true;
+
+                                                        $record = $this->list_index_record($data, $record, $role, $options);
+                                                        $record->{'#jump'} = $counter;
+                                                        if($record->{'#jump'} > $jump_max){
+                                                            $jump_max = $record->{'#jump'};
+                                                            $record->{'#jump_max'} = $jump_max;
+                                                        }
+
                                                         ddd($record);
                                                         break 2;
                                                     }
@@ -341,7 +355,12 @@ trait NodeList {
                                                         $set[$options['set']['index']]['value'] === $record->{$set[$options['set']['index']]['attribute']}
                                                     ){
                                                         $is_found = true;
-                                                        ddd($record);
+                                                        $record = $this->list_index_record($data, $record, $role, $options);
+                                                        $record->{'#jump'} = $counter;
+                                                        if($record->{'#jump'} > $jump_max){
+                                                            $jump_max = $record->{'#jump'};
+                                                            $record->{'#jump_max'} = $jump_max;
+                                                        }
                                                         break 2;
                                                     }
                                                     elseif($sort[0] === $set[$options['set']['index']]['value']){
@@ -378,6 +397,12 @@ trait NodeList {
                                                 $set[$options['set']['index']]['value'] === $record->{$set[$options['set']['index']]['attribute']}
                                             ){
                                                 $is_found = true;
+                                                $record = $this->list_index_record($data, $record, $role, $options);
+                                                $record->{'#jump'} = $counter;
+                                                if($record->{'#jump'} > $jump_max){
+                                                    $jump_max = $record->{'#jump'};
+                                                    $record->{'#jump_max'} = $jump_max;
+                                                }
                                                 break;
                                             }
                                             elseif($sort[0] === $set[$options['set']['index']]['value']){
