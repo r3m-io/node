@@ -292,7 +292,7 @@ trait NodeList {
                                     }
                                     switch(strtolower($operator)){
                                         case 'or' :
-                                            d($options);
+                                            ddd($options);
                                             if(array_key_exists($options['set']['index'], $set)){
                                                 if(
                                                     in_array(
