@@ -399,10 +399,7 @@ trait NodeList {
                     }
                     d($options);
                 }
-                if($operator === 'and'){
-                    return false;
-                }
-                elseif($operator === 'or'){
+                if($operator === 'or'){
                     if($options['set']['max'] > 2){
                         //1st where returned false
                         for($i=2; $i < $options['set']['max']; $i++){
@@ -424,6 +421,8 @@ trait NodeList {
 //                    $record = $this->list_index($class, $role, $options_list_index);
                         ddd($record);
                     }
+                } else {
+                    d($operator);
                 }
 
             }
