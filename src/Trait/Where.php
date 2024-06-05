@@ -253,6 +253,7 @@ trait Where {
 
     private function where_get_set(&$where=[], &$key=null, $deep=0): array
     {
+        d($where);
         $set = [];
         $depth = 0;
         //convert where to array.
