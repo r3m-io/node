@@ -537,8 +537,16 @@ trait NodeList {
                 }
                 elseif($operator === 'and'){
                     //1st where returned false
-
-
+                    $has_or = false;
+                    foreach($options['set']['list'] as $nr => $set){
+                        if($set === 'or'){
+                            $has_or = true;
+                            ddd($options);
+                        }
+                    }
+                    if($has_or === false){
+                        return false;
+                    }
 
                     d($where);
                     d($options);
