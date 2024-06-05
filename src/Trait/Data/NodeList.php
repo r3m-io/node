@@ -273,7 +273,11 @@ trait NodeList {
                                 }
                                 d($options);
                                 if($options['set']['max'] > 2){
-                                    $operator = $set[1];
+                                    if(array_key_exists($options['set']['index'] + 1, $set)){
+                                        $operator = $set[1];
+                                    } else {
+                                        throw new Exception('cannot find operator in where set');
+                                    }
                                     switch(strtolower($operator)){
                                         case 'or' :
                                             d($options);
@@ -305,6 +309,7 @@ trait NodeList {
                                         break;
                                     }
                                 } else {
+                                    ddd($options);
                                     if(array_key_exists($options['set']['index'], $set)){
                                         if(
                                             in_array(
