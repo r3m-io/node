@@ -564,6 +564,7 @@ trait NodeList {
                 }
                 else {
                     d($options);
+                    d($where);
                     ddd($record);
                     d($operator);
                 }
