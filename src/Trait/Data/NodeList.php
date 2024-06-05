@@ -84,6 +84,7 @@ trait NodeList {
                         elseif(array_key_exists('where', $options)){
                             $options['where'] = $this->nodelist_where($options);
                             $record_where = $this->where($record, $options['where'], $options);
+                            ddd($record_where);
                             if ($record_where) {
                                 $list[] = $record_where;
                             }
@@ -390,6 +391,8 @@ trait NodeList {
                                     $max_deep++;
                                     break;
                                 }
+                            }
+                            if($is_found){
 
                             }
                         }
