@@ -310,6 +310,34 @@ trait NodeList {
                                                 }
                                             }
                                         break;
+                                        case 'and' :
+                                            d($options);
+                                            if(array_key_exists($options['set']['index'], $set)){
+                                                if(
+                                                    in_array(
+                                                        $set[$options['set']['index']]['attribute'],
+                                                        $options['index']['where'],
+                                                        true
+                                                    )
+                                                ){
+                                                    $sort = [
+                                                        $set[$options['set']['index']]['value'],
+                                                        $record->{$set[$options['set']['index']]['attribute']}
+                                                    ];
+                                                    sort($sort, SORT_NATURAL);
+                                                    d($sort);
+                                                    if($sort[0] === $set[$options['set']['index']]['value']){
+                                                        $options['index']['max'] = $seek - 1;
+                                                        break 2;
+                                                    } else {
+                                                        //sort[1] === $value
+                                                        //min becomes seek + 1
+                                                        $options['index']['min'] = $seek + 1;
+                                                        break 2;
+                                                    }
+                                                }
+                                            }
+                                            break;
                                     }
                                 } else {
                                     ddd($options);
