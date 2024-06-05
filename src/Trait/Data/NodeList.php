@@ -305,6 +305,7 @@ trait NodeList {
                                                         $set[$options['set']['index']]['value'] === $record->{$set[$options['set']['index']]['attribute']}
                                                     ){
                                                         $is_found = true;
+                                                        ddd($record);
                                                         break 2;
                                                     }
                                                     elseif($sort[0] === $set[$options['set']['index']]['value']){
@@ -340,6 +341,7 @@ trait NodeList {
                                                         $set[$options['set']['index']]['value'] === $record->{$set[$options['set']['index']]['attribute']}
                                                     ){
                                                         $is_found = true;
+                                                        ddd($record);
                                                         break 2;
                                                     }
                                                     elseif($sort[0] === $set[$options['set']['index']]['value']){
