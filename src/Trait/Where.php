@@ -259,6 +259,8 @@ trait Where {
         if(!is_array($where)){
             return $set;
         }
+        d($deep);
+        d($depth);
         foreach($where as $nr => $value){
             if($value === '('){
                 $depth++;
