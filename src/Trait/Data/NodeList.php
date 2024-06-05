@@ -318,7 +318,6 @@ trait NodeList {
                                                             $jump_max = $record->{'#jump'};
                                                             $record->{'#jump_max'} = $jump_max;
                                                         }
-
                                                         ddd($record);
                                                         break 2;
                                                     }
@@ -361,6 +360,7 @@ trait NodeList {
                                                             $jump_max = $record->{'#jump'};
                                                             $record->{'#jump_max'} = $jump_max;
                                                         }
+                                                        ddd($record);
                                                         break 2;
                                                     }
                                                     elseif($sort[0] === $set[$options['set']['index']]['value']){
@@ -403,6 +403,7 @@ trait NodeList {
                                                     $jump_max = $record->{'#jump'};
                                                     $record->{'#jump_max'} = $jump_max;
                                                 }
+                                                ddd($record);
                                                 break;
                                             }
                                             elseif($sort[0] === $set[$options['set']['index']]['value']){
