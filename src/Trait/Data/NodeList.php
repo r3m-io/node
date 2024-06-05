@@ -55,6 +55,7 @@ trait NodeList {
                 $is_found = [];
                 $jump_max = 0;
                 $record = false;
+                $where = false;
                 while($options['index']['min'] <= $options['index']['max']) {
                     $seek = $options['index']['min'] +
                         floor(
@@ -340,7 +341,7 @@ trait NodeList {
                 }
                 d($options);
                 if($options['set']['max'] > 2){
-                    //1st record returned false
+                    //1st where returned false
                     for($i=2; $i < $options['set']['max']; $i++){
                         $options_list_index = $options;
                         $options_list_index['set']['max'] = 1;
@@ -352,6 +353,13 @@ trait NodeList {
                         ddd($record);
                         $i++;
                     }
+                }
+                if($where){
+                    ddd('has some more where');
+                    //options_list_index = options
+                    //options_list_index['where'] = $where
+//                    $record = $this->list_index($class, $role, $options_list_index);
+                    ddd($record);
                 }
             }
         }
