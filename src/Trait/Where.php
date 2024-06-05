@@ -669,8 +669,12 @@ trait Where {
         if(empty($where)){
             return $record;
         }
-        $where = Core::object($where, Core::OBJECT_ARRAY);
-        $options = Core::object($options, Core::OBJECT_ARRAY);
+        if(!is_array($where)){
+            $where = Core::object($where, Core::OBJECT_ARRAY);
+        }
+        if(!is_array($options)){
+            $options = Core::object($options, Core::OBJECT_ARRAY);
+        }
         $deepest = $this->where_get_depth($where);
         $counter =0;
         while($deepest >= 0){
