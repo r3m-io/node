@@ -361,6 +361,9 @@ trait NodeList {
                                                         break 2;
                                                     }
                                                 }
+                                                elseif($set[$options['set']['index']] === false){
+                                                    break 2;
+                                                }
                                             }
                                         break;
                                         case 'and' :
