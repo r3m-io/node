@@ -92,6 +92,7 @@ trait NodeList {
                 $record = false;
                 $where = false;
                 $operator = null;
+                $key = null;
                 while($options['index']['min'] <= $options['index']['max']) {
                     $seek = $options['index']['min'] +
                         floor(
@@ -545,6 +546,7 @@ trait NodeList {
                         }
                     }
                     if($has_or === false){
+                        d($key);
                         ddd($where);
                         return false;
                     }
