@@ -579,7 +579,7 @@ trait NodeList {
 
             }
         }
-
+        d($options);
         return false;
     }
 
