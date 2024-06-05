@@ -318,8 +318,36 @@ trait NodeList {
                                                             $jump_max = $record->{'#jump'};
                                                             $record->{'#jump_max'} = $jump_max;
                                                         }
-                                                        ddd($record);
-                                                        break 2;
+                                                        if (
+                                                            $options['limit'] === 1 &&
+                                                            $options['page'] === 1
+                                                        ) {
+                                                            $list = [];
+                                                            $list[] = $record;
+                                                            $result = [];
+                                                            $result['page'] = $options['page'];
+                                                            $result['limit'] = $options['limit'];
+                                                            $result['count'] = 1;
+                                                            $result['max'] = $options['index']['count'];
+                                                            $result['list'] = $list;
+                                                            $result['sort'] = $options['sort'] ?? [];
+                                                            if (!empty($options['filter'])) {
+                                                                $result['filter'] = $options['filter'];
+                                                            }
+                                                            if (!empty($options['where'])) {
+                                                                $result['where'] = $options['where'];
+                                                            }
+                                                            $result['relation'] = $options['relation'];
+                                                            $result['parse'] = $options['parse'];
+                                                            $result['pre-compile'] = $options['pre-compile'] ?? false;
+                                                            $result['ramdisk'] = $options['ramdisk'] ?? false;
+                                                            $result['mtime'] = $options['mtime'];
+                                                            $result['transaction'] = $options['transaction'] ?? false;
+                                                            $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+                                                            return $result;
+                                                        } else {
+                                                            ddd($record);
+                                                        }
                                                     }
                                                     elseif($sort[0] === $set[$options['set']['index']]['value']){
                                                         $options['index']['max'] = $seek - 1;
@@ -360,8 +388,36 @@ trait NodeList {
                                                             $jump_max = $record->{'#jump'};
                                                             $record->{'#jump_max'} = $jump_max;
                                                         }
-                                                        ddd($record);
-                                                        break 2;
+                                                        if (
+                                                            $options['limit'] === 1 &&
+                                                            $options['page'] === 1
+                                                        ) {
+                                                            $list = [];
+                                                            $list[] = $record;
+                                                            $result = [];
+                                                            $result['page'] = $options['page'];
+                                                            $result['limit'] = $options['limit'];
+                                                            $result['count'] = 1;
+                                                            $result['max'] = $options['index']['count'];
+                                                            $result['list'] = $list;
+                                                            $result['sort'] = $options['sort'] ?? [];
+                                                            if (!empty($options['filter'])) {
+                                                                $result['filter'] = $options['filter'];
+                                                            }
+                                                            if (!empty($options['where'])) {
+                                                                $result['where'] = $options['where'];
+                                                            }
+                                                            $result['relation'] = $options['relation'];
+                                                            $result['parse'] = $options['parse'];
+                                                            $result['pre-compile'] = $options['pre-compile'] ?? false;
+                                                            $result['ramdisk'] = $options['ramdisk'] ?? false;
+                                                            $result['mtime'] = $options['mtime'];
+                                                            $result['transaction'] = $options['transaction'] ?? false;
+                                                            $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+                                                            return $result;
+                                                        } else {
+                                                            ddd($record);
+                                                        }
                                                     }
                                                     elseif($sort[0] === $set[$options['set']['index']]['value']){
                                                         $options['index']['max'] = $seek - 1;
