@@ -535,7 +535,32 @@ trait NodeList {
 //                    $record = $this->list_index($class, $role, $options_list_index);
                         ddd($record);
                     }
-                } else {
+                }
+                elseif($operator === 'and'){
+                    d($where);
+                    d($options);
+                    if($options['set']['max'] > 2){
+                        //1st where returned true
+                        for($i=2; $i < $options['set']['max']; $i++){
+                            $options_list_index = $options;
+                            $options_list_index['set']['max'] = 1;
+                            $options_list_index['set']['index'] = $i;
+                            unset($options_list_index['index']['min']);
+                            unset($options_list_index['index']['max']);
+                            d($options_list_index);
+                            $record = $this->list_index($class, $role, $options_list_index);
+                            ddd($record);
+                            $i++;
+                        }
+                    }
+                    if($where) {
+                        ddd('has some more where');
+                        //options_list_index = options
+                        //options_list_index['where'] = $where
+                    }
+                }
+                else {
+
                     d($operator);
                 }
 
