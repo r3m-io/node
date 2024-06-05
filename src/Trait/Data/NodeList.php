@@ -287,7 +287,7 @@ trait NodeList {
                                         $operator = $set[($options['set']['index'] + 1)];
                                     } else {
                                         d('cannot find operator in where set');
-                                        ddd($options);
+                                        ddd($set);
                                         throw new Exception('cannot find operator in where set');
                                     }
                                     switch(strtolower($operator)){
