@@ -682,6 +682,9 @@ trait Where {
             d($where);
             while($record !== false){
                 $set = $this->where_process($record, $set, $where, $key, $operator, $options);
+                d($set);
+                d($where);
+                d($operator);
                 if(empty($set) && $deepest === 0){
                     return $record;
                 }
