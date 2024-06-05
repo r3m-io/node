@@ -551,7 +551,7 @@ trait NodeList {
                             unset($options_list_index['index']['min']);
                             unset($options_list_index['index']['max']);
                             $options_list_index['where'] = [
-                                false,
+                                $key => false,
                                 ...$where
                             ];
                             unset($options_list_index['set']);
