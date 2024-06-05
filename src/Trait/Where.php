@@ -678,6 +678,8 @@ trait Where {
                 break;
             }
             $set = $this->where_get_set($where, $key, $deepest);
+            d($set);
+            d($where);
             while($record !== false){
                 $set = $this->where_process($record, $set, $where, $key, $operator, $options);
                 if(empty($set) && $deepest === 0){
