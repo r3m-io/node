@@ -30,7 +30,7 @@ use SplFileObject;
 trait NodeList {
 
 
-    private function list_index_record($data, $record, $role, $options, $counter, $jump_max){
+    private function list_index_record($data, $record, $role, $options){
         $object = $this->object();
         if (
             is_object($data) &&
