@@ -277,6 +277,8 @@ trait NodeList {
                                     if(array_key_exists($options['set']['index'] + 1, $set)){
                                         $operator = $set[$options['set']['index'] + 1];
                                     } else {
+                                        d('cannot find operator in where set');
+                                        ddd($options);
                                         throw new Exception('cannot find operator in where set');
                                     }
                                     switch(strtolower($operator)){
@@ -345,29 +347,33 @@ trait NodeList {
                     }
                     d($options);
                 }
-                d($operator);
-                ddd($options);
-                if($options['set']['max'] > 2){
-                    //1st where returned false
-                    for($i=2; $i < $options['set']['max']; $i++){
-                        $options_list_index = $options;
-                        $options_list_index['set']['max'] = 1;
-                        $options_list_index['set']['index'] = $i;
-                        unset($options_list_index['index']['min']);
-                        unset($options_list_index['index']['max']);
-                        d($options_list_index);
-                        $record = $this->list_index($class, $role, $options_list_index);
+                if($operator === 'and'){
+                    return false;
+                }
+                elseif($operator === 'or'){
+                    if($options['set']['max'] > 2){
+                        //1st where returned false
+                        for($i=2; $i < $options['set']['max']; $i++){
+                            $options_list_index = $options;
+                            $options_list_index['set']['max'] = 1;
+                            $options_list_index['set']['index'] = $i;
+                            unset($options_list_index['index']['min']);
+                            unset($options_list_index['index']['max']);
+                            d($options_list_index);
+                            $record = $this->list_index($class, $role, $options_list_index);
+                            ddd($record);
+                            $i++;
+                        }
+                    }
+                    if($where){
+                        ddd('has some more where');
+                        //options_list_index = options
+                        //options_list_index['where'] = $where
+//                    $record = $this->list_index($class, $role, $options_list_index);
                         ddd($record);
-                        $i++;
                     }
                 }
-                if($where){
-                    ddd('has some more where');
-                    //options_list_index = options
-                    //options_list_index['where'] = $where
-//                    $record = $this->list_index($class, $role, $options_list_index);
-                    ddd($record);
-                }
+
             }
         }
 
