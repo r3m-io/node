@@ -555,6 +555,7 @@ trait NodeList {
                                 ...$where
                             ];
                             unset($options_list_index['set']);
+                            ddd($options_list_index);
                             $record = $this->list_index($class, $role, $options_list_index);
                             d($options_list_index);
                             ddd($record);
