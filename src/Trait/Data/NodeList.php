@@ -559,7 +559,8 @@ trait NodeList {
                     }
                 }
                 else {
-
+                    d($options);
+                    ddd($record);
                     d($operator);
                 }
 
