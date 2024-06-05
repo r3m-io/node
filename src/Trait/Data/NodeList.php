@@ -274,8 +274,8 @@ trait NodeList {
                                 }
                                 d($options);
                                 if($options['set']['max'] > 2){
-                                    if(array_key_exists($options['set']['index'] + 1, $set)){
-                                        $operator = $set[$options['set']['index'] + 1];
+                                    if(array_key_exists(($options['set']['index'] + 1), $set)){
+                                        $operator = $set[($options['set']['index'] + 1)];
                                     } else {
                                         d('cannot find operator in where set');
                                         ddd($options);
