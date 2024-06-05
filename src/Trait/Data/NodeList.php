@@ -52,7 +52,7 @@ trait NodeList {
                 $counter = 0;
                 $seek = false;
                 $line = null;
-                $is_found = [];
+                $is_found = false;
                 $jump_max = 0;
                 $record = false;
                 $where = false;
@@ -298,7 +298,14 @@ trait NodeList {
                                                     ];
                                                     sort($sort, SORT_NATURAL);
                                                     d($sort);
-                                                    if($sort[0] === $set[$options['set']['index']]['value']){
+                                                    if(
+                                                        $sort[0] === $set[$options['set']['index']]['value'] &&
+                                                        $set[$options['set']['index']]['value'] === $record->{$set[$options['set']['index']]['attribute']}
+                                                    ){
+                                                        $is_found = true;
+                                                        break 2;
+                                                    }
+                                                    elseif($sort[0] === $set[$options['set']['index']]['value']){
                                                         $options['index']['max'] = $seek - 1;
                                                         break 2;
                                                     } else {
@@ -326,7 +333,14 @@ trait NodeList {
                                                     ];
                                                     sort($sort, SORT_NATURAL);
                                                     d($sort);
-                                                    if($sort[0] === $set[$options['set']['index']]['value']){
+                                                    if(
+                                                        $sort[0] === $set[$options['set']['index']]['value'] &&
+                                                        $set[$options['set']['index']]['value'] === $record->{$set[$options['set']['index']]['attribute']}
+                                                    ){
+                                                        $is_found = true;
+                                                        break 2;
+                                                    }
+                                                    elseif($sort[0] === $set[$options['set']['index']]['value']){
                                                         $options['index']['max'] = $seek - 1;
                                                         break 2;
                                                     } else {
@@ -355,7 +369,14 @@ trait NodeList {
                                             ];
                                             sort($sort, SORT_NATURAL);
                                             d($sort);
-                                            if($sort[0] === $set[$options['set']['index']]['value']){
+                                            if(
+                                                $sort[0] === $set[$options['set']['index']]['value'] &&
+                                                $set[$options['set']['index']]['value'] === $record->{$set[$options['set']['index']]['attribute']}
+                                            ){
+                                                $is_found = true;
+                                                break;
+                                            }
+                                            elseif($sort[0] === $set[$options['set']['index']]['value']){
                                                 $options['index']['max'] = $seek - 1;
                                                 break;
                                             } else {
