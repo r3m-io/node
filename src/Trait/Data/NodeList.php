@@ -56,6 +56,7 @@ trait NodeList {
                 $jump_max = 0;
                 $record = false;
                 $where = false;
+                $operator = null;
                 while($options['index']['min'] <= $options['index']['max']) {
                     $seek = $options['index']['min'] +
                         floor(
@@ -274,7 +275,7 @@ trait NodeList {
                                 d($options);
                                 if($options['set']['max'] > 2){
                                     if(array_key_exists($options['set']['index'] + 1, $set)){
-                                        $operator = $set[1];
+                                        $operator = $set[$options['set']['index'] + 1];
                                     } else {
                                         throw new Exception('cannot find operator in where set');
                                     }
@@ -344,6 +345,7 @@ trait NodeList {
                     }
                     d($options);
                 }
+                d($operator);
                 ddd($options);
                 if($options['set']['max'] > 2){
                     //1st where returned false
