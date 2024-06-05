@@ -554,9 +554,10 @@ trait NodeList {
                                 false,
                                 ...$where
                             ];
-                            $options_list_index['set']['max'] = 1;
-                            $options_list_index['set']['index'] = 0;
-                            ddd($options_list_index);
+                            unset($options_list_index['set']);
+                            $record = $this->list_index($class, $role, $options_list_index);
+                            d($options_list_index);
+                            ddd($record);
                         } else {
                             return false;
                         }
