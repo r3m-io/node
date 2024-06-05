@@ -276,8 +276,8 @@ trait NodeList {
                                     break;
                                 }
                                 $set = $this->where_get_set($where, $key, $deepest);
-                                d($set);
                                 if (!array_key_exists('max', $options['set'])){
+                                    $options['set']['list'] = $set;
                                     $options['set']['max'] = count($set);
                                 }
                                 d($options);
@@ -536,10 +536,14 @@ trait NodeList {
                     }
                 }
                 elseif($operator === 'and'){
+                    //1st where returned false
+
+
+
                     d($where);
                     d($options);
                     if($options['set']['max'] > 2){
-                        //1st where returned true
+
                         for($i=2; $i < $options['set']['max']; $i++){
                             $options_list_index = $options;
                             $options_list_index['set']['max'] = 1;
