@@ -545,6 +545,7 @@ trait NodeList {
                         }
                     }
                     if($has_or === false){
+                        ddd($where);
                         return false;
                     }
 
