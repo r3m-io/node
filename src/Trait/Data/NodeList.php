@@ -84,7 +84,7 @@ trait NodeList {
                         elseif(array_key_exists('where', $options)){
                             $options['where'] = $this->nodelist_where($options);
                             $record_where = $this->where($record, $options['where'], $options);
-                            ddd($record_where);
+                            d($record_where);
                             if ($record_where) {
                                 $list[] = $record_where;
                             }
@@ -140,6 +140,7 @@ trait NodeList {
                             return $result;
                         }
                     }
+                    d($list);
                     if(array_key_exists(0, $list)) {
                         if (
                             is_object($data) &&
