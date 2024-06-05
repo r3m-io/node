@@ -293,6 +293,7 @@ trait Where {
                 unset($where[$nr]);
             }
         }
+        d($set);
         return $set;
     }
 
