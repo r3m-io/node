@@ -484,6 +484,8 @@ trait Where {
                                 'strict' => $set[0]['strict'] ?? true
                             ]
                         ];
+                        d($list);
+                        d($filter_where);
                         $left = Filter::list($list)->where($filter_where);
                     }
                     if ($set[2] === false) {
