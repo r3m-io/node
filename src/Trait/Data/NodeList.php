@@ -550,6 +550,13 @@ trait NodeList {
                             $options_list_index = $options;
                             unset($options_list_index['index']['min']);
                             unset($options_list_index['index']['max']);
+                            $options_list_index['where'] = [
+                                false,
+                                ...$where
+                            ];
+                            $options_list_index['set']['max'] = 1;
+                            $options_list_index['set']['index'] = 0;
+                            ddd($options_list_index);
                         } else {
                             return false;
                         }
