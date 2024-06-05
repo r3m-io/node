@@ -512,6 +512,7 @@ trait NodeList {
                     }
                     d($options);
                 }
+                d($operator);
                 if($operator === 'or'){
                     if($options['set']['max'] > 2){
                         //1st where returned false
