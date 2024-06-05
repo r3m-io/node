@@ -546,15 +546,19 @@ trait NodeList {
                         }
                     }
                     if($has_or === false){
-                        d($key);
-                        ddd($where);
-                        return false;
+                        if($where){
+                            $options_list_index = $options;
+                            unset($options_list_index['index']['min']);
+                            unset($options_list_index['index']['max']);
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        ddd('has or');
                     }
-
                     d($where);
                     d($options);
                     if($options['set']['max'] > 2){
-
                         for($i=2; $i < $options['set']['max']; $i++){
                             $options_list_index = $options;
                             $options_list_index['set']['max'] = 1;
