@@ -683,7 +683,13 @@ trait Index {
             */
         }
         elseif($where_name) {
-            $key = sha1(implode('-', $where_name));
+            $key = [
+                'where' => $where_name,
+                'sort' => 'asc'
+            ];
+
+
+            $key = sha1(Core::object($key, Core::OBJECT_JSON));
             $url = [];
             foreach ($where_name as $nr => $attribute) {
                 $url[$nr] = $url_index = $dir_index .
