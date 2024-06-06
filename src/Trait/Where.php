@@ -446,6 +446,7 @@ trait Where {
                         array_key_exists('value', $set[0]) &&
                         array_key_exists('operator', $set[0])
                     ){
+                        d('gvd');
                         d($record);
                         ddd($set[0]);
                         $index_where = [
