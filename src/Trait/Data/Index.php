@@ -727,8 +727,11 @@ trait Index {
             ){
                 $list = [];
                 foreach($select['list'] as $uuid => $record){
+                    if(!property_exists($record, 'uuid')){
+                        continue;
+                    }
                     $record_index = (object) [
-                        'uuid' => $uuid
+                        'uuid' => $record->uuid
                     ];
                     $sort_key = [];
                     foreach($where_name as $attribute){
