@@ -50,13 +50,6 @@ trait NodeList {
         if (!array_key_exists('parse', $options)) {
             $options['parse'] = false;
         }
-        if (!array_key_exists('index', $options)) {
-            $options['index'] = false;
-        }
-        elseif($options['index'] === true){
-            $options['index'] = $this->index_create($name, $role, $options);
-            ddd($options);
-        }
         if (!array_key_exists('transaction', $options)) {
             $options['transaction'] = false;
         }
@@ -119,6 +112,13 @@ trait NodeList {
             $result['transaction'] = $options['transaction'] ?? false;
             $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
             return $result;
+        }
+        if (!array_key_exists('index', $options)) {
+            $options['index'] = false;
+        }
+        elseif($options['index'] === true){
+            $options['index'] = $this->index_create($name, $role, $options);
+            ddd($options);
         }
         if(
             $options['parse'] === true ||
