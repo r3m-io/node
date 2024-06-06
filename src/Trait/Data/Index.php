@@ -609,7 +609,8 @@ trait Index {
      * @throws DirectoryCreateException
      * @throws Exception
      */
-    public function index($class, $role, $options=[]){
+    public function index_create($class, $role, $options=[]): array
+    {
         $name = Controller::name($class);
         $object = $this->object();
         if(array_key_exists('where', $options)){
@@ -636,7 +637,7 @@ trait Index {
         $cache = $object->data(App::CACHE);
         d($url_data);
         $cache_select = $cache->get(sha1($url_data));
-        d($cache_select);
+        ddd($cache_select);
         //url_index should be in node/index
         if($where_name === false){
             if($filter_name === false){

@@ -54,7 +54,7 @@ trait NodeList {
             $options['index'] = false;
         }
         elseif($options['index'] === true){
-            $options['index'] = $this->index($name, $role, $options);
+            $options['index'] = $this->index_create($name, $role, $options);
             ddd($options);
         }
         if (!array_key_exists('transaction', $options)) {
@@ -78,6 +78,18 @@ trait NodeList {
             } else {
                 $options['thread'] = 8;
             }
+        }
+        if(array_key_exists('where', $options)){
+            if(
+                is_string($options['where']) ||
+                is_array($options['where'])
+            ){
+                $where = $this->nodelist_where($options);
+                if($where === false){
+                    return [];
+                }
+            }
+            ddd($where);
         }
         $options['page'] = $options['page'] ?? 1;
         $options['limit'] = $options['limit'] ?? 1000;
@@ -162,6 +174,7 @@ trait NodeList {
             return $result;
         }
         $mtime = File::mtime($data_url);
+        /*
         if(
             $options['index'] !== false &&
             $options['index'] !== 'create' &&
@@ -213,6 +226,7 @@ trait NodeList {
                 return $result;
             }
         }
+        */
         $ramdisk_dir = false;
         $ramdisk_dir_node = false;
         $ramdisk_dir_list = false;
