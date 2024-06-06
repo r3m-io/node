@@ -631,10 +631,25 @@ trait Index {
         $url_mtime = File::mtime($url_data);
         $url_index = false;
         $cache = $object->data(App::CACHE);
-        d($url_data);
         $cache_select = $cache->get(sha1($url_data));
         $select = false;
         //url_index should be in node/index
+        if($cache_select){
+            $select = [
+                'list' => $cache_select->get($name)
+            ];
+        } else {
+            $select = $this->list(
+                $name,
+                $role,
+                [
+                    'transaction' => true,
+                    'limit' => '*',
+                    'page' => 1,
+                    'index' => 'create'
+                ]
+            );
+        }
         if($where_name === false){
             if($filter_name === false){
                 $url_index = $dir_index .
@@ -643,70 +658,104 @@ trait Index {
                     'Filter' .
                     '.' .
                     'uuid' .
-                    //need filter keys and where attributes
                     $object->config('extension.btree');
             } else {
-                $url_index = $dir_index .
+                $key = [
+                    'where' => $where_name,
+                    'sort' => 'asc'
+                ];
+                $key = sha1(Core::object($key, Core::OBJECT_JSON));
+
+                $url_uuid = $dir_index .
                     $name .
                     '.' .
                     'Filter' .
                     '.' .
-                    implode('.', $filter_name) . //add sha1();
+                    $key .
+                    '.' .
+                    'uuid' .
                     //need filter keys and where attributes
-                    $object->config('extension.btree');
+                    $object->config('extension.btree')
+                ;
+                $url = [];
+                foreach ($filter_name as $nr => $attribute) {
+                    $url_index = $dir_index .
+                        $name .
+                        '.' .
+                        'Filter' .
+                        '.' .
+                        $key .
+                        '.' .
+                        $attribute .
+                        //need filter keys and where attributes
+                        $object->config('extension.btree')
+                    ;
+                    if(
+                        !in_array(
+                            $url_index,
+                            $url,
+                            true
+                        )
+                    ){
+                        $url[$nr] = $url_index;
+                    }
+                }
+                if(
+                    is_array($select) &&
+                    array_key_exists('list', $select)
+                ){
+                    $list = [];
+                    $count = 0;
+                    foreach($select['list'] as $nr => $record){
+                        if(!property_exists($record, 'uuid')){
+                            continue;
+                        }
+                        $record_index = (object) [
+                            'uuid' => $record->uuid
+                        ];
+                        $count++;
+                        $sort_key = [];
+                        foreach($filter_name as $attribute){
+                            if(!property_exists($record, $attribute)){
+                                continue; //no-data
+                            }
+                            $record_index->{$attribute} = $record->{$attribute};
+                            $sort_key[] = '\'' . $record->{$attribute} . '\'';
+                        }
+                        $record_index->{'#sort'} = implode(',', $sort_key);
+                        $list[] = $record_index;
+                    }
+                    $list = Sort::list($list)->with([
+                        '#sort' => 'asc'
+                    ]);
+                    $data = [];
+                    foreach($list as $uuid => $record){
+                        if(!array_key_exists('uuid', $data)){
+                            $data['uuid'] = [];
+                        }
+                        $data['uuid'][] = $record->uuid;
+                        foreach($filter_name as $nr => $attribute){
+                            if(!array_key_exists($nr, $data)){
+                                $data[$nr] = [];
+                            }
+                            $data[$nr][] = $record->{$attribute};
+                        }
+                    }
+                    if(!Dir::exist($dir_index)){
+                        Dir::create($dir_index, Dir::CHMOD);
+                    }
+                    File::write($url_uuid, implode(PHP_EOL, $data['uuid']));
+                    foreach($url as $nr => $url_index){
+                        File::write($url_index, implode(PHP_EOL, $data[$nr]));
+                    }
+                }
             }
-            if($cache_select){
-                $select = [
-                    'list' => $cache_select->get($name)
-                ];
-            } else {
-                d('yes');
-                $select = $this->list(
-                    $name,
-                    $role,
-                    [
-                        'transaction' => true,
-                        'limit' => '*',
-                        'page' => 1,
-                        'index' => 'create'
-                    ]
-                );
-                ddd($select);
-            }
-            /*
-            $list = $this->index_list(
-                $name,
-                $select,
-                $filter_name,
-                $count_index,
-                $is_uuid,
-            );
-            */
         }
         elseif($where_name) {
-            if($cache_select){
-                $select = [
-                    'list' => $cache_select->get($name)
-                ];
-            } else {
-                d('yes2');
-                $select = $this->list(
-                    $name,
-                    $role,
-                    [
-                        'transaction' => true,
-                        'limit' => '*',
-                        'page' => 1,
-                        'index' => 'create'
-                    ]
-                );
-            }
             $key = [
                 'where' => $where_name,
                 'sort' => 'asc'
             ];
-
-
             $key = sha1(Core::object($key, Core::OBJECT_JSON));
             $url = [];
             $url_uuid = $dir_index .
@@ -747,6 +796,7 @@ trait Index {
                 array_key_exists('list', $select)
             ){
                 $list = [];
+                $count = 0;
                 foreach($select['list'] as $nr => $record){
                     if(!property_exists($record, 'uuid')){
                         continue;
@@ -754,6 +804,7 @@ trait Index {
                     $record_index = (object) [
                         'uuid' => $record->uuid
                     ];
+                    $count++;
                     $sort_key = [];
                     foreach($where_name as $attribute){
                         if(!property_exists($record, $attribute)){
@@ -789,69 +840,14 @@ trait Index {
                     File::write($url_index, implode(PHP_EOL, $data[$nr]));
                 }
             }
-
-            d($url_uuid);
-            ddd($url);
         }
-
-
-
-            /*
-            if($url_index){
-                Dir::create($dir_index, Dir::CHMOD);
-                if($cache_select){
-                    $select = [
-                        'list' => $cache_select->get($name)
-                    ];
-                } else {
-                    $select = $this->list(
-                        $name,
-                        $role,
-                        [
-                            'transaction' => true,
-                            'limit' => '*',
-                            'page' => 1,
-                            'index' => 'create'
-                        ]
-                    );
-                }
-                ddd($where_name);
-                /*
-                $list = $this->index_list(
-                    $name,
-                    $select,
-                    $where_name,
-                    $count_index,
-                    $is_uuid,
-                );
-
-            }
-        }
-        if($url_index){
-            Dir::create($dir_index, Dir::CHMOD);
-        }
-        $result = [];
-        foreach($list as $uuid => $record){
-            if($is_uuid){
-                $result[] = ';' . $uuid;
-            } else {
-                if(array_key_exists($record->{'#sort'}, $result)) {
-                    //cannot create index, not unique
-                    return false;
-                }
-                $result[] = $record->{'#sort'} . ';' . $uuid;
-            }
-        }
-        $output = implode(PHP_EOL, $result);
-        File::write($url_index, $output);
         return [
-            'url' => $url_index,
-            'count' => $count_index,
+            'url' => $url,
+            'url_uuid' => $url_uuid,
+            'count' => $count,
             'filter' => $filter_name,
             'where'=> $where_name,
-            'is_uuid' => $is_uuid
         ];
-            */
     }
 
     /**
