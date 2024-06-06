@@ -561,6 +561,10 @@ trait NodeList {
                             ];
                             unset($options_list_index['set']);
                             d($options_list_index);
+                            $debug = debug_backtrace(1);
+                            d($debug[0]['line'] . ' ' . $debug[0]['file'] . ' ' . $debug[0]['function']);
+                            d($debug[1]['line'] . ' ' . $debug[1]['file'] . ' ' . $debug[1]['function']);
+                            d($debug[2]['line'] . ' ' . $debug[2]['file'] . ' ' . $debug[2]['function']);
                             $record = $this->list_index($class, $role, $options_list_index);
                             d($options_list_index);
                             ddd($record);
