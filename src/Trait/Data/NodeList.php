@@ -93,6 +93,7 @@ trait NodeList {
                 $where = false;
                 $operator = null;
                 $key = null;
+                $old_seek = null;
                 while($options['index']['min'] <= $options['index']['max']) {
                     $seek = $options['index']['min'] +
                         floor(
@@ -108,12 +109,16 @@ trait NodeList {
                     if ($counter > $max) {
                         break;
                     }
+                    if($seek === $old_seek){
+                        break;
+                    }
                     d($line);
-                    $debug = debug_backtrace(1);
-                    d($debug[0]['line'] . ' ' . $debug[0]['file'] . ' ' . $debug[0]['function']);
-                    d($debug[1]['line'] . ' ' . $debug[1]['file'] . ' ' . $debug[1]['function']);
-                    d($debug[2]['line'] . ' ' . $debug[2]['file'] . ' ' . $debug[2]['function']);
+//                    $debug = debug_backtrace(1);
+//                    d($debug[0]['line'] . ' ' . $debug[0]['file'] . ' ' . $debug[0]['function']);
+//                    d($debug[1]['line'] . ' ' . $debug[1]['file'] . ' ' . $debug[1]['function']);
+//                    d($debug[2]['line'] . ' ' . $debug[2]['file'] . ' ' . $debug[2]['function']);
                     $record = $this->index_record($line, $options);
+                    $old_seek = $seek;
                     $list = [];
                     if($record){
                         if(array_key_exists('filter', $options)){
