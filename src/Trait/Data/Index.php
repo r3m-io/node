@@ -692,7 +692,7 @@ trait Index {
             $key = sha1(Core::object($key, Core::OBJECT_JSON));
             $url = [];
             foreach ($where_name as $nr => $attribute) {
-                $url[$nr] = $url_index = $dir_index .
+                $url[$nr] = $dir_index .
                     $name .
                     '.' .
                     'Where' .
