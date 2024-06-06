@@ -640,18 +640,24 @@ trait Index {
                     )
                     / 2
                 );
-            $file[0]->seek($seek);
-            $line = $file[0]->current();
+
             d($options['where']);
-            d($line);
             $counter++;
             if ($counter > $max) {
                 break;
             }
-            $value = rtrim($line, PHP_EOL);
+
             $operator = '===';
-            $attribute = $options['index']['where'][0];
-            $record->{$attribute} = $value;
+            foreach ($options['index']['where'] as $nr => $attribute){
+                $file[$nr]->seek($seek);
+                $line = $file[$nr]->current();
+                $value = rtrim($line, PHP_EOL);
+                $record->{$attribute} = $value;
+            }
+            $file['uuid']->seek($seek);
+            $line = $file['uuid']->current();
+            $value = rtrim($line, PHP_EOL);
+            $record->uuid = $value;
             $list = [];
             $list[] = $record;
             $where = [
