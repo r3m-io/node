@@ -116,7 +116,6 @@ trait NodeList {
         }
         elseif($options['index'] === true){
             $options['index'] = $this->index_create($name, $role, $options);
-            ddd($options);
         }
         if(
             $options['parse'] === true ||
@@ -172,6 +171,21 @@ trait NodeList {
             return $result;
         }
         $mtime = File::mtime($data_url);
+        if(
+            $options['index'] !== false &&
+            $options['index'] !== 'create' &&
+            array_key_exists('url', $options['index']) &&
+            array_key_exists('url_uuid', $options['index']) &&
+            array_key_exists('count', $options['index']) &&
+            array_key_exists('filter', $options['index']) &&
+            array_key_exists('where', $options['index']) &&
+            $options['limit'] === 1 &&
+            $options['page'] === 1
+        ){
+            ddd($options);
+        }
+
+
         /*
         if(
             $options['index'] !== false &&
