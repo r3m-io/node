@@ -781,9 +781,12 @@ trait Index {
                         $data[$nr][] = $record->{$attribute};
                     }
                 }
-                ddd($data);
+                File::write($url_uuid, implode(PHP_EOL, $data['uuid']));
+                foreach($url as $nr => $url_index){
+                    File::write($url_index, implode(PHP_EOL, $data[$nr]));
+                }
             }
-
+            d($url_uuid);
             ddd($url);
         }
 
