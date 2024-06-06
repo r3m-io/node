@@ -658,18 +658,9 @@ trait Index {
             $line = $file['uuid']->current();
             $value = rtrim($line, PHP_EOL);
             $record->uuid = $value;
-            $list = [];
-            $list[] = $record;
-            ddd($list);
-            $where = [
-                $attribute => [
-                    'operator' => $operator,
-                    'value' => $value
-                ]
-            ];
-            $list = Filter::list($list)->where($where);
-            d($line);
-            ddd($list);
+
+            $record = $this->where($record, $options['where'], $options);
+            ddd($record);
         }
 
 
