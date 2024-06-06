@@ -283,7 +283,7 @@ trait NodeList {
                                 if (!array_key_exists('max', $options['set'])){
                                     $options['set']['list'] = $set;
                                     $options['set']['max'] = count($set);
-                                    ddd($options['set']);
+                                    d($options['set']);
                                 }
                                 if($options['set']['max'] > 2){
                                     if(array_key_exists(($options['set']['index'] + 1), $set)){
@@ -509,9 +509,6 @@ trait NodeList {
                                     $max_deep++;
                                     break;
                                 }
-                            }
-                            if($is_found){
-
                             }
                         }
                     }
