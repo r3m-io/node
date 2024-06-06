@@ -659,7 +659,12 @@ trait Index {
             $value = rtrim($line, PHP_EOL);
             $record->uuid = $value;
 
-            $record = $this->where($record, $options['where'], $options);
+            $record_where = $this->where($record, $options['where'], $options);
+            if($record_where){
+                ddd('found');
+            } else {
+                ddd($record);
+            }
             ddd($record);
         }
 
