@@ -120,7 +120,7 @@ trait NodeList {
                         elseif(array_key_exists('where', $options)){
                             $options['where'] = $this->nodelist_where($options);
                             $record_where = $this->where($record, $options['where'], $options);
-                            d($record_where);
+//                            d($record_where);
                             if ($record_where) {
                                 $list[] = $record_where;
                             }
@@ -176,7 +176,7 @@ trait NodeList {
                             return $result;
                         }
                     }
-                    d($list);
+//                    d($list);
                     if(array_key_exists(0, $list)) {
                         $record = $this->list_index_record($data, $record, $role, $options);
                         $record->{'#jump'} = $counter;
@@ -448,7 +448,7 @@ trait NodeList {
                                                 $record->{$set[$options['set']['index']]['attribute']}
                                             ];
                                             sort($sort, SORT_NATURAL);
-                                            d($sort);
+//                                            d($sort);
                                             if(
                                                 $sort[0] === $set[$options['set']['index']]['value'] &&
                                                 $set[$options['set']['index']]['value'] === $record->{$set[$options['set']['index']]['attribute']}
