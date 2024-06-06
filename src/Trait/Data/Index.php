@@ -770,6 +770,10 @@ trait Index {
                 ]);
                 $data = [];
                 foreach($list as $uuid => $record){
+                    if(!array_key_exists('uuid', $data)){
+                        $data['uuid'] = [];
+                    }
+                    $data['uuid'][] = $record->uuid;
                     foreach($where_name as $nr => $attribute){
                         if(!array_key_exists($attribute, $data)){
                             $data[$attribute] = [];
@@ -777,8 +781,6 @@ trait Index {
                         $data[$attribute][] = $record->{$attribute};
                     }
                 }
-
-
                 ddd($data);
             }
 
