@@ -441,21 +441,16 @@ trait Where {
                     $where[$key] = true;
                     $set[0] = true;
                 } else {
-                    ddd($set);
                     if(
                         array_key_exists('attribute', $set[0]) &&
                         array_key_exists('value', $set[0]) &&
                         array_key_exists('operator', $set[0])
                     ){
-                        d('gvd');
-                        d($record);
-                        ddd($set[0]);
                         $index_where = [
-
+                            $set[0]['value'],
+                            $record->{$set[0]['attribute']}
                         ];
                     }
-
-
                     $where[$key] = false;
                     $set[0] = false;
                 }
@@ -579,11 +574,9 @@ trait Where {
                                 array_key_exists('value', $set[0]) &&
                                 array_key_exists('operator', $set[0])
                             ){
-                                d('gvd');
-                                d($record);
-                                ddd($set[0]);
                                 $index_where = [
-
+                                    $set[0]['value'],
+                                    $record->{$set[0]['attribute']}
                                 ];
                             }
                             $where[$key] = false;
