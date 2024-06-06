@@ -709,8 +709,19 @@ trait Index {
 
             $key = sha1(Core::object($key, Core::OBJECT_JSON));
             $url = [];
+            $url_uuid = $dir_index .
+                $name .
+                '.' .
+                'Where' .
+                '.' .
+                $key .
+                '.' .
+                'uuid' .
+                //need filter keys and where attributes
+                $object->config('extension.btree')
+            ;
             foreach ($where_name as $nr => $attribute) {
-                $url[$nr] = $dir_index .
+                $url_index = $dir_index .
                     $name .
                     '.' .
                     'Where' .
@@ -719,14 +730,24 @@ trait Index {
                     '.' .
                     $attribute .
                     //need filter keys and where attributes
-                    $object->config('extension.btree');
+                    $object->config('extension.btree')
+                ;
+                if(
+                    !in_array(
+                        $url_index,
+                        $url,
+                        true
+                    )
+                ){
+                    $url[$nr] = $url_index;
+                }
             }
             if(
                 is_array($select) &&
                 array_key_exists('list', $select)
             ){
                 $list = [];
-                foreach($select['list'] as $uuid => $record){
+                foreach($select['list'] as $nr => $record){
                     if(!property_exists($record, 'uuid')){
                         continue;
                     }
@@ -747,7 +768,18 @@ trait Index {
                 $list = Sort::list($list)->with([
                     '#sort' => 'asc'
                 ]);
-                ddd($list);
+                $data = [];
+                foreach($list as $uuid => $record){
+                    foreach($where_name as $nr => $attribute){
+                        if(!array_key_exists($attribute, $data)){
+                            $data[$attribute] = [];
+                        }
+                        $data[$attribute][] = $record->{$attribute};
+                    }
+                }
+
+
+                ddd($data);
             }
 
             ddd($url);
