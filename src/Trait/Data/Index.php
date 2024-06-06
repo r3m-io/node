@@ -663,6 +663,19 @@ trait Index {
             if($record_where){
                 ddd('found');
             } else {
+                $where = $options['where'];
+                $deepest = $this->where_get_depth($where);
+                $max_deep = 0;
+                while($deepest >= 0) {
+                    if ($max_deep > 1024) {
+                        break;
+                    }
+                    $set = $this->where_get_set($where, $key, $deepest);
+                    ddd($set);
+                    $max_deep++;
+                }
+
+
                 d($options);
                 ddd($record);
             }
