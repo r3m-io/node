@@ -663,6 +663,7 @@ trait Index {
             if($record_where){
                 ddd('found');
             } else {
+                d($options);
                 ddd($record);
             }
             ddd($record);
