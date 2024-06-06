@@ -633,6 +633,7 @@ trait Index {
         $cache = $object->data(App::CACHE);
         d($url_data);
         $cache_select = $cache->get(sha1($url_data));
+        $select = false;
         //url_index should be in node/index
         if($where_name === false){
             if($filter_name === false){
@@ -703,6 +704,29 @@ trait Index {
                     //need filter keys and where attributes
                     $object->config('extension.btree');
             }
+            if(
+                is_array($select) &&
+                array_key_exists('list', $select)
+            ){
+                $list = [];
+                foreach($select['list'] as $uuid => $record){
+                    $record_index = (object) [
+                        'uuid' => $uuid
+                    ];
+                    $sort_key = [];
+                    foreach($where_name as $attribute){
+                        if(!property_exists($record, $attribute)){
+                            continue; //no-data
+                        }
+                        $record_index->{$attribute} = $record->{$attribute};
+                        $sort_key[] = '\'' . $record->{$attribute} . '\'';
+                    }
+                    $record_index->{'#sort'} = implode(',', $sort_key);
+                    $list[] = $record_index;
+                }
+                ddd($list);
+            }
+
             ddd($url);
         }
 
