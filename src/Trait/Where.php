@@ -291,7 +291,6 @@ trait Where {
                 unset($where[$nr]);
             }
         }
-        d($set);
         return $set;
     }
 
@@ -477,8 +476,6 @@ trait Where {
                                 'strict' => $set[0]['strict'] ?? true
                             ]
                         ];
-                        d($list);
-                        d($filter_where);
                         $left = Filter::list($list)->where($filter_where);
                     }
                     if ($set[2] === false) {
@@ -496,8 +493,6 @@ trait Where {
                                 'strict' => $set[2]['strict'] ?? true
                             ]
                         ];
-                        d($list);
-                        d($filter_where);
                         $right = Filter::list($list)->where($filter_where);
                     }
                     if (!empty($left)) {
