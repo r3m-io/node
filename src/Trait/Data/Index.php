@@ -781,14 +781,15 @@ trait Index {
                         $data[$nr][] = $record->{$attribute};
                     }
                 }
+                if(!Dir::exist($dir_index)){
+                    Dir::create($dir_index, Dir::CHMOD);
+                }
                 File::write($url_uuid, implode(PHP_EOL, $data['uuid']));
                 foreach($url as $nr => $url_index){
                     File::write($url_index, implode(PHP_EOL, $data[$nr]));
                 }
             }
-            if(!Dir::exist($dir_index)){
-                Dir::create($dir_index, Dir::CHMOD);
-            }
+
             d($url_uuid);
             ddd($url);
         }
