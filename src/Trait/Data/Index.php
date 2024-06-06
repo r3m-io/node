@@ -660,6 +660,7 @@ trait Index {
             $record->uuid = $value;
             $list = [];
             $list[] = $record;
+            ddd($list);
             $where = [
                 $attribute => [
                     'operator' => $operator,
