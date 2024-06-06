@@ -786,6 +786,9 @@ trait Index {
                     File::write($url_index, implode(PHP_EOL, $data[$nr]));
                 }
             }
+            if(!Dir::exist($dir_index)){
+                Dir::create($dir_index, Dir::CHMOD);
+            }
             d($url_uuid);
             ddd($url);
         }
