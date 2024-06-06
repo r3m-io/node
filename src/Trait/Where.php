@@ -574,6 +574,18 @@ trait Where {
                             $set[0] = true;
                             $set[2] = true;
                         } else {
+                            if(
+                                array_key_exists('attribute', $set[0]) &&
+                                array_key_exists('value', $set[0]) &&
+                                array_key_exists('operator', $set[0])
+                            ){
+                                d('gvd');
+                                d($record);
+                                ddd($set[0]);
+                                $index_where = [
+
+                                ];
+                            }
                             $where[$key] = false;
                             $set[0] = false;
                             $set[2] = false;
