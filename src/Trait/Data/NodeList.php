@@ -73,16 +73,14 @@ trait NodeList {
             }
         }
         if(array_key_exists('where', $options)){
+            $where = false;
             if(
                 is_string($options['where']) ||
                 is_array($options['where'])
             ){
-                $where = $this->nodelist_where($options);
-                if($where === false){
-                    return [];
-                }
+                $where = $this->list_where($options);
             }
-            ddd($where);
+            $options['where'] = $where;
         }
         $options['page'] = $options['page'] ?? 1;
         $options['limit'] = $options['limit'] ?? 1000;
@@ -418,17 +416,9 @@ trait NodeList {
                     is_array($options['filter'])
                 ) {
                     $is_filter = true;
-                } elseif (
-                    !empty($options['where']) &&
-                    (
-                        is_string($options['where']) ||
-                        is_array($options['where'])
-                    )
-                ) {
-                    $where = $this->nodelist_where($options);
-                    if($where !== false){
-                        $is_where = true;
-                    }
+                }
+                elseif (!empty($options['where'])) {
+                    $is_where = true;
                 }
                 $limit = $options['limit'] ?? 4096;
                 if ($options['parallel'] === true && Core::is_cli()) {
@@ -915,7 +905,10 @@ trait NodeList {
         return $result;
     }
 
-    private function nodelist_where($options=[]): bool | array
+    /**
+     * @throws Exception
+     */
+    private function list_where($options=[]): bool | array
     {
         if(!array_key_exists('where', $options)){
             return false;
