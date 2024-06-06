@@ -671,18 +671,74 @@ trait Index {
                         break;
                     }
                     $set = $this->where_get_set($where, $key, $deepest);
+                    while($record !== false){
+                        $set = $this->where_process($record, $set, $where, $key, $operator, $options);
+                        d($set);
+                        if(empty($set) && $deepest === 0){
+                            return $record;
+                        }
+                        $count_set = count($set);
+                        if($count_set === 1){
+                            if($operator === null && $set[0] === true){
+                                break;
+                            } else {
+                                if($deepest === 0){
+                                    $record = false;
+                                    break 2;
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                        elseif($count_set >= 3){
+                            switch($operator){
+                                case 'and':
+                                    if($set[0] === true && $set[2] === true){
+                                        array_shift($set);
+                                        array_shift($set);
+                                        $set[0] = true;
+                                    } else {
+                                        array_shift($set);
+                                        array_shift($set);
+                                        $set[0] = false;
+                                    }
+                                    break;
+                                case 'or':
+                                    if($set[0] === true || $set[2] === true){
+                                        array_shift($set);
+                                        array_shift($set);
+                                        $set[0] = true;
+                                    } else {
+                                        array_shift($set);
+                                        array_shift($set);
+                                        $set[0] = false;
+                                    }
+                                    break;
+                                default:
+                                    throw new Exception('Unknown operator: ' . $operator);
+                            }
+                        }
+                        $counter++;
+                        if($counter > 1024){
+                            break 2;
+                        }
+                    }
+                    if($record === false){
+                        break;
+                    }
+                    if($deepest === 0){
+                        break;
+                    }
+                    ksort($where, SORT_NATURAL);
+                    $deepest = $this->where_get_depth($where);
+                    unset($key);
+                    $counter++;
                     ddd($set);
                     $max_deep++;
                 }
-
-
-                d($options);
-                ddd($record);
             }
             ddd($record);
         }
-
-
         return $record;
     }
 
