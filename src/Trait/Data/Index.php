@@ -615,10 +615,6 @@ trait Index {
         $object = $this->object();
         $filter_name = $this->index_filter_name($name, $options);
         $where_name = $this->index_where_name($name, $options);
-        d($name);
-        d($filter_name);
-        d($where_name);
-        ddd($options);
         $dir_index = $object->config('ramdisk.url') .
             $object->config(Config::POSIX_ID) .
             $object->config('ds') .
