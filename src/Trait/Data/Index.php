@@ -672,6 +672,7 @@ trait Index {
                 );
                 ddd($select);
             }
+            /*
             $list = $this->index_list(
                 $name,
                 $select,
@@ -679,6 +680,7 @@ trait Index {
                 $count_index,
                 $is_uuid,
             );
+            */
         }
         elseif($where_name){
             $url_index = $dir_index .
@@ -696,7 +698,6 @@ trait Index {
                         'list' => $cache_select->get($name)
                     ];
                 } else {
-                    d('yes2');
                     $select = $this->list(
                         $name,
                         $role,
@@ -707,8 +708,9 @@ trait Index {
                             'index' => 'create'
                         ]
                     );
-                    ddd($select);
                 }
+                ddd($where_name);
+                /*
                 $list = $this->index_list(
                     $name,
                     $select,
@@ -716,6 +718,7 @@ trait Index {
                     $count_index,
                     $is_uuid,
                 );
+                */
             }
         }
         if($url_index){
@@ -747,6 +750,7 @@ trait Index {
     /**
      * @throws Exception
      */
+    /*
     private function index_list($name, $select=[], $filter_name=false, &$count_index=false, &$is_uuid=false){
         //nodelist all records in chunks of 4096 so we can parallelize the process later on.
         if(!array_key_exists('list', $select)){
@@ -793,6 +797,7 @@ trait Index {
         }
         return $list;
     }
+    */
 
     public function index_record($line, $options=[]): bool|object
     {
