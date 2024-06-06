@@ -20,6 +20,7 @@ use R3m\Io\Module\Sort;
 use R3m\Io\Node\Service\Security;
 
 use Exception;
+use SplFileObject;
 
 trait Index {
 
@@ -603,6 +604,64 @@ trait Index {
         }
         d($options);
         return false;
+    }
+
+    public function index_list_record($class, $role, $options=[]): bool | object
+    {
+        if(!array_key_exists('index', $options)){
+            return false;
+        }
+        if(!array_key_exists('url', $options['index'])){
+            return false;
+        }
+        if(!array_key_exists('url_uuid', $options['index'])){
+            return false;
+        }
+        if(!array_key_exists('count', $options['index'])){
+            return false;
+        }
+        $record = (object) [];
+        $file = [];
+        $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
+        foreach($options['index']['url'] as $nr => $url){
+            $file[$nr] = new SplFileObject($url);
+        }
+        $options['index']['min'] = 0;
+        $options['index']['max'] = $options['index']['count'] - 1;
+
+        $counter = 0;
+        $max = 4096;
+        while($options['index']['min'] <= $options['index']['max']) {
+            $seek = $options['index']['min'] +
+                floor(
+                    (
+                        $options['index']['max'] -
+                        $options['index']['min']
+                    )
+                    / 2
+                );
+            $file[0]->seek($seek);
+            $line = $file[0]->current();
+            d($options['where']);
+            ddd($line);
+            $counter++;
+            if ($counter > $max) {
+                break;
+            }
+            $list = [];
+            $list[] = $record;
+            $where = [
+                $attribute => [
+                    'operator' => $operator,
+                    'value' => $value
+                ]
+            ];
+            $list = Filter::list($list)->where($where);
+            d($line);
+        }
+
+
+        return $record;
     }
 
     /**

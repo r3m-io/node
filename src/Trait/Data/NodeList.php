@@ -182,6 +182,8 @@ trait NodeList {
             $options['limit'] === 1 &&
             $options['page'] === 1
         ){
+            $record = $this->index_list_record($class, $role, $options);
+            d($record);
             ddd($options);
         }
 
