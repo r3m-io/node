@@ -871,14 +871,30 @@ trait Index {
         if(array_key_exists('filter', $options)){
             if(is_array($options['filter'])){
                 foreach($options['filter'] as $attribute => $record){
-                    $filter[] = $attribute;
-                    $is_filter = true;
+                    if(
+                        !in_array(
+                            $attribute,
+                            $filter,
+                            true
+                        )
+                    ){
+                        $filter[] = $attribute;
+                        $is_filter = true;
+                    }
                 }
             }
             elseif(is_object($options['filter'])){
                 foreach($options['filter'] as $attribute => $record){
-                    $filter[] = $attribute;
-                    $is_filter = true;
+                    if(
+                        !in_array(
+                            $attribute,
+                            $filter,
+                            true
+                        )
+                    ){
+                        $filter[] = $attribute;
+                        $is_filter = true;
+                    }
                 }
             }
             if($is_filter){
@@ -915,15 +931,32 @@ trait Index {
                         is_array($record) &&
                         array_key_exists('attribute', $record)
                     ){
-                        $where[] = $record['attribute'];
-                        $is_where = true;
+                        if(
+                            !in_array(
+                                $record['attribute'],
+                                $where,
+                                true
+                            )
+                        ){
+                            $where[] = $record['attribute'];
+                            $is_where = true;
+                        }
+
                     }
                     elseif(
                         is_object($record) &&
                         property_exists($record, 'attribute')
                     ){
-                        $where[] = $record->attribute;
-                        $is_where = true;
+                        if(
+                            !in_array(
+                                $record->attribute,
+                                $where,
+                                true
+                            )
+                        ){
+                            $where[] = $record->attribute;
+                            $is_where = true;
+                        }
                     }
                 }
             }
