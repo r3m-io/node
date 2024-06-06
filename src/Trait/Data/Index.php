@@ -629,10 +629,11 @@ trait Index {
         ;
         $url_data = $dir_data . $name . $object->config('extension.json');
         $url_mtime = File::mtime($url_data);
-        $url_index = false;
         $cache = $object->data(App::CACHE);
         $cache_select = $cache->get(sha1($url_data));
-        $select = false;
+        $count = 0;
+        $url_uuid = null;
+        $url = [];
         //url_index should be in node/index
         if($cache_select){
             $select = [
