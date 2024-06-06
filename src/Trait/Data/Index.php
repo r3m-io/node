@@ -741,6 +741,9 @@ trait Index {
                     $record_index->{'#sort'} = implode(',', $sort_key);
                     $list[] = $record_index;
                 }
+                $list = Sort::list($list)->with([
+                    '#sort' => 'asc'
+                ]);
                 ddd($list);
             }
 
