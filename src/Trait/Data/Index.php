@@ -684,6 +684,23 @@ trait Index {
             */
         }
         elseif($where_name) {
+            if($cache_select){
+                $select = [
+                    'list' => $cache_select->get($name)
+                ];
+            } else {
+                d('yes2');
+                $select = $this->list(
+                    $name,
+                    $role,
+                    [
+                        'transaction' => true,
+                        'limit' => '*',
+                        'page' => 1,
+                        'index' => 'create'
+                    ]
+                );
+            }
             $key = [
                 'where' => $where_name,
                 'sort' => 'asc'
