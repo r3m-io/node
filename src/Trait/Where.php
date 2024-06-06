@@ -253,19 +253,12 @@ trait Where {
 
     private function where_get_set(&$where=[], &$key=null, $deep=0): array
     {
-        d($where);
-        $debug_backtrace = debug_backtrace(1);
-        d($debug_backtrace[0]['function'] . ' ' . $debug_backtrace[0]['line'] . ' ' . $debug_backtrace[0]['file']);
-        d($debug_backtrace[1]['function'] . ' ' . $debug_backtrace[1]['line'] . ' ' . $debug_backtrace[1]['file']);
-        d($debug_backtrace[2]['function'] . ' ' . $debug_backtrace[2]['line'] . ' ' . $debug_backtrace[2]['file']);
         $set = [];
         $depth = 0;
         //convert where to array.
         if(!is_array($where)){
             return $set;
         }
-        d($deep);
-        d($depth);
         foreach($where as $nr => $value){
             if($value === '('){
                 $depth++;
