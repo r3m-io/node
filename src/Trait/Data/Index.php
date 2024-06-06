@@ -633,7 +633,6 @@ trait Index {
         $cache = $object->data(App::CACHE);
         d($url_data);
         $cache_select = $cache->get(sha1($url_data));
-        ddd($cache_select);
         //url_index should be in node/index
         if($where_name === false){
             if($filter_name === false){
@@ -697,6 +696,7 @@ trait Index {
                         'list' => $cache_select->get($name)
                     ];
                 } else {
+                    d('yes2');
                     $select = $this->list(
                         $name,
                         $role,
@@ -707,6 +707,7 @@ trait Index {
                             'index' => 'create'
                         ]
                     );
+                    ddd($select);
                 }
                 $list = $this->index_list(
                     $name,
