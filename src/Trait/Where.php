@@ -441,6 +441,7 @@ trait Where {
                     $where[$key] = true;
                     $set[0] = true;
                 } else {
+                    ddd($set);
                     if(
                         array_key_exists('attribute', $set[0]) &&
                         array_key_exists('value', $set[0]) &&
