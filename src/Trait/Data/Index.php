@@ -643,11 +643,15 @@ trait Index {
             $file[0]->seek($seek);
             $line = $file[0]->current();
             d($options['where']);
-            ddd($line);
+            d($line);
             $counter++;
             if ($counter > $max) {
                 break;
             }
+            $value = rtrim($line, PHP_EOL);
+            $operator = '===';
+            $attribute = $options['index']['where'][0];
+            $record->{$attribute} = $value;
             $list = [];
             $list[] = $record;
             $where = [
@@ -658,6 +662,7 @@ trait Index {
             ];
             $list = Filter::list($list)->where($where);
             d($line);
+            ddd($list);
         }
 
 
