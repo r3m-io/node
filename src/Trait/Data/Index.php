@@ -682,15 +682,27 @@ trait Index {
             );
             */
         }
-        elseif($where_name){
-            $url_index = $dir_index .
-                $name .
-                '.' .
-                'Where' .
-                '.' .
-                implode('.', $where_name) . //add sha1()
-                //need filter keys and where attributes
-                $object->config('extension.btree');
+        elseif($where_name) {
+            $key = sha1(implode('-', $where_name));
+            $url = [];
+            foreach ($where_name as $nr => $attribute) {
+                $url[$nr] = $url_index = $dir_index .
+                    $name .
+                    '.' .
+                    'Where' .
+                    '.' .
+                    $key .
+                    '.' .
+                    $attribute .
+                    //need filter keys and where attributes
+                    $object->config('extension.btree');
+            }
+            ddd($url);
+        }
+
+
+
+            /*
             if($url_index){
                 Dir::create($dir_index, Dir::CHMOD);
                 if($cache_select){
@@ -718,7 +730,7 @@ trait Index {
                     $count_index,
                     $is_uuid,
                 );
-                */
+
             }
         }
         if($url_index){
@@ -745,6 +757,7 @@ trait Index {
             'where'=> $where_name,
             'is_uuid' => $is_uuid
         ];
+            */
     }
 
     /**
