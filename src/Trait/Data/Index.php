@@ -713,7 +713,6 @@ trait Index {
                     $max_deep++;
                 }
             }
-            ddd($record);
         }
         return $record;
     }
