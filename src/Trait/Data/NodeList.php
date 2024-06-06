@@ -281,7 +281,6 @@ trait NodeList {
                                     $options['set']['list'] = $set;
                                     $options['set']['max'] = count($set);
                                 }
-                                d($options);
                                 if($options['set']['max'] > 2){
                                     if(array_key_exists(($options['set']['index'] + 1), $set)){
                                         $operator = $set[($options['set']['index'] + 1)];
@@ -292,7 +291,6 @@ trait NodeList {
                                     }
                                     switch(strtolower($operator)){
                                         case 'or' :
-                                            d($options);
                                             if(array_key_exists($options['set']['index'], $set)){
                                                 if(
                                                     is_array($set[$options['set']['index']]) &&
@@ -367,7 +365,6 @@ trait NodeList {
                                             }
                                         break;
                                         case 'and' :
-                                            d($options);
                                             if(array_key_exists($options['set']['index'], $set)){
                                                 if(
                                                     in_array(
@@ -514,7 +511,6 @@ trait NodeList {
                             }
                         }
                     }
-                    d($options);
                 }
                 if($operator === 'or'){
                     if($options['set']['max'] > 2){
