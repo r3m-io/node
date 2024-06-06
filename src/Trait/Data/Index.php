@@ -677,49 +677,21 @@ trait Index {
                         $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $options);
                         d($set);
                         d($index_where);
-                        if(empty($set) && $deepest === 0){
-                            return $record;
-                        }
-                        $count_set = count($set);
-                        if($count_set === 1){
-                            if($operator === null && $set[0] === true){
-                                break;
+
+                        if($index_where){
+                            sort($index_where, SORT_NATURAL);
+                            if($index_where[0] === $set[0]['value']){
+                                $options['index']['max'] = $seek - 1;
+                                break 2;
+
                             } else {
-                                if($deepest === 0){
-                                    $record = false;
-                                    break 2;
-                                } else {
-                                    break;
-                                }
+                                //sort[1] === $value
+                                //min becomes seek + 1
+                                $options['index']['min'] = $seek + 1;
+                                break 2;
                             }
-                        }
-                        elseif($count_set >= 3){
-                            switch($operator){
-                                case 'and':
-                                    if($set[0] === true && $set[2] === true){
-                                        array_shift($set);
-                                        array_shift($set);
-                                        $set[0] = true;
-                                    } else {
-                                        array_shift($set);
-                                        array_shift($set);
-                                        $set[0] = false;
-                                    }
-                                    break;
-                                case 'or':
-                                    if($set[0] === true || $set[2] === true){
-                                        array_shift($set);
-                                        array_shift($set);
-                                        $set[0] = true;
-                                    } else {
-                                        array_shift($set);
-                                        array_shift($set);
-                                        $set[0] = false;
-                                    }
-                                    break;
-                                default:
-                                    throw new Exception('Unknown operator: ' . $operator);
-                            }
+                        } else {
+                            ddd($record);
                         }
                         $counter++;
                         if($counter > 1024){
