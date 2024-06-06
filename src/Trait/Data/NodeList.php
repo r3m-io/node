@@ -520,6 +520,7 @@ trait NodeList {
                     if($options['set']['max'] > 2){
                         //1st where returned false
                         for($i=2; $i < $options['set']['max']; $i++){
+                            d($i);
                             $options_list_index = $options;
                             $options_list_index['set']['max'] = 1;
                             $options_list_index['set']['index'] = $i;
