@@ -677,6 +677,7 @@ trait Index {
                         break;
                     }
                     $set = $this->where_get_set($where, $key, $deepest);
+                    $where_process = $where;
                     while($record !== false){
                         $set_init = $set;
                         d($set_init);
@@ -769,6 +770,16 @@ trait Index {
                     }
                     if($deepest === 0){
                         break;
+                    }
+                    if(
+                        array_key_exists(0, $set) &&
+                        array_key_exists(1, $set) &&
+                        array_key_exists(2, $set) &&
+                        $set[1] === 'and' &&
+                        $set[0] === false &&
+                        $set[2] === false
+                    ){
+
                     }
                     d($set);
                     d($options);
