@@ -688,6 +688,7 @@ trait Index {
                             $set_index_0 = $this->where_process($record, $set_index_0);
                             if($set_index_0[0] === false){
                                 if($set_init[0] === false){
+                                    d($options);
                                     d($record);
                                     d($where);
                                     ddd($set_init);
