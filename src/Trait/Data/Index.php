@@ -744,6 +744,7 @@ trait Index {
                                 }
                             }
                         } else {
+                            d($options);
                             d($set_init);
                             d($set);
                             ddd($record);
