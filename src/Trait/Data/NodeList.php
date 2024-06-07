@@ -191,6 +191,7 @@ trait NodeList {
                 $record->{'#jump_max'} = $jump_max;
             }
             */
+            d('from index:' . $name);
             $list = [];
             if($record){
                 $list[] = $record;
