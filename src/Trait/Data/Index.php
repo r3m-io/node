@@ -761,9 +761,11 @@ trait Index {
                                 }
                             }
                         } else {
-                            if(array_key_exists(0, $set)){
-                            if(array_key_exists(1, $set)){
-                            if(array_key_exists(2, $set)){
+                            if(
+                                array_key_exists(0, $set) &&
+                                array_key_exists(1, $set) &&
+                                array_key_exists(2, $set)
+                            ){
                                 switch($set[1]) {
                                     case 'and':
                                         d('yes');
