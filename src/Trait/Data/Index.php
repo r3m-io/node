@@ -686,6 +686,7 @@ trait Index {
                         if($index_where){
                             $set_index_0 = [$set_init[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
+                            d($set_index_0);
                             if($set_index_0[0] === false){
                                 if($set_init[0] === false){
                                     sort($index_where[2], SORT_NATURAL);
@@ -765,6 +766,7 @@ trait Index {
                     $nested_options['where'] = $where;
 
                     $record = $this->index_list_record($class, $role, $nested_options);
+                    d($record);
                     if($record){
                         return $record;
                     }
