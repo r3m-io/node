@@ -771,6 +771,7 @@ trait Index {
                     if($deepest === 0){
                         break;
                     }
+                    /*
                     if(
                         array_key_exists(0, $set) &&
                         array_key_exists(1, $set) &&
@@ -781,15 +782,9 @@ trait Index {
                     ){
 
                     }
-                    d($set);
-                    d($options);
-                    d($deepest);
-                    d($record);
-                    d($where);
-                    d($where_process ?? '');
-                    ddd('end');
-                    ksort($where, SORT_NATURAL);
-                    $deepest = $this->where_get_depth($where);
+                    */
+                    ksort($where_process, SORT_NATURAL);
+                    $deepest = $this->where_get_depth($where_process);
                     unset($key);
                     $counter++;
                     $nested_options = $options;
