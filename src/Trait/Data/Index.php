@@ -792,6 +792,17 @@ trait Index {
                                             if($index_where){
                                                 switch($set_index[1]){
                                                     case 'and':
+                                                        if($set_index[2] === false){
+                                                            sort($index_where[2], SORT_NATURAL);
+                                                            if($index_where[2][0] === $set_index_init[2]['value']){
+                                                                $options['index']['max'] = $seek - 1;
+                                                                break 2;
+                                                            } else {
+                                                                //min becomes seek + 1
+                                                                $options['index']['min'] = $seek + 1;
+                                                                break 2;
+                                                            }
+                                                        }
                                                         break;
                                                     case 'or':
                                                         break;
