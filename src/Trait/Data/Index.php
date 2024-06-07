@@ -703,20 +703,30 @@ trait Index {
                                         case 'and':
                                             $set_index_2 = [$set_init[2]];
                                             $set_index_2 = $this->where_process($record, $set_index_2);
-                                            d($set_index_2);
-                                            d($index_where);
-                                            ddd($filter_where);
+                                            if($set_index_2[0] === false){
+                                                sort($index_where[2], SORT_NATURAL);
+                                                if($index_where[2][0] === $set_init[2]['value']){
+                                                    $options['index']['max'] = $seek - 1;
+                                                    break 2;
+
+                                                } else {
+                                                    //sort[1] === $value
+                                                    //min becomes seek + 1
+                                                    $options['index']['min'] = $seek + 1;
+                                                    break 2;
+                                                }
+                                            }
                                             break;
                                         case 'or':
+                                            //first or is true so return
                                             break;
                                         case 'xor':
+                                            //first or is true so check next
                                             break;
                                     }
                                 } else {
                                     ddd('should trigger earlier on line 667');
                                 }
-
-
                             }
                         } else {
                             ddd($record);
