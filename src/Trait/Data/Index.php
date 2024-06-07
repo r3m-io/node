@@ -775,9 +775,10 @@ trait Index {
                                 switch($set[1]) {
                                     case 'and':
                                         //doesn't reach this point
-                                        d('yes');
+                                        ddd('yes');
                                         break;
                                     case 'or':
+                                        ddd('wrong');
                                         if($set[0] === true || $set[2] === true){
                                             array_shift($set);
                                             array_shift($set);
