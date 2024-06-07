@@ -662,10 +662,7 @@ trait Index {
             $line = $file['uuid']->current();
             $value = rtrim($line, PHP_EOL);
             $record->uuid = $value;
-
             $record_where = $this->where($record, $options['where'], $options);
-            d($record_where);
-            d($record);
             if($record_where){
                 return $record;
             } else {
@@ -680,14 +677,10 @@ trait Index {
                     $where_process = $where;
                     while($record !== false){
                         $set_init = $set;
-                        d($set_init);
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $filter_where, $options);
-                        d($set);
-                        d($index_where);
                         if($index_where){
                             $set_index_0 = [$set_init[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
-                            d($set_index_0);
                             //if($set_index_0[0] === true){}
                             if($set_index_0[0] === false){
                                 if($set_init[0] === false){
@@ -724,13 +717,6 @@ trait Index {
                                             if($set_index_0[0] === true && $set_index_2[0] === true){
                                                 array_shift($set);
                                                 array_shift($set);
-                                                d($set);
-                                                d($record);
-                                                d($where_process);
-//                                                $record = $this->index_list_record($class, $role, $options);
-//                                                if($record){/
-//                                                    return $record;
-//                                                }
                                             }
                                             if($set_index_2[0] === false){
                                                 sort($index_where[2], SORT_NATURAL);
@@ -771,27 +757,13 @@ trait Index {
                     if($deepest === 0){
                         break;
                     }
-                    /*
-                    if(
-                        array_key_exists(0, $set) &&
-                        array_key_exists(1, $set) &&
-                        array_key_exists(2, $set) &&
-                        $set[1] === 'and' &&
-                        $set[0] === false &&
-                        $set[2] === false
-                    ){
-
-                    }
-                    */
                     ksort($where_process, SORT_NATURAL);
                     $deepest = $this->where_get_depth($where_process);
                     unset($key);
                     $counter++;
                     $nested_options = $options;
                     $nested_options['where'] = $where_process;
-
                     $record = $this->index_list_record($class, $role, $nested_options);
-                    d($record);
                     if($record){
                         return $record;
                     }
