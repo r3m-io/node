@@ -727,7 +727,9 @@ trait Index {
                                         if($index_where[0][0] === $set_init[0]['value']){
                                             $options['index']['max'] = $seek - 1;
                                             if($options['index']['max'] < $options['index']['min']){
-                                                $record = false;
+                                                $set = [
+                                                    false
+                                                ];
                                                 d('not found');
                                                 break 2;
 
