@@ -708,21 +708,35 @@ trait Index {
                                         break 2;
                                     }
                                 } else {
-                                    if(!array_key_exists(0, $index_where)){
-                                        d($index_where);
-                                        ddd('should trigger earlier on line 667');
-                                    }
-                                    sort($index_where[0], SORT_NATURAL);
-                                    if($index_where[0][0] === $set_init[0]['value']){
-                                        $options['index']['max'] = $seek - 1;
-                                        break 2;
+                                    if(
+                                        !array_key_exists(0, $index_where) &&
+                                        array_key_exists(2, $index_where)
+                                    ){
+                                        sort($index_where[2], SORT_NATURAL);
+                                        if($index_where[2][0] === $set_init[2]['value']){
+                                            $options['index']['max'] = $seek - 1;
+                                            break 2;
 
+                                        } else {
+                                            //sort[1] === $value
+                                            //min becomes seek + 1
+                                            $options['index']['min'] = $seek + 1;
+                                            break 2;
+                                        }
                                     } else {
-                                        //sort[1] === $value
-                                        //min becomes seek + 1
-                                        $options['index']['min'] = $seek + 1;
-                                        break 2;
+                                        sort($index_where[0], SORT_NATURAL);
+                                        if($index_where[0][0] === $set_init[0]['value']){
+                                            $options['index']['max'] = $seek - 1;
+                                            break 2;
+
+                                        } else {
+                                            //sort[1] === $value
+                                            //min becomes seek + 1
+                                            $options['index']['min'] = $seek + 1;
+                                            break 2;
+                                        }
                                     }
+
                                 }
                             } else {
                                 if(array_key_exists(1, $set_init)){
