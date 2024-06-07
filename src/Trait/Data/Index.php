@@ -774,7 +774,7 @@ trait Index {
                     d($deepest);
                     d($record);
                     d($where);
-                    d($where_process);
+                    d($where_process ?? '');
                     ddd('end');
                     ksort($where, SORT_NATURAL);
                     $deepest = $this->where_get_depth($where);
