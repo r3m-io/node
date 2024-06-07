@@ -312,6 +312,7 @@ trait Where {
             $list = [];
             $list[] = $record;
             if(
+                is_array($set[0]) &&
                 array_key_exists('attribute', $set[0]) &&
                 array_key_exists('value', $set[0]) &&
                 array_key_exists('operator', $set[0])
@@ -442,6 +443,7 @@ trait Where {
                     $set[0] = true;
                 } else {
                     if(
+                        is_array($set[0]) &&
                         array_key_exists('attribute', $set[0]) &&
                         array_key_exists('value', $set[0]) &&
                         array_key_exists('operator', $set[0])
@@ -521,6 +523,7 @@ trait Where {
                         //nothing
                     } else {
                         if(
+                            is_array($set[0]) &&
                             array_key_exists('attribute', $set[0]) &&
                             array_key_exists('value', $set[0]) &&
                             array_key_exists('operator', $set[0])
@@ -531,9 +534,10 @@ trait Where {
                             ];
                         }
                         if(
-                            array_key_exists('attribute', $set[0]) &&
-                            array_key_exists('value', $set[0]) &&
-                            array_key_exists('operator', $set[0])
+                            is_array($set[2]) &&
+                            array_key_exists('attribute', $set[2]) &&
+                            array_key_exists('value', $set[2]) &&
+                            array_key_exists('operator', $set[2])
                         ){
                             $index_where[2] = [
                                 $set[2]['value'],
@@ -590,6 +594,7 @@ trait Where {
                             $set[2] = true;
                         } else {
                             if(
+                                is_array($set[0]) &&
                                 array_key_exists('attribute', $set[0]) &&
                                 array_key_exists('value', $set[0]) &&
                                 array_key_exists('operator', $set[0])
@@ -600,9 +605,10 @@ trait Where {
                                 ];
                             }
                             if(
-                                array_key_exists('attribute', $set[0]) &&
-                                array_key_exists('value', $set[0]) &&
-                                array_key_exists('operator', $set[0])
+                                is_array($set[2]) &&
+                                array_key_exists('attribute', $set[2]) &&
+                                array_key_exists('value', $set[2]) &&
+                                array_key_exists('operator', $set[2])
                             ){
                                 $index_where[2] = [
                                     $set[2]['value'],
