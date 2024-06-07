@@ -744,6 +744,8 @@ trait Index {
                                 }
                             }
                         } else {
+                            d($set_init);
+                            d($set);
                             ddd($record);
                         }
                         $counter++;
