@@ -520,6 +520,26 @@ trait Where {
                     if (!empty($left) || !empty($right)) {
                         //nothing
                     } else {
+                        if(
+                            array_key_exists('attribute', $set[0]) &&
+                            array_key_exists('value', $set[0]) &&
+                            array_key_exists('operator', $set[0])
+                        ){
+                            $index_where[0] = [
+                                $set[0]['value'],
+                                $record->{$set[0]['attribute']}
+                            ];
+                        }
+                        if(
+                            array_key_exists('attribute', $set[0]) &&
+                            array_key_exists('value', $set[0]) &&
+                            array_key_exists('operator', $set[0])
+                        ){
+                            $index_where[2] = [
+                                $set[2]['value'],
+                                $record->{$set[2]['attribute']}
+                            ];
+                        }
                         $where[$key] = false;
                     }
                     return $set;
