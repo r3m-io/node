@@ -522,6 +522,7 @@ trait Where {
                     if (!empty($left) || !empty($right)) {
                         //nothing
                     } else {
+                        d($set);
                         if(
                             is_array($set[0]) &&
                             array_key_exists('attribute', $set[0]) &&
