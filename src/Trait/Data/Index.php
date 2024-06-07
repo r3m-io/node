@@ -770,6 +770,7 @@ trait Index {
                     if($deepest === 0){
                         break;
                     }
+                    d($set);
                     d($options);
                     d($deepest);
                     d($record);
