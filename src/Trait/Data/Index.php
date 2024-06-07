@@ -722,8 +722,6 @@ trait Index {
                                         }
                                     } else {
                                         sort($index_where[0], SORT_NATURAL);
-                                        d($index_where[0]);
-                                        d($set_init[0]);
                                         if($index_where[0][0] === $set_init[0]['value']){
                                             $options['index']['max'] = $seek - 1;
                                             if($options['index']['max'] < $options['index']['min']){
@@ -731,7 +729,6 @@ trait Index {
                                                     false
                                                 ];
                                                 break;
-
                                             }
                                             break 2;
                                         } else {
