@@ -686,16 +686,20 @@ trait Index {
                             $set_index_0 = [$set_init[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
                             if($set_index_0[0] === false){
-                                sort($index_where[0], SORT_NATURAL);
-                                if($index_where[0][0] === $set_init[0]['value']){
-                                    $options['index']['max'] = $seek - 1;
-                                    break 2;
-
+                                if($set_init[0] === false){
+                                    ddd($set_init);
                                 } else {
-                                    //sort[1] === $value
-                                    //min becomes seek + 1
-                                    $options['index']['min'] = $seek + 1;
-                                    break 2;
+                                    sort($index_where[0], SORT_NATURAL);
+                                    if($index_where[0][0] === $set_init[0]['value']){
+                                        $options['index']['max'] = $seek - 1;
+                                        break 2;
+
+                                    } else {
+                                        //sort[1] === $value
+                                        //min becomes seek + 1
+                                        $options['index']['min'] = $seek + 1;
+                                        break 2;
+                                    }
                                 }
                             } else {
                                 if(array_key_exists(1, $set_init)){
