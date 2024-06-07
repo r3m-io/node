@@ -680,14 +680,14 @@ trait Index {
                         $set_init = $set;
                         $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $filter_where, $options);
                         d($set);
-                        ddd($index_where);
+                        d($index_where);
 
                         if($index_where){
                             $set_index_0 = [$set_init[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
                             if($set_index_0[0] === false){
                                 sort($index_where[0], SORT_NATURAL);
-                                if($index_where[0] === $set_init[0]['value']){
+                                if($index_where[0][0] === $set_init[0]['value']){
                                     $options['index']['max'] = $seek - 1;
                                     break 2;
 
