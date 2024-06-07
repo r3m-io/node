@@ -723,6 +723,7 @@ trait Index {
                                             $set_index_2 = $this->where_process($record, $set_index_2);
                                             d($set_init);
                                             d($record);
+                                            d($set_index_0);
                                             ddd($set_index_2);
                                             if($set_index_2[0] === false){
                                                 sort($index_where[2], SORT_NATURAL);
