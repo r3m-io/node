@@ -797,11 +797,11 @@ trait Index {
                                                             sort($index_where[2], SORT_NATURAL);
                                                             if($index_where[2][0] === $set_index_init[2]['value']){
                                                                 $options['index']['max'] = $seek - 1;
-                                                                break 2;
+                                                                break 3;
                                                             } else {
                                                                 //min becomes seek + 1
                                                                 $options['index']['min'] = $seek + 1;
-                                                                break 2;
+                                                                break 3;
                                                             }
                                                         }
                                                         break;
