@@ -35,6 +35,7 @@ trait Index {
         $url_mtime = File::mtime($url_data);
         $cache = $object->data(App::CACHE);
         $data = $cache->get(sha1($url_data));
+        d($data);
         if (
             is_object($data) &&
             property_exists($data, $record->uuid)
