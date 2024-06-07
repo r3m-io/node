@@ -606,6 +606,9 @@ trait Index {
         return false;
     }
 
+    /**
+     * @throws Exception
+     */
     public function index_list_record($class, $role, $options=[]): bool | object
     {
         if(!array_key_exists('index', $options)){
@@ -680,6 +683,9 @@ trait Index {
                         d($index_where);
 
                         if($index_where){
+                            $set_index_0 = [$set_init[0]];
+                            $set_index_0 = $this->where_process($record, $set_index_0);
+                            d($set_index_0);
                             d($index_where);
                             ddd($filter_where);
                             sort($index_where, SORT_NATURAL);
