@@ -664,6 +664,8 @@ trait Index {
             $record->uuid = $value;
 
             $record_where = $this->where($record, $options['where'], $options);
+            d($record_where);
+            d($record);
             if($record_where){
                 return $record;
             } else {
