@@ -680,7 +680,7 @@ trait Index {
                     while($record !== false){
                         $set_init = $set;
                         d($set_init);
-                        $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $filter_where, $options);
+                        $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $filter_where, $options);
                         d($set);
                         d($index_where);
                         if($index_where){
@@ -758,6 +758,7 @@ trait Index {
                     if($deepest === 0){
                         break;
                     }
+                    ddd('end');
                     ksort($where, SORT_NATURAL);
                     $deepest = $this->where_get_depth($where);
                     unset($key);
