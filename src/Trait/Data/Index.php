@@ -692,10 +692,6 @@ trait Index {
                             //if($set_index_0[0] === true){}
                             if($set_index_0[0] === false){
                                 if($set_init[0] === false){
-                                    d($index_where[2]);
-                                    if($index_where[2] === true){
-                                        ddd('sheize');
-                                    }
                                     sort($index_where[2], SORT_NATURAL);
                                     if($index_where[2][0] === $set_init[2]['value']){
                                         $options['index']['max'] = $seek - 1;
