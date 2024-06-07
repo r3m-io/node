@@ -728,7 +728,6 @@ trait Index {
                                         if($index_where[0][0] === $set_init[0]['value']){
                                             $options['index']['max'] = $seek - 1;
                                             break 2;
-
                                         } else {
                                             //sort[1] === $value
                                             //min becomes seek + 1
@@ -736,7 +735,6 @@ trait Index {
                                             break 2;
                                         }
                                     }
-
                                 }
                             } else {
                                 if(array_key_exists(1, $set_init)){
@@ -763,26 +761,7 @@ trait Index {
                                             }
                                             break;
                                         case 'or':
-                                            /*
-                                            if($set_index_0[0] === true || $set_index_2[0] === true){
-                                                ddd($set);
-                                                array_shift($set);
-                                                array_shift($set);
-                                                array_shift($set);
-                                                array_unshift($set, true);
-                                            } elseif(is_bool($set_index_2[0])) {
-                                                ddd('do the math');
-                                                array_shift($set);
-                                                array_shift($set);
-                                                array_shift($set);
-                                                array_unshift($set, false);
-                                            } else {
-                                                d($set_index_0);
-                                                d($set_index_2);
-                                                d($set);
-                                                ddd($set_init);
-                                            }
-                                            */
+                                            ddd('yes');
                                             //first or is true so return
                                             break;
                                         case 'xor':
