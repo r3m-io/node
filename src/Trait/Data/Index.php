@@ -675,9 +675,12 @@ trait Index {
                         break;
                     }
                     $set = $this->where_get_set($where, $key, $deepest);
+                    $set_init = null;
                     while($record !== false){
                         $where_process = $where;
-                        $set_init = $set;
+                        if(!$set_init){
+                            $set_init = $set;
+                        }
                         d($where_process);
                         d($set_init);
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
