@@ -744,6 +744,11 @@ trait Index {
                                                 array_shift($set);
                                                 array_shift($set);
                                                 array_unshift($set, false);
+                                            } else {
+                                                d($set_index_0);
+                                                d($set_index_2);
+                                                d($set);
+                                                ddd($set_init);
                                             }
                                             //first or is true so return
                                             break;
