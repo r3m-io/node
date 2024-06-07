@@ -681,6 +681,7 @@ trait Index {
                         if($index_where){
                             $set_index_0 = [$set_init[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
+                            $set_index_2 = null;
                             //if($set_index_0[0] === true){}
                             if($set_index_0[0] === false){
                                 if($set_init[0] === false){
@@ -733,6 +734,17 @@ trait Index {
                                             }
                                             break;
                                         case 'or':
+                                            if($set_index_0[0] === true || $set_index_2[0] === true){
+                                                array_shift($set);
+                                                array_shift($set);
+                                                array_shift($set);
+                                                array_unshift($set, true);
+                                            } elseif(is_bool($set_index_2[0])) {
+                                                array_shift($set);
+                                                array_shift($set);
+                                                array_shift($set);
+                                                array_unshift($set, false);
+                                            }
                                             //first or is true so return
                                             break;
                                         case 'xor':
