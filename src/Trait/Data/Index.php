@@ -685,6 +685,7 @@ trait Index {
                         d($set_init);
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
                         d($set);
+                        d($index_where);
                         if($index_where){
                             $set_index_0 = [$set_init[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
