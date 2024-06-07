@@ -761,10 +761,22 @@ trait Index {
                                 }
                             }
                         } else {
-                            d($options);
-                            d($set_init);
-                            d($set);
-                            ddd($record);
+                            if(array_key_exists(0, $set)){
+                            if(array_key_exists(1, $set)){
+                            if(array_key_exists(2, $set)){
+                                switch($set[1]) {
+                                    case 'and':
+                                        d('yes');
+                                        break;
+                                    case 'or':
+                                        d('no');
+                                        break;
+                                }
+                                d($options);
+                                d($set_init);
+                                d($set);
+                                ddd($record);
+                            }
                         }
                         $counter++;
                         if($counter > 1024){
