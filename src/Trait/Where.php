@@ -300,6 +300,7 @@ trait Where {
     private function where_process($record, $set=[], &$where=[], &$key=null, &$operator=null, &$index_where=null, &$filter_where=null, $options=[]): ?array
     {
         $count = count($set);
+        $set_init = $set;
         if(
             array_key_exists(0, $set) &&
             $count === 1
@@ -523,6 +524,7 @@ trait Where {
                         //nothing
                     } else {
                         d($set);
+                        d($set_init);
                         if(
                             is_array($set[0]) &&
                             array_key_exists('attribute', $set[0]) &&
