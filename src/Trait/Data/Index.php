@@ -664,13 +664,10 @@ trait Index {
                     )
                     / 2
                 );
-
-            d($options['where']);
             $counter++;
             if ($counter > $max) {
                 break;
             }
-
             $operator = '===';
             foreach ($options['index']['where'] as $nr => $attribute){
                 $file[$nr]->seek($seek);
@@ -700,11 +697,7 @@ trait Index {
                         if(!$set_init){
                             $set_init = $set;
                         }
-                        d($where_process);
-                        d($set_init);
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
-                        d($set);
-                        d($index_where);
                         if($index_where){
                             $set_index_0 = [$set_init[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
@@ -796,8 +789,6 @@ trait Index {
                                             //first or is true so check next
                                             break;
                                     }
-                                } else {
-                                    ddd('should trigger earlier on line 667');
                                 }
                             }
                         } else {
