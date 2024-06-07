@@ -708,7 +708,8 @@ trait Index {
                                         break 2;
                                     }
                                 } else {
-                                    if($index_where[0] === null){
+                                    if(!array_key_exists(0, $index_where)){
+                                        d($index_where);
                                         ddd('should trigger earlier on line 667');
                                     }
                                     sort($index_where[0], SORT_NATURAL);
