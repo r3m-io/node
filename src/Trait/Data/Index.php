@@ -761,10 +761,11 @@ trait Index {
                     $nested_options = $options;
                     $nested_options['where'] = $where;
 
-                    $where_name = $this->index_where_name($name, $options);
+                    $where_name = $this->index_where_name($name, $nested_options);
+                    d($where_name);
 
 
-                    ddd($options);
+                    ddd($nested_options);
 
                     $options['index']['min'] = 0;
                     $options['index']['max'] = $options['index']['count'] - 1;
