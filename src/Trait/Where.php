@@ -734,7 +734,9 @@ trait Where {
             }
             $set = $this->where_get_set($where, $key, $deepest);
             while($record !== false){
+                d($set);
                 $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $filter_where, $options);
+                d($set);
                 if(empty($set) && $deepest === 0){
                     return $record;
                 }
