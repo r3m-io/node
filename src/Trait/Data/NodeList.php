@@ -183,8 +183,30 @@ trait NodeList {
             $options['page'] === 1
         ){
             $record = $this->index_list_record($class, $role, $options);
-            d($record);
-            ddd($options);
+            $list = [];
+            if($record){
+                $list[] = $record;
+            }
+            $result = [];
+            $result['page'] = $options['page'];
+            $result['limit'] = $options['limit'];
+            $result['count'] = 0;
+            $result['max'] = 0;
+            $result['list'] = $list;
+            $result['sort'] = $options['sort'] ?? [];
+            if (!empty($options['filter'])) {
+                $result['filter'] = $options['filter'];
+            }
+            if (!empty($options['where'])) {
+                $result['where'] = $options['where'];
+            }
+            $result['relation'] = $options['relation'];
+            $result['parse'] = $options['parse'];
+            $result['ramdisk'] = $options['ramdisk'] ?? false;
+            $result['mtime'] = $mtime;
+            $result['transaction'] = $options['transaction'] ?? false;
+            $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+            return $result;
         }
 
 
