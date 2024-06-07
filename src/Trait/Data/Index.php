@@ -701,7 +701,9 @@ trait Index {
                                 if(array_key_exists(1, $set_init)){
                                     switch($set_init[1]){
                                         case 'and':
-                                            d($set_index_0);
+                                            $set_index_2 = [$set_init[2]];
+                                            $set_index_2 = $this->where_process($record, $set_index_2);
+                                            d($set_index_2);
                                             d($index_where);
                                             ddd($filter_where);
                                             break;
