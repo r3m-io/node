@@ -746,12 +746,14 @@ trait Index {
                     $deepest = $this->where_get_depth($where);
                     unset($key);
                     $counter++;
+                    $options['index']['min'] = 0;
+                    $options['index']['max'] = $options['index']['count'] - 1;
                     d($seek);
                     d($options);
                     d($counter);
                     d($where);
                     d($deepest);
-                    ddd($set);
+                    d($set);
                     $max_deep++;
                 }
             }
