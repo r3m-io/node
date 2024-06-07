@@ -183,7 +183,7 @@ trait NodeList {
             $options['page'] === 1
         ){
             $record = $this->index_list_record($class, $role, $options);
-            $record = $this->index_record($class, $role, $record, $options);
+            $record = $this->index_record_expose($class, $role, $record, $options);
             /*
             $record->{'#jump'} = $counter;
             if($record->{'#jump'} > $jump_max){

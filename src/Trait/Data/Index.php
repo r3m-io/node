@@ -24,7 +24,7 @@ use SplFileObject;
 
 trait Index {
 
-    private function index_record($class, $role, $record, $options){
+    private function index_record_expose($class, $role, $record, $options){
         $object = $this->object();
         ddd($options);
         $cache = $object->data(App::CACHE);
