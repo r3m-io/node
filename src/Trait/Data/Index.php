@@ -5,7 +5,9 @@ namespace R3m\Io\Node\Trait\Data;
 use R3m\Io\App;
 use R3m\Io\Config;
 
+use R3m\Io\Exception\AuthorizationException;
 use R3m\Io\Exception\DirectoryCreateException;
+use R3m\Io\Exception\ObjectException;
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
@@ -24,7 +26,13 @@ use SplFileObject;
 
 trait Index {
 
-    private function index_record_expose($class, $role, $record, $options){
+    /**
+     * @throws AuthorizationException
+     * @throws ObjectException
+     * @throws Exception
+     */
+    private function index_record_expose($class, $role, $record, $options): mixed
+    {
         $object = $this->object();
         $name = Controller::name($class);
         $dir_data = $object->config('project.dir.node') .
@@ -35,8 +43,6 @@ trait Index {
         $url_mtime = File::mtime($url_data);
         $cache = $object->data(App::CACHE);
         $data = $cache->get(sha1($url_data) . '_index');
-
-        d($data);
         if (
             is_object($data) &&
             property_exists($data, $record->uuid)
@@ -48,7 +54,9 @@ trait Index {
         ) {
             $record = $data[$record->uuid];
         }
-        ddd($record);
+        if(!property_exists($record, '#class')){
+            return false;
+        }
         $expose = $this->expose_get(
             $object,
             $record->{'#class'},
