@@ -24,8 +24,12 @@ use SplFileObject;
 
 trait Index {
 
-    private function list_index_record($data, $record, $role, $options){
+    private function index_record($class, $role, $record, $options){
         $object = $this->object();
+        ddd($options);
+        $cache = $object->data(App::CACHE);
+
+
         if (
             is_object($data) &&
             property_exists($data, $record->uuid)
@@ -664,7 +668,6 @@ trait Index {
             $record->uuid = $value;
             $record_where = $this->where($record, $options['where'], $options);
             if($record_where){
-                d($record_where);
                 return $record;
             } else {
                 $where = $options['where'];

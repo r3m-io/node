@@ -183,6 +183,14 @@ trait NodeList {
             $options['page'] === 1
         ){
             $record = $this->index_list_record($class, $role, $options);
+            $record = $this->index_record($class, $role, $record, $options);
+            /*
+            $record->{'#jump'} = $counter;
+            if($record->{'#jump'} > $jump_max){
+                $jump_max = $record->{'#jump'};
+                $record->{'#jump_max'} = $jump_max;
+            }
+            */
             $list = [];
             if($record){
                 $list[] = $record;
