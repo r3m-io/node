@@ -761,7 +761,7 @@ trait Index {
                     $nested_options['where'] = $where;
 
                     $record = $this->index_list_record($class, $role, $nested_options);
-                    if($record){
+                    if($record && $deepest === 0){
                         return $record;
                     }
 //                    $where_name = $this->index_where_name($name, $nested_options);
