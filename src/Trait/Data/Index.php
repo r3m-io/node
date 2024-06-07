@@ -34,7 +34,8 @@ trait Index {
         $url_data = $dir_data . $name . $object->config('extension.json');
         $url_mtime = File::mtime($url_data);
         $cache = $object->data(App::CACHE);
-        $data = $cache->get(sha1($url_data));
+        $data = $cache->get(sha1($url_data) . '_index');
+
         d($data);
         if (
             is_object($data) &&
