@@ -780,10 +780,19 @@ trait Index {
                                     case 'or':
                                         ddd('wrong');
                                         if($set[0] === true || $set[2] === true){
-                                            array_shift($set);
-                                            array_shift($set);
-                                            array_shift($set);
-                                            array_unshift($set, true);
+                                            $set_index = $set;
+                                            array_shift($set_index);
+                                            array_shift($set_index);
+                                            array_shift($set_index);
+                                            array_unshift($set_index, true);
+                                            $set_index = $this->where_process($record, $set_index, $set_index_where, $set_index_key, $set_index_operator, $index_where, $options);
+                                            d($set_index_where);
+                                            d($set_index_key);
+                                            d($set_index_operator);
+                                            d($index_where);
+                                            ddd($set_index);
+
+
                                         } elseif(is_bool($set[2])) {
 
 
