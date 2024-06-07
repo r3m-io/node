@@ -748,12 +748,6 @@ trait Index {
                     $counter++;
                     $options['index']['min'] = 0;
                     $options['index']['max'] = $options['index']['count'] - 1;
-                    d($seek);
-                    d($options);
-                    d($counter);
-                    d($where);
-                    d($deepest);
-                    d($set);
                     $max_deep++;
                 }
             }
