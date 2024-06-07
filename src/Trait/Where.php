@@ -297,7 +297,7 @@ trait Where {
     /**
      * @throws Exception
      */
-    private function where_process($record, $set=[], &$where=[], &$key=null, &$operator=null, &$index_where=null, $options=[]): ?array
+    private function where_process($record, $set=[], &$where=[], &$key=null, &$operator=null, &$index_where=null, &$filter_where=null, $options=[]): ?array
     {
         $count = count($set);
         if(
@@ -446,7 +446,7 @@ trait Where {
                         array_key_exists('value', $set[0]) &&
                         array_key_exists('operator', $set[0])
                     ){
-                        $index_where = [
+                        $index_where[0] = [
                             $set[0]['value'],
                             $record->{$set[0]['attribute']}
                         ];
@@ -574,9 +574,19 @@ trait Where {
                                 array_key_exists('value', $set[0]) &&
                                 array_key_exists('operator', $set[0])
                             ){
-                                $index_where = [
+                                $index_where[0] = [
                                     $set[0]['value'],
                                     $record->{$set[0]['attribute']}
+                                ];
+                            }
+                            if(
+                                array_key_exists('attribute', $set[0]) &&
+                                array_key_exists('value', $set[0]) &&
+                                array_key_exists('operator', $set[0])
+                            ){
+                                $index_where[2] = [
+                                    $set[2]['value'],
+                                    $record->{$set[2]['attribute']}
                                 ];
                             }
                             $where[$key] = false;
@@ -695,7 +705,7 @@ trait Where {
             }
             $set = $this->where_get_set($where, $key, $deepest);
             while($record !== false){
-                $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $options);
+                $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $filter_where, $options);
                 if(empty($set) && $deepest === 0){
                     return $record;
                 }

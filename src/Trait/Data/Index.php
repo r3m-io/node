@@ -675,11 +675,13 @@ trait Index {
                         d($record);
                         d($set);
                         $set_init = $set;
-                        $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $options);
+                        $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $filter_where, $options);
                         d($set);
                         d($index_where);
 
                         if($index_where){
+                            d($index_where);
+                            ddd($filter_where);
                             sort($index_where, SORT_NATURAL);
                             if($index_where[0] === $set_init[0]['value']){
                                 $options['index']['max'] = $seek - 1;
