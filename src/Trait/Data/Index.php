@@ -698,9 +698,23 @@ trait Index {
                                     break 2;
                                 }
                             } else {
-                                d($set_index_0);
-                                d($index_where);
-                                ddd($filter_where);
+                                if(array_key_exists(1, $set_init)){
+                                    switch($set_init[1]){
+                                        case 'and':
+                                            d($set_index_0);
+                                            d($index_where);
+                                            ddd($filter_where);
+                                            break;
+                                        case 'or':
+                                            break;
+                                        case 'xor':
+                                            break;
+                                    }
+                                } else {
+                                    ddd('should trigger earlier on line 667');
+                                }
+
+
                             }
                         } else {
                             ddd($record);
