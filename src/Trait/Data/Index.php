@@ -623,6 +623,7 @@ trait Index {
         if(!array_key_exists('count', $options['index'])){
             return false;
         }
+        $name = Controller::name($class);
         $record = (object) [];
         $file = [];
         $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
@@ -756,6 +757,13 @@ trait Index {
                     $counter++;
 
                     d($where);
+
+                    $nested_options = $options;
+                    $nested_options['where'] = $where;
+
+                    $where_name = $this->index_where_name($name, $options);
+
+
                     ddd($options);
 
                     $options['index']['min'] = 0;
