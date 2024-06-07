@@ -740,6 +740,7 @@ trait Index {
                                                 array_shift($set);
                                                 array_unshift($set, true);
                                             } elseif(is_bool($set_index_2[0])) {
+                                                ddd('do the math');
                                                 array_shift($set);
                                                 array_shift($set);
                                                 array_shift($set);
@@ -778,6 +779,9 @@ trait Index {
                                             array_shift($set);
                                             array_unshift($set, true);
                                         } elseif(is_bool($set[2])) {
+
+
+
                                             array_shift($set);
                                             array_shift($set);
                                             array_shift($set);
