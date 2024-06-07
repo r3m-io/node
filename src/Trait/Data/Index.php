@@ -757,22 +757,14 @@ trait Index {
                     $deepest = $this->where_get_depth($where);
                     unset($key);
                     $counter++;
-
-                    d($where);
-
                     $nested_options = $options;
                     $nested_options['where'] = $where;
 
                     $record = $this->index_list_record($class, $role, $nested_options);
-
-                    ddd($record);
-
-                    $where_name = $this->index_where_name($name, $nested_options);
-                    d($where_name);
-
-
-                    ddd($nested_options);
-
+                    if($record){
+                        return $record;
+                    }
+//                    $where_name = $this->index_where_name($name, $nested_options);
                     $options['index']['min'] = 0;
                     $options['index']['max'] = $options['index']['count'] - 1;
                     $max_deep++;
