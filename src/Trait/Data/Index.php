@@ -708,6 +708,9 @@ trait Index {
                                         break 2;
                                     }
                                 } else {
+                                    if($index_where[0] === null){
+                                        ddd('should trigger earlier on line 667');
+                                    }
                                     sort($index_where[0], SORT_NATURAL);
                                     if($index_where[0][0] === $set_init[0]['value']){
                                         $options['index']['max'] = $seek - 1;
