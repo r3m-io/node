@@ -719,7 +719,10 @@ trait Index {
                                     switch($set_init[1]){
                                         case 'and':
                                             $set_index_2 = [$set_init[2]];
+                                            d($set_index_2);
                                             $set_index_2 = $this->where_process($record, $set_index_2);
+                                            d($set_init);
+                                            d($record);
                                             ddd($set_index_2);
                                             if($set_index_2[0] === false){
                                                 sort($index_where[2], SORT_NATURAL);
