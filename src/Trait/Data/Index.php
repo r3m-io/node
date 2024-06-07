@@ -778,7 +778,7 @@ trait Index {
                                         ddd('yes');
                                         break;
                                     case 'or':
-                                        ddd('wrong');
+                                        d('wrong');
                                         if($set[0] === true || $set[2] === true){
                                             $set_index = $set;
                                             array_shift($set_index);
