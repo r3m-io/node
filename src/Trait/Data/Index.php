@@ -729,6 +729,7 @@ trait Index {
                                             d($seek);
                                             d($record);
                                             d('max: ' . $options['index']['min']);
+                                            d('max: ' . $options['index']['max']);
                                             break 2;
                                         } else {
                                             //sort[1] === $value
