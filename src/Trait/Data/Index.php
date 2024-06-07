@@ -676,24 +676,25 @@ trait Index {
                     }
                     $set = $this->where_get_set($where, $key, $deepest);
                     while($record !== false){
-                        d($record);
-                        d($set);
                         $set_init = $set;
                         $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $filter_where, $options);
-                        d($set);
-                        d($index_where);
 
                         if($index_where){
                             $set_index_0 = [$set_init[0]];
-                            d($set_index_0);
                             $set_index_0 = $this->where_process($record, $set_index_0);
                             if($set_index_0[0] === false){
                                 if($set_init[0] === false){
-                                    d($index_where);
-                                    d($options);
-                                    d($record);
-                                    d($where);
-                                    ddd($set_init);
+                                    sort($index_where[2], SORT_NATURAL);
+                                    if($index_where[2][0] === $set_init[2]['value']){
+                                        $options['index']['max'] = $seek - 1;
+                                        break 2;
+
+                                    } else {
+                                        //sort[1] === $value
+                                        //min becomes seek + 1
+                                        $options['index']['min'] = $seek + 1;
+                                        break 2;
+                                    }
                                 } else {
                                     sort($index_where[0], SORT_NATURAL);
                                     if($index_where[0][0] === $set_init[0]['value']){
