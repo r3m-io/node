@@ -721,9 +721,11 @@ trait Index {
                                             $set_index_2 = [$set_init[2]];
                                             $set_index_2 = $this->where_process($record, $set_index_2);
                                             if($set_index_0[0] === true && $set_index_2[0] === true){
+                                                array_shift($set);
+                                                array_shift($set);
                                                 d($set);
                                                 d($record);
-                                                ddd($where_process);
+                                                d($where_process);
 //                                                $record = $this->index_list_record($class, $role, $options);
 //                                                if($record){/
 //                                                    return $record;
