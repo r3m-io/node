@@ -26,10 +26,15 @@ trait Index {
 
     private function index_record_expose($class, $role, $record, $options){
         $object = $this->object();
-        ddd($options);
+        $name = Controller::name($class);
+        $dir_data = $object->config('project.dir.node') .
+            'Data' .
+            $object->config('ds')
+        ;
+        $url_data = $dir_data . $name . $object->config('extension.json');
+        $url_mtime = File::mtime($url_data);
         $cache = $object->data(App::CACHE);
-
-
+        $data = $cache->get(sha1($url_data));
         if (
             is_object($data) &&
             property_exists($data, $record->uuid)
