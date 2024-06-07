@@ -665,7 +665,7 @@ trait Index {
 
             $record_where = $this->where($record, $options['where'], $options);
             if($record_where){
-                ddd('found');
+                return $record;
             } else {
                 $where = $options['where'];
                 $deepest = $this->where_get_depth($where);
