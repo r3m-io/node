@@ -730,20 +730,21 @@ trait Index {
                                                 $set = [
                                                     false
                                                 ];
-                                                d('not found');
                                                 break;
 
                                             }
-                                            d($seek);
-                                            d($record);
-                                            d('max: ' . $options['index']['min']);
-                                            d('max: ' . $options['index']['max']);
                                             break 2;
                                         } else {
                                             //sort[1] === $value
                                             //min becomes seek + 1
                                             $options['index']['min'] = $seek + 1;
-                                            d('min: ' . $options['index']['min']);
+                                            if($options['index']['max'] < $options['index']['min']){
+                                                $set = [
+                                                    false
+                                                ];
+                                                break;
+
+                                            }
                                             break 2;
                                         }
                                     }
