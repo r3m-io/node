@@ -46,6 +46,7 @@ trait Index {
         ) {
             $record = $data[$record->uuid];
         }
+        ddd($record);
         $expose = $this->expose_get(
             $object,
             $record->{'#class'},
