@@ -731,7 +731,7 @@ trait Index {
                                                     false
                                                 ];
                                                 d('not found');
-                                                break 2;
+                                                break;
 
                                             }
                                             d($seek);
