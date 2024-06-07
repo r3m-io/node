@@ -788,7 +788,7 @@ trait Index {
                     unset($key);
                     $counter++;
                     $nested_options = $options;
-                    $nested_options['where'] = $where;
+                    $nested_options['where'] = $where_process;
 
                     $record = $this->index_list_record($class, $role, $nested_options);
                     d($record);
