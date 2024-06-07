@@ -768,16 +768,23 @@ trait Index {
                             ){
                                 switch($set[1]) {
                                     case 'and':
+                                        //doesn't reach this point
                                         d('yes');
                                         break;
                                     case 'or':
-                                        d('no');
+                                        if($set[0] === true || $set[2] === true){
+                                            array_shift($set);
+                                            array_shift($set);
+                                            array_shift($set);
+                                            array_unshift($set, true);
+                                        } elseif(is_bool($set[2])) {
+                                            array_shift($set);
+                                            array_shift($set);
+                                            array_shift($set);
+                                            array_unshift($set, false);
+                                        }
                                         break;
                                 }
-                                d($options);
-                                d($set_init);
-                                d($set);
-                                ddd($record);
                             }
                         }
                         $counter++;
