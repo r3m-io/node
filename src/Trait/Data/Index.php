@@ -738,6 +738,7 @@ trait Index {
                                             }
                                             break;
                                         case 'or':
+                                            /*
                                             if($set_index_0[0] === true || $set_index_2[0] === true){
                                                 ddd($set);
                                                 array_shift($set);
@@ -756,6 +757,7 @@ trait Index {
                                                 d($set);
                                                 ddd($set_init);
                                             }
+                                            */
                                             //first or is true so return
                                             break;
                                         case 'xor':
@@ -785,7 +787,21 @@ trait Index {
                                             array_shift($set_index);
                                             array_shift($set_index);
                                             array_unshift($set_index, true);
+                                            $set_index_init = $set_index;
                                             $set_index = $this->where_process($record, $set_index, $set_index_where, $set_index_key, $set_index_operator, $index_where, $options);
+                                            if($index_where){
+                                                switch($set_index[1]){
+                                                    case 'and':
+                                                        break;
+                                                    case 'or':
+                                                        break;
+                                                }
+                                            }
+                                                if($set_index[0] === false){
+                                            } else {
+                                                ddd($set_index);
+                                            }
+                                            d($set_index_init);
                                             d($set_index_where);
                                             d($set_index_key);
                                             d($set_index_operator);
