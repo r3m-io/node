@@ -526,25 +526,25 @@ trait Where {
                         d($set);
                         d($set_init);
                         if(
-                            is_array($set[0]) &&
-                            array_key_exists('attribute', $set[0]) &&
-                            array_key_exists('value', $set[0]) &&
-                            array_key_exists('operator', $set[0])
+                            is_array($set_init[0]) &&
+                            array_key_exists('attribute', $set_init[0]) &&
+                            array_key_exists('value', $set_init[0]) &&
+                            array_key_exists('operator', $set_init[0])
                         ){
                             $index_where[0] = [
-                                $set[0]['value'],
-                                $record->{$set[0]['attribute']}
+                                $set_init[0]['value'],
+                                $record->{$set_init[0]['attribute']}
                             ];
                         }
                         if(
-                            is_array($set[2]) &&
-                            array_key_exists('attribute', $set[2]) &&
-                            array_key_exists('value', $set[2]) &&
-                            array_key_exists('operator', $set[2])
+                            is_array($set_init[2]) &&
+                            array_key_exists('attribute', $set_init[2]) &&
+                            array_key_exists('value', $set_init[2]) &&
+                            array_key_exists('operator', $set_init[2])
                         ){
                             $index_where[2] = [
-                                $set[2]['value'],
-                                $record->{$set[2]['attribute']}
+                                $set_init[2]['value'],
+                                $record->{$set_init[2]['attribute']}
                             ];
                         }
                         $where[$key] = false;
