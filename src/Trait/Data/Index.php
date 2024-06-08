@@ -969,77 +969,73 @@ trait Index {
                         $url[$nr] = $url_index;
                     }
                 }
-                if(File::mtime($url_uuid) === $url_mtime){
-                    d($url_uuid);
-                    d($url);
-                    d($url_mtime);
-                    ddd('test');
-                }
-                if($cache_select){
-                    $select = [
-                        'list' => $cache_select->get($name)
-                    ];
-                } else {
-                    $select = $this->list(
-                        $name,
-                        $role,
-                        [
-                            'transaction' => true,
-                            'limit' => '*',
-                            'page' => 1,
-                            'index' => 'create'
-                        ]
-                    );
-                }
-                if(
-                    is_array($select) &&
-                    array_key_exists('list', $select)
-                ){
-                    $list = [];
-                    $count = 0;
-                    foreach($select['list'] as $nr => $record){
-                        if(!property_exists($record, 'uuid')){
-                            continue;
-                        }
-                        $record_index = (object) [
-                            'uuid' => $record->uuid
+                if(!File::mtime($url_uuid) === $url_mtime){
+                    if($cache_select){
+                        $select = [
+                            'list' => $cache_select->get($name)
                         ];
-                        $count++;
-                        $sort_key = [];
-                        foreach($filter_name as $attribute){
-                            if(!property_exists($record, $attribute)){
-                                continue; //no-data
+                    } else {
+                        $select = $this->list(
+                            $name,
+                            $role,
+                            [
+                                'transaction' => true,
+                                'limit' => '*',
+                                'page' => 1,
+                                'index' => 'create'
+                            ]
+                        );
+                    }
+                    if(
+                        is_array($select) &&
+                        array_key_exists('list', $select)
+                    ){
+                        $list = [];
+                        $count = 0;
+                        foreach($select['list'] as $nr => $record){
+                            if(!property_exists($record, 'uuid')){
+                                continue;
                             }
-                            $record_index->{$attribute} = $record->{$attribute};
-                            $sort_key[] = '\'' . $record->{$attribute} . '\'';
-                        }
-                        $record_index->{'#sort'} = implode(',', $sort_key);
-                        $list[] = $record_index;
-                    }
-                    $list = Sort::list($list)->with([
-                        '#sort' => 'asc'
-                    ]);
-                    $data = [];
-                    foreach($list as $uuid => $record){
-                        if(!array_key_exists('uuid', $data)){
-                            $data['uuid'] = [];
-                        }
-                        $data['uuid'][] = $record->uuid;
-                        foreach($filter_name as $nr => $attribute){
-                            if(!array_key_exists($nr, $data)){
-                                $data[$nr] = [];
+                            $record_index = (object) [
+                                'uuid' => $record->uuid
+                            ];
+                            $count++;
+                            $sort_key = [];
+                            foreach($filter_name as $attribute){
+                                if(!property_exists($record, $attribute)){
+                                    continue; //no-data
+                                }
+                                $record_index->{$attribute} = $record->{$attribute};
+                                $sort_key[] = '\'' . $record->{$attribute} . '\'';
                             }
-                            $data[$nr][] = $record->{$attribute};
+                            $record_index->{'#sort'} = implode(',', $sort_key);
+                            $list[] = $record_index;
                         }
-                    }
-                    if(!Dir::exist($dir_index)){
-                        Dir::create($dir_index, Dir::CHMOD);
-                    }
-                    File::write($url_uuid, implode(PHP_EOL, $data['uuid']));
-                    File::touch($url_uuid, $url_mtime);
-                    foreach($url as $nr => $url_index){
-                        File::write($url_index, implode(PHP_EOL, $data[$nr]));
-                        File::touch($url_index, $url_mtime);
+                        $list = Sort::list($list)->with([
+                            '#sort' => 'asc'
+                        ]);
+                        $data = [];
+                        foreach($list as $uuid => $record){
+                            if(!array_key_exists('uuid', $data)){
+                                $data['uuid'] = [];
+                            }
+                            $data['uuid'][] = $record->uuid;
+                            foreach($filter_name as $nr => $attribute){
+                                if(!array_key_exists($nr, $data)){
+                                    $data[$nr] = [];
+                                }
+                                $data[$nr][] = $record->{$attribute};
+                            }
+                        }
+                        if(!Dir::exist($dir_index)){
+                            Dir::create($dir_index, Dir::CHMOD);
+                        }
+                        File::write($url_uuid, implode(PHP_EOL, $data['uuid']));
+                        File::touch($url_uuid, $url_mtime);
+                        foreach($url as $nr => $url_index){
+                            File::write($url_index, implode(PHP_EOL, $data[$nr]));
+                            File::touch($url_index, $url_mtime);
+                        }
                     }
                 }
             }
@@ -1084,77 +1080,73 @@ trait Index {
                     $url[$nr] = $url_index;
                 }
             }
-            if(File::mtime($url_uuid) === $url_mtime){
-                d($url_uuid);
-                d($url);
-                d($url_mtime);
-                ddd('test');
-            }
-            if($cache_select){
-                $select = [
-                    'list' => $cache_select->get($name)
-                ];
-            } else {
-                $select = $this->list(
-                    $name,
-                    $role,
-                    [
-                        'transaction' => true,
-                        'limit' => '*',
-                        'page' => 1,
-                        'index' => 'create'
-                    ]
-                );
-            }
-            if(
-                is_array($select) &&
-                array_key_exists('list', $select)
-            ){
-                $list = [];
-                $count = 0;
-                foreach($select['list'] as $nr => $record){
-                    if(!property_exists($record, 'uuid')){
-                        continue;
-                    }
-                    $record_index = (object) [
-                        'uuid' => $record->uuid
+            if(!File::mtime($url_uuid) === $url_mtime){
+                if($cache_select){
+                    $select = [
+                        'list' => $cache_select->get($name)
                     ];
-                    $count++;
-                    $sort_key = [];
-                    foreach($where_name as $attribute){
-                        if(!property_exists($record, $attribute)){
-                            continue; //no-data
+                } else {
+                    $select = $this->list(
+                        $name,
+                        $role,
+                        [
+                            'transaction' => true,
+                            'limit' => '*',
+                            'page' => 1,
+                            'index' => 'create'
+                        ]
+                    );
+                }
+                if(
+                    is_array($select) &&
+                    array_key_exists('list', $select)
+                ){
+                    $list = [];
+                    $count = 0;
+                    foreach($select['list'] as $nr => $record){
+                        if(!property_exists($record, 'uuid')){
+                            continue;
                         }
-                        $record_index->{$attribute} = $record->{$attribute};
-                        $sort_key[] = '\'' . $record->{$attribute} . '\'';
-                    }
-                    $record_index->{'#sort'} = implode(',', $sort_key);
-                    $list[] = $record_index;
-                }
-                $list = Sort::list($list)->with([
-                    '#sort' => 'asc'
-                ]);
-                $data = [];
-                foreach($list as $uuid => $record){
-                    if(!array_key_exists('uuid', $data)){
-                        $data['uuid'] = [];
-                    }
-                    $data['uuid'][] = $record->uuid;
-                    foreach($where_name as $nr => $attribute){
-                        if(!array_key_exists($nr, $data)){
-                            $data[$nr] = [];
+                        $record_index = (object) [
+                            'uuid' => $record->uuid
+                        ];
+                        $count++;
+                        $sort_key = [];
+                        foreach($where_name as $attribute){
+                            if(!property_exists($record, $attribute)){
+                                continue; //no-data
+                            }
+                            $record_index->{$attribute} = $record->{$attribute};
+                            $sort_key[] = '\'' . $record->{$attribute} . '\'';
                         }
-                        $data[$nr][] = $record->{$attribute};
+                        $record_index->{'#sort'} = implode(',', $sort_key);
+                        $list[] = $record_index;
                     }
-                }
-                if(!Dir::exist($dir_index)){
-                    Dir::create($dir_index, Dir::CHMOD);
-                }
-                File::write($url_uuid, implode(PHP_EOL, $data['uuid']));
-                File::touch($url_uuid, $url_mtime);
-                foreach($url as $nr => $url_index){
-                    File::write($url_index, implode(PHP_EOL, $data[$nr]));
-                    File::touch($url_index, $url_mtime);
+                    $list = Sort::list($list)->with([
+                        '#sort' => 'asc'
+                    ]);
+                    $data = [];
+                    foreach($list as $uuid => $record){
+                        if(!array_key_exists('uuid', $data)){
+                            $data['uuid'] = [];
+                        }
+                        $data['uuid'][] = $record->uuid;
+                        foreach($where_name as $nr => $attribute){
+                            if(!array_key_exists($nr, $data)){
+                                $data[$nr] = [];
+                            }
+                            $data[$nr][] = $record->{$attribute};
+                        }
+                    }
+                    if(!Dir::exist($dir_index)){
+                        Dir::create($dir_index, Dir::CHMOD);
+                    }
+                    File::write($url_uuid, implode(PHP_EOL, $data['uuid']));
+                    File::touch($url_uuid, $url_mtime);
+                    foreach($url as $nr => $url_index){
+                        File::write($url_index, implode(PHP_EOL, $data[$nr]));
+                        File::touch($url_index, $url_mtime);
+                    }
                 }
             }
         }
