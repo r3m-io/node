@@ -182,6 +182,11 @@ trait NodeList {
             $options['limit'] === 1 &&
             $options['page'] === 1
         ){
+            if($options['index']['count'] === 0){
+                $cache = $object->data(App::CACHE);
+                $count = $cache->get(sha1($data_url) . '_count');
+                ddd($count);
+            }
             $record = $this->index_list_record($class, $role, $options);
             d($record);
             $record = $this->index_record_expose($class, $role, $record, $options);
