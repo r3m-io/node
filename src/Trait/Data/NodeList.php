@@ -185,6 +185,13 @@ trait NodeList {
             if($options['index']['count'] === 0){
                 $cache = $object->data(App::CACHE);
                 $count = $cache->get(sha1($data_url) . '_count');
+                if($count === null){
+                    $object->data_read($data_url, sha1($data_url), [
+                        'index' => 'create',
+                        'class' => $name
+                    ]);
+                    $count = $cache->get(sha1($data_url) . '_count');
+                }
                 ddd($count);
             }
             $record = $this->index_list_record($class, $role, $options);
