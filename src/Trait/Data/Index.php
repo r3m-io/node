@@ -1080,6 +1080,10 @@ trait Index {
                     $url[$nr] = $url_index;
                 }
             }
+            d($url_uuid);
+            d($url);
+            d($url_mtime);
+            ddd('test');
             if(
                 is_array($select) &&
                 array_key_exists('list', $select)
