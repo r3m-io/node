@@ -192,7 +192,9 @@ trait NodeList {
                     ]);
                     $count = $cache->get(sha1($data_url) . '_count');
                 }
-                ddd($count);
+                if($count){
+                    $options['index']['count'] = $count;
+                }
             }
             $record = $this->index_list_record($class, $role, $options);
             d($record);
