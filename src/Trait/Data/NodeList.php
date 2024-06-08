@@ -197,7 +197,6 @@ trait NodeList {
                     $options['index']['count'] = $count;
                 }
             }
-            $start = microtime(true);
             $record = $this->index_list_record($class, $role, $options);
             $record = $this->index_record_expose($class, $role, $record, $options);
             $count = 0;
