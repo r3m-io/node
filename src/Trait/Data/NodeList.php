@@ -34,6 +34,7 @@ trait NodeList {
      */
     public function list($class, $role, $options=[]): array
     {
+        $start = microtime(true);
         $mtime = false;
         $name = Controller::name($class);
         $options = Core::object($options, Core::OBJECT_ARRAY);
@@ -168,6 +169,7 @@ trait NodeList {
             $result['mtime'] = $mtime;
             $result['transaction'] = $options['transaction'] ?? false;
             $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+            $result['duration2'] = ($start - $object->config('time.start')) * 1000;
             return $result;
         }
         $mtime = File::mtime($data_url);
@@ -197,15 +199,7 @@ trait NodeList {
                 }
             }
             $record = $this->index_list_record($class, $role, $options);
-            d($record);
             $record = $this->index_record_expose($class, $role, $record, $options);
-            /*
-            $record->{'#jump'} = $counter;
-            if($record->{'#jump'} > $jump_max){
-                $jump_max = $record->{'#jump'};
-                $record->{'#jump_max'} = $jump_max;
-            }
-            */
             $count = 0;
             d('from index:' . $name);
             $list = [];
