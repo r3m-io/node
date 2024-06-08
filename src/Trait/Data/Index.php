@@ -969,7 +969,7 @@ trait Index {
                         $url[$nr] = $url_index;
                     }
                 }
-                if(!File::mtime($url_uuid) === $url_mtime){
+                if(File::mtime($url_uuid) !== $url_mtime){
                     if($cache_select){
                         $select = [
                             'list' => $cache_select->get($name)
@@ -1080,7 +1080,7 @@ trait Index {
                     $url[$nr] = $url_index;
                 }
             }
-            if(!File::mtime($url_uuid) === $url_mtime){
+            if(File::mtime($url_uuid) !== $url_mtime){
                 if($cache_select){
                     $select = [
                         'list' => $cache_select->get($name)
