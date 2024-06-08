@@ -631,6 +631,7 @@ trait Index {
      */
     public function index_list_record($class, $role, $options=[]): bool | object
     {
+        d($options['index']);
         if(!array_key_exists('index', $options)){
             return false;
         }
