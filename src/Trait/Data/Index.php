@@ -919,22 +919,6 @@ trait Index {
         $url_uuid = null;
         $url = [];
         //url_index should be in node/index
-        if($cache_select){
-            $select = [
-                'list' => $cache_select->get($name)
-            ];
-        } else {
-            $select = $this->list(
-                $name,
-                $role,
-                [
-                    'transaction' => true,
-                    'limit' => '*',
-                    'page' => 1,
-                    'index' => 'create'
-                ]
-            );
-        }
         if($where_name === false){
             if($filter_name === false){
                 $url_index = $dir_index .
@@ -985,10 +969,28 @@ trait Index {
                         $url[$nr] = $url_index;
                     }
                 }
-                d($url_uuid);
-                d($url);
-                d($url_mtime);
-                ddd('test');
+                if(File::mtime($url_uuid) === $url_mtime){
+                    d($url_uuid);
+                    d($url);
+                    d($url_mtime);
+                    ddd('test');
+                }
+                if($cache_select){
+                    $select = [
+                        'list' => $cache_select->get($name)
+                    ];
+                } else {
+                    $select = $this->list(
+                        $name,
+                        $role,
+                        [
+                            'transaction' => true,
+                            'limit' => '*',
+                            'page' => 1,
+                            'index' => 'create'
+                        ]
+                    );
+                }
                 if(
                     is_array($select) &&
                     array_key_exists('list', $select)
@@ -1034,8 +1036,10 @@ trait Index {
                         Dir::create($dir_index, Dir::CHMOD);
                     }
                     File::write($url_uuid, implode(PHP_EOL, $data['uuid']));
+                    File::touch($url_uuid, $url_mtime);
                     foreach($url as $nr => $url_index){
                         File::write($url_index, implode(PHP_EOL, $data[$nr]));
+                        File::touch($url_index, $url_mtime);
                     }
                 }
             }
@@ -1080,10 +1084,28 @@ trait Index {
                     $url[$nr] = $url_index;
                 }
             }
-            d($url_uuid);
-            d($url);
-            d($url_mtime);
-            ddd('test');
+            if(File::mtime($url_uuid) === $url_mtime){
+                d($url_uuid);
+                d($url);
+                d($url_mtime);
+                ddd('test');
+            }
+            if($cache_select){
+                $select = [
+                    'list' => $cache_select->get($name)
+                ];
+            } else {
+                $select = $this->list(
+                    $name,
+                    $role,
+                    [
+                        'transaction' => true,
+                        'limit' => '*',
+                        'page' => 1,
+                        'index' => 'create'
+                    ]
+                );
+            }
             if(
                 is_array($select) &&
                 array_key_exists('list', $select)
@@ -1129,8 +1151,10 @@ trait Index {
                     Dir::create($dir_index, Dir::CHMOD);
                 }
                 File::write($url_uuid, implode(PHP_EOL, $data['uuid']));
+                File::touch($url_uuid, $url_mtime);
                 foreach($url as $nr => $url_index){
                     File::write($url_index, implode(PHP_EOL, $data[$nr]));
+                    File::touch($url_index, $url_mtime);
                 }
             }
         }
