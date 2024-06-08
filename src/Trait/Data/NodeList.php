@@ -169,7 +169,6 @@ trait NodeList {
             $result['mtime'] = $mtime;
             $result['transaction'] = $options['transaction'] ?? false;
             $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
-            $result['duration2'] = ($start - $object->config('time.start')) * 1000;
             return $result;
         }
         $mtime = File::mtime($data_url);
@@ -226,6 +225,7 @@ trait NodeList {
             $result['mtime'] = $mtime;
             $result['transaction'] = $options['transaction'] ?? false;
             $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+            $result['duration2'] = ($start - $object->config('time.start')) * 1000;
             return $result;
         }
 
