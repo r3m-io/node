@@ -191,16 +191,18 @@ trait NodeList {
                 $record->{'#jump_max'} = $jump_max;
             }
             */
+            $count = 0;
             d('from index:' . $name);
             $list = [];
             if($record){
                 $list[] = $record;
+                $count++;
             }
             $result = [];
             $result['page'] = $options['page'];
             $result['limit'] = $options['limit'];
-            $result['count'] = 0;
-            $result['max'] = 0;
+            $result['count'] = $count;
+            $result['max'] = $options['index']['count'];
             $result['list'] = $list;
             $result['sort'] = $options['sort'] ?? [];
             if (!empty($options['filter'])) {
