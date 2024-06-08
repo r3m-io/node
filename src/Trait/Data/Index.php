@@ -679,6 +679,7 @@ trait Index {
             $line = $file['uuid']->current();
             $value = rtrim($line, PHP_EOL);
             $record->uuid = $value;
+            d($record);
             $record_where = $this->where($record, $options['where'], $options);
             if($record_where){
                 return $record;
