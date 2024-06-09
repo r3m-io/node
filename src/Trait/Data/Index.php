@@ -1149,7 +1149,9 @@ trait Index {
                             if(!array_key_exists($nr, $data)){
                                 $data[$nr] = [];
                             }
-                            $data[$nr][] = $record->{$attribute};
+                            if(property_exists($record, $attribute)){
+                                $data[$nr][] = $record->{$attribute};
+                            }
                         }
                     }
                     if(!Dir::exist($dir_index)){
