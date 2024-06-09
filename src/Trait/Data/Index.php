@@ -788,7 +788,7 @@ trait Index {
                                             //first or is true so return
                                             break;
                                         case 'xor':
-                                            //first or is true so check next
+                                            //first xor is true so check next
                                             break;
                                     }
                                 }
@@ -805,7 +805,6 @@ trait Index {
                                         ddd('yes');
                                         break;
                                     case 'or':
-                                        d('wrong');
                                         if($set[0] === true || $set[2] === true){
                                             $set_index = $set;
                                             array_shift($set_index);
@@ -843,12 +842,7 @@ trait Index {
                                             d($set_index_operator);
                                             d($index_where);
                                             ddd($set_index);
-
-
                                         } elseif(is_bool($set[2])) {
-
-
-
                                             array_shift($set);
                                             array_shift($set);
                                             array_shift($set);

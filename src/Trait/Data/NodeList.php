@@ -179,9 +179,7 @@ trait NodeList {
             array_key_exists('url_uuid', $options['index']) &&
             array_key_exists('count', $options['index']) &&
             array_key_exists('filter', $options['index']) &&
-            array_key_exists('where', $options['index']) &&
-            $options['limit'] === 1 &&
-            $options['page'] === 1
+            array_key_exists('where', $options['index'])
         ){
             if($options['index']['count'] === 0){
                 $cache = $object->data(App::CACHE);
@@ -197,15 +195,23 @@ trait NodeList {
                     $options['index']['count'] = $count;
                 }
             }
-            $record = $this->index_list_record($class, $role, $options);
-            $record = $this->index_record_expose($class, $role, $record, $options);
             $count = 0;
-            d('from index:' . $name);
             $list = [];
-            if($record){
-                $list[] = $record;
-                $count++;
+            if(
+                $options['limit'] === 1 &&
+                $options['page'] === 1
+            ){
+                $record = $this->index_list_record($class, $role, $options);
+                $record = $this->index_record_expose($class, $role, $record, $options);
+                if($record){
+                    $list[] = $record;
+                    $count++;
+                }
+            } else {
+
             }
+
+            d('from index:' . $name);
             $result = [];
             $result['page'] = $options['page'];
             $result['limit'] = $options['limit'];
