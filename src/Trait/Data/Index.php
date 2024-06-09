@@ -631,7 +631,6 @@ trait Index {
      */
     public function index_list_record($class, $role, $options=[]): bool | object
     {
-        d($options['index']);
         if(!array_key_exists('index', $options)){
             return false;
         }
@@ -645,6 +644,7 @@ trait Index {
             return false;
         }
         $name = Controller::name($class);
+        $object = $this->object();
         $record = (object) [];
         $file = [];
         $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
@@ -812,7 +812,15 @@ trait Index {
                                             array_shift($set_index);
                                             array_unshift($set_index, true);
                                             $set_index_init = $set_index;
-                                            $set_index = $this->where_process($record, $set_index, $set_index_where, $set_index_key, $set_index_operator, $index_where, $options);
+                                            $set_index = $this->where_process(
+                                                $record,
+                                                $set_index,
+                                                $set_index_where,
+                                                $set_index_key,
+                                                $set_index_operator,
+                                                $index_where,
+                                                $options
+                                            );
                                             if($index_where){
                                                 switch($set_index[1]){
                                                     case 'and':
@@ -829,19 +837,19 @@ trait Index {
                                                         }
                                                         break;
                                                     case 'or':
+                                                        $logger = $object->config('project.log.debug');
+                                                        if($logger){
+                                                            $object->logger($logger)->debug('Unknown behavior: index or', [ $record, $set_index, $set_index_where, $index_where]);
+                                                        }
+                                                        break;
+                                                    case 'xor':
+                                                        $logger = $object->config('project.log.debug');
+                                                        if($logger){
+                                                            $object->logger($logger)->debug('Unknown behavior: index xor', [ $record, $set_index, $set_index_where, $index_where]);
+                                                        }
                                                         break;
                                                 }
                                             }
-                                                if($set_index[0] === false){
-                                            } else {
-                                                ddd($set_index);
-                                            }
-                                            d($set_index_init);
-                                            d($set_index_where);
-                                            d($set_index_key);
-                                            d($set_index_operator);
-                                            d($index_where);
-                                            ddd($set_index);
                                         } elseif(is_bool($set[2])) {
                                             array_shift($set);
                                             array_shift($set);
@@ -871,8 +879,6 @@ trait Index {
                     $nested_options['where'] = $where_process;
                     $record = $this->index_list_record($class, $role, $nested_options);
                     if($record){
-                        d($record);
-                        d($deepest);
                         return $record;
                     }
 //                    $where_name = $this->index_where_name($name, $nested_options);
