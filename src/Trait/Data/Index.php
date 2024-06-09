@@ -787,7 +787,7 @@ trait Index {
                                                         $set = [
                                                             false
                                                         ];
-                                                        break;
+                                                        break 2;
                                                     }
                                                     d($options['index']);
                                                     break 3;
@@ -800,7 +800,7 @@ trait Index {
                                                         $set = [
                                                             false
                                                         ];
-                                                        break;
+                                                        break 2;
                                                     }
                                                     d($options['index']);
                                                     break 3;
