@@ -698,6 +698,7 @@ trait Index {
                         $where_process = $where;
                         if(!$set_init){
                             $set_init = $set;
+                            d($set_init);
                         }
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
                         if($index_where){
