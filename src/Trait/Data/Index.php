@@ -724,6 +724,7 @@ trait Index {
                                         break 2;
                                     }
                                 } else {
+                                    d($index_where);
                                     if(
                                         !array_key_exists(0, $index_where) &&
                                         array_key_exists(2, $index_where)
