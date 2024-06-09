@@ -665,6 +665,7 @@ trait Index {
                     )
                     / 2
                 );
+            d($seek);
             $counter++;
             if ($counter > $max) {
                 break;
@@ -779,6 +780,7 @@ trait Index {
                                             if($set_index_2[0] === false){
                                                 sort($index_where[2], SORT_NATURAL);
                                                 d($index_where);
+                                                d($set_init);
                                                 if($index_where[2][0] === $set_init[2]['value']){
                                                     $options['index']['max'] = $seek - 1;
                                                     d($options['index']);
