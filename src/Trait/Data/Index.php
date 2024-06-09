@@ -783,6 +783,12 @@ trait Index {
                                                 d($set_init);
                                                 if($index_where[2][0] === $set_init[2]['value']){
                                                     $options['index']['max'] = $seek - 1;
+                                                    if($options['index']['max'] < $options['index']['min']){
+                                                        $set = [
+                                                            false
+                                                        ];
+                                                        break;
+                                                    }
                                                     d($options['index']);
                                                     break 3;
 
@@ -790,10 +796,17 @@ trait Index {
                                                     //sort[1] === $value
                                                     //min becomes seek + 1
                                                     $options['index']['min'] = $seek + 1;
+                                                    if($options['index']['max'] < $options['index']['min']){
+                                                        $set = [
+                                                            false
+                                                        ];
+                                                        break;
+                                                    }
                                                     d($options['index']);
                                                     break 3;
                                                 }
                                             }
+
                                             break;
                                         case 'or':
                                             ddd('yes');
