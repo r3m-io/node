@@ -780,20 +780,14 @@ trait Index {
                                                 d($index_where);
                                                 if($index_where[2][0] === $set_init[2]['value']){
                                                     $options['index']['max'] = $seek - 1;
-                                                    $set = [
-                                                        false
-                                                    ];
-                                                    break;
+                                                    d($options['index']);
                                                     break 2;
 
                                                 } else {
                                                     //sort[1] === $value
                                                     //min becomes seek + 1
                                                     $options['index']['min'] = $seek + 1;
-                                                    $set = [
-                                                        false
-                                                    ];
-                                                    break;
+                                                    d($options['index']);
                                                     break 2;
                                                 }
                                             }
