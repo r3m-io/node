@@ -212,13 +212,20 @@ trait NodeList {
                     $record = $this->index_list_record($class, $role, $record_options);
                     $record = $this->index_record_expose($class, $role, $record, $record_options);
                     if($record){
-                        $list[] = $record;
                         if(!array_key_exists('data', $record_options['index'])){
                             $record_options['index']['data'] = [];
                         }
-                        $record_options['index']['data'][] = $record->uuid;
-                        d($record_options);
-                        $count++;
+                        if(
+                            !in_array(
+                                $record->uuid,
+                                $record_options['index']['data'],
+                                true
+                            )
+                        ){
+                            $record_options['index']['data'][] = $record->uuid;
+                            $list[] = $record;
+                            $count++;
+                        }
                     } else {
                         break;
                     }
