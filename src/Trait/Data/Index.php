@@ -699,7 +699,14 @@ trait Index {
                         $where_process = $where;
                         if(!$set_init){
                             $set_init = $set;
-                            d($set_init);
+                            if(array_key_exists(0, $set_init) && $set_init[0] === false){
+                                d($set_init);
+                                d($where);
+                                d($deepest);
+                                ddd($options);
+
+                            }
+
                         }
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
                         d($set);
