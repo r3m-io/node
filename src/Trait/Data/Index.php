@@ -914,6 +914,7 @@ trait Index {
                         array_key_exists(0, $where_process) &&
                         $where_process[0] === false
                     ){
+                        $record = false;
                         break;
                     }
                     ksort($where_process, SORT_NATURAL);
