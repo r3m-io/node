@@ -867,12 +867,7 @@ trait Index {
                                 switch($set[1]) {
                                     case 'and':
                                         if($set[0] === true && $set[2] === true){
-                                            array_shift($set);
-                                            array_shift($set);
-                                            d($set_init);
-                                            d($set);
-                                            d($record);
-                                            d('yes');
+                                            return $record;
                                         }
                                         //doesn't reach this point
 
