@@ -814,10 +814,17 @@ trait Index {
                                             }
                                             break;
                                         case 'or':
-                                            ddd('yes');
+                                            $logger = $object->config('project.log.debug');
+                                            if($logger){
+                                                $object->logger($logger)->debug('Unknown behavior: index or', [ $record, $set, $set_init, $index_where]);
+                                            }
                                             //first or is true so return
                                             break;
                                         case 'xor':
+                                            $logger = $object->config('project.log.debug');
+                                            if($logger){
+                                                $object->logger($logger)->debug('Unknown behavior: index xor', [ $record, $set, $set_init, $index_where]);
+                                            }
                                             //first xor is true so check next
                                             break;
                                     }
