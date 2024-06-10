@@ -38,6 +38,8 @@ trait NodeList {
         $mtime = false;
         $name = Controller::name($class);
         $options = Core::object($options, Core::OBJECT_ARRAY);
+        d($options);
+        d($name);
         $object = $this->object();
         $parse = false;
         if (!array_key_exists('function', $options)) {
@@ -80,7 +82,6 @@ trait NodeList {
                 $where = $this->list_where($options);
             }
             $options['where'] = $where;
-            d($options['where']);
         }
         $options['page'] = $options['page'] ?? 1;
         $options['limit'] = $options['limit'] ?? 1000;
@@ -207,51 +208,7 @@ trait NodeList {
                     $count++;
                 }
             } else {
-                $counter = 0;
-                $record_options = $options;
-                while(true){
-                    $record = $this->index_list_record($class, $role, $record_options);
-                    $record = $this->index_record_expose($class, $role, $record, $record_options);
-                    if($record){
-                        if(!array_key_exists('data', $record_options['index'])){
-                            $record_options['index']['data'] = [];
-                        }
-                        if(
-                            !in_array(
-                                $record->uuid,
-                                $record_options['index']['data'],
-                                true
-                            )
-                        ){
-                            $record_options['index']['data'][] = $record->uuid;
-                            $list[] = $record;
-                            $count++;
-                        }
-                    } else {
-                        break;
-                    }
-                    $counter++;
-                    if($counter > $options['index']['count']){
-                        if($options['limit'] !== '*'){
-                            $chunks = array_chunk($list, $options['limit']);
-                            if(array_key_exists($options['page'] - 1, $chunks)){
-                                $list = $chunks[$options['page'] - 1];
-                            } else {
-                                d($chunks);
-                                $list = [];
-                            }
-                        }
-                        break;
-                    }
-                    if(
-                        $options['limit'] !== '*' &&
-                        $count === ($options['page'] * $options['limit'])
-                    ){
-                        $chunks = array_chunk($list, $options['limit']);
-                        $list = $chunks[$options['page'] - 1];
-                        break;
-                    }
-                }
+
             }
 
             d('from index:' . $name);
@@ -833,10 +790,7 @@ trait NodeList {
                                 $key = implode('', $key);
                                 $list_filtered[$key] = $record;
                             }
-                            if(
-                                $limit === 1 &&
-                                $options['page'] === 1
-                            ){
+                            if($limit === 1 && $options['page'] === 1){
                                 break;
                             }
                             /*
