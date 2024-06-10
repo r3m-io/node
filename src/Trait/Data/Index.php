@@ -715,8 +715,14 @@ trait Index {
                                 array_key_exists('data', $options['index']) &&
                                 is_array($options['index']['data'])
                             ){
+                                $set_index_0[] = 'and';
+                                $set_index_0[] = [
+                                    'attribute' => 'uuid',
+                                    'operator' => 'not-in',
+                                    'value' => $options['index']['data']
+                                ];
                                 d($options);
-                                ddd($set_index_0);
+                                d($set_index_0);
                             }
 
 
@@ -783,28 +789,22 @@ trait Index {
                                     switch($set_init[1]){
                                         case 'and':
                                             $set_index_2 = [$set_init[2]];
+                                            if(
+                                                array_key_exists('data', $options['index']) &&
+                                                is_array($options['index']['data'])
+                                            ){
+                                                $set_index_0[] = 'and';
+                                                $set_index_0[] = [
+                                                    'attribute' => 'uuid',
+                                                    'operator' => 'not-in',
+                                                    'value' => $options['index']['data']
+                                                ];
+                                                d($options);
+                                                d($set_index_0);
+                                            }
+
                                             $set_index_2 = $this->where_process($record, $set_index_2);
                                             if($set_index_0[0] === true && $set_index_2[0] === true){
-                                                if(
-                                                    property_exists($record, 'uuid') &&
-                                                    array_key_exists('data', $options['index']) &&
-                                                    is_array($options['index']['data'])
-                                                ){
-                                                    if(
-                                                        in_array(
-                                                            $record->uuid,
-                                                            $options['index']['data'],
-                                                            true
-                                                        )
-                                                    ){
-                                                        $is_used = true;
-                                                        /**
-                                                         *
-                                                         */
-
-                                                        break 2;
-                                                    }
-                                                }
                                                 d($set_index_0);
                                                 d($set_index_2);
                                                 d($set);
