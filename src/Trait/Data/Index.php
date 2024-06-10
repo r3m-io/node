@@ -789,7 +789,8 @@ trait Index {
                                                         )
                                                     ){
                                                         d('false');
-                                                        $record = false;
+                                                        d($seek);
+
                                                         break 2;
                                                     }
                                                 }
