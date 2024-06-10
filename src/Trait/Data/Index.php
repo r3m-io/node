@@ -916,6 +916,9 @@ trait Index {
                     unset($key);
                     $counter++;
                     $nested_options = $options;
+                    ddd($options['where']);
+
+
                     $nested_options['where'] = $where_process;
                     $record = $this->index_list_record($class, $role, $nested_options);
                     if($record){
