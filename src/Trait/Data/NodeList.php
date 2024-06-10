@@ -215,7 +215,7 @@ trait NodeList {
                         if(!array_key_exists('data', $options['index'])){
                             $options['index']['data'] = [];
                         }
-                        $options['index']['data'][] = [$record->uuid];
+                        $options['index']['data'][] = $record->uuid;
                         $count++;
                     } else {
                         break;
