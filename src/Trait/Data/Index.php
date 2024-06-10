@@ -788,8 +788,10 @@ trait Index {
                                                             true
                                                         )
                                                     ){
-                                                        d('false');
-                                                        d($seek);
+                                                        $is_used = true;
+                                                        /**
+                                                         *
+                                                         */
 
                                                         break 2;
                                                     }

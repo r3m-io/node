@@ -207,15 +207,17 @@ trait NodeList {
                 }
             } else {
                 $counter = 0;
+                $record_options = $options;
                 while(true){
-                    $record = $this->index_list_record($class, $role, $options);
-                    $record = $this->index_record_expose($class, $role, $record, $options);
+                    $record = $this->index_list_record($class, $role, $record_options);
+                    $record = $this->index_record_expose($class, $role, $record, $record_options);
                     if($record){
                         $list[] = $record;
-                        if(!array_key_exists('data', $options['index'])){
-                            $options['index']['data'] = [];
+                        if(!array_key_exists('data', $record_options['index'])){
+                            $record_options['index']['data'] = [];
                         }
-                        $options['index']['data'][] = $record->uuid;
+                        $record_options['index']['data'][] = $record->uuid;
+                        ddd($record_options);
                         $count++;
                     } else {
                         break;
