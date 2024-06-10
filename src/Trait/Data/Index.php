@@ -647,6 +647,7 @@ trait Index {
         $object = $this->object();
         $record = (object) [];
         $file = [];
+        ddd($options['index']);
         $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
         foreach($options['index']['url'] as $nr => $url){
             $file[$nr] = new SplFileObject($url);
