@@ -206,7 +206,33 @@ trait NodeList {
                     $count++;
                 }
             } else {
-
+                $counter = 0;
+                while(true){
+                    $record = $this->index_list_record($class, $role, $options);
+                    $record = $this->index_record_expose($class, $role, $record, $options);
+                    if($record){
+                        $list[] = $record;
+                        $count++;
+                    } else {
+                        break;
+                    }
+                    $counter++;
+                    if($counter > $options['index']['count']){
+                        if($options['limit'] !== '*'){
+                            $chunks = array_chunk($list, $options['limit']);
+                            $list = $chunks[$options['page'] - 1];
+                        }
+                        break;
+                    }
+                    if(
+                        $options['limit'] !== '*' &&
+                        $count === ($options['page'] * $options['limit'])
+                    ){
+                        $chunks = array_chunk($list, $options['limit']);
+                        $list = $chunks[$options['page'] - 1];
+                        break;
+                    }
+                }
             }
 
             d('from index:' . $name);
@@ -788,7 +814,10 @@ trait NodeList {
                                 $key = implode('', $key);
                                 $list_filtered[$key] = $record;
                             }
-                            if($limit === 1 && $options['page'] === 1){
+                            if(
+                                $limit === 1 &&
+                                $options['page'] === 1
+                            ){
                                 break;
                             }
                             /*
