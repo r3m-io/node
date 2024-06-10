@@ -202,8 +202,8 @@ trait NodeList {
                 $options['page'] === 1
             ){
                 $record = $this->index_list_record($class, $role, $options);
-                $record = $this->index_record_expose($class, $role, $record, $options);
                 if($record){
+                    $record = $this->index_record_expose($class, $role, $record, $options);
                     $list[] = $record;
                     $count++;
                 }
