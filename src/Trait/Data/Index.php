@@ -776,6 +776,23 @@ trait Index {
                                             $set_index_2 = [$set_init[2]];
                                             $set_index_2 = $this->where_process($record, $set_index_2);
                                             if($set_index_0[0] === true && $set_index_2[0] === true){
+                                                if(
+                                                    property_exists('uuid', $record) &&
+                                                    array_key_exists('data', $options['index']) &&
+                                                    is_array($options['index']['data'])
+                                                ){
+                                                    if(
+                                                        in_array(
+                                                            $record->uuid,
+                                                            $options['index']['data'],
+                                                            true
+                                                        )
+                                                    ){
+                                                        d('false');
+                                                        $record = false;
+                                                        break 2;
+                                                    }
+                                                }
                                                 d($set_index_0);
                                                 d($set_index_2);
                                                 d($set);
