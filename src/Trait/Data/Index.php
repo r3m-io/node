@@ -799,6 +799,8 @@ trait Index {
                                                     ];
                                                 }
                                             }
+                                            d($set_index_2);
+                                            d($index_where);
                                             if($set_index_2[0] === false){
                                                 sort($index_where[2], SORT_NATURAL);
                                                 if($index_where[2][0] === $set_init[2]['value']){
@@ -810,7 +812,6 @@ trait Index {
                                                         break 2;
                                                     }
                                                     break 3;
-
                                                 } else {
                                                     //sort[1] === $value
                                                     //min becomes seek + 1
