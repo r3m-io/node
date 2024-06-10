@@ -866,10 +866,14 @@ trait Index {
                             ){
                                 switch($set[1]) {
                                     case 'and':
+                                        if($set[0] === true && $set[2] === true){
+                                            d($set_init);
+                                            d($set);
+                                            d($record);
+                                            ddd('yes');
+                                        }
                                         //doesn't reach this point
-                                        d($set_init);
-                                        d($set);
-                                        ddd('yes');
+
                                         break;
                                     case 'or':
                                         if($set[0] === true || $set[2] === true){
