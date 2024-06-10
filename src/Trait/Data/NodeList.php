@@ -212,6 +212,10 @@ trait NodeList {
                     $record = $this->index_record_expose($class, $role, $record, $options);
                     if($record){
                         $list[] = $record;
+                        if(!array_key_exists('data', $options['index'])){
+                            $options['index']['data'] = [];
+                        }
+                        $options['index']['data'][] = [$record->uuid];
                         $count++;
                     } else {
                         break;

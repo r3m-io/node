@@ -440,6 +440,7 @@ trait Where {
                 */
                 $left = Filter::list($list)->where($filter_where);
                 if(!empty($left)){
+                    d($options);
                     $where[$key] = true;
                     $set[0] = true;
                 } else {
@@ -469,6 +470,7 @@ trait Where {
                 case 'or':
                     $operator = 'or';
                     if ($set[0] === true || $set[2] === true) {
+                        d($options);
                         $where[$key] = true;
                         return $set;
                     }
@@ -551,6 +553,7 @@ trait Where {
                 case 'and':
                     $operator = 'and';
                     if ($set[0] === true && $set[2] === true) {
+                        d($options);
                         $where[$key] = true;
                         return $set;
                     }

@@ -681,8 +681,15 @@ trait Index {
             $line = $file['uuid']->current();
             $value = rtrim($line, PHP_EOL);
             $record->uuid = $value;
-//            d($record);
-            $record_where = $this->where($record, $options['where'], $options);
+            if(array_key_exists('data', $options['index'])){
+                if(in_array($record->uuid, $options['index']['data'])){
+                    $record_where = false;
+                } else {
+                    $record_where = $this->where($record, $options['where'], $options);
+                }
+            } else {
+                $record_where = $this->where($record, $options['where'], $options);
+            }
             if($record_where){
                 return $record;
             } else {
