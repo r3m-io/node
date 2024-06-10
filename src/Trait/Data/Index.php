@@ -681,15 +681,8 @@ trait Index {
             $line = $file['uuid']->current();
             $value = rtrim($line, PHP_EOL);
             $record->uuid = $value;
-            if(array_key_exists('data', $options['index'])){
-                if(in_array($record->uuid, $options['index']['data'])){
-                    $record_where = false;
-                } else {
-                    $record_where = $this->where($record, $options['where'], $options);
-                }
-            } else {
-                $record_where = $this->where($record, $options['where'], $options);
-            }
+//            d($record);
+            $record_where = $this->where($record, $options['where'], $options);
             if($record_where){
                 return $record;
             } else {
@@ -710,15 +703,13 @@ trait Index {
                         }
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
                         d($set);
-                        d($index_where);
-                        d($where_process);
-                        d($where);
                         if($index_where){
                             d($index_where);
                             $set_index_0 = [$set_init[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
+                            $set_index_2 = null;
                             d($set_index_0);
-                            $set_index_2 = null;;
+                            d($set_init);
                             //if($set_index_0[0] === true){}
                             if($set_index_0[0] === false){
                                 if($set_init[0] === false){
@@ -734,6 +725,7 @@ trait Index {
                                         break 2;
                                     }
                                 } else {
+                                    d($index_where);
                                     if(
                                         !array_key_exists(0, $index_where) &&
                                         array_key_exists(2, $index_where)
@@ -775,72 +767,52 @@ trait Index {
                                     }
                                 }
                             } else {
-                                d($set_init);
                                 if(array_key_exists(1, $set_init)){
                                     switch($set_init[1]){
                                         case 'and':
                                             $set_index_2 = [$set_init[2]];
                                             $set_index_2 = $this->where_process($record, $set_index_2);
+                                            d($set_index_2);
                                             if($set_index_0[0] === true && $set_index_2[0] === true){
-                                                d($set_index_0);
-                                                d($set_index_2);
-                                                d($set);
-                                                d($set_init);
-                                                if(is_array($set)){
-                                                    if(array_key_exists(0, $set)){
-                                                        array_shift($set);
-                                                    }
-                                                    if(array_key_exists(1, $set)){
-                                                        array_shift($set);
-                                                    }
-                                                } else {
-                                                    $set = [
-                                                        true
-                                                    ];
-                                                }
+                                                array_shift($set);
+                                                array_shift($set);
                                             }
                                             if($set_index_2[0] === false){
                                                 sort($index_where[2], SORT_NATURAL);
+                                                d($index_where);
+                                                d($set_init);
                                                 if($index_where[2][0] === $set_init[2]['value']){
                                                     $options['index']['max'] = $seek - 1;
-                                                    d('max: ' .$options['index']['max']);
-                                                    d('min: ' .$options['index']['min']);
-
                                                     if($options['index']['max'] < $options['index']['min']){
                                                         $set = [
                                                             false
                                                         ];
                                                         break 2;
                                                     }
+                                                    d($options['index']);
                                                     break 3;
+
                                                 } else {
                                                     //sort[1] === $value
                                                     //min becomes seek + 1
                                                     $options['index']['min'] = $seek + 1;
-                                                    d('max: ' .$options['index']['max']);
-                                                    d('min: ' .$options['index']['min']);
                                                     if($options['index']['max'] < $options['index']['min']){
                                                         $set = [
                                                             false
                                                         ];
                                                         break 2;
                                                     }
+                                                    d($options['index']);
                                                     break 3;
                                                 }
                                             }
+
                                             break;
                                         case 'or':
-                                            $logger = $object->config('project.log.debug');
-                                            if($logger){
-                                                $object->logger($logger)->debug('Unknown behavior: index or', [ $record, $set, $set_init, $index_where]);
-                                            }
+                                            ddd('yes');
                                             //first or is true so return
                                             break;
                                         case 'xor':
-                                            $logger = $object->config('project.log.debug');
-                                            if($logger){
-                                                $object->logger($logger)->debug('Unknown behavior: index xor', [ $record, $set, $set_init, $index_where]);
-                                            }
                                             //first xor is true so check next
                                             break;
                                     }
