@@ -785,6 +785,10 @@ trait Index {
                                                     if(array_key_exists(1, $set)){
                                                         array_shift($set);
                                                     }
+                                                } else {
+                                                    $set = [
+                                                        true
+                                                    ];
                                                 }
                                             }
                                             if($set_index_2[0] === false){
