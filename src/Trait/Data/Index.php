@@ -799,12 +799,13 @@ trait Index {
                                                     ];
                                                 }
                                             }
-                                            d($set_index_2);
-                                            d($index_where);
                                             if($set_index_2[0] === false){
                                                 sort($index_where[2], SORT_NATURAL);
                                                 if($index_where[2][0] === $set_init[2]['value']){
                                                     $options['index']['max'] = $seek - 1;
+                                                    d('max: ' .$options['index']['max']);
+                                                    d('min: ' .$options['index']['min']);
+
                                                     if($options['index']['max'] < $options['index']['min']){
                                                         $set = [
                                                             false
@@ -816,6 +817,8 @@ trait Index {
                                                     //sort[1] === $value
                                                     //min becomes seek + 1
                                                     $options['index']['min'] = $seek + 1;
+                                                    d('max: ' .$options['index']['max']);
+                                                    d('min: ' .$options['index']['min']);
                                                     if($options['index']['max'] < $options['index']['min']){
                                                         $set = [
                                                             false
