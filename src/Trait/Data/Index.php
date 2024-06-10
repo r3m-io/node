@@ -910,8 +910,8 @@ trait Index {
                     if($deepest === 0){
                         break;
                     }
-                    d($where_process);
                     ksort($where_process, SORT_NATURAL);
+                    d($where_process);
                     $deepest = $this->where_get_depth($where_process);
                     unset($key);
                     $counter++;
