@@ -647,7 +647,12 @@ trait Index {
         $object = $this->object();
         $record = (object) [];
         $file = [];
-        ddd($options['index']);
+        if(!array_key_exists('url_uuid', $options['index'])){
+            return false;
+        }
+        if(!File::exist($options['index']['url_uuid'])){
+            return false;
+        }
         $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
         foreach($options['index']['url'] as $nr => $url){
             $file[$nr] = new SplFileObject($url);
