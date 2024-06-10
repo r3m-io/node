@@ -703,6 +703,12 @@ trait Index {
                                 d($set_init);
                                 d($where);
                                 d($deepest);
+                                $debug = debug_backtrace(1);
+                                d($debug[0]['line'] . ' ' . $debug[0]['file'] . ' ' . $debug[0]['function']);
+                                d($debug[1]['line'] . ' ' . $debug[1]['file'] . ' ' . $debug[1]['function']);
+                                d($debug[2]['line'] . ' ' . $debug[2]['file'] . ' ' . $debug[2]['function']);
+
+
                                 ddd($options);
 
                             }
