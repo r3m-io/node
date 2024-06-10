@@ -699,30 +699,12 @@ trait Index {
                     while($record !== false){
                         if(!$set_init){
                             $set_init = $set;
-                            if(array_key_exists(0, $set_init) && $set_init[0] === false){
-                                d($set_init);
-                                d($where);
-                                d($deepest);
-                                $debug = debug_backtrace(1);
-                                d($debug[0]['line'] . ' ' . $debug[0]['file'] . ' ' . $debug[0]['function']);
-                                d($debug[1]['line'] . ' ' . $debug[1]['file'] . ' ' . $debug[1]['function']);
-                                d($debug[2]['line'] . ' ' . $debug[2]['file'] . ' ' . $debug[2]['function']);
-
-
-                                ddd($options);
-
-                            }
-
                         }
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
-                        d($set);
                         if($index_where){
-                            d($index_where);
                             $set_index_0 = [$set_init[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
                             $set_index_2 = null;
-                            d($set_index_0);
-                            d($set_init);
                             //if($set_index_0[0] === true){}
                             if($set_index_0[0] === false){
                                 if($set_init[0] === false){
@@ -738,7 +720,6 @@ trait Index {
                                         break 2;
                                     }
                                 } else {
-                                    d($index_where);
                                     if(
                                         !array_key_exists(0, $index_where) &&
                                         array_key_exists(2, $index_where)
@@ -785,15 +766,12 @@ trait Index {
                                         case 'and':
                                             $set_index_2 = [$set_init[2]];
                                             $set_index_2 = $this->where_process($record, $set_index_2);
-                                            d($set_index_2);
                                             if($set_index_0[0] === true && $set_index_2[0] === true){
                                                 array_shift($set);
                                                 array_shift($set);
                                             }
                                             if($set_index_2[0] === false){
                                                 sort($index_where[2], SORT_NATURAL);
-                                                d($index_where);
-                                                d($set_init);
                                                 if($index_where[2][0] === $set_init[2]['value']){
                                                     $options['index']['max'] = $seek - 1;
                                                     if($options['index']['max'] < $options['index']['min']){
@@ -802,7 +780,6 @@ trait Index {
                                                         ];
                                                         break 2;
                                                     }
-                                                    d($options['index']);
                                                     break 3;
 
                                                 } else {
@@ -815,18 +792,23 @@ trait Index {
                                                         ];
                                                         break 2;
                                                     }
-                                                    d($options['index']);
                                                     break 3;
                                                 }
                                             }
-
                                             break;
                                         case 'or':
-                                            ddd('yes');
+                                            $logger = $object->config('project.log.debug');
+                                            if($logger){
+                                                $object->logger($logger)->debug('Unknown behavior: index or', [ $record, $set_index, $set_index_where, $index_where]);
+                                            }
                                             //first or is true so return
                                             break;
                                         case 'xor':
                                             //first xor is true so check next
+                                            $logger = $object->config('project.log.debug');
+                                            if($logger){
+                                                $object->logger($logger)->debug('Unknown behavior: index xor', [ $record, $set_index, $set_index_where, $index_where]);
+                                            }
                                             break;
                                     }
                                 }
