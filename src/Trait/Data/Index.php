@@ -867,6 +867,8 @@ trait Index {
                                 switch($set[1]) {
                                     case 'and':
                                         //doesn't reach this point
+                                        d($set_init);
+                                        d($set);
                                         ddd('yes');
                                         break;
                                     case 'or':
