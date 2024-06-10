@@ -721,13 +721,8 @@ trait Index {
                                     'operator' => 'not-in',
                                     'value' => $options['index']['data']
                                 ];
-                                d($options);
-                                d($set_index_0);
                             }
-
-
                             $set_index_0 = $this->where_process($record, $set_index_0);
-                            d($set_index_0);
                             $set_index_2 = null;;
                             //if($set_index_0[0] === true){}
                             if($set_index_0[0] === false){
@@ -793,14 +788,12 @@ trait Index {
                                                 array_key_exists('data', $options['index']) &&
                                                 is_array($options['index']['data'])
                                             ){
-                                                $set_index_0[] = 'and';
-                                                $set_index_0[] = [
+                                                $set_index_2[] = 'and';
+                                                $set_index_2[] = [
                                                     'attribute' => 'uuid',
                                                     'operator' => 'not-in',
                                                     'value' => $options['index']['data']
                                                 ];
-                                                d($options);
-                                                d($set_index_0);
                                             }
 
                                             $set_index_2 = $this->where_process($record, $set_index_2);
