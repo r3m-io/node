@@ -905,7 +905,7 @@ trait Index {
                         }
                     }
                     if($record === false){
-                        break;
+                        break 2;
                     }
                     if($deepest === 0){
                         break;
@@ -915,7 +915,7 @@ trait Index {
                         $where_process[0] === false
                     ){
                         $record = false;
-                        break;
+                        break 2;
                     }
                     ksort($where_process, SORT_NATURAL);
                     d($where_process);
