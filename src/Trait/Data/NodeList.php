@@ -80,6 +80,7 @@ trait NodeList {
                 $where = $this->list_where($options);
             }
             $options['where'] = $where;
+            d($options['where']);
         }
         $options['page'] = $options['page'] ?? 1;
         $options['limit'] = $options['limit'] ?? 1000;
