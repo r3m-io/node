@@ -233,7 +233,12 @@ trait NodeList {
                     if($counter > $options['index']['count']){
                         if($options['limit'] !== '*'){
                             $chunks = array_chunk($list, $options['limit']);
-                            $list = $chunks[$options['page'] - 1];
+                            if(array_key_exists($options['page'] - 1, $chunks)){
+                                $list = $chunks[$options['page'] - 1];
+                            } else {
+                                d($chunks);
+                                $list = [];
+                            }
                         }
                         break;
                     }
