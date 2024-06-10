@@ -777,7 +777,7 @@ trait Index {
                                             $set_index_2 = $this->where_process($record, $set_index_2);
                                             if($set_index_0[0] === true && $set_index_2[0] === true){
                                                 if(
-                                                    property_exists('uuid', $record) &&
+                                                    property_exists($record, 'uuid') &&
                                                     array_key_exists('data', $options['index']) &&
                                                     is_array($options['index']['data'])
                                                 ){
