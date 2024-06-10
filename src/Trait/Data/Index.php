@@ -778,11 +778,13 @@ trait Index {
                                                 d($set_index_2);
                                                 d($set);
                                                 d($set_init);
-                                                if(array_key_exists(0, $set)){
-                                                    array_shift($set);
-                                                }
-                                                if(array_key_exists(1, $set)){
-                                                    array_shift($set);
+                                                if(is_array($set)){
+                                                    if(array_key_exists(0, $set)){
+                                                        array_shift($set);
+                                                    }
+                                                    if(array_key_exists(1, $set)){
+                                                        array_shift($set);
+                                                    }
                                                 }
                                             }
                                             if($set_index_2[0] === false){
