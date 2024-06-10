@@ -711,18 +711,8 @@ trait Index {
                         if($index_where){
                             d($index_where);
                             $set_index_0 = [$set_init[0]];
-                            if(
-                                array_key_exists('data', $options['index']) &&
-                                is_array($options['index']['data'])
-                            ){
-                                $set_index_0[] = 'and';
-                                $set_index_0[] = [
-                                    'attribute' => 'uuid',
-                                    'operator' => 'not-in',
-                                    'value' => $options['index']['data']
-                                ];
-                            }
                             $set_index_0 = $this->where_process($record, $set_index_0);
+                            d($set_index_0);
                             $set_index_2 = null;;
                             //if($set_index_0[0] === true){}
                             if($set_index_0[0] === false){
@@ -784,18 +774,6 @@ trait Index {
                                     switch($set_init[1]){
                                         case 'and':
                                             $set_index_2 = [$set_init[2]];
-                                            if(
-                                                array_key_exists('data', $options['index']) &&
-                                                is_array($options['index']['data'])
-                                            ){
-                                                $set_index_2[] = 'and';
-                                                $set_index_2[] = [
-                                                    'attribute' => 'uuid',
-                                                    'operator' => 'not-in',
-                                                    'value' => $options['index']['data']
-                                                ];
-                                            }
-
                                             $set_index_2 = $this->where_process($record, $set_index_2);
                                             if($set_index_0[0] === true && $set_index_2[0] === true){
                                                 d($set_index_0);
@@ -866,11 +844,8 @@ trait Index {
                             ){
                                 switch($set[1]) {
                                     case 'and':
-                                        if($set[0] === true && $set[2] === true){
-                                            return $record;
-                                        }
                                         //doesn't reach this point
-
+                                        ddd('yes');
                                         break;
                                     case 'or':
                                         if($set[0] === true || $set[2] === true){
