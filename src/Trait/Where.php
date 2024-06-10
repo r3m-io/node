@@ -523,8 +523,6 @@ trait Where {
                     if (!empty($left) || !empty($right)) {
                         //nothing
                     } else {
-                        d($set);
-                        d($set_init);
                         if(
                             is_array($set_init[0]) &&
                             array_key_exists('attribute', $set_init[0]) &&
