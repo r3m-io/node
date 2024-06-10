@@ -217,8 +217,11 @@ trait NodeList {
                             $record_options['index']['data'] = [];
                         }
                         $record_options['index']['data'][] = $record->uuid;
-                        ddd($record_options);
+                        d($record_options);
                         $count++;
+                        if($count >= 3){
+                            break;
+                        }
                     } else {
                         break;
                     }

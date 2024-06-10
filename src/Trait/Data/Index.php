@@ -711,6 +711,15 @@ trait Index {
                         if($index_where){
                             d($index_where);
                             $set_index_0 = [$set_init[0]];
+                            if(
+                                array_key_exists('data', $options['index']) &&
+                                is_array($options['index']['data'])
+                            ){
+                                d($options);
+                                ddd($set_index_0);
+                            }
+
+
                             $set_index_0 = $this->where_process($record, $set_index_0);
                             d($set_index_0);
                             $set_index_2 = null;;
