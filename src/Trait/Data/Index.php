@@ -781,11 +781,29 @@ trait Index {
                                                     is_array($index_where[2][0]) &&
                                                     $set_init[2]['operator'] === 'not-in'
                                                 ){
-                                                    $options['index']['max'] = $seek - 1;
-                                                    if($options['index']['max'] < $options['index']['min']){
-                                                        $set = [
-                                                            false
-                                                        ];
+                                                    if(
+                                                        in_array(
+                                                            $set_init[2]['value'],
+                                                            $index_where[2][0], true)
+                                                    ){
+                                                        $options['index']['max'] = $seek - 1;
+                                                        if($options['index']['max'] < $options['index']['min']){
+                                                            $set = [
+                                                                false
+                                                            ];
+                                                            break 2;
+                                                        }
+                                                        break 2;
+                                                    } else {
+                                                        //sort[1] === $value
+                                                        //min becomes seek + 1
+                                                        $options['index']['min'] = $seek + 1;
+                                                        if($options['index']['max'] < $options['index']['min']){
+                                                            $set = [
+                                                                false
+                                                            ];
+                                                            break 2;
+                                                        }
                                                         break 2;
                                                     }
                                                     break 3;
