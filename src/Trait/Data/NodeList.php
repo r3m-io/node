@@ -1062,10 +1062,16 @@ trait NodeList {
                             $possible_array = str_replace([
                                 '[\'',
                                 '\']',
-                                '\',\''
+                                '\',\'',
+                                '\', \'',
+                                '\',  \'',
+                                '\',   \''
                             ],[
                                 '["',
                                 '"]',
+                                '","',
+                                '","',
+                                '","',
                                 '","'
                             ], $value);
                             $array = Core::object($possible_array, Core::OBJECT_ARRAY);
