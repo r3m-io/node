@@ -793,7 +793,6 @@ trait Index {
                                                             ];
                                                             break 2;
                                                         }
-                                                        break 2;
                                                     } else {
                                                         //sort[1] === $value
                                                         //min becomes seek + 1
@@ -804,7 +803,6 @@ trait Index {
                                                             ];
                                                             break 2;
                                                         }
-                                                        break 2;
                                                     }
                                                     break 3;
                                                 }
