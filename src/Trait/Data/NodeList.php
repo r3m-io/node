@@ -991,12 +991,36 @@ trait NodeList {
                     $is_attribute = false;
                     $is_operator = false;
                     $is_value = false;
+                    $is_array = false;
+                    $previous = false;
                     foreach ($split as $nr => $char) {
+                        if(
+                            $char === '[' &&
+                            $is_array === false &&
+                            $previous !== '\\'
+                        ) {
+                            $is_array = true;
+                        }
+                        elseif(
+                            $char === ']' &&
+                            $is_array === true &&
+                            $previous !== '\\'
+                        ) {
+                            $is_array = false;
+                        }
                         if ($char === '\'') {
                             if ($is_quote === false) {
                                 $is_quote = true;
                             } else {
                                 $is_quote = false;
+                            }
+                            if (
+                                $is_attribute &&
+                                $is_operator &&
+                                $is_value === false &&
+                                $is_array
+                            ) {
+                                $value .= $char;
                             }
                             continue;
                         }
@@ -1028,6 +1052,7 @@ trait NodeList {
                         ) {
                             $value .= $char;
                         }
+                        $previous = $char;
                     }
                     if ($attribute && $operator && $value) {
                         if(
