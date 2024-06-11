@@ -1043,6 +1043,7 @@ trait NodeList {
                                 '"]',
                                 '","'
                             ], $value);
+                            d($possible_array);
                             $array = Core::object($possible_array, Core::OBJECT_ARRAY);
                             d($array);
                             if($array){
