@@ -788,10 +788,7 @@ trait Index {
                                                         ];
                                                         break 2;
                                                     }
-                                                    d($set_index_2);
-                                                    d($set_init);
-                                                    ddd($index_where);
-
+                                                    break 3;
                                                 }
                                                 sort($index_where[2], SORT_NATURAL);
                                                 if($index_where[2][0] === $set_init[2]['value']){
