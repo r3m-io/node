@@ -1035,6 +1035,7 @@ trait NodeList {
                             substr($value, -1) === ']'
                         ){
                             $array = Core::object($value, Core::OBJECT_ARRAY);
+                            d($array);
                             if($array){
                                 $value = $array;
                             }
