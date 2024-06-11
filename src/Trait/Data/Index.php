@@ -777,6 +777,12 @@ trait Index {
                                                 array_shift($set);
                                             }
                                             if($set_index_2[0] === false){
+                                                d($index_where);
+                                                if(is_array($index_where[2])){
+                                                    d($set_init);
+                                                    ddd($index_where);
+
+                                                }
                                                 sort($index_where[2], SORT_NATURAL);
                                                 if($index_where[2][0] === $set_init[2]['value']){
                                                     $options['index']['max'] = $seek - 1;
