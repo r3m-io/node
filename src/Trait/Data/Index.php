@@ -777,8 +777,8 @@ trait Index {
                                                 array_shift($set);
                                             }
                                             if($set_index_2[0] === false){
-                                                d($index_where);
-                                                if(is_array($index_where[2])){
+                                                if(is_array($index_where[2][0])){
+                                                    d($set_index_2);
                                                     d($set_init);
                                                     ddd($index_where);
 
