@@ -1031,7 +1031,7 @@ trait NodeList {
                     }
                     if ($attribute && $operator && $value) {
                         if(
-                            substr($value, 0, ,1) === '[' &&
+                            substr($value, 0,1) === '[' &&
                             substr($value, -1) === ']'
                         ){
                             $array = Core::object($value, Core::OBJECT_JSON);
