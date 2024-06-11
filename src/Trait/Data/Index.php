@@ -777,7 +777,14 @@ trait Index {
                                                 array_shift($set);
                                             }
                                             if($set_index_2[0] === false){
-                                                if(is_array($index_where[2][0])){
+                                                if(
+                                                    is_array($index_where[2][0]) &&
+                                                    $set_init[2]['operator'] === 'not-in'
+                                                ){
+                                                    $options['index']['max'] = $seek - 1;
+                                                    if($options['index']['max'] < $options['index']['min']){
+                                                        ddd('yes');
+                                                    }
                                                     d($set_index_2);
                                                     d($set_init);
                                                     ddd($index_where);
