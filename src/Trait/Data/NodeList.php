@@ -1034,7 +1034,16 @@ trait NodeList {
                             substr($value, 0,1) === '[' &&
                             substr($value, -1) === ']'
                         ){
-                            $array = Core::object($value, Core::OBJECT_ARRAY);
+                            $possible_array = str_replace([
+                                '[\'',
+                                '\']',
+                                '\',\''
+                            ],[
+                                '["',
+                                '"]',
+                                '","'
+                            ], $value);
+                            $array = Core::object($possible_array, Core::OBJECT_ARRAY);
                             d($array);
                             if($array){
                                 $value = $array;
