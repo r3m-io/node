@@ -850,7 +850,9 @@ trait Index {
                                                     if(
                                                         in_array(
                                                             $set_init[2]['value'],
-                                                            $index_where[2][0], true)
+                                                            $index_where[2][0],
+                                                            true
+                                                        )
                                                     ){
                                                         $options['index']['max'] = $seek - 1;
                                                         if($options['index']['max'] < $options['index']['min']){
@@ -861,7 +863,7 @@ trait Index {
                                                             d('break: 2');
                                                         }
                                                     } else {
-                                                        d($record);
+                                                        $record = false;
                                                         //sort[1] === $value
                                                         //min becomes seek + 1
                                                         $options['index']['min'] = $seek + 1;
