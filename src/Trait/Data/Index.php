@@ -863,10 +863,13 @@ trait Index {
                                                             d('break: 2');
                                                         }
                                                     } else {
-                                                        $record = false;
                                                         //sort[1] === $value
                                                         //min becomes seek + 1
                                                         $options['index']['min'] = $seek + 1;
+                                                        d($options['index']['min']);
+                                                        d($options['index']['max']);
+
+
                                                         if($options['index']['max'] < $options['index']['min']){
                                                             $set = [
                                                                 false
