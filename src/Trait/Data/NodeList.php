@@ -208,22 +208,31 @@ trait NodeList {
                     $count++;
                 }
             } else {
-                $record = $this->index_list_record($class, $role, $options);
+                $local_options = $options;
+                $record = $this->index_list_record($class, $role, $local_options);
                 $found = [];
                 while($record !== false){
-                    $record = $this->index_record_expose($class, $role, $record, $options);
+                    $record = $this->index_record_expose($class, $role, $record, $local_options);
                     $list[] = $record;
-                    $found[] = $record->uuid;
+                    if(
+                        !in_array(
+                            $record->uuid,
+                            $found,
+                            true
+                        )
+                    ){
+                        $found[] = $record->uuid;
+                    }
                     $count++;
                     if(
-                        $options['limit'] !== '*' &&
-                        $count === ($options['page'] * $options['limit'])
+                        $local_options['limit'] !== '*' &&
+                        $count === ($local_options['page'] * $local_options['limit'])
                     ){
                         break;
                     }
-                    $options_where = $this->index_record_next($found, $options);
-                    $options['where'] = $options_where;
-                    $record = $this->index_list_record($class, $role, $options);
+                    $options_where = $this->index_record_next($found, $local_options);
+                    $local_options['where'] = $options_where;
+                    $record = $this->index_list_record($class, $role, $local_options);
                 }
                 d($options);
                 ddd($list);
