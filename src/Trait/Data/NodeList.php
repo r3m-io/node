@@ -215,7 +215,6 @@ trait NodeList {
                 $found = [];
                 while($record !== false){
                     $record = $this->index_record_expose($class, $role, $record, $local_options);
-                    $list[] = $record;
                     if(
                         !in_array(
                             $record->uuid,
@@ -223,6 +222,7 @@ trait NodeList {
                             true
                         )
                     ){
+                        $list[] = $record;
                         $found[] = $record->uuid;
                     }
                     $count++;
