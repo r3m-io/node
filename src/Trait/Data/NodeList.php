@@ -228,8 +228,8 @@ trait NodeList {
                     $count++;
                     d($count);
                     if(
-                        $local_options['limit'] !== '*' &&
-                        $count === ($local_options['page'] * $local_options['limit'])
+                        $options['limit'] !== '*' &&
+                        $count === ($options['page'] * $options['limit'])
                     ){
                         break;
                     }
