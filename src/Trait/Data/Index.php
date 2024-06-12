@@ -885,6 +885,10 @@ trait Index {
                                             }
                                             break;
                                     }
+                                } else {
+                                    if($set_index_0[0] === true){
+                                        array_shift($set);
+                                    }
                                 }
                             }
                         } else {
@@ -980,7 +984,6 @@ trait Index {
                         $record = false;
                         break 2;
                     }
-                    ksort($where_process, SORT_NATURAL);
                     d($where_process);
                     $deepest = $this->where_get_depth($where_process);
                     unset($key);
