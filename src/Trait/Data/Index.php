@@ -745,6 +745,10 @@ trait Index {
                             d('yes');
                             return $record;
                         }
+                        elseif(empty($set) && $deepest > 0){
+                            d('no');
+                            break;
+                        }
                         if(is_array($set)){
                             $count_set = count($set);
                             if($count_set === 1){
