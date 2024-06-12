@@ -750,14 +750,6 @@ trait Index {
                             if($operator === null && $set[0] === true){
                                 ddd('found');
                                 break;
-                            } else {
-                                if($deepest === 0){
-                                    $record = false;
-                                    break 2;
-                                } else {
-                                    ddd('found2');
-                                    break;
-                                }
                             }
                         }
                         d($set);
