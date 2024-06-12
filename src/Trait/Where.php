@@ -790,7 +790,7 @@ trait Where {
                 }
                 $count_set = count($set);
                 if($count_set === 1){
-                    if($operator === null && $set[0] === true){
+                    if($operator === null && $set[0]['match'] === true){
                         break;
                     } else {
                         if($deepest === 0){
