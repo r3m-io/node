@@ -821,6 +821,7 @@ trait Index {
                                                 $set = [
                                                     false
                                                 ];
+                                                $record = false;
                                                 d('break: 1');
                                                 break;
                                             }
@@ -860,8 +861,10 @@ trait Index {
                                                             $set = [
                                                                 false
                                                             ];
-                                                            break 2;
+                                                            $record = false;
                                                             d('break: 2');
+                                                            break 2;
+
                                                         }
                                                     } else {
                                                         //sort[1] === $value
