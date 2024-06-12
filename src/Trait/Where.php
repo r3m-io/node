@@ -548,6 +548,7 @@ trait Where {
                         array_key_exists('value', $set[2]) &&
                         array_key_exists('operator', $set[2])
                     ) {
+                        d($set);
                         if($set[0]['attribute'] === $set[2]['attribute']){
                             ddd('the problem is here');
                         }
