@@ -939,6 +939,7 @@ trait Index {
                                 }
                             }
                         } else {
+                            /*
                             if(
                                 array_key_exists(0, $set) &&
                                 count($set) === 1
@@ -947,6 +948,7 @@ trait Index {
                                 d($record);
                                 ddd($options);
                             }
+                            */
                             if(
                                 array_key_exists(0, $set) &&
                                 array_key_exists(1, $set) &&
