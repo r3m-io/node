@@ -754,6 +754,11 @@ trait Index {
                                 if($operator === null && $set[0]['match'] === true){
                                     if(empty($where_process)){
                                         return $record;
+                                    } else {
+                                        d($deepest);
+                                        $set = $this->where_get_set($where_process, $key, $deepest);
+                                        d($where_process);
+                                        ddd($set);
                                     }
                                 }
                             }
