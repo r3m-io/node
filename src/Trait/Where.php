@@ -475,6 +475,7 @@ trait Where {
                     return $set;
                 case 'and':
                     $operator = 'and';
+                    d($set);
                     if ($set[0]['match'] === true && $set[2]['match'] === true) {
                         $where[$key] = $set[0];
                         return $set;
