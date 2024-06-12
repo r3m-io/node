@@ -985,6 +985,7 @@ trait NodeList {
                 if (is_string($where)) {
                     $split = mb_str_split($where);
                     $is_quote = false;
+                    $is_double_quote = false;
                     $attribute = '';
                     $operator = '';
                     $value = '';
@@ -1008,7 +1009,7 @@ trait NodeList {
                         ) {
                             $is_array = false;
                         }
-                        if ($char === '\'') {
+                        if ($char === '\'' && $previous !== '\\') {
                             if ($is_quote === false) {
                                 $is_quote = true;
                             } else {
@@ -1024,15 +1025,33 @@ trait NodeList {
                             }
                             continue;
                         }
+                        elseif ($char === '"' && $previous !== '\\') {
+                            if ($is_double_quote === false) {
+                                $is_double_quote = true;
+                            } else {
+                                $is_double_quote = false;
+                            }
+                            if (
+                                $is_attribute &&
+                                $is_operator &&
+                                $is_value === false &&
+                                $is_array
+                            ) {
+                                $value .= $char;
+                            }
+                            continue;
+                        }
                         if (
                             $char === ' ' &&
                             $is_quote === false &&
+                            $is_double_quote === false &&
                             $is_attribute === false
                         ) {
                             $is_attribute = $attribute;
                             continue;
                         } elseif ($char === ' ' &&
                             $is_quote === false &&
+                            $is_double_quote === false &&
                             $is_operator === false
                         ) {
                             $is_operator = $operator;
