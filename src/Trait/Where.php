@@ -307,11 +307,11 @@ trait Where {
         ){
             $operator = null;
             if($set[0] === false){
-                ddd($set);
                 $debug = debug_backtrace(1);
                 d($debug[0]['file'] . ':' . $debug[0]['line'] . ' ' . $debug[0]['function']);
                 d($debug[1]['file'] . ':' . $debug[1]['line'] . ' ' . $debug[1]['function']);
                 d($debug[2]['file'] . ':' . $debug[2]['line'] . ' ' . $debug[2]['function']);
+                ddd($set);
             }
             if(
                 array_key_exists('match', $set[0]) &&
@@ -495,7 +495,7 @@ trait Where {
                             } else {
                                 $set[0]['match'] = false;
                                 $set[2]['match'] = false;
-                                $where[$key] = $set[0]['match'];
+                                $where[$key] = $set[0];
                                 return $set;
                             }
                         }
