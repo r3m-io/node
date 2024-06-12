@@ -754,14 +754,10 @@ trait Index {
                         }
                         $count_set = count($set);
                         if($count_set === 1){
-                            if($operator === null && $set[0] === true){
+                            if($operator === null && $set[0]['match'] === true){
                                 break;
                             }
                         }
-                        d($set);
-                        d($operator);
-                        d($where_process);
-                        d($index_where);
                         if($index_where){
                             $set_index_0 = [$set_init[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
