@@ -916,10 +916,15 @@ trait Index {
                                             break;
                                     }
                                 } else {
-                                    if($set_index_0[0] === true){
+                                    if($set_index_0[0]['match'] === true){
                                         d($set);
                                         ddd($record);
                                         array_shift($set);
+                                    } else {
+                                        d($set);
+                                        d($set_init);
+                                        d($set_index_0);
+                                        ddd($record);
                                     }
                                 }
                             }
