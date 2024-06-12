@@ -209,9 +209,11 @@ trait NodeList {
                 }
             } else {
                 $record = $this->index_list_record($class, $role, $options);
+                $found = [];
                 while($record !== false){
                     $record = $this->index_record_expose($class, $role, $record, $options);
                     $list[] = $record;
+                    $found[] = $record->uuid;
                     $count++;
                     if(
                         $options['limit'] !== '*' &&
@@ -219,7 +221,7 @@ trait NodeList {
                     ){
                         break;
                     }
-                    $options_next = $this->index_record_next($record, $options);
+                    $options_next = $this->index_record_next($found, $options);
                     ddd($options_next);
                     $record = $this->index_list_record($class, $role, $options);
                 }
