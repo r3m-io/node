@@ -219,7 +219,7 @@ trait NodeList {
                     ){
                         break;
                     }
-                    $options_next = $this->index_record_next_options($record, $options);
+                    $options_next = $this->index_record_next($record, $options);
                     ddd($options_next);
                     $record = $this->index_list_record($class, $role, $options);
                 }
