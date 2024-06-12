@@ -627,7 +627,18 @@ trait Index {
     }
 
     public function index_record_next($found=[], $options=[]){
-        d($options);
+        $where = [];
+        if(
+            array_key_exists('where', $options) &&
+            is_array($options['where'])
+        ){
+            $where[] = '(';
+            foreach($options['where'] as $nr => $set){
+                $where[] = $set;
+            }
+            $where[] = ')';
+        }
+        d($where);
         ddd($found);
     }
 
