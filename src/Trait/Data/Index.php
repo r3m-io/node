@@ -690,16 +690,17 @@ trait Index {
             $seek = $options['index']['min'] +
                 floor(
                     (
-                        $options['index']['max'] -
-                        $options['index']['min']
-                    )
-                    / 2
+                             $options['index']['max'] -
+                             $options['index']['min']
+                         )
+                     / 2
                 );
             if($seek === $seek_old){
+                $options['index']['min'] = $seek + 1;
                 d($record);
                 d($options);
                 d($seek);
-                ddd('no movement');
+                d('no movement');
             }
             $counter++;
             if ($counter > $max) {
