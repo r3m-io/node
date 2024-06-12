@@ -345,7 +345,7 @@ trait Where {
                 $left = Filter::list($list)->where($filter_where);
                 if(!empty($left)){
                     $where[$key] = $set[0];
-                    $where[$key]['match'] = true;
+//                    $where[$key]['match'] = true;
                     $set[0] = [
                         'attribute' => 'uuid',
                         'operator' => '===',
@@ -364,8 +364,9 @@ trait Where {
                             $record->{$set[0]['attribute']}
                         ];
                     }
-                    $set[0]['match'] = false;
                     $where[$key] = $set[0];
+                    $set[0]['match'] = false;
+
                 }
             }
             ksort($where, SORT_NATURAL);
@@ -383,8 +384,10 @@ trait Where {
                     if ($set[0]['match'] === true || $set[2]['match'] === true) {
                         if($set[0]['match'] === true){
                             $where[$key] = $set[0];
+                            unset($where[$key]['match']);
                         } else {
                             $where[$key] = $set[2];
+                            unset($where[$key]['match']);
                         }
                         return $set;
                     }
@@ -427,7 +430,7 @@ trait Where {
                     }
                     if (!empty($left)) {
                         $where[$key] = $set[0];
-                        $where[$key]['match'] = true;
+//                        $where[$key]['match'] = true;
                         $set[0] = [
                             'attribute' => 'uuid',
                             'operator' => '===',
@@ -439,7 +442,7 @@ trait Where {
                     }
                     if (!empty($right)) {
                         $where[$key] = $set[2];
-                        $where[$key]['match'] = true;
+//                        $where[$key]['match'] = true;
                         $set[2] = [
                             'attribute' => 'uuid',
                             'operator' => '===',
