@@ -748,8 +748,9 @@ trait Index {
                         $count_set = count($set);
                         if($count_set === 1){
                             if($operator === null && $set[0]['match'] === true){
-                                d($where_process);
-                                return $record;
+                                if(empty($where_process)){
+                                    return $record;
+                                }
                             }
                         }
                         if($index_where){
