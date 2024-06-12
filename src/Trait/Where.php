@@ -329,6 +329,7 @@ trait Where {
                 ];
                 $left = Filter::list($list)->where($filter_where);
                 if(!empty($left)){
+                    ddd($left);
                     $where[$key] = true;
                     $set[0] = true;
                 } else {
@@ -400,6 +401,7 @@ trait Where {
                         $right = Filter::list($list)->where($filter_where);
                     }
                     if (!empty($left)) {
+                        ddd($left);
                         $where[$key] = true;
                         $set[0] = true;
                     } else {
@@ -483,6 +485,7 @@ trait Where {
                         ];
                         $and = Filter::list($list)->where($filter_where);
                         if (!empty($and)) {
+                            ddd($and);
                             $where[$key] = true;
                             $set[0] = true;
                             $set[2] = true;
