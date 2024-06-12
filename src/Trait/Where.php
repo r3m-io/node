@@ -498,6 +498,19 @@ trait Where {
                                 $where[$key] = $set[0];
                                 return $set;
                             }
+                        } else {
+                            //need to do the right side
+                            $list = [];
+                            $list[] = $record;
+                            $filter_where = [
+                                $set[2]['attribute'] => [
+                                    'value' => $set[2]['value'],
+                                    'operator' => $set[2]['operator'],
+                                    'strict' => $set[2]['strict'] ?? true
+                                ]
+                            ];
+                            $right = Filter::list($list)->where($filter_where);
+                            ddd($right);
                         }
                     }
                     $list = [];
