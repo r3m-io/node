@@ -626,7 +626,7 @@ trait Index {
         return false;
     }
 
-    public function index_next_record($record, $options){
+    public function index_record_next($record, $options){
         d($options);
         ddd($record);
     }
