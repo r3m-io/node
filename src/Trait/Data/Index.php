@@ -739,6 +739,7 @@ trait Index {
                         d($deepest);
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
                         if(empty($set) && $deepest === 0){
+                            ddd('yes');
                             return $record;
                         }
                         $count_set = count($set);
