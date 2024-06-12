@@ -626,6 +626,11 @@ trait Index {
         return false;
     }
 
+    public function index_next_record($record, $options){
+        d($options);
+        ddd($record);
+    }
+
     /**
      * @throws Exception
      */
