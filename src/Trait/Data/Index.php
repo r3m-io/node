@@ -858,8 +858,10 @@ trait Index {
                                                                 false
                                                             ];
                                                             break 2;
+                                                            d('break: 2');
                                                         }
                                                     } else {
+                                                        d($record);
                                                         //sort[1] === $value
                                                         //min becomes seek + 1
                                                         $options['index']['min'] = $seek + 1;
@@ -867,9 +869,11 @@ trait Index {
                                                             $set = [
                                                                 false
                                                             ];
+                                                            d('break: 2');
                                                             break 2;
                                                         }
                                                     }
+                                                    d('break: 3');
                                                     break 3;
                                                 }
                                                 sort($index_where[2], SORT_NATURAL);
