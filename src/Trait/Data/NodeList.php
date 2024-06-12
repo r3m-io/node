@@ -222,6 +222,7 @@ trait NodeList {
                     ddd($options);
                     $record = $this->index_list_record($class, $role, $options);
                 }
+                ddd($list);
             }
 
             d('from index:' . $name);
