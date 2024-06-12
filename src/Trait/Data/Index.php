@@ -685,6 +685,7 @@ trait Index {
 
         $counter = 0;
         $max = 4096;
+        $seek_old = false;
         while($options['index']['min'] <= $options['index']['max']) {
             $seek = $options['index']['min'] +
                 floor(
