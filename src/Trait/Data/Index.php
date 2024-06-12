@@ -917,8 +917,6 @@ trait Index {
                                     }
                                 } else {
                                     if($set_index_0[0]['match'] === true){
-                                        d($set);
-                                        ddd($record);
                                         array_shift($set);
                                     } else {
                                         d($set);
