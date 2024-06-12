@@ -502,6 +502,7 @@ trait Where {
                             //need to do the right side
                             $list = [];
                             $list[] = $record;
+                            d($record);
                             $filter_where = [
                                 $set[2]['attribute'] => [
                                     'value' => $set[2]['value'],
@@ -773,6 +774,7 @@ trait Where {
             while($record !== false){
                 d($set);
                 $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $options);
+                d($where);
                 d($set);
                 if(empty($set) && $deepest === 0){
                     return $record;
