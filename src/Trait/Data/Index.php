@@ -827,7 +827,10 @@ trait Index {
                                     switch($set_init[1]){
                                         case 'and':
                                             $set_index_2 = [$set_init[2]];
+                                            d($record);
+                                            d($set_index_2);
                                             $set_index_2 = $this->where_process($record, $set_index_2);
+                                            d($set_index_2);
                                             if($set_index_0[0] === true && $set_index_2[0] === true){
                                                 array_shift($set);
                                                 array_shift($set);
