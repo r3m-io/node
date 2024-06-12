@@ -458,6 +458,7 @@ trait Where {
                     $set[0] = false;
                 }
             }
+            ksort($where, SORT_NATURAL);
             return $set;
         }
         elseif(
@@ -547,6 +548,7 @@ trait Where {
                         }
                         $where[$key] = false;
                     }
+                    ksort($where, SORT_NATURAL);
                     return $set;
                 case 'and':
                     $operator = 'and';
@@ -620,6 +622,7 @@ trait Where {
                             $set[0] = false;
                             $set[2] = false;
                         }
+                        ksort($where, SORT_NATURAL);
                         return $set;
                     }
                     /**
@@ -671,6 +674,7 @@ trait Where {
                             $set[0] = false;
                             $set[2] = false;
                         }
+                        ksort($where, SORT_NATURAL);
                         return $set;
                     }
                     return $set;
@@ -726,6 +730,7 @@ trait Where {
                     $where[$key] = false;
                     $set = [];
                     $set[0] = false;
+                    ksort($where, SORT_NATURAL);
                     return $set;
             }
         }
