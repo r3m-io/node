@@ -476,19 +476,22 @@ trait Where {
                 case 'and':
                     $operator = 'and';
                     d($set);
-                    if ($set[0]['match'] === true && $set[2]['match'] === true) {
-                        $where[$key] = $set[0];
-                        return $set;
-                    }
-                    elseif ($set[0]['match'] === false && $set[2]['match'] === false) {
-                        $where[$key] = $set[0];
-                        return $set;
-                    }
-                    elseif($set[0]['match'] === false){
-                        $set[0]['match'] = false;
-                        $set[2]['match'] = false;
-                        $where[$key] = $set[0]['match'];
-                        return $set;
+                    if(array_key_exists('match', $set[0])){
+                        if(array_key_exists('match', $set[2])){
+                            if ($set[0]['match'] === true && $set[2]['match'] === true) {
+                                $where[$key] = $set[0];
+                                return $set;
+                            }
+                            elseif ($set[0]['match'] === false && $set[2]['match'] === false) {
+                                $where[$key] = $set[0];
+                                return $set;
+                            } else {
+                                $set[0]['match'] = false;
+                                $set[2]['match'] = false;
+                                $where[$key] = $set[0]['match'];
+                                return $set;
+                            }
+                        }
                     }
                     $list = [];
                     $list[] = $record;
