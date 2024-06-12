@@ -865,6 +865,7 @@ trait Index {
                                                     } else {
                                                         //sort[1] === $value
                                                         //min becomes seek + 1
+                                                        d($options['index']['min']);
                                                         $options['index']['min'] = $seek + 1;
                                                         d($options['index']['min']);
                                                         d($options['index']['max']);
