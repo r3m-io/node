@@ -759,7 +759,7 @@ trait Index {
                                         d($deepest);
                                         $set = $this->where_get_set($where_process, $key, $deepest);
                                         d($where_process);
-                                        ddd($set);
+                                        d($set);
                                     }
                                 }
                             }
