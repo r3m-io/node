@@ -941,6 +941,7 @@ trait Index {
                                     case 'and':
 //                                        d($set_index);
                                         d($record);
+                                        d($where_process);
                                         d($set);
                                         d($options);
                                         //doesn't reach this point
