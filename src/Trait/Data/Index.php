@@ -807,6 +807,7 @@ trait Index {
                                                 $set = [
                                                     false
                                                 ];
+                                                $record = false;
                                                 d('break: 1');
                                                 break;
                                             }
