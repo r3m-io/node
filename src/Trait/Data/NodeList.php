@@ -233,7 +233,7 @@ trait NodeList {
                     }
                     $options_where = $this->index_record_next($found, $options);
                     $local_options['where'] = $options_where;
-                    d($local_options);
+                    ddd($local_options);
                     $record = $this->index_list_record($class, $role, $local_options);
                 }
             }
