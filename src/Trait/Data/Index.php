@@ -716,6 +716,7 @@ trait Index {
             $value = rtrim($line, PHP_EOL);
             $record->uuid = $value;
 //            d($record);
+           d($options['where']);
             $record_where = $this->where($record, $options['where'], $options);
             if($record_where){
                 return $record;
