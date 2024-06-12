@@ -738,6 +738,22 @@ trait Index {
                         d($set);
                         d($deepest);
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
+                        if(empty($set) && $deepest === 0){
+                            return $record;
+                        }
+                        $count_set = count($set);
+                        if($count_set === 1){
+                            if($operator === null && $set[0] === true){
+                                break;
+                            } else {
+                                if($deepest === 0){
+                                    $record = false;
+                                    break 2;
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
                         d($set);
                         d($operator);
                         d($where_process);
@@ -887,6 +903,8 @@ trait Index {
                                     }
                                 } else {
                                     if($set_index_0[0] === true){
+                                        d($set);
+                                        ddd($record);
                                         array_shift($set);
                                     }
                                 }
