@@ -344,13 +344,14 @@ trait Where {
                 ];
                 $left = Filter::list($list)->where($filter_where);
                 if(!empty($left)){
+                    $where[$key] = $set[0];
+                    $where[$key]['match'] = true;
                     $set[0] = [
                         'attribute' => 'uuid',
                         'operator' => '===',
                         'value' => $record->uuid,
                         'match' => true
                     ];
-                    $where[$key] = $set[0];
                 } else {
                     if(
                         is_array($set[0]) &&
@@ -445,7 +446,6 @@ trait Where {
                             'value' => $record->uuid,
                             'match' => true
                         ];
-
                     } else {
                         $set[2]['match'] = false;
                     }
