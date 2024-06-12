@@ -637,6 +637,14 @@ trait Index {
                 $where[] = $set;
             }
             $where[] = ')';
+            $where[] = 'and';
+        }
+        if(!empty($found)){
+            $where[] = [
+                'attribute' => 'uuid',
+                'operator' => 'not-in',
+                'value' => $found
+            ];
         }
         d($where);
         ddd($found);
