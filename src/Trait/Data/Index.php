@@ -755,6 +755,7 @@ trait Index {
                                     if(empty($where_process)){
                                         return $record;
                                     } else {
+                                        $deepest--;
                                         d($deepest);
                                         $set = $this->where_get_set($where_process, $key, $deepest);
                                         d($where_process);
