@@ -208,7 +208,20 @@ trait NodeList {
                     $count++;
                 }
             } else {
-
+                $record = $this->index_list_record($class, $role, $options);
+                while($record !== false){
+                    $record = $this->index_record_expose($class, $role, $record, $options);
+                    $list[] = $record;
+                    $count++;
+                    if(
+                        $options['limit'] !== '*' &&
+                        $count === ($options['page'] * $options['limit'])
+                    ){
+                        break;
+                    }
+                    ddd($options);
+                    $record = $this->index_list_record($class, $role, $options);
+                }
             }
 
             d('from index:' . $name);
