@@ -235,11 +235,7 @@ trait NodeList {
                     d($local_options);
                     $record = $this->index_list_record($class, $role, $local_options);
                 }
-                d($local_options);
-                d($options);
-                ddd($list);
             }
-
             d('from index:' . $name);
             $result = [];
             $result['page'] = $options['page'];
