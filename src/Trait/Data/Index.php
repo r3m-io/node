@@ -696,6 +696,7 @@ trait Index {
                     / 2
                 );
             if($seek === $seek_old){
+                d($record);
                 d($options);
                 ddd('no movement');
             }
