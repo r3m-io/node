@@ -745,6 +745,7 @@ trait Index {
                         $count_set = count($set);
                         if($count_set === 1){
                             if($operator === null && $set[0] === true){
+                                ddd('found');
                                 break;
                             } else {
                                 if($deepest === 0){
