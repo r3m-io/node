@@ -307,6 +307,7 @@ trait Where {
         ){
             $operator = null;
             if($set[0] === false){
+                ddd($set);
                 $debug = debug_backtrace(1);
                 d($debug[0]['file'] . ':' . $debug[0]['line'] . ' ' . $debug[0]['function']);
                 d($debug[1]['file'] . ':' . $debug[1]['line'] . ' ' . $debug[1]['function']);
