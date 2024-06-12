@@ -698,6 +698,7 @@ trait Index {
             if($seek === $seek_old){
                 d($record);
                 d($options);
+                d($seek);
                 ddd('no movement');
             }
             $counter++;
@@ -739,6 +740,7 @@ trait Index {
                         d($deepest);
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
                         d($set);
+                        d($set_init);
                         d($where_process);
                         d($index_where);
                         if(empty($set) && $deepest === 0){
