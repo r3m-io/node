@@ -694,7 +694,10 @@ trait Index {
                     )
                     / 2
                 );
-            d($seek);
+            if($seek === $seek_old){
+                d($options);
+                ddd('no movement');
+            }
             $counter++;
             if ($counter > $max) {
                 break;
@@ -973,6 +976,7 @@ trait Index {
                     $max_deep++;
                 }
             }
+            $seek_old = $seek;
         }
         return $record;
     }
