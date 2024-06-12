@@ -805,8 +805,8 @@ trait Index {
                                     }
                                 }
                             } else {
+                                d($set_init);
                                 if(array_key_exists(1, $set_init)){
-                                    d($set_init);
                                     switch($set_init[1]){
                                         case 'and':
                                             $set_index_2 = [$set_init[2]];
