@@ -696,7 +696,7 @@ trait Index {
                      / 2
                 );
             if($seek === $seek_old){
-                return false;
+                break;
             }
             $counter++;
             if ($counter > $max) {
