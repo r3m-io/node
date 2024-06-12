@@ -753,25 +753,23 @@ trait Where {
                 elseif($count_set >= 3){
                     switch($operator){
                         case 'and':
-                            if($set[0] === true && $set[2] === true){
+                            if($set[0]['match'] === true && $set[2]['match'] === true){
                                 array_shift($set);
                                 array_shift($set);
-                                $set[0] = true;
                             } else {
                                 array_shift($set);
                                 array_shift($set);
-                                $set[0] = false;
+                                $set[0]['match'] = false;
                             }
                             break;
                         case 'or':
-                            if($set[0] === true || $set[2] === true){
+                            if($set[0]['match'] === true || $set[2]['match'] === true){
                                 array_shift($set);
                                 array_shift($set);
-                                $set[0] = true;
                             } else {
                                 array_shift($set);
                                 array_shift($set);
-                                $set[0] = false;
+                                $set[0]['match'] = false;
                             }
                             break;
                         default:
