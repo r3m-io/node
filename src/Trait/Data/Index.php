@@ -769,7 +769,10 @@ trait Index {
                             d($set_index_0);
                             //if($set_index_0[0] === true){}
                             if($set_index_0[0]['match'] === false){
-                                if($set_init[0]['match'] === false){
+                                if(
+                                    array_key_exists('match', $set_init[0]) &&
+                                    $set_init[0]['match'] === false
+                                ){
                                     sort($index_where[2], SORT_NATURAL);
                                     if($index_where[2][0] === $set_init[2]['value']){
                                         $options['index']['max'] = $seek - 1;
