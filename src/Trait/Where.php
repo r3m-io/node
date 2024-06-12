@@ -512,13 +512,14 @@ trait Where {
                             ];
                             $right = Filter::list($list)->where($filter_where);
                             if (!empty($right)) {
+                                $where[$key] = $set[2];
+                                $where[$key]['match'] = true;
                                 $set[2] = [
                                     'attribute' => 'uuid',
                                     'operator' => '===',
                                     'value' => $record->uuid,
                                     'match' => true
                                 ];
-                                $where[$key] = $set[2];
                             } else {
                                 $set[2]['match'] = false;
                             }
