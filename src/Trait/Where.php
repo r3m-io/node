@@ -423,24 +423,27 @@ trait Where {
                         }
                     }
                     if (!empty($left)) {
+                        $where[$key] = $set[0];
+                        $where[$key]['match'] = true;
                         $set[0] = [
                             'attribute' => 'uuid',
                             'operator' => '===',
                             'value' => $record->uuid,
                             'match' => true
                         ];
-                        $where[$key] = $set[0];
                     } else {
                         $set[0]['match'] = false;
                     }
                     if (!empty($right)) {
+                        $where[$key] = $set[2];
+                        $where[$key]['match'] = true;
                         $set[2] = [
                             'attribute' => 'uuid',
                             'operator' => '===',
                             'value' => $record->uuid,
                             'match' => true
                         ];
-                        $where[$key] = $set[2];
+
                     } else {
                         $set[2]['match'] = false;
                     }
