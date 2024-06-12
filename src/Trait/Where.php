@@ -308,6 +308,8 @@ trait Where {
             $operator = null;
             if($set[0] === true || $set[0] === false){
                 $where[$key] = $set[0];
+                ksort($where, SORT_NATURAL);
+                $where = array_values($where);
                 return $set;
             }
             $list = [];
@@ -325,119 +327,6 @@ trait Where {
                         'strict' => $set[0]['strict'] ?? true
                     ]
                 ];
-                /*
-                if(array_key_exists('index', $options)){
-                    $object = $this->object();
-                    $ramdisk_dir_node = $object->config('ramdisk.url') .
-                        $object->config('posix.id') .
-                        $object->config('ds') .
-                        'Node' .
-                        $object->config('ds')
-                    ;
-                    $ramdisk_dir_index = $ramdisk_dir_node .
-                        'Index' .
-                        $object->config('ds')
-                    ;
-                    if(
-                        array_key_exists('unique', $options['index']) &&
-                        $options['index']['unique'] === true
-                    ){
-                        $is_unique = 'unique';
-                    } else {
-                        $is_unique = '';
-                    }
-                    $url = $ramdisk_dir_index .
-                        ($options['index']['chunk_nr'] + 1) .
-                        '-' .
-                        $options['index']['threads'] .
-                        '-' .
-                        $set[0]['attribute'] .
-                        '-' .
-                        $is_unique .
-                        $object->config('extension.json')
-                    ;
-                    if(
-                        File::exist($url) &&
-                        File::mtime($url) === $options['index']['mtime']
-                    ){
-                        //we have a cached index
-                        $read = $object->data_read($url, sha1($url));
-                        if(
-                            $read &&
-                            in_array(
-                                $set[0]['operator'],
-                                [
-                                    '===',
-                                    '==',
-                                    '!==',
-                                    '!=',
-                                    'strictly-exact',
-                                    'exact',
-                                    'not-strictly-exact',
-                                    'not-exact',
-                                ],
-                                true
-                            )
-                        ){
-                            $index = $read->data($set[0]['value']);
-                            if($index === $options['index']['iterator']){
-                                $where[$key] = true;
-                                $set[0] = true;
-                            } else {
-                                $where[$key] = false;
-                                $set[0] = false;
-                            }
-                            return $set;
-                        }
-                        elseif(
-                            $read &&
-                            in_array(
-                                $set[0]['operator'],
-                                [
-                                    'partial',
-                                    'not-partial'
-                                ],
-                                true
-                            )
-                        ){
-                            foreach($read->data() as $read_nr => $read_value){
-                                if($set[0]['operator'] === 'partial'){
-                                    if(strpos($read_value, $set[0]['value']) !== false){
-                                        $index = $read->data($set[0]['value']);
-                                        if($index === $options['index']['iterator']){
-                                            $where[$key] = true;
-                                            $set[0] = true;
-                                        } else {
-                                            $where[$key] = false;
-                                            $set[0] = false;
-                                        }
-                                    } else {
-                                        $where[$key] = false;
-                                        $set[0] = false;
-                                    }
-                                    return $set;
-                                }
-                                elseif($set[0]['operator'] === 'not-partial'){
-                                    if(strpos($read_value, $set[0]['value']) === false){
-                                        $index = $read->data($set[0]['value']);
-                                        if($index === $options['index']['iterator']){
-                                            $where[$key] = true;
-                                            $set[0] = true;
-                                        } else {
-                                            $where[$key] = false;
-                                            $set[0] = false;
-                                        }
-                                    } else {
-                                        $where[$key] = false;
-                                        $set[0] = false;
-                                    }
-                                    return $set;
-                                }
-                            }
-                        }
-                    }
-                }
-                */
                 $left = Filter::list($list)->where($filter_where);
                 if(!empty($left)){
                     $where[$key] = true;
@@ -459,6 +348,7 @@ trait Where {
                 }
             }
             ksort($where, SORT_NATURAL);
+            $where = array_values($where);
             return $set;
         }
         elseif(
@@ -549,6 +439,7 @@ trait Where {
                         $where[$key] = false;
                     }
                     ksort($where, SORT_NATURAL);
+                    $where = array_values($where);
                     return $set;
                 case 'and':
                     $operator = 'and';
@@ -623,6 +514,7 @@ trait Where {
                             $set[2] = false;
                         }
                         ksort($where, SORT_NATURAL);
+                        $where = array_values($where);
                         return $set;
                     }
                     /**
@@ -675,6 +567,7 @@ trait Where {
                             $set[2] = false;
                         }
                         ksort($where, SORT_NATURAL);
+                        $where = array_values($where);
                         return $set;
                     }
                     return $set;
@@ -731,9 +624,12 @@ trait Where {
                     $set = [];
                     $set[0] = false;
                     ksort($where, SORT_NATURAL);
+                    $where = array_values($where);
                     return $set;
             }
         }
+        ksort($where, SORT_NATURAL);
+        $where = array_values($where);
         return null;
     }
 
