@@ -224,6 +224,7 @@ trait NodeList {
                         $found[] = $record->uuid;
                     }
                     $count++;
+                    d($count);
                     if(
                         $local_options['limit'] !== '*' &&
                         $count === ($local_options['page'] * $local_options['limit'])
