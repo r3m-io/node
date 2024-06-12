@@ -800,8 +800,10 @@ trait Index {
                                                 $set = [
                                                     false
                                                 ];
+                                                d('break: 1');
                                                 break;
                                             }
+                                            d('break: 2');
                                             break 2;
                                         } else {
                                             //sort[1] === $value
@@ -811,8 +813,10 @@ trait Index {
                                                 $set = [
                                                     false
                                                 ];
+                                                d('break: 1');
                                                 break;
                                             }
+                                            d('break: 2');
                                             break 2;
                                         }
                                     }
