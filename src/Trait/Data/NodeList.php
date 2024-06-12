@@ -221,10 +221,11 @@ trait NodeList {
                     ){
                         break;
                     }
-                    $options_next = $this->index_record_next($found, $options);
-                    ddd($options_next);
+                    $options_where = $this->index_record_next($found, $options);
+                    $options['where'] = $options_where;
                     $record = $this->index_list_record($class, $role, $options);
                 }
+                d($options);
                 ddd($list);
             }
 

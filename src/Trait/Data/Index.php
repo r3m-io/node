@@ -646,8 +646,7 @@ trait Index {
                 'value' => $found
             ];
         }
-        d($where);
-        ddd($found);
+        return $where;
     }
 
     /**
