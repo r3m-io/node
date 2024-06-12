@@ -696,11 +696,7 @@ trait Index {
                      / 2
                 );
             if($seek === $seek_old){
-                $options['index']['min'] = $seek + 1;
-                d($record);
-                d($options);
-                d($seek);
-                d('no movement');
+                return false;
             }
             $counter++;
             if ($counter > $max) {
