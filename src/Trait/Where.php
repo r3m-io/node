@@ -727,7 +727,9 @@ trait Where {
             if($counter > 1024){
                 break;
             }
+            d($where);
             $set = $this->where_get_set($where, $key, $deepest);
+            d($where);
             while($record !== false){
                 d($set);
                 $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $options);
