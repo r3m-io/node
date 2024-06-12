@@ -308,8 +308,10 @@ trait Where {
             $operator = null;
             if(
                 array_key_exists('match', $set[0]) &&
-                $set[0]['match'] === true ||
-                $set[0]['match'] === false
+                (
+                    $set[0]['match'] === true ||
+                    $set[0]['match'] === false
+                )
             ){
                 $where[$key] = $set[0];
                 ksort($where, SORT_NATURAL);
