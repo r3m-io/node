@@ -768,8 +768,8 @@ trait Index {
                             $set_index_2 = null;
                             d($set_index_0);
                             //if($set_index_0[0] === true){}
-                            if($set_index_0[0] === false){
-                                if($set_init[0] === false){
+                            if($set_index_0[0]['match'] === false){
+                                if($set_init[0]['match'] === false){
                                     sort($index_where[2], SORT_NATURAL);
                                     if($index_where[2][0] === $set_init[2]['value']){
                                         $options['index']['max'] = $seek - 1;
@@ -838,11 +838,11 @@ trait Index {
                                             d($set_index_2);
                                             $set_index_2 = $this->where_process($record, $set_index_2);
                                             d($set_index_2);
-                                            if($set_index_0[0] === true && $set_index_2[0] === true){
+                                            if($set_index_0[0]['match'] === true && $set_index_2[0]['match'] === true){
                                                 array_shift($set);
                                                 array_shift($set);
                                             }
-                                            if($set_index_2[0] === false){
+                                            if($set_index_2[0]['match'] === false){
                                                 if(
                                                     is_array($index_where[2][0]) &&
                                                     $set_init[2]['operator'] === 'not-in'
@@ -940,12 +940,17 @@ trait Index {
                                         ddd('yes');
                                         break;
                                     case 'or':
-                                        if($set[0] === true || $set[2] === true){
+                                        if($set[0]['match'] === true || $set[2]['match'] === true){
                                             $set_index = $set;
                                             array_shift($set_index);
                                             array_shift($set_index);
                                             array_shift($set_index);
-                                            array_unshift($set_index, true);
+                                            if($set[0]['match'] === true){
+                                                array_unshift($set_index, $set[0]);
+                                            }
+                                            elseif($set[2]['match'] === true){
+                                                array_unshift($set_index, $set[2]);
+                                            }
                                             $set_index_init = $set_index;
                                             $set_index = $this->where_process(
                                                 $record,
@@ -959,7 +964,7 @@ trait Index {
                                             if($index_where){
                                                 switch($set_index[1]){
                                                     case 'and':
-                                                        if($set_index[2] === false){
+                                                        if($set_index[2]['match'] === false){
                                                             sort($index_where[2], SORT_NATURAL);
                                                             if($index_where[2][0] === $set_index_init[2]['value']){
                                                                 $options['index']['max'] = $seek - 1;
@@ -985,11 +990,11 @@ trait Index {
                                                         break;
                                                 }
                                             }
-                                        } elseif(is_bool($set[2])) {
+                                        } elseif(array_key_exists('match', $set[2]) && is_bool($set[2]['match'])) {
                                             array_shift($set);
                                             array_shift($set);
                                             array_shift($set);
-                                            array_unshift($set, false);
+                                            array_unshift($set, $set[2]);
                                         }
                                         break;
                                 }
