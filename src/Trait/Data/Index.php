@@ -939,6 +939,10 @@ trait Index {
                             ){
                                 switch($set[1]) {
                                     case 'and':
+                                        d($set_index);
+                                        d($record);
+                                        d($set);
+                                        d($options);
                                         //doesn't reach this point
                                         ddd('yes');
                                         break;
