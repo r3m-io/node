@@ -903,7 +903,7 @@ trait Index {
                                                                 $value = rtrim($line, PHP_EOL);
                                                                 $record->{$attribute} = $value;
                                                             }
-                                                            $file['uuid']->seek($seek);
+                                                            $file['uuid']->seek($leftSearch);
                                                             $line = $file['uuid']->current();
                                                             $value = rtrim($line, PHP_EOL);
                                                             $record->uuid = $value;
