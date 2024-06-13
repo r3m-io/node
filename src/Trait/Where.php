@@ -490,7 +490,8 @@ trait Where {
                     return $set;
                 case 'and':
                     $operator = 'and';
-//                    d($set);
+                    d($set);
+                    /*
                     if(array_key_exists('match', $set[0])){
                         if(array_key_exists('match', $set[2])){
                             if ($set[0]['match'] === true && $set[2]['match'] === true) {
@@ -546,6 +547,7 @@ trait Where {
                             }
                         }
                     }
+                    */
                     $list = [];
                     $list[] = $record;
                     d($set);
@@ -575,7 +577,9 @@ trait Where {
                                 'strict' => $set[2]['strict'] ?? true
                             ]
                         ];
+                        d($filter_where);
                         $and = Filter::list($list)->where($filter_where);
+                        d($and);
                         if (!empty($and)) {
                             $set[0] = [
                                 'attribute' => 'uuid',
