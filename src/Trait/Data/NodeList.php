@@ -227,33 +227,25 @@ trait NodeList {
                         $found[] = $record->uuid;
                         $count++;
                     }
-                    d($count);
-                    d($options['page']);
-                    d($options['limit']);
+//                    d($count);
+//                    d($options['page']);
+//                    d($options['limit']);
                     if(
                         $options['limit'] !== '*' &&
                         $count === (($options['page'] * $options['limit']) + $options['limit'])
                     ){
-                        d($options['limit']);
-                        d($options['page']);
-                        d($list);
-                        d($found);
-                        d($count);
+//                        d($options['limit']);
+//                        d($options['page']);
+//                        d($list);
+//                        d($found);
+//                        d($count);
                         break;
                     }
                     $options_where = $this->index_record_next($found, $options);
                     $local_options['where'] = $options_where;
                     $local_options['limit'] = 1;
                     $local_options['page'] = 1;
-
-//                    d($local_options);
                     $record = $this->index_list_record($class, $role, $local_options);
-                    d($record);
-                    if($record === false){
-                        d($list);
-                        d($count);
-                        ddd($local_options);
-                    }
                 }
             }
             d('from index:' . $name);
