@@ -224,8 +224,8 @@ trait NodeList {
                     ){
                         $list[] = $record;
                         $found[] = $record->uuid;
+                        $count++;
                     }
-                    $count++;
                     d($count);
                     d($options['page']);
                     d($options['limit']);
