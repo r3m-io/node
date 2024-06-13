@@ -881,11 +881,11 @@ trait Index {
                                                         $not_in_index = array_search($index_where[2][1], $index_where[2][0]);
                                                         $not_in_count = count($index_where[2][0]);
                                                         $not_in_seek = floor($not_in_count / 2);
-                                                        d($not_in_seek);
-                                                        d($not_in_count);
-                                                        ddd($not_in_index);
-
-                                                        $options['index']['min'] = $seek + 1;
+                                                        if($not_in_index < $not_in_seek){
+                                                            $options['index']['min'] = $seek + 1;
+                                                        } else {
+                                                            $options['index']['max'] = $seek - 1;
+                                                        }
                                                         d('found 31');
                                                         d($index_where[2]);
                                                         if($options['index']['max'] < $options['index']['min']){
