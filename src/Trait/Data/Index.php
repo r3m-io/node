@@ -881,6 +881,7 @@ trait Index {
                                                     ){
                                                         $leftSearch = $seek - 1;
                                                         $rightSearch = $seek + 1;
+                                                        d('leftsearch: ' . $leftSearch);
 //                                                        d('min: ' . $options['index']['min']);
                                                         while ($leftSearch >= $options['index']['min']) {
                                                             foreach ($options['index']['where'] as $nr => $attribute){
