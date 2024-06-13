@@ -909,7 +909,6 @@ trait Index {
                                                             $record->uuid = $value;
                                                             $record_where = $this->where($record, $options['where'], $options);
                                                             if($record_where){
-                                                                ddd('found 3');
                                                                 return $record;
                                                             } else {
                                                                 $leftSearch--;
@@ -917,25 +916,25 @@ trait Index {
                                                         }
 
                                                         while ($rightSearch <= $options['index']['max']) {
-                                                            ddd($rightSearch);
-                                                            if ($array[$rightSearch] != $exclude) {
-                                                                return $rightSearch;
+                                                            foreach ($options['index']['where'] as $nr => $attribute){
+                                                                $file[$nr]->seek($rightSearch);
+                                                                $line = $file[$nr]->current();
+                                                                $value = rtrim($line, PHP_EOL);
+                                                                $record->{$attribute} = $value;
                                                             }
-                                                            $rightSearch++;
+                                                            $file['uuid']->seek($rightSearch);
+                                                            $line = $file['uuid']->current();
+                                                            $value = rtrim($line, PHP_EOL);
+                                                            $record->uuid = $value;
+                                                            $record_where = $this->where($record, $options['where'], $options);
+                                                            if($record_where){
+                                                                return $record;
+                                                            } else {
+                                                                $rightSearch++;
+                                                            }
                                                         }
-
-
-
-                                                        $sort = new Sort();
-                                                        usort($index_where[2][0], array($sort,"uuid_compare_ascending"));
-                                                        $not_in_index = array_search($index_where[2][1], $index_where[2][0]);
-                                                        $not_in_count = count($index_where[2][0]);
-                                                        $not_in_seek = floor($not_in_count / 2);
-                                                        if($not_in_index < $not_in_seek){
-                                                            $options['index']['min'] = $seek + 1;
-                                                        } else {
-                                                            $options['index']['max'] = $seek - 1;
-                                                        }
+                                                        $options['index']['min'] = $leftSearch;
+                                                        $options['index']['max'] = $rightSearch;
                                                         d('found 31');
                                                         d($index_where[2]);
                                                         d('min: ' . $options['index']['min'] . ', max: ' . $options['index']['max']);
@@ -947,7 +946,6 @@ trait Index {
 //                                                            d('break: 2');
                                                             d('found: 14');
                                                             break 2;
-
                                                         }
                                                     } else {
                                                         ddd('found');
