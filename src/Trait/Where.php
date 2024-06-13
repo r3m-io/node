@@ -570,17 +570,20 @@ trait Where {
                                 'value' => $set[0]['value'],
                                 'operator' => $set[0]['operator'],
                                 'strict' => $set[0]['strict'] ?? true
-                            ],
+                            ]
+                        ];
+                        $left = Filter::list($list)->where($filter_where);
+
+                        $filter_where = [
                             $set[2]['attribute'] => [
                                 'value' => $set[2]['value'],
                                 'operator' => $set[2]['operator'],
                                 'strict' => $set[2]['strict'] ?? true
                             ]
                         ];
-                        d($filter_where);
-                        $and = Filter::list($list)->where($filter_where);
-                        d($and);
-                        if (!empty($and)) {
+                        $right = Filter::list($list)->where($filter_where);
+
+                        if (!empty($left) && !empty($right)) {
                             $set[0] = [
                                 'attribute' => 'uuid',
                                 'operator' => '===',
