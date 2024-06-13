@@ -753,20 +753,11 @@ trait Index {
                         if(!$set_init){
                             $set_init = $set;
                         }
-//                        d($set);
-//                        d($deepest);
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
-                        d($set);
-                        d($set_init);
-                        d($where_process);
-                        d($index_where);
                         if(empty($set) && $deepest === 0){
-//                            d('yes');
-                            d('found 5');
                             return $record;
                         }
                         elseif(empty($set) && $deepest > 0){
-                            d('found 6');
                             break;
                         }
                         if(is_array($set)){
@@ -781,12 +772,7 @@ trait Index {
 //                                        d($deepest);
                                         $set = $this->where_get_set($where_process, $key, $deepest);
                                         $set_init = $set;
-                                        d($set_init);
-                                        d($where_process);
                                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
-                                        d($where_process);
-                                        d($set);
-                                        d($index_where);
                                     }
                                 }
                             }
