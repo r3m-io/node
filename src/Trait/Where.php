@@ -302,7 +302,7 @@ trait Where {
         $count = count($set);
         $set_init = $set;
 //        d($record);
-        d($set_init);
+//        d($set_init);
         if(
             array_key_exists(0, $set) &&
             $count === 1
@@ -484,7 +484,7 @@ trait Where {
                     return $set;
                 case 'and':
                     $operator = 'and';
-                    d($set);
+//                    d($set);
                     /*
                     if(array_key_exists('match', $set[0])){
                         if(array_key_exists('match', $set[2])){
@@ -544,7 +544,7 @@ trait Where {
                     */
                     $list = [];
                     $list[] = $record;
-                    d($set);
+//                    d($set);
                     if (
                         is_array($set[0]) &&
                         is_array($set[2]) &&
@@ -627,7 +627,7 @@ trait Where {
                         array_key_exists('value', $set[2]) &&
                         array_key_exists('operator', $set[2])
                     ) {
-                        d($set);
+//                        d($set);
                         $filter_where = [
                             $set[2]['attribute'] => [
                                 'value' => $set[2]['value'],
@@ -787,7 +787,7 @@ trait Where {
                     return $record;
                 }
                 $count_set = count($set);
-                d($set);
+//                d($set);
                 if($count_set === 1){
                     if(
                         array_key_exists('match', $set[0]) &&
