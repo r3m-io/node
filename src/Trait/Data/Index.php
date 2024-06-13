@@ -895,7 +895,7 @@ trait Index {
                                                     ){
                                                         $leftSearch = $seek - 1;
                                                         $rightSearch = $seek + 1;
-
+                                                        d('min: ' . $options['index']['min']);
                                                         while ($leftSearch >= $options['index']['min']) {
                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                 $file[$nr]->seek($leftSearch);
@@ -914,7 +914,7 @@ trait Index {
                                                                 $leftSearch--;
                                                             }
                                                         }
-
+                                                        d('min: ' . $options['index']['max']);
                                                         while ($rightSearch <= $options['index']['max']) {
                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                 $file[$nr]->seek($rightSearch);
