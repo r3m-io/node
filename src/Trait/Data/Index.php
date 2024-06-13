@@ -1007,6 +1007,7 @@ trait Index {
                                             array_shift($set);
                                             array_shift($set);
                                         } else {
+                                            d($set);
                                             dd('found unmatched and');
                                         }
                                         break;
