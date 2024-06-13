@@ -876,7 +876,7 @@ trait Index {
                                                             true
                                                         )
                                                     ){
-                                                        $options['index']['max'] = $seek - 1;
+                                                        $options['index']['min'] = $seek + 1;
                                                         d('found 31');
                                                         d($index_where[2]);
                                                         if($options['index']['max'] < $options['index']['min']){
@@ -890,6 +890,7 @@ trait Index {
 
                                                         }
                                                     } else {
+                                                        ddd('found');
                                                         d($set_index_0);
                                                         d($set_index_2);
                                                         d($index_where);
@@ -898,7 +899,7 @@ trait Index {
                                                         //sort[1] === $value
                                                         //min becomes seek + 1
 //                                                        d($options['index']['min']);
-                                                        $options['index']['min'] = $seek + 1;
+                                                        $options['index']['max'] = $seek + 1;
 //                                                        d($options['index']['min']);
 //                                                        d($options['index']['max']);
 
