@@ -878,6 +878,7 @@ trait Index {
                                                     ){
                                                         $options['index']['max'] = $seek - 1;
                                                         d('found 31');
+                                                        d($index_where[2]);
                                                         if($options['index']['max'] < $options['index']['min']){
                                                             $set = [
                                                                 false
@@ -1101,6 +1102,8 @@ trait Index {
             }
             $seek_old = $seek;
         }
+        d($options['index']['min']);
+        d($options['index']['max']);
         d('found: 28');
         return $record;
     }
