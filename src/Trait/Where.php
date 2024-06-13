@@ -548,6 +548,7 @@ trait Where {
                     }
                     $list = [];
                     $list[] = $record;
+                    d($set);
                     if (
                         is_array($set[0]) &&
                         is_array($set[2]) &&
@@ -624,6 +625,7 @@ trait Where {
                      * more than "1 'and' or 'or'"
                      */
                     elseif(
+                        array_key_exists('match', $set[0]) &&
                         $set[0]['match'] === true &&
                         is_array($set[2]) &&
                         array_key_exists('attribute', $set[2]) &&
