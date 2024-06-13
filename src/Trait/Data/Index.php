@@ -696,10 +696,12 @@ trait Index {
                      / 2
                 );
             if($seek === $seek_old){
+                d('found 1');
                 break;
             }
             $counter++;
             if ($counter > $max) {
+                d('found 2');
                 break;
             }
             $operator = '===';
@@ -717,6 +719,7 @@ trait Index {
 //           d($options['where']);
             $record_where = $this->where($record, $options['where'], $options);
             if($record_where){
+                d('found 3');
                 return $record;
             } else {
                 $where = $options['where'];
@@ -724,6 +727,7 @@ trait Index {
                 $max_deep = 0;
                 while($deepest >= 0) {
                     if ($max_deep > 1024) {
+                        d('found 4');
                         break;
                     }
                     $set = $this->where_get_set($where, $key, $deepest);
@@ -742,10 +746,11 @@ trait Index {
 //                        d($index_where);
                         if(empty($set) && $deepest === 0){
 //                            d('yes');
+                            d('found 5');
                             return $record;
                         }
                         elseif(empty($set) && $deepest > 0){
-//                            d('no');
+                            d('found 6');
                             break;
                         }
                         if(is_array($set)){
@@ -753,6 +758,7 @@ trait Index {
                             if($count_set === 1){
                                 if($operator === null && $set[0]['match'] === true){
                                     if(empty($where_process)){
+                                        d('found 7');
                                         return $record;
                                     } else {
                                         $deepest--;
@@ -797,12 +803,14 @@ trait Index {
                                         sort($index_where[2], SORT_NATURAL);
                                         if($index_where[2][0] === $set_init[2]['value']){
                                             $options['index']['max'] = $seek - 1;
+                                            d('found: 10');
                                             break 2;
 
                                         } else {
                                             //sort[1] === $value
                                             //min becomes seek + 1
                                             $options['index']['min'] = $seek + 1;
+                                            d('found: 11');
                                             break 2;
                                         }
                                     } else {
@@ -816,10 +824,11 @@ trait Index {
                                                     false
                                                 ];
                                                 $record = false;
-//                                                d('break: 1');
+                                                d('found: 8');
                                                 break;
                                             }
 //                                            d('break: 2');
+                                            d('found: 9');
                                             break 2;
                                         } else {
                                             //sort[1] === $value
@@ -830,9 +839,11 @@ trait Index {
                                                     false
                                                 ];
                                                 $record = false;
+                                                d('found: 12');
 //                                                d('break: 1');
                                                 break;
                                             }
+                                            d('found: 13');
 //                                            d('break: 2');
                                             break 2;
                                         }
@@ -871,6 +882,7 @@ trait Index {
                                                             ];
                                                             $record = false;
 //                                                            d('break: 2');
+                                                            d('found: 14');
                                                             break 2;
 
                                                         }
@@ -889,10 +901,12 @@ trait Index {
                                                             ];
                                                             $record = false;
 //                                                            d('break: 2');
+                                                            d('found: 15');
                                                             break 2;
                                                         }
                                                     }
 //                                                    d('break: 3');
+                                                    d('found: 16');
                                                     break 3;
                                                 }
                                                 sort($index_where[2], SORT_NATURAL);
@@ -902,8 +916,10 @@ trait Index {
                                                         $set = [
                                                             false
                                                         ];
+                                                        d('found: 17');
                                                         break 2;
                                                     }
+                                                    d('found: 18');
                                                     break 3;
 
                                                 } else {
@@ -914,8 +930,10 @@ trait Index {
                                                         $set = [
                                                             false
                                                         ];
+                                                        d('found: 19');
                                                         break 2;
                                                     }
+                                                    d('found: 20');
                                                     break 3;
                                                 }
                                             }
@@ -1001,10 +1019,12 @@ trait Index {
                                                             sort($index_where[2], SORT_NATURAL);
                                                             if($index_where[2][0] === $set_index_init[2]['value']){
                                                                 $options['index']['max'] = $seek - 1;
+                                                                d('found: 21');
                                                                 break 3;
                                                             } else {
                                                                 //min becomes seek + 1
                                                                 $options['index']['min'] = $seek + 1;
+                                                                d('found: 22');
                                                                 break 3;
                                                             }
                                                         }
@@ -1035,13 +1055,16 @@ trait Index {
                         }
                         $counter++;
                         if($counter > 1024){
+                            d('found: 23');
                             break 2;
                         }
                     }
                     if($record === false){
+                        d('found: 24');
                         break 2;
                     }
                     if($deepest === 0){
+                        d('found: 25');
                         break;
                     }
                     if(
@@ -1049,6 +1072,7 @@ trait Index {
                         $where_process[0] === false
                     ){
                         $record = false;
+                        d('found: 26');
                         break 2;
                     }
 //                    d($where_process);
@@ -1059,6 +1083,7 @@ trait Index {
                     $nested_options['where'] = $where_process;
                     $record = $this->index_list_record($class, $role, $nested_options);
                     if($record){
+                        d('found: 27');
                         return $record;
                     }
 //                    $where_name = $this->index_where_name($name, $nested_options);
@@ -1069,6 +1094,7 @@ trait Index {
             }
             $seek_old = $seek;
         }
+        d('found: 28');
         return $record;
     }
 
