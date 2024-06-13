@@ -869,6 +869,9 @@ trait Index {
                                                     is_array($index_where[2][0]) &&
                                                     $set_init[2]['operator'] === 'not-in'
                                                 ){
+                                                    if(is_array($set_init[2]['value'])){
+                                                        ddd('found: 59');
+                                                    }
                                                     if(
                                                         in_array(
                                                             $set_init[2]['value'],
