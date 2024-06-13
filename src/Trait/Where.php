@@ -301,8 +301,8 @@ trait Where {
     {
         $count = count($set);
         $set_init = $set;
-        d($record);
-        d($set_init);
+//        d($record);
+//        d($set_init);
         if(
             array_key_exists(0, $set) &&
             $count === 1
@@ -490,7 +490,7 @@ trait Where {
                     return $set;
                 case 'and':
                     $operator = 'and';
-                    d($set);
+//                    d($set);
                     if(array_key_exists('match', $set[0])){
                         if(array_key_exists('match', $set[2])){
                             if ($set[0]['match'] === true && $set[2]['match'] === true) {
@@ -510,7 +510,7 @@ trait Where {
                             //need to do the right side
                             $list = [];
                             $list[] = $record;
-                            d($record);
+//                            d($record);
                             $filter_where = [
                                 $set[2]['attribute'] => [
                                     'value' => $set[2]['value'],
@@ -558,7 +558,7 @@ trait Where {
                         array_key_exists('value', $set[2]) &&
                         array_key_exists('operator', $set[2])
                     ) {
-                        d($set);
+//                        d($set);
                         if($set[0]['attribute'] === $set[2]['attribute']){
                             ddd('the problem is here');
                         }
@@ -752,7 +752,7 @@ trait Where {
                     return $set;
             }
         }
-        ksort($where, SORT_NATURAL);
+//        ksort($where, SORT_NATURAL);
         $where = array_values($where);
         return null;
     }
@@ -777,14 +777,14 @@ trait Where {
             if($counter > 1024){
                 break;
             }
-            d($where);
+//            d($where);
             $set = $this->where_get_set($where, $key, $deepest);
-            d($where);
+//            d($where);
             while($record !== false){
-                d($set);
+//                d($set);
                 $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $options);
-                d($where);
-                d($set);
+//                d($where);
+//                d($set);
                 if(empty($set) && $deepest === 0){
                     return $record;
                 }
@@ -838,7 +838,7 @@ trait Where {
             if($deepest === 0){
                 break;
             }
-            ksort($where, SORT_NATURAL);
+//            ksort($where, SORT_NATURAL);
             $deepest = $this->where_get_depth($where);
             unset($key);
             $counter++;
