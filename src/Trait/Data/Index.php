@@ -695,6 +695,7 @@ trait Index {
                          )
                      / 2
                 );
+            d('seek: ' . $seek . ' seek old: ' . $seek_old);
             if($seek === $seek_old){
                 d('found 1');
                 break;
