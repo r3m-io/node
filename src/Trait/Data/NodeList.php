@@ -224,6 +224,7 @@ trait NodeList {
                         )
                     ){
                         if($count >= ($options['page'] * $options['limit']) - $options['limit']){
+                            $record->{'#index'} = $count;
                             $list[] = $record;
                         }
                         $found[] = $record->uuid;
