@@ -714,7 +714,7 @@ trait Index {
             $value = rtrim($line, PHP_EOL);
             $record->uuid = $value;
 //            d($record);
-           d($options['where']);
+//           d($options['where']);
             $record_where = $this->where($record, $options['where'], $options);
             if($record_where){
                 return $record;
@@ -733,19 +733,19 @@ trait Index {
                         if(!$set_init){
                             $set_init = $set;
                         }
-                        d($set);
-                        d($deepest);
+//                        d($set);
+//                        d($deepest);
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
-                        d($set);
-                        d($set_init);
-                        d($where_process);
-                        d($index_where);
+//                        d($set);
+//                        d($set_init);
+//                        d($where_process);
+//                        d($index_where);
                         if(empty($set) && $deepest === 0){
-                            d('yes');
+//                            d('yes');
                             return $record;
                         }
                         elseif(empty($set) && $deepest > 0){
-                            d('no');
+//                            d('no');
                             break;
                         }
                         if(is_array($set)){
@@ -756,13 +756,13 @@ trait Index {
                                         return $record;
                                     } else {
                                         $deepest--;
-                                        d($deepest);
+//                                        d($deepest);
                                         $set = $this->where_get_set($where_process, $key, $deepest);
                                         $set_init = $set;
                                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
-                                        d($where_process);
-                                        d($set);
-                                        d($index_where);
+//                                        d($where_process);
+//                                        d($set);
+//                                        d($index_where);
                                     }
                                 }
                             }
@@ -771,7 +771,7 @@ trait Index {
                             $set_index_0 = [$set_init[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
                             $set_index_2 = null;
-                            d($set_index_0);
+//                            d($set_index_0);
                             //if($set_index_0[0] === true){}
                             if($set_index_0[0]['match'] === false){
                                 if(
@@ -807,8 +807,8 @@ trait Index {
                                         }
                                     } else {
                                         sort($index_where[0], SORT_NATURAL);
-                                        d($index_where);
-                                        d($set_init);
+//                                        d($index_where);
+//                                        d($set_init);
                                         if($index_where[0][0] === $set_init[0]['value']){
                                             $options['index']['max'] = $seek - 1;
                                             if($options['index']['max'] < $options['index']['min']){
@@ -816,10 +816,10 @@ trait Index {
                                                     false
                                                 ];
                                                 $record = false;
-                                                d('break: 1');
+//                                                d('break: 1');
                                                 break;
                                             }
-                                            d('break: 2');
+//                                            d('break: 2');
                                             break 2;
                                         } else {
                                             //sort[1] === $value
@@ -830,24 +830,24 @@ trait Index {
                                                     false
                                                 ];
                                                 $record = false;
-                                                d('break: 1');
+//                                                d('break: 1');
                                                 break;
                                             }
-                                            d('break: 2');
+//                                            d('break: 2');
                                             break 2;
                                         }
                                     }
                                 }
                             } else {
-                                d($set_init);
+//                                d($set_init);
                                 if(array_key_exists(1, $set_init)){
                                     switch($set_init[1]){
                                         case 'and':
                                             $set_index_2 = [$set_init[2]];
-                                            d($record);
-                                            d($set_index_2);
+//                                            d($record);
+//                                            d($set_index_2);
                                             $set_index_2 = $this->where_process($record, $set_index_2);
-                                            d($set_index_2);
+//                                            d($set_index_2);
                                             if($set_index_0[0]['match'] === true && $set_index_2[0]['match'] === true){
                                                 array_shift($set);
                                                 array_shift($set);
@@ -870,17 +870,17 @@ trait Index {
                                                                 false
                                                             ];
                                                             $record = false;
-                                                            d('break: 2');
+//                                                            d('break: 2');
                                                             break 2;
 
                                                         }
                                                     } else {
                                                         //sort[1] === $value
                                                         //min becomes seek + 1
-                                                        d($options['index']['min']);
+//                                                        d($options['index']['min']);
                                                         $options['index']['min'] = $seek + 1;
-                                                        d($options['index']['min']);
-                                                        d($options['index']['max']);
+//                                                        d($options['index']['min']);
+//                                                        d($options['index']['max']);
 
 
                                                         if($options['index']['max'] < $options['index']['min']){
@@ -888,11 +888,11 @@ trait Index {
                                                                 false
                                                             ];
                                                             $record = false;
-                                                            d('break: 2');
+//                                                            d('break: 2');
                                                             break 2;
                                                         }
                                                     }
-                                                    d('break: 3');
+//                                                    d('break: 3');
                                                     break 3;
                                                 }
                                                 sort($index_where[2], SORT_NATURAL);
@@ -1051,7 +1051,7 @@ trait Index {
                         $record = false;
                         break 2;
                     }
-                    d($where_process);
+//                    d($where_process);
                     $deepest = $this->where_get_depth($where_process);
                     unset($key);
                     $counter++;
