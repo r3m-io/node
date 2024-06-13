@@ -897,8 +897,17 @@ trait Index {
                                                         $rightSearch = $seek + 1;
 
                                                         while ($leftSearch >= $options['index']['min']) {
-
-
+                                                            foreach ($options['index']['where'] as $nr => $attribute){
+                                                                $file[$nr]->seek($leftSearch);
+                                                                $line = $file[$nr]->current();
+                                                                $value = rtrim($line, PHP_EOL);
+                                                                $record->{$attribute} = $value;
+                                                            }
+                                                            $file['uuid']->seek($seek);
+                                                            $line = $file['uuid']->current();
+                                                            $value = rtrim($line, PHP_EOL);
+                                                            $record->uuid = $value;
+                                                            d($record);
                                                             ddd($leftSearch);
 
 
