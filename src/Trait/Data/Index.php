@@ -881,7 +881,9 @@ trait Index {
                                                     ){
 
                                                         $leftSearch = $object->config('node.record.leftsearch') ?? $seek;
-                                                        $leftSearch--;
+                                                        if($leftSearch > 0){
+                                                            $leftSearch--;
+                                                        }
                                                         $rightSearch = $object->config('node.record.rightsearch') ?? $seek;
                                                         $rightSearch++;
                                                         d('leftsearch: ' . $leftSearch);
@@ -905,7 +907,6 @@ trait Index {
                                                                 $leftSearch--;
                                                             }
                                                         }
-                                                        $object->config('delete', 'node.record.leftsearch');
 //                                                        d('max: ' . $options['index']['max']);
                                                         d('rightsearch: ' . $rightSearch);
                                                         while ($rightSearch <= $options['index']['max']) {
@@ -927,6 +928,7 @@ trait Index {
                                                                 $rightSearch++;
                                                             }
                                                         }
+                                                        $object->config('delete', 'node.record.leftsearch');
                                                         $object->config('delete', 'node.record.rightsearch');
                                                         $options['index']['min'] = $leftSearch;
                                                         $options['index']['max'] = $rightSearch;
