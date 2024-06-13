@@ -223,7 +223,9 @@ trait NodeList {
                             true
                         )
                     ){
-                        $list[] = $record;
+                        if($count >= ($options['page'] * $options['limit']) - $options['limit']){
+                            $list[] = $record;
+                        }
                         $found[] = $record->uuid;
                         $count++;
                     }
@@ -232,7 +234,7 @@ trait NodeList {
 //                    d($options['limit']);
                     if(
                         $options['limit'] !== '*' &&
-                        $count === (($options['page'] * $options['limit']) + $options['limit'])
+                        $count === (($options['page'] * $options['limit']))
                     ){
 //                        d($options['limit']);
 //                        d($options['page']);
