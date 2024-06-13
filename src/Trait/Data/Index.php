@@ -741,10 +741,10 @@ trait Index {
 //                        d($set);
 //                        d($deepest);
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
-//                        d($set);
-//                        d($set_init);
-//                        d($where_process);
-//                        d($index_where);
+                        d($set);
+                        d($set_init);
+                        d($where_process);
+                        d($index_where);
                         if(empty($set) && $deepest === 0){
 //                            d('yes');
                             d('found 5');
