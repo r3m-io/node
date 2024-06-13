@@ -1007,8 +1007,10 @@ trait Index {
                                             array_shift($set);
                                             array_shift($set);
                                         } else {
+                                            array_shift($set);
+                                            array_shift($set);
                                             d($set);
-                                            dd('found unmatched and');
+                                            d('found unmatched and');
                                         }
                                         break;
                                     case 'or':
