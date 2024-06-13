@@ -233,6 +233,9 @@ trait NodeList {
                         $options['limit'] !== '*' &&
                         $count === ($options['page'] * $options['limit'])
                     ){
+                        d($options['limit']);
+                        d($options['page']);
+                        d($count);
                         break;
                     }
                     $options_where = $this->index_record_next($found, $options);
