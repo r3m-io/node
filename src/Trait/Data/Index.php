@@ -892,6 +892,31 @@ trait Index {
                                                             true
                                                         )
                                                     ){
+                                                        $leftSearch = $seek - 1;
+                                                        $rightSearch = $seek + 1;
+
+                                                        while ($leftSearch >= $options['index']['min']) {
+
+
+                                                            ddd($leftSearch);
+
+
+                                                            if ($array[$leftSearch] != $exclude) {
+                                                                return $leftSearch;
+                                                            }
+                                                            $leftSearch--;
+                                                        }
+
+                                                        while ($rightSearch <= $options['index']['max']) {
+                                                            ddd($rightSearch);
+                                                            if ($array[$rightSearch] != $exclude) {
+                                                                return $rightSearch;
+                                                            }
+                                                            $rightSearch++;
+                                                        }
+
+
+
                                                         $sort = new Sort();
                                                         usort($index_where[2][0], array($sort,"uuid_compare_ascending"));
                                                         $not_in_index = array_search($index_where[2][1], $index_where[2][0]);
