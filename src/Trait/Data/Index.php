@@ -876,6 +876,8 @@ trait Index {
                                                             true
                                                         )
                                                     ){
+                                                        $sort = new Sort();
+                                                        usort($index_where[2][0], array($sort,"uuid_compare_ascending"));
                                                         $options['index']['min'] = $seek + 1;
                                                         d('found 31');
                                                         d($index_where[2]);
