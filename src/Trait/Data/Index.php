@@ -889,6 +889,7 @@ trait Index {
 
                                                         }
                                                     } else {
+                                                        d('found 32');
                                                         //sort[1] === $value
                                                         //min becomes seek + 1
 //                                                        d($options['index']['min']);
