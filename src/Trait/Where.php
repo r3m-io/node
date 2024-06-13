@@ -561,10 +561,6 @@ trait Where {
                         array_key_exists('value', $set[2]) &&
                         array_key_exists('operator', $set[2])
                     ) {
-//                        d($set);
-                        if($set[0]['attribute'] === $set[2]['attribute']){
-                            ddd('the problem is here');
-                        }
                         $filter_where = [
                             $set[0]['attribute'] => [
                                 'value' => $set[0]['value'],
@@ -573,7 +569,6 @@ trait Where {
                             ]
                         ];
                         $left = Filter::list($list)->where($filter_where);
-
                         $filter_where = [
                             $set[2]['attribute'] => [
                                 'value' => $set[2]['value'],
@@ -582,7 +577,6 @@ trait Where {
                             ]
                         ];
                         $right = Filter::list($list)->where($filter_where);
-
                         if (!empty($left) && !empty($right)) {
                             $set[0] = [
                                 'attribute' => 'uuid',
