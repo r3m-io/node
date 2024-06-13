@@ -878,6 +878,11 @@ trait Index {
                                                     ){
                                                         $sort = new Sort();
                                                         usort($index_where[2][0], array($sort,"uuid_compare_ascending"));
+                                                        $not_in_index = array_search($index_where[2][1], $index_where[2][0]);
+                                                        $not_in_count = count($index_where[2][0]);
+                                                        d($not_in_count);
+                                                        d($not_in_index);
+
                                                         $options['index']['min'] = $seek + 1;
                                                         d('found 31');
                                                         d($index_where[2]);
