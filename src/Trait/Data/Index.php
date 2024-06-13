@@ -710,7 +710,7 @@ trait Index {
                          )
                      / 2
                 );
-            d('seek: ' . $seek . ' seek old: ' . $seek_old);
+//            d('seek: ' . $seek . ' seek old: ' . $seek_old);
             if($seek === $seek_old){
                 d('found 1');
                 break;
@@ -881,7 +881,7 @@ trait Index {
                                                     ){
                                                         $leftSearch = $seek - 1;
                                                         $rightSearch = $seek + 1;
-                                                        d('min: ' . $options['index']['min']);
+//                                                        d('min: ' . $options['index']['min']);
                                                         while ($leftSearch >= $options['index']['min']) {
                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                 $file[$nr]->seek($leftSearch);
@@ -900,7 +900,7 @@ trait Index {
                                                                 $leftSearch--;
                                                             }
                                                         }
-                                                        d('max: ' . $options['index']['max']);
+//                                                        d('max: ' . $options['index']['max']);
                                                         while ($rightSearch <= $options['index']['max']) {
                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                 $file[$nr]->seek($rightSearch);
