@@ -886,7 +886,7 @@ trait Index {
                                                         }
                                                         $rightSearch = $object->config('node.record.rightsearch') ?? $seek;
                                                         $rightSearch++;
-                                                        d('leftsearch: ' . $leftSearch);
+//                                                        d('leftsearch: ' . $leftSearch);
 //                                                        d('min: ' . $options['index']['min']);
                                                         while ($leftSearch >= $options['index']['min']) {
                                                             foreach ($options['index']['where'] as $nr => $attribute){
@@ -908,7 +908,7 @@ trait Index {
                                                             }
                                                         }
 //                                                        d('max: ' . $options['index']['max']);
-                                                        d('rightsearch: ' . $rightSearch);
+//                                                        d('rightsearch: ' . $rightSearch);
                                                         while ($rightSearch <= $options['index']['max']) {
                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                 $file[$nr]->seek($rightSearch);
