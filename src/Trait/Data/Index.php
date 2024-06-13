@@ -640,12 +640,17 @@ trait Index {
             $where[] = 'and';
         }
         if(!empty($found)){
+            $uuid = false;
             foreach($found as $nr => $uuid){
                 $where[] = [
                     'attribute' => 'uuid',
                     'operator' => '!==',
                     'value' => $uuid
                 ];
+                $where[] = 'and';
+            }
+            if($uuid){
+                array_pop($where);
             }
             /*
             $where[] = [
