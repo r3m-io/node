@@ -907,14 +907,13 @@ trait Index {
                                                             $line = $file['uuid']->current();
                                                             $value = rtrim($line, PHP_EOL);
                                                             $record->uuid = $value;
-                                                            d($record);
-                                                            ddd($leftSearch);
-
-
-                                                            if ($array[$leftSearch] != $exclude) {
-                                                                return $leftSearch;
+                                                            $record_where = $this->where($record, $options['where'], $options);
+                                                            if($record_where){
+                                                                ddd('found 3');
+                                                                return $record;
+                                                            } else {
+                                                                $leftSearch--;
                                                             }
-                                                            $leftSearch--;
                                                         }
 
                                                         while ($rightSearch <= $options['index']['max']) {
