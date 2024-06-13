@@ -247,6 +247,8 @@ trait NodeList {
                     $record = $this->index_list_record($class, $role, $local_options);
                     d($record);
                     if($record === false){
+                        d($list);
+                        d($count);
                         ddd($local_options);
                     }
                 }
