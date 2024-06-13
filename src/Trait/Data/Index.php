@@ -932,16 +932,11 @@ trait Index {
                                                         $object->config('delete', 'node.record.rightsearch');
                                                         $options['index']['min'] = 0;
                                                         $options['index']['max'] = -1;
-                                                        d('found 31');
-                                                        d($index_where[2]);
-                                                        d('min: ' . $options['index']['min'] . ', max: ' . $options['index']['max']);
                                                         if($options['index']['max'] < $options['index']['min']){
                                                             $set = [
                                                                 false
                                                             ];
-                                                            $record = false;
-//                                                            d('break: 2');
-                                                            d('found: 14');
+                                                            $record = false;//
                                                             break 2;
                                                         }
                                                     } else {
