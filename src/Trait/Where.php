@@ -633,6 +633,7 @@ trait Where {
                         array_key_exists('value', $set[2]) &&
                         array_key_exists('operator', $set[2])
                     ) {
+                        d($set);
                         $filter_where = [
                             $set[2]['attribute'] => [
                                 'value' => $set[2]['value'],
