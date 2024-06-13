@@ -236,6 +236,7 @@ trait NodeList {
                         d($options['limit']);
                         d($options['page']);
                         d($list);
+                        d($found);
                         d($count);
                         break;
                     }
