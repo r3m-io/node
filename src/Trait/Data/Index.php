@@ -640,11 +640,20 @@ trait Index {
             $where[] = 'and';
         }
         if(!empty($found)){
+            foreach($found as $nr => $uuid){
+                $where[] = [
+                    'attribute' => 'uuid',
+                    'operator' => '!==',
+                    'value' => $uuid
+                ];
+            }
+            /*
             $where[] = [
                 'attribute' => 'uuid',
                 'operator' => 'not-in',
                 'value' => $found
             ];
+            */
         }
         return $where;
     }
@@ -871,11 +880,6 @@ trait Index {
                                                     is_array($index_where[2][0]) &&
                                                     $set_init[2]['operator'] === 'not-in'
                                                 ){
-                                                    if(!in_array($index_where[2][1], $index_where[2][0])) {
-                                                        d('found record');
-                                                        d($index_where);
-                                                        ddd($record);
-                                                    }
                                                     if(
                                                         in_array(
                                                             $index_where[2][1],
