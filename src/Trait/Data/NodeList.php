@@ -116,6 +116,7 @@ trait NodeList {
             $options['index'] = false;
         }
         elseif($options['index'] === true){
+            Core::interactive();
             $options['index'] = $this->index_create($name, $role, $options);
         }
         if(
