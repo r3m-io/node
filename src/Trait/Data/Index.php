@@ -735,7 +735,6 @@ trait Index {
 //           d($options['where']);
             $record_where = $this->where($record, $options['where'], $options);
             if($record_where){
-                d('found 3');
                 return $record;
             } else {
                 $where = $options['where'];
