@@ -880,6 +880,8 @@ trait Index {
                                                         usort($index_where[2][0], array($sort,"uuid_compare_ascending"));
                                                         $not_in_index = array_search($index_where[2][1], $index_where[2][0]);
                                                         $not_in_count = count($index_where[2][0]);
+                                                        $not_in_seek = floor($not_in_count / 2);
+                                                        d($not_in_seek);
                                                         d($not_in_count);
                                                         ddd($not_in_index);
 
