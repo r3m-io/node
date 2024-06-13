@@ -1011,6 +1011,8 @@ trait Index {
                                             array_shift($set);
                                             d($record);
                                             d($set);
+                                            d($where_process);
+                                            d($index_where);
                                             ddd('found unmatched and');
                                         }
                                         break;
