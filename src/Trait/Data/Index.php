@@ -914,7 +914,7 @@ trait Index {
                                                                 $leftSearch--;
                                                             }
                                                         }
-                                                        d('min: ' . $options['index']['max']);
+                                                        d('max: ' . $options['index']['max']);
                                                         while ($rightSearch <= $options['index']['max']) {
                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                 $file[$nr]->seek($rightSearch);
