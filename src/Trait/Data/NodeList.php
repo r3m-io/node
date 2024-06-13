@@ -245,6 +245,7 @@ trait NodeList {
 
 //                    d($local_options);
                     $record = $this->index_list_record($class, $role, $local_options);
+                    d($record);
                 }
             }
             d('from index:' . $name);
