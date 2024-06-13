@@ -640,6 +640,7 @@ trait Index {
             $where[] = 'and';
         }
         if(!empty($found)){
+            /*
             $uuid = false;
             foreach($found as $nr => $uuid){
                 $where[] = [
@@ -652,13 +653,13 @@ trait Index {
             if($uuid){
                 array_pop($where);
             }
-            /*
+            */
+
             $where[] = [
                 'attribute' => 'uuid',
                 'operator' => 'not-in',
                 'value' => $found
             ];
-            */
         }
         return $where;
     }
