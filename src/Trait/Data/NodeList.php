@@ -231,7 +231,7 @@ trait NodeList {
                     d($options['limit']);
                     if(
                         $options['limit'] !== '*' &&
-                        $count === ($options['page'] * $options['limit'])
+                        $count === (($options['page'] * $options['limit']) + $options['limit'])
                     ){
                         d($options['limit']);
                         d($options['page']);
