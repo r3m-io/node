@@ -877,6 +877,7 @@ trait Index {
                                                         )
                                                     ){
                                                         $options['index']['max'] = $seek - 1;
+                                                        d('found 31');
                                                         if($options['index']['max'] < $options['index']['min']){
                                                             $set = [
                                                                 false
