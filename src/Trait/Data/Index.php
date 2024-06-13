@@ -1000,13 +1000,15 @@ trait Index {
                             ){
                                 switch($set[1]) {
                                     case 'and':
-//                                        d($set_index);
-                                        d($record);
-                                        d($where_process);
-                                        d($set);
-                                        d($options);
-                                        //doesn't reach this point
-                                        ddd('yes');
+                                        if(
+                                            $set[0]['match'] === true &&
+                                            $set[2]['match'] === true
+                                        ){
+                                            array_shift($set);
+                                            array_shift($set);
+                                        } else {
+                                            dd('found unmatched and');
+                                        }
                                         break;
                                     case 'or':
                                         if($set[0]['match'] === true || $set[2]['match'] === true){
