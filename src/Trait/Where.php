@@ -791,8 +791,13 @@ trait Where {
                     return $record;
                 }
                 $count_set = count($set);
+                d($set);
                 if($count_set === 1){
-                    if($operator === null && $set[0]['match'] === true){
+                    if(
+                        array_key_exists('match', $set[0]) &&
+                        $operator === null &&
+                        $set[0]['match'] === true
+                    ){
                         break;
                     } else {
                         if($deepest === 0){
@@ -806,7 +811,12 @@ trait Where {
                 elseif($count_set >= 3){
                     switch($operator){
                         case 'and':
-                            if($set[0]['match'] === true && $set[2]['match'] === true){
+                            if(
+                                array_key_exists('match', $set[0]) &&
+                                array_key_exists('match', $set[2]) &&
+                                $set[0]['match'] === true &&
+                                $set[2]['match'] === true
+                            ){
                                 array_shift($set);
                                 array_shift($set);
                             } else {
@@ -816,7 +826,12 @@ trait Where {
                             }
                             break;
                         case 'or':
-                            if($set[0]['match'] === true || $set[2]['match'] === true){
+                            if(
+                                array_key_exists('match', $set[0]) &&
+                                array_key_exists('match', $set[2]) &&
+                                $set[0]['match'] === true ||
+                                $set[2]['match'] === true
+                            ){
                                 array_shift($set);
                                 array_shift($set);
                             } else {
