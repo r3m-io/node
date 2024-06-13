@@ -879,8 +879,11 @@ trait Index {
                                                             true
                                                         )
                                                     ){
-                                                        $leftSearch = $seek - 1;
-                                                        $rightSearch = $seek + 1;
+
+                                                        $leftSearch = $object->config('node.record.leftsearch') ?? $seek;
+                                                        $leftSearch--;
+                                                        $rightSearch = $object->config('node.record.rightsearch') ?? $seek;
+                                                        $rightSearch++;
                                                         d('leftsearch: ' . $leftSearch);
 //                                                        d('min: ' . $options['index']['min']);
                                                         while ($leftSearch >= $options['index']['min']) {
@@ -896,12 +899,15 @@ trait Index {
                                                             $record->uuid = $value;
                                                             $record_where = $this->where($record, $options['where'], $options);
                                                             if($record_where){
+                                                                $object->config('node.record.leftsearch', $leftSearch);
                                                                 return $record;
                                                             } else {
                                                                 $leftSearch--;
                                                             }
                                                         }
+                                                        $object->config('delete', 'node.record.leftsearch');
 //                                                        d('max: ' . $options['index']['max']);
+                                                        d('rightsearch: ' . $rightSearch);
                                                         while ($rightSearch <= $options['index']['max']) {
                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                 $file[$nr]->seek($rightSearch);
@@ -915,11 +921,13 @@ trait Index {
                                                             $record->uuid = $value;
                                                             $record_where = $this->where($record, $options['where'], $options);
                                                             if($record_where){
+                                                                $object->config('node.record.rightsearch', $rightSearch);
                                                                 return $record;
                                                             } else {
                                                                 $rightSearch++;
                                                             }
                                                         }
+                                                        $object->config('delete', 'node.record.rightsearch');
                                                         $options['index']['min'] = $leftSearch;
                                                         $options['index']['max'] = $rightSearch;
                                                         d('found 31');
