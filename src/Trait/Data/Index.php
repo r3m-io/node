@@ -890,6 +890,7 @@ trait Index {
                                                         }
                                                         d('found 31');
                                                         d($index_where[2]);
+                                                        d('min: ' . $options['index']['min'] . ', max: ' . $options['index']['max']);
                                                         if($options['index']['max'] < $options['index']['min']){
                                                             $set = [
                                                                 false
