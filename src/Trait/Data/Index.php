@@ -930,8 +930,8 @@ trait Index {
                                                         }
                                                         $object->config('delete', 'node.record.leftsearch');
                                                         $object->config('delete', 'node.record.rightsearch');
-                                                        $options['index']['min'] = $leftSearch;
-                                                        $options['index']['max'] = $rightSearch;
+                                                        $options['index']['min'] = 0;
+                                                        $options['index']['max'] = -1;
                                                         d('found 31');
                                                         d($index_where[2]);
                                                         d('min: ' . $options['index']['min'] . ', max: ' . $options['index']['max']);
