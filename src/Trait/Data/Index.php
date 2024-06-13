@@ -1009,8 +1009,9 @@ trait Index {
                                         } else {
                                             array_shift($set);
                                             array_shift($set);
+                                            d($record);
                                             d($set);
-                                            d('found unmatched and');
+                                            ddd('found unmatched and');
                                         }
                                         break;
                                     case 'or':
