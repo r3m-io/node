@@ -247,6 +247,8 @@ trait NodeList {
                     $local_options['page'] = 1;
                     $record = $this->index_list_record($class, $role, $local_options);
                 }
+                $object->config('delete', 'node.record.leftsearch');
+                $object->config('delete', 'node.record.rightsearch');
             }
             d('from index:' . $name);
             $result = [];
