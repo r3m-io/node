@@ -1010,6 +1010,7 @@ trait Index {
                                                                         $rightSearch++;
                                                                     } else {
                                                                         break;
+                                                                    }
                                                                 }
                                                                 $object->config('node.record.rightsearch', $rightSearch);
                                                             break;
