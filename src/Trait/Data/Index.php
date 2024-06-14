@@ -882,12 +882,9 @@ trait Index {
                                                                     if($record_where){
                                                                         $object->config('node.record.leftsearch', $leftSearch);
                                                                         return $record;
-                                                                    } else {
-                                                                        if($leftSearch > 0){
-                                                                            $leftSearch--;
-                                                                        } else {
-                                                                            break;
-                                                                        }
+                                                                    }
+                                                                    elseif($leftSearch >= 0){
+                                                                        $leftSearch--;
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
@@ -907,12 +904,11 @@ trait Index {
                                                                     if($record_where){
                                                                         $object->config('node.record.rightsearch', $rightSearch);
                                                                         return $record;
+                                                                    }
+                                                                    elseif ($rightSearch < PHP_INT_MAX){
+                                                                        $rightSearch++;
                                                                     } else {
-                                                                        if ($rightSearch < PHP_INT_MAX){
-                                                                            $rightSearch++;
-                                                                        } else {
-                                                                            break;
-                                                                        }
+                                                                        break;
                                                                     }
                                                                 }
                                                                 $object->config('node.record.rightsearch', $rightSearch);
@@ -934,10 +930,12 @@ trait Index {
                                                                     $record_where = $this->where($record, $options['where'], $options);
                                                                     if($record_where){
                                                                         $object->config('node.record.rightsearch', $rightSearch);
-                                                                        ddd($strategy);
                                                                         return $record;
-                                                                    } else {
+                                                                    }
+                                                                    elseif($rightSearch < PHP_INT_MAX) {
                                                                         $rightSearch++;
+                                                                    } else {
+                                                                        break;
                                                                     }
                                                                 }
                                                                 $object->config('node.record.rightsearch', $rightSearch);
@@ -957,7 +955,8 @@ trait Index {
                                                                     if($record_where){
                                                                         $object->config('node.record.leftsearch', $leftSearch);
                                                                         return $record;
-                                                                    } else {
+                                                                    }
+                                                                    elseif($leftSearch >= 0) {
                                                                         $leftSearch--;
                                                                     }
                                                                 }
@@ -981,13 +980,9 @@ trait Index {
                                                                     if($record_where){
                                                                         $object->config('node.record.leftsearch', $leftSearch);
                                                                         return $record;
-                                                                    } else {
-                                                                        if($leftSearch > 0){
-                                                                            $leftSearch--;
-                                                                        } else {
-                                                                            break;
-                                                                        }
-
+                                                                    }
+                                                                    elseif($leftSearch >= 0){
+                                                                        $leftSearch--;
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
@@ -1010,11 +1005,11 @@ trait Index {
                                                                     if($record_where){
                                                                         $object->config('node.record.rightsearch', $rightSearch);
                                                                         return $record;
-                                                                    } else {
-                                                                        if ($rightSearch < PHP_INT_MAX) {
-                                                                            $rightSearch++;
-                                                                        }
                                                                     }
+                                                                    elseif ($rightSearch < PHP_INT_MAX) {
+                                                                        $rightSearch++;
+                                                                    } else {
+                                                                        break;
                                                                 }
                                                                 $object->config('node.record.rightsearch', $rightSearch);
                                                             break;
@@ -1041,15 +1036,14 @@ trait Index {
                                                                                 $object->config('node.record.leftsearch', $leftSearch);
                                                                                 $object->config('node.record.toggle', 'right');
                                                                                 return $record;
-                                                                            } else {
-                                                                                if($leftSearch >= 0){
-                                                                                    $leftSearch--;
-                                                                                }
+                                                                            }
+                                                                            elseif($leftSearch >= 0){
+                                                                                $leftSearch--;
                                                                             }
                                                                         }
                                                                         $object->config('node.record.leftsearch', $leftSearch);
                                                                         $object->config('node.record.toggle', 'right');
-                                                                    break;
+                                                                         break;
                                                                     case 'right' :
                                                                         $rightSearch++;
                                                                         while ($rightSearch <= $options['index']['max']) {
@@ -1068,12 +1062,11 @@ trait Index {
                                                                                 $object->config('node.record.rightsearch', $rightSearch);
                                                                                 $object->config('node.record.toggle', 'left');
                                                                                 return $record;
+                                                                            }
+                                                                            elseif($rightSearch < PHP_INT_MAX){
+                                                                                $rightSearch++;
                                                                             } else {
-                                                                                if($rightSearch < PHP_INT_MAX){
-                                                                                    $rightSearch++;
-                                                                                } else {
-                                                                                    break;
-                                                                                }
+                                                                                break;
                                                                             }
                                                                         }
                                                                         $object->config('node.record.rightsearch', $rightSearch);
