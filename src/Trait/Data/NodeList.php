@@ -63,6 +63,9 @@ trait NodeList {
         if (!array_key_exists('memory', $options)) {
             $options['memory'] = false; //true
         }
+        if(!array_key_exists('strategy', $options)){
+            $options['strategy'] = 'around';
+        }
         if (!array_key_exists('parallel', $options)) {
             $options['parallel'] = false; //true
         }

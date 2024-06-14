@@ -860,6 +860,9 @@ trait Index {
                                                             true
                                                         )
                                                     ){
+                                                        $strategy = $options['strategy'] ?? 'around';
+                                                        ddd($strategy);
+
                                                         $leftSearch = $object->config('node.record.leftsearch') ?? $seek;
                                                         if($leftSearch > 0){
                                                             $leftSearch--;
