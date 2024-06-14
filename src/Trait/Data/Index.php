@@ -863,123 +863,62 @@ trait Index {
                                                         $strategy = $options['strategy'] ?? 'around';
                                                         $leftSearch = $object->config('node.record.leftsearch') ?? $seek;
                                                         $rightSearch = $object->config('node.record.rightsearch') ?? $seek;
-                                                        if ($rightSearch < PHP_INT_MAX){
-                                                            $rightSearch++;
-                                                        }
-                                                        if($leftSearch > 0){
-                                                            $leftSearch--;
-                                                        }
                                                         switch(strtolower($strategy)){
                                                             case 'left' :
-                                                                while ($leftSearch >= $options['index']['min']) {
-                                                                    foreach ($options['index']['where'] as $nr => $attribute){
-                                                                        $file[$nr]->seek($leftSearch);
-                                                                        $line = $file[$nr]->current();
-                                                                        $value = rtrim($line, PHP_EOL);
-                                                                        $record->{$attribute} = $value;
-                                                                    }
-                                                                    $file['uuid']->seek($leftSearch);
-                                                                    $line = $file['uuid']->current();
-                                                                    $value = rtrim($line, PHP_EOL);
-                                                                    $record->uuid = $value;
-                                                                    $record_where = $this->where($record, $options['where'], $options);
-                                                                    if($record_where){
-                                                                        $object->config('node.record.leftsearch', $leftSearch);
-                                                                        ddd($strategy);
-                                                                        return $record;
-                                                                    } else {
-                                                                        $leftSearch--;
-                                                                    }
+                                                                if ($rightSearch < PHP_INT_MAX){
+                                                                    $rightSearch++;
                                                                 }
-                                                                while ($rightSearch <= $options['index']['max']) {
-                                                                    foreach ($options['index']['where'] as $nr => $attribute){
-                                                                        $file[$nr]->seek($rightSearch);
-                                                                        $line = $file[$nr]->current();
-                                                                        $value = rtrim($line, PHP_EOL);
-                                                                        $record->{$attribute} = $value;
-                                                                    }
-                                                                    $file['uuid']->seek($rightSearch);
-                                                                    $line = $file['uuid']->current();
-                                                                    $value = rtrim($line, PHP_EOL);
-                                                                    $record->uuid = $value;
-                                                                    $record_where = $this->where($record, $options['where'], $options);
-                                                                    if($record_where){
-                                                                        $object->config('node.record.rightsearch', $rightSearch);
-                                                                        ddd($strategy);
-                                                                        return $record;
-                                                                    } else {
-                                                                        $rightSearch++;
-                                                                    }
+                                                                if($leftSearch > 0){
+                                                                    $leftSearch--;
                                                                 }
                                                                 //search all of left , then right
+                                                                while ($leftSearch >= $options['index']['min']) {
+                                                                    foreach ($options['index']['where'] as $nr => $attribute){
+                                                                        $file[$nr]->seek($leftSearch);
+                                                                        $line = $file[$nr]->current();
+                                                                        $value = rtrim($line, PHP_EOL);
+                                                                        $record->{$attribute} = $value;
+                                                                    }
+                                                                    $file['uuid']->seek($leftSearch);
+                                                                    $line = $file['uuid']->current();
+                                                                    $value = rtrim($line, PHP_EOL);
+                                                                    $record->uuid = $value;
+                                                                    $record_where = $this->where($record, $options['where'], $options);
+                                                                    if($record_where){
+                                                                        $object->config('node.record.leftsearch', $leftSearch);
+                                                                        return $record;
+                                                                    } else {
+                                                                        $leftSearch--;
+                                                                    }
+                                                                }
+                                                                while ($rightSearch <= $options['index']['max']) {
+                                                                    foreach ($options['index']['where'] as $nr => $attribute){
+                                                                        $file[$nr]->seek($rightSearch);
+                                                                        $line = $file[$nr]->current();
+                                                                        $value = rtrim($line, PHP_EOL);
+                                                                        $record->{$attribute} = $value;
+                                                                    }
+                                                                    $file['uuid']->seek($rightSearch);
+                                                                    $line = $file['uuid']->current();
+                                                                    $value = rtrim($line, PHP_EOL);
+                                                                    $record->uuid = $value;
+                                                                    $record_where = $this->where($record, $options['where'], $options);
+                                                                    if($record_where){
+                                                                        $object->config('node.record.rightsearch', $rightSearch);
+                                                                        return $record;
+                                                                    } else {
+                                                                        $rightSearch++;
+                                                                    }
+                                                                }
                                                             break;
                                                             case 'right' :
-                                                                while ($rightSearch <= $options['index']['max']) {
-                                                                    foreach ($options['index']['where'] as $nr => $attribute){
-                                                                        $file[$nr]->seek($rightSearch);
-                                                                        $line = $file[$nr]->current();
-                                                                        $value = rtrim($line, PHP_EOL);
-                                                                        $record->{$attribute} = $value;
-                                                                    }
-                                                                    $file['uuid']->seek($rightSearch);
-                                                                    $line = $file['uuid']->current();
-                                                                    $value = rtrim($line, PHP_EOL);
-                                                                    $record->uuid = $value;
-                                                                    $record_where = $this->where($record, $options['where'], $options);
-                                                                    if($record_where){
-                                                                        $object->config('node.record.rightsearch', $rightSearch);
-                                                                        ddd($strategy);
-                                                                        return $record;
-                                                                    } else {
-                                                                        $rightSearch++;
-                                                                    }
+                                                                if ($rightSearch < PHP_INT_MAX){
+                                                                    $rightSearch++;
                                                                 }
-                                                                while ($leftSearch >= $options['index']['min']) {
-                                                                    foreach ($options['index']['where'] as $nr => $attribute){
-                                                                        $file[$nr]->seek($leftSearch);
-                                                                        $line = $file[$nr]->current();
-                                                                        $value = rtrim($line, PHP_EOL);
-                                                                        $record->{$attribute} = $value;
-                                                                    }
-                                                                    $file['uuid']->seek($leftSearch);
-                                                                    $line = $file['uuid']->current();
-                                                                    $value = rtrim($line, PHP_EOL);
-                                                                    $record->uuid = $value;
-                                                                    $record_where = $this->where($record, $options['where'], $options);
-                                                                    if($record_where){
-                                                                        $object->config('node.record.leftsearch', $leftSearch);
-                                                                        ddd($strategy);
-                                                                        return $record;
-                                                                    } else {
-                                                                        $leftSearch--;
-                                                                    }
+                                                                if($leftSearch > 0){
+                                                                    $leftSearch--;
                                                                 }
                                                                 //search all of right, then left
-                                                            break;
-                                                            case 'left-only' :
-                                                                while ($leftSearch >= $options['index']['min']) {
-                                                                    foreach ($options['index']['where'] as $nr => $attribute){
-                                                                        $file[$nr]->seek($leftSearch);
-                                                                        $line = $file[$nr]->current();
-                                                                        $value = rtrim($line, PHP_EOL);
-                                                                        $record->{$attribute} = $value;
-                                                                    }
-                                                                    $file['uuid']->seek($leftSearch);
-                                                                    $line = $file['uuid']->current();
-                                                                    $value = rtrim($line, PHP_EOL);
-                                                                    $record->uuid = $value;
-                                                                    $record_where = $this->where($record, $options['where'], $options);
-                                                                    if($record_where){
-                                                                        $object->config('node.record.leftsearch', $leftSearch);
-                                                                        ddd($strategy);
-                                                                        return $record;
-                                                                    } else {
-                                                                        $leftSearch--;
-                                                                    }
-                                                                }
-                                                                //search all of left
-                                                            break;
-                                                            case 'right-only' :
                                                                 while ($rightSearch <= $options['index']['max']) {
                                                                     foreach ($options['index']['where'] as $nr => $attribute){
                                                                         $file[$nr]->seek($rightSearch);
@@ -1000,12 +939,132 @@ trait Index {
                                                                         $rightSearch++;
                                                                     }
                                                                 }
+                                                                while ($leftSearch >= $options['index']['min']) {
+                                                                    foreach ($options['index']['where'] as $nr => $attribute){
+                                                                        $file[$nr]->seek($leftSearch);
+                                                                        $line = $file[$nr]->current();
+                                                                        $value = rtrim($line, PHP_EOL);
+                                                                        $record->{$attribute} = $value;
+                                                                    }
+                                                                    $file['uuid']->seek($leftSearch);
+                                                                    $line = $file['uuid']->current();
+                                                                    $value = rtrim($line, PHP_EOL);
+                                                                    $record->uuid = $value;
+                                                                    $record_where = $this->where($record, $options['where'], $options);
+                                                                    if($record_where){
+                                                                        $object->config('node.record.leftsearch', $leftSearch);
+                                                                        ddd($strategy);
+                                                                        return $record;
+                                                                    } else {
+                                                                        $leftSearch--;
+                                                                    }
+                                                                }
+
+                                                            break;
+                                                            case 'left-only' :
+                                                                if($leftSearch > 0){
+                                                                    $leftSearch--;
+                                                                }
+                                                                //search all of left
+                                                                while ($leftSearch >= $options['index']['min']) {
+                                                                    foreach ($options['index']['where'] as $nr => $attribute){
+                                                                        $file[$nr]->seek($leftSearch);
+                                                                        $line = $file[$nr]->current();
+                                                                        $value = rtrim($line, PHP_EOL);
+                                                                        $record->{$attribute} = $value;
+                                                                    }
+                                                                    $file['uuid']->seek($leftSearch);
+                                                                    $line = $file['uuid']->current();
+                                                                    $value = rtrim($line, PHP_EOL);
+                                                                    $record->uuid = $value;
+                                                                    $record_where = $this->where($record, $options['where'], $options);
+                                                                    if($record_where){
+                                                                        $object->config('node.record.leftsearch', $leftSearch);
+                                                                        return $record;
+                                                                    } else {
+                                                                        $leftSearch--;
+                                                                    }
+                                                                }
+                                                            break;
+                                                            case 'right-only' :
                                                                 //search all of right
+                                                                if ($rightSearch < PHP_INT_MAX){
+                                                                    $rightSearch++;
+                                                                }
+                                                                while ($rightSearch <= $options['index']['max']) {
+                                                                    foreach ($options['index']['where'] as $nr => $attribute){
+                                                                        $file[$nr]->seek($rightSearch);
+                                                                        $line = $file[$nr]->current();
+                                                                        $value = rtrim($line, PHP_EOL);
+                                                                        $record->{$attribute} = $value;
+                                                                    }
+                                                                    $file['uuid']->seek($rightSearch);
+                                                                    $line = $file['uuid']->current();
+                                                                    $value = rtrim($line, PHP_EOL);
+                                                                    $record->uuid = $value;
+                                                                    $record_where = $this->where($record, $options['where'], $options);
+                                                                    if($record_where){
+                                                                        $object->config('node.record.rightsearch', $rightSearch);
+                                                                        return $record;
+                                                                    } else {
+                                                                        $rightSearch++;
+                                                                    }
+                                                                }
                                                             break;
                                                             case 'around':
                                                             case 'around-left-start' :
-                                                                ddd('found 1');
                                                                 //search left 1, right 1, left 2, right 2
+                                                                $toggle = $object->config('node.record.toggle') ?? 'left';
+                                                                switch($toggle){
+                                                                    case 'left' :
+                                                                        while ($leftSearch >= $options['index']['min']) {
+                                                                            foreach ($options['index']['where'] as $nr => $attribute){
+                                                                                $file[$nr]->seek($leftSearch);
+                                                                                $line = $file[$nr]->current();
+                                                                                $value = rtrim($line, PHP_EOL);
+                                                                                $record->{$attribute} = $value;
+                                                                            }
+                                                                            $file['uuid']->seek($leftSearch);
+                                                                            $line = $file['uuid']->current();
+                                                                            $value = rtrim($line, PHP_EOL);
+                                                                            $record->uuid = $value;
+                                                                            $record_where = $this->where($record, $options['where'], $options);
+                                                                            if($record_where){
+                                                                                $object->config('node.record.leftsearch', $leftSearch);
+                                                                                $object->config('node.record.toggle', 'right');
+                                                                                return $record;
+                                                                            } else {
+                                                                                $leftSearch--;
+                                                                            }
+                                                                        }
+                                                                        $object->config('node.record.leftsearch', $leftSearch);
+                                                                        $object->config('node.record.toggle', 'right');
+                                                                    break;
+                                                                    case 'right' :
+                                                                        while ($rightSearch <= $options['index']['max']) {
+                                                                            foreach ($options['index']['where'] as $nr => $attribute){
+                                                                                $file[$nr]->seek($rightSearch);
+                                                                                $line = $file[$nr]->current();
+                                                                                $value = rtrim($line, PHP_EOL);
+                                                                                $record->{$attribute} = $value;
+                                                                            }
+                                                                            $file['uuid']->seek($rightSearch);
+                                                                            $line = $file['uuid']->current();
+                                                                            $value = rtrim($line, PHP_EOL);
+                                                                            $record->uuid = $value;
+                                                                            $record_where = $this->where($record, $options['where'], $options);
+                                                                            if($record_where){
+                                                                                $object->config('node.record.rightsearch', $rightSearch);
+                                                                                $object->config('node.record.toggle', 'left');
+                                                                                ddd($strategy);
+                                                                                return $record;
+                                                                            } else {
+                                                                                $rightSearch++;
+                                                                            }
+                                                                        }
+                                                                        $object->config('node.record.rightsearch', $rightSearch);
+                                                                        $object->config('node.record.toggle', 'left');
+                                                                }
                                                             break;
                                                             case 'around-right-start' :
                                                                 ddd('found 2');
@@ -1014,6 +1073,7 @@ trait Index {
                                                         }
                                                         $object->config('delete', 'node.record.leftsearch');
                                                         $object->config('delete', 'node.record.rightsearch');
+                                                        $object->config('delete', 'node.record.toggle');
                                                         $options['index']['min'] = 0;
                                                         $options['index']['max'] = -1;
                                                         if($options['index']['max'] < $options['index']['min']){
