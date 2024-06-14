@@ -262,6 +262,10 @@ trait NodeList {
             $result['limit'] = $options['limit'];
             $result['count'] = $count;
             $result['max'] = $options['index']['count'];
+            $result['range'] = [
+                ($options['page'] * $options['limit'] - $options['limit']),
+                ($options['page'] * $options['limit'])
+            ];
             $result['list'] = $list;
             $result['sort'] = $options['sort'] ?? [];
             if (!empty($options['filter'])) {
