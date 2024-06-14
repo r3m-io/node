@@ -863,14 +863,10 @@ trait Index {
                                                         $strategy = $options['strategy'] ?? 'around';
                                                         $leftSearch = $object->config('node.record.leftsearch') ?? $seek;
                                                         $rightSearch = $object->config('node.record.rightsearch') ?? $seek;
+                                                        $leftSearch--;
+                                                        $rightSearch++;
                                                         switch(strtolower($strategy)){
                                                             case 'left' :
-                                                                if ($rightSearch < PHP_INT_MAX){
-                                                                    $rightSearch++;
-                                                                }
-                                                                if($leftSearch > 0){
-                                                                    $leftSearch--;
-                                                                }
                                                                 //search all of left , then right
                                                                 while ($leftSearch >= $options['index']['min']) {
                                                                     foreach ($options['index']['where'] as $nr => $attribute){
@@ -888,7 +884,11 @@ trait Index {
                                                                         $object->config('node.record.leftsearch', $leftSearch);
                                                                         return $record;
                                                                     } else {
-                                                                        $leftSearch--;
+                                                                        if($leftSearch > 0){
+                                                                            $leftSearch--;
+                                                                        } else {
+                                                                            break;
+                                                                        }
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
@@ -908,18 +908,16 @@ trait Index {
                                                                         $object->config('node.record.rightsearch', $rightSearch);
                                                                         return $record;
                                                                     } else {
-                                                                        $rightSearch++;
+                                                                        if ($rightSearch < PHP_INT_MAX){
+                                                                            $rightSearch++;
+                                                                        } else {
+                                                                            break;
+                                                                        }
                                                                     }
                                                                 }
                                                                 $object->config('node.record.rightsearch', $rightSearch);
                                                             break;
                                                             case 'right' :
-                                                                if ($rightSearch < PHP_INT_MAX){
-                                                                    $rightSearch++;
-                                                                }
-                                                                if($leftSearch > 0){
-                                                                    $leftSearch--;
-                                                                }
                                                                 //search all of right, then left
                                                                 while ($rightSearch <= $options['index']['max']) {
                                                                     foreach ($options['index']['where'] as $nr => $attribute){
@@ -964,9 +962,6 @@ trait Index {
                                                                 $object->config('node.record.leftsearch', $leftSearch);
                                                             break;
                                                             case 'left-only' :
-                                                                if($leftSearch > 0){
-                                                                    $leftSearch--;
-                                                                }
                                                                 //search all of left
                                                                 while ($leftSearch >= $options['index']['min']) {
                                                                     foreach ($options['index']['where'] as $nr => $attribute){
@@ -984,16 +979,18 @@ trait Index {
                                                                         $object->config('node.record.leftsearch', $leftSearch);
                                                                         return $record;
                                                                     } else {
-                                                                        $leftSearch--;
+                                                                        if($leftSearch > 0){
+                                                                            $leftSearch--;
+                                                                        } else {
+                                                                            break;
+                                                                        }
+
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
                                                             break;
                                                             case 'right-only' :
                                                                 //search all of right
-                                                                if ($rightSearch < PHP_INT_MAX){
-                                                                    $rightSearch++;
-                                                                }
                                                                 while ($rightSearch <= $options['index']['max']) {
                                                                     foreach ($options['index']['where'] as $nr => $attribute){
                                                                         $file[$nr]->seek($rightSearch);
@@ -1010,7 +1007,9 @@ trait Index {
                                                                         $object->config('node.record.rightsearch', $rightSearch);
                                                                         return $record;
                                                                     } else {
-                                                                        $rightSearch++;
+                                                                        if ($rightSearch < PHP_INT_MAX) {
+                                                                            $rightSearch++;
+                                                                        }
                                                                     }
                                                                 }
                                                                 $object->config('node.record.rightsearch', $rightSearch);
@@ -1019,7 +1018,6 @@ trait Index {
                                                             case 'around-left-start' :
                                                                 //search left 1, right 1, left 2, right 2
                                                                 $toggle = $object->config('node.record.toggle') ?? 'left';
-                                                                ddd($record);
                                                                 switch($toggle){
                                                                     case 'left' :
                                                                         while ($leftSearch >= $options['index']['min']) {
@@ -1039,7 +1037,11 @@ trait Index {
                                                                                 $object->config('node.record.toggle', 'right');
                                                                                 return $record;
                                                                             } else {
-                                                                                $leftSearch--;
+                                                                                if($leftSearch > 0){
+                                                                                    $leftSearch--;
+                                                                                } else {
+                                                                                    break;
+                                                                                }
                                                                             }
                                                                         }
                                                                         $object->config('node.record.leftsearch', $leftSearch);
@@ -1063,7 +1065,11 @@ trait Index {
                                                                                 $object->config('node.record.toggle', 'left');
                                                                                 return $record;
                                                                             } else {
-                                                                                $rightSearch++;
+                                                                                if($rightSearch < PHP_INT_MAX){
+                                                                                    $rightSearch++;
+                                                                                } else {
+                                                                                    break;
+                                                                                }
                                                                             }
                                                                         }
                                                                         $object->config('node.record.rightsearch', $rightSearch);
