@@ -1056,7 +1056,6 @@ trait Index {
                                                                             if($record_where){
                                                                                 $object->config('node.record.rightsearch', $rightSearch);
                                                                                 $object->config('node.record.toggle', 'left');
-                                                                                ddd($strategy);
                                                                                 return $record;
                                                                             } else {
                                                                                 $rightSearch++;
