@@ -863,10 +863,9 @@ trait Index {
                                                         $strategy = $options['strategy'] ?? 'around';
                                                         $leftSearch = $object->config('node.record.leftsearch') ?? $seek;
                                                         $rightSearch = $object->config('node.record.rightsearch') ?? $seek;
-                                                        $leftSearch--;
-                                                        $rightSearch++;
                                                         switch(strtolower($strategy)){
                                                             case 'left' :
+                                                                $leftSearch--;
                                                                 //search all of left , then right
                                                                 while ($leftSearch >= $options['index']['min']) {
                                                                     foreach ($options['index']['where'] as $nr => $attribute){
@@ -892,6 +891,7 @@ trait Index {
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
+                                                                $rightSearch++;
                                                                 while ($rightSearch <= $options['index']['max']) {
                                                                     foreach ($options['index']['where'] as $nr => $attribute){
                                                                         $file[$nr]->seek($rightSearch);
@@ -919,6 +919,7 @@ trait Index {
                                                             break;
                                                             case 'right' :
                                                                 //search all of right, then left
+                                                                $rightSearch++;
                                                                 while ($rightSearch <= $options['index']['max']) {
                                                                     foreach ($options['index']['where'] as $nr => $attribute){
                                                                         $file[$nr]->seek($rightSearch);
@@ -940,6 +941,7 @@ trait Index {
                                                                     }
                                                                 }
                                                                 $object->config('node.record.rightsearch', $rightSearch);
+                                                                $leftSearch--;
                                                                 while ($leftSearch >= $options['index']['min']) {
                                                                     foreach ($options['index']['where'] as $nr => $attribute){
                                                                         $file[$nr]->seek($leftSearch);
@@ -963,6 +965,7 @@ trait Index {
                                                             break;
                                                             case 'left-only' :
                                                                 //search all of left
+                                                                $leftSearch--;
                                                                 while ($leftSearch >= $options['index']['min']) {
                                                                     foreach ($options['index']['where'] as $nr => $attribute){
                                                                         $file[$nr]->seek($leftSearch);
@@ -991,6 +994,7 @@ trait Index {
                                                             break;
                                                             case 'right-only' :
                                                                 //search all of right
+                                                                $rightSearch++;
                                                                 while ($rightSearch <= $options['index']['max']) {
                                                                     foreach ($options['index']['where'] as $nr => $attribute){
                                                                         $file[$nr]->seek($rightSearch);
@@ -1020,6 +1024,7 @@ trait Index {
                                                                 $toggle = $object->config('node.record.toggle') ?? 'left';
                                                                 switch($toggle){
                                                                     case 'left' :
+                                                                        $leftSearch--;
                                                                         while ($leftSearch >= $options['index']['min']) {
                                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                                 $file[$nr]->seek($leftSearch);
@@ -1046,6 +1051,7 @@ trait Index {
                                                                         $object->config('node.record.toggle', 'right');
                                                                     break;
                                                                     case 'right' :
+                                                                        $rightSearch++;
                                                                         while ($rightSearch <= $options['index']['max']) {
                                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                                 $file[$nr]->seek($rightSearch);
