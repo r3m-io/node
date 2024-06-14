@@ -883,6 +883,7 @@ trait Index {
                                                             $record_where = $this->where($record, $options['where'], $options);
                                                             if($record_where){
                                                                 $object->config('node.record.leftsearch', $leftSearch);
+                                                                ddd($strategy);
                                                                 return $record;
                                                             } else {
                                                                 $leftSearch--;
@@ -902,6 +903,7 @@ trait Index {
                                                             $record_where = $this->where($record, $options['where'], $options);
                                                             if($record_where){
                                                                 $object->config('node.record.rightsearch', $rightSearch);
+                                                                ddd($strategy);
                                                                 return $record;
                                                             } else {
                                                                 $rightSearch++;
