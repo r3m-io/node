@@ -859,16 +859,39 @@ trait Index {
                                                             $index_where[2][0],
                                                             true
                                                         )
-                                                    ){
+                                                    ) {
                                                         $strategy = $options['strategy'] ?? 'around';
-                                                        ddd($strategy);
-
                                                         $leftSearch = $object->config('node.record.leftsearch') ?? $seek;
+                                                        $rightSearch = $object->config('node.record.rightsearch') ?? $seek;
+                                                        if ($rightSearch < PHP_INT_MAX){
+                                                            $rightSearch++;
+                                                        }
                                                         if($leftSearch > 0){
                                                             $leftSearch--;
                                                         }
-                                                        $rightSearch = $object->config('node.record.rightsearch') ?? $seek;
-                                                        $rightSearch++;
+                                                        switch(strtolower($strategy)){
+                                                            case 'around' :
+                                                                //search left 1, right 1, left 2, right 2
+                                                            break;
+                                                            case 'left' :
+                                                                //search all of left , then right
+                                                            break;
+                                                            case 'right' :
+                                                                //search all of right, then left
+                                                            break;
+                                                            case 'left-only' :
+                                                                //search all of left
+                                                            break;
+                                                            case 'right-only' :
+                                                                //search all of right
+                                                            break;
+                                                            case 'around-left-start' :
+                                                                //search left 1, right 1, left 2, right 2
+                                                            break;
+                                                            case 'around-right-start' :
+                                                                //search right 1, left 1, right 2, left 2
+                                                            break;
+                                                        }
                                                         while ($leftSearch >= $options['index']['min']) {
                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                 $file[$nr]->seek($leftSearch);
