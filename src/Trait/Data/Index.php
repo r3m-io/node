@@ -1037,10 +1037,8 @@ trait Index {
                                                                                 $object->config('node.record.toggle', 'right');
                                                                                 return $record;
                                                                             } else {
-                                                                                if($leftSearch > 0){
+                                                                                if($leftSearch >= 0){
                                                                                     $leftSearch--;
-                                                                                } else {
-                                                                                    break;
                                                                                 }
                                                                             }
                                                                         }
