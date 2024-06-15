@@ -640,6 +640,8 @@ trait Where {
                                     $record->{$set[2]['attribute']}
                                 ];
                             }
+                            d($set);
+                            ddd($index_where);
                             $set[0]['match'] = false;
                             $set[2]['match'] = false;
                             $where[$key] = $set[0];
