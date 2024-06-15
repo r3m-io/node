@@ -1168,7 +1168,7 @@ trait Index {
                                                         $options['index']['min'] = 0;
                                                         $options['index']['max'] = -1;
                                                         if($options['index']['max'] < $options['index']['min']){
-                                                            ddd($set);
+                                                            $set = [];
                                                             $record = false;
                                                             break 2;
                                                         }
