@@ -820,6 +820,7 @@ trait Where {
                                 array_shift($set);
                                 $set[0]['match'] = false;
                             }
+                            d($set);
                             break;
                         case 'or':
                             if(

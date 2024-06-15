@@ -815,6 +815,7 @@ trait Index {
                             $set_index_0 = $this->where_process($record, $set_index_0);
                             $set_index_2 = null;
                             d($set_index_0);
+                            d($index_where);
                             if($set_index_0[0]['match'] === false){
                                 if(
                                     array_key_exists('match', $set_init[0]) &&
