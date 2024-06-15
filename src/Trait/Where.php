@@ -813,6 +813,7 @@ trait Where {
             $counter++;
         }
         if(array_key_exists('debug', $options)){
+            d($record);
             ddd('here2');
         }
         return $record;
