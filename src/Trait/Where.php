@@ -565,13 +565,23 @@ trait Where {
                                 $set[0]['match'] = true;
                             } else {
                                 $set[0]['match'] = false;
-                                $where[$key] = $set[0];
+                                $where[$key] = [
+                                    'attribute' => 'uuid',
+                                    'operator' => '===',
+                                    'value' => $record->uuid,
+                                    'match' => false
+                                ];
                             }
                             if($right){
                                 $set[2]['match'] = true;
                             } else {
                                 $set[2]['match'] = false;
-                                $where[$key] = $set[2];
+                                $where[$key] = [
+                                    'attribute' => 'uuid',
+                                    'operator' => '===',
+                                    'value' => $record->uuid,
+                                    'match' => false
+                                ];
                             }
                         }
                         ksort($where, SORT_NATURAL);
@@ -641,7 +651,12 @@ trait Where {
                                 ];
                             }
                             $set[2]['match'] = false;
-                            $where[$key] = $set[2];
+                            $where[$key] = [
+                                'attribute' => 'uuid',
+                                'operator' => '===',
+                                'value' => $record->uuid,
+                                'match' => false
+                            ];
                         }
                         ksort($where, SORT_NATURAL);
                         $where = array_values($where);
