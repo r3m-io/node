@@ -560,9 +560,18 @@ trait Where {
                                     $record->{$set[2]['attribute']}
                                 ];
                             }
-                            $set[0]['match'] = false;
-                            $set[2]['match'] = false;
-                            $where[$key] = $set[0];
+                            if($left){
+                                $set[0]['match'] = true;
+                            } else {
+                                $set[0]['match'] = false;
+                                $where[$key] = $set[0];
+                            }
+                            if($right){
+                                $set[2]['match'] = true;
+                            } else {
+                                $set[2]['match'] = false;
+                                $where[$key] = $set[2];
+                            }
                         }
                         ksort($where, SORT_NATURAL);
                         $where = array_values($where);
