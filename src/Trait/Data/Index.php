@@ -1168,10 +1168,8 @@ trait Index {
                                                         $options['index']['min'] = 0;
                                                         $options['index']['max'] = -1;
                                                         if($options['index']['max'] < $options['index']['min']){
-                                                            $set = [
-                                                                false
-                                                            ];
-                                                            $record = false;//
+                                                            ddd($set);
+                                                            $record = false;
                                                             break 2;
                                                         }
                                                     }
@@ -1183,9 +1181,7 @@ trait Index {
                                                 if($index_where[2][0] === $set_init[2]['value']){
                                                     $options['index']['max'] = $seek - 1;
                                                     if($options['index']['max'] < $options['index']['min']){
-                                                        $set = [
-                                                            false
-                                                        ];
+                                                        ddd($set);
                                                         break 2;
                                                     }
                                                     break 3;
@@ -1195,9 +1191,7 @@ trait Index {
                                                     //min becomes seek + 1
                                                     $options['index']['min'] = $seek + 1;
                                                     if($options['index']['max'] < $options['index']['min']){
-                                                        $set = [
-                                                            false
-                                                        ];
+                                                        ddd($set);
                                                         break 2;
                                                     }
                                                     break 3;
