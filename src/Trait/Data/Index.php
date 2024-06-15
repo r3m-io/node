@@ -1104,8 +1104,8 @@ trait Index {
                                                                 switch($toggle){
                                                                     case 'left' :
                                                                         $leftSearch--;
-                                                                        d('leftsearch: ' . $leftSearch);
-                                                                        d('min:' . $options['index']['min']);
+//                                                                        d('leftsearch: ' . $leftSearch);
+//                                                                        d('min:' . $options['index']['min']);
                                                                         while ($leftSearch >= $options['index']['min']) {
                                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                                 $file[$nr]->seek($leftSearch);
@@ -1129,10 +1129,10 @@ trait Index {
                                                                         }
                                                                         $object->config('node.record.leftsearch', $leftSearch);
                                                                         $object->config('node.record.toggle', 'right');
-                                                                        d('leftsearch: ' . $leftSearch);
+//                                                                        d('leftsearch: ' . $leftSearch);
                                                                         $rightSearch++;
-                                                                        d('rightsearch: ' . $rightSearch);
-                                                                        d('max:' . $options['index']['max']);
+//                                                                        d('rightsearch: ' . $rightSearch);
+//                                                                        d('max:' . $options['index']['max']);
                                                                         while ($rightSearch <= $options['index']['max']) {
                                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                                 $file[$nr]->seek($rightSearch);
@@ -1163,8 +1163,8 @@ trait Index {
                                                                          break;
                                                                     case 'right' :
                                                                         $rightSearch++;
-                                                                        d('rightsearch: ' . $rightSearch);
-                                                                        d('max:' . $options['index']['max']);
+//                                                                        d('rightsearch: ' . $rightSearch);
+//                                                                        d('max:' . $options['index']['max']);
                                                                         while ($rightSearch <= $options['index']['max']) {
                                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                                 $file[$nr]->seek($rightSearch);
@@ -1193,8 +1193,8 @@ trait Index {
                                                                         }
                                                                         $object->config('node.record.rightsearch', $rightSearch);
                                                                         $leftSearch = $object->config('node.record.leftsearch');
-                                                                        d('rightsearch: ' . $rightSearch);
-                                                                        d('leftsearch: ' . $leftSearch);
+//                                                                        d('rightsearch: ' . $rightSearch);
+//                                                                        d('leftsearch: ' . $leftSearch);
                                                                         if($leftSearch > 0){
                                                                             $object->config('node.record.toggle', 'left');
                                                                         }
