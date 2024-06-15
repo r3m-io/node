@@ -774,16 +774,11 @@ trait Index {
                                 }
                             }
                         }
-                        if($index_where){
-                            d($set_init);
-                            if(array_key_exists(0, $set_init)){
-                                $set_index_0 = [$set_init[0]];
-                            } else {
-                                d($set);
-                                d($index_where);
-                                ddd('end1');
-                            }
-
+                        if(
+                            $index_where &&
+                            array_key_exists(0, $set_init)
+                        ){
+                            $set_index_0 = [$set_init[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
                             $set_index_2 = null;
                             if($set_index_0[0]['match'] === false){
