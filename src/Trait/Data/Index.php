@@ -885,6 +885,7 @@ trait Index {
                                 }
                             } else {
                                 d($set_init);
+                                ddd($set);
                                 if(array_key_exists(1, $set_init)){
                                     switch($set_init[1]){
                                         case 'and':
