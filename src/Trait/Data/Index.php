@@ -1361,6 +1361,10 @@ trait Index {
                             )
                         )
                     ){
+                        $rightSearch = $object->config('node.record.rightsearch');
+                        $toggle = $object->config('node.record.toggle');
+                        d($rightSearch);
+                        d($toggle);
                         d('found: 24');
                         break 2;
                     }
