@@ -1083,12 +1083,12 @@ trait Index {
                                                                             $list = Parallel::new()->execute($chunk);
                                                                             foreach($list as $nr => $record){
                                                                                 if(!$record){
-                                                                                    ddd('yes');
                                                                                     break 2;
                                                                                 }
                                                                                 $result[] = $record;
                                                                             }
                                                                         }
+                                                                        ddd($result);
                                                                         return $result;
                                                                     } else {
                                                                         foreach ($options['index']['where'] as $nr => $attribute){
