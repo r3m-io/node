@@ -591,7 +591,7 @@ trait Where {
                         if(array_key_exists('debug', $options)){
                             d($set);
                             d($and);
-                            ddd($filter_where);
+                            d($filter_where);
                         }
                         if (!empty($and)) {
                             $set[0] = [
