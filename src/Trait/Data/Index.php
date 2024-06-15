@@ -880,6 +880,7 @@ trait Index {
                                                                     $record->uuid = $value;
                                                                     $record_where = $this->where($record, $options['where'], $options);
                                                                     if(stristr($record_where->name, 'task') === false){
+                                                                        d($options);
                                                                         ddd($record_where);
                                                                     }
                                                                     if($record_where){
