@@ -890,15 +890,37 @@ trait Index {
                                     switch($set[1]){
                                         case 'and':
                                             if(array_key_exists(2, $set)){
-                                                if($set[2]['match'] === false){
-                                                    ddd($index_where);
+                                                if(
+                                                    array_key_exists('match', $set[2]) &&
+                                                    $set[2]['match'] === false
+                                                ){
+                                                    sort($index_where[2], SORT_NATURAL);
+                                                    if($index_where[2][0] === $set[2]['value']){
+                                                        $options['index']['max'] = $seek - 1;
+                                                        if($options['index']['max'] < $options['index']['min']){
+                                                            $set = [
+                                                                false
+                                                            ];
+                                                            break 2;
+                                                        }
+                                                        break 3;
+
+                                                    } else {
+                                                        //sort[1] === $value
+                                                        //min becomes seek + 1
+                                                        $options['index']['min'] = $seek + 1;
+                                                        if($options['index']['max'] < $options['index']['min']){
+                                                            $set = [
+                                                                false
+                                                            ];
+                                                            break 2;
+                                                        }
+                                                        break 3;
+                                                    }
+                                                } else {
+                                                    $set_index_2 = [$set[2]];
+                                                    $set_index_2 = $this->where_process($record, $set_index_2);
                                                 }
-
-
-                                                d($set);
-                                                ddd('if match === false && match === false, we can do one record === false');
-                                                $set_index_2 = [$set[2]];
-                                                $set_index_2 = $this->where_process($record, $set_index_2);
                                             } else {
                                                 $set_index_2[0]['match'] === false;
                                             }
