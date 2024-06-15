@@ -782,7 +782,12 @@ trait Where {
 //                d($set);
                 $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $options);
 //                d($where);
-//                d($set);
+                if(array_key_exists('debug', $options)){
+                    d($where);
+                    d($index_where);
+                    ddd($set);
+                }
+
                 if(empty($set) && $deepest === 0){
                     return $record;
                 }
