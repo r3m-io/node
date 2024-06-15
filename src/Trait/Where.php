@@ -661,11 +661,11 @@ trait Where {
                                 'match' => false
                             ]
                         );
-
+                        $where[$key] = $set[0];
                         d($key);
                         d($where);
                         d($set);
-                        ddd('this end will never return true without an or');
+                        d('this end will never return true without an or');
                     } else {
                         d($where);
                         d($list);
