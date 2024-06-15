@@ -781,6 +781,12 @@ trait Index {
                                         d($set_init);
                                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
                                         d($set);
+                                        $debug = debug_backtrace(1);
+                                        d($debug[0]['line'] . ' ' . $debug[0]['file'] . ' ' . $debug[0]['function']);
+                                        d($debug[1]['line'] . ' ' . $debug[1]['file'] . ' ' . $debug[1]['function']);
+                                        d($debug[2]['line'] . ' ' . $debug[2]['file'] . ' ' . $debug[2]['function']);
+                                        d($debug[3]['line'] . ' ' . $debug[3]['file'] . ' ' . $debug[3]['function']);
+
                                         ddd($where_process);
                                         if(empty($set) && $deepest === 0){
                                             return $record;
