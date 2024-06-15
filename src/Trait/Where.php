@@ -814,7 +814,7 @@ trait Where {
         }
         if(array_key_exists('debug', $options)){
             d($record);
-            ddd('here2');
+            d('here2');
         }
         return $record;
     }
