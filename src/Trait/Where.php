@@ -638,6 +638,7 @@ trait Where {
                         $where = array_values($where);
                         return $set;
                     }
+                    ddd($where);
                     return $set;
                 case 'xor' :
                     $operator = 'xor';
