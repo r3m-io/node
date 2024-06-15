@@ -1104,7 +1104,7 @@ trait Index {
                                                                 switch($toggle){
                                                                     case 'left' :
                                                                         $leftSearch--;
-                                                                        d('leftsearch: ' . $rightSearch);
+                                                                        d('leftsearch: ' . $leftSearch);
                                                                         d('min:' . $options['index']['min']);
                                                                         while ($leftSearch >= $options['index']['min']) {
                                                                             foreach ($options['index']['where'] as $nr => $attribute){
@@ -1129,7 +1129,7 @@ trait Index {
                                                                         }
                                                                         $object->config('node.record.leftsearch', $leftSearch);
                                                                         $object->config('node.record.toggle', 'right');
-                                                                        d('leftsearch: ' . $rightSearch);
+                                                                        d('leftsearch: ' . $leftSearch);
                                                                          break;
                                                                     case 'right' :
                                                                         $rightSearch++;
