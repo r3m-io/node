@@ -1359,7 +1359,10 @@ trait Index {
                         array_key_exists(0, $where_process) &&
                         $where_process[0]['match'] === false
                     ){
-                        $where_process = [];
+                        d($set_init);
+                        d($set);
+                        ddd($where_process);
+//                        $where_process = [];
                         d('found: 26');
                         break;
                     }
