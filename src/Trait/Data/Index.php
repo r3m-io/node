@@ -886,29 +886,34 @@ trait Index {
                                                 ){
                                                     d($set);
                                                     d($index_where);
-                                                    sort($index_where[2], SORT_NATURAL);
-                                                    if($index_where[2][0] === $set[2]['value']){
-                                                        $options['index']['max'] = $seek - 1;
-                                                        if($options['index']['max'] < $options['index']['min']){
-                                                            $set = [
-                                                                false
-                                                            ];
-                                                            break 2;
-                                                        }
-                                                        break 3;
+                                                    if(!is_array($index_where[2])){
+                                                        sort($index_where[2], SORT_NATURAL);
+                                                        if($index_where[2][0] === $set[2]['value']){
+                                                            $options['index']['max'] = $seek - 1;
+                                                            if($options['index']['max'] < $options['index']['min']){
+                                                                $set = [
+                                                                    false
+                                                                ];
+                                                                break 2;
+                                                            }
+                                                            break 3;
 
-                                                    } else {
-                                                        //sort[1] === $value
-                                                        //min becomes seek + 1
-                                                        $options['index']['min'] = $seek + 1;
-                                                        if($options['index']['max'] < $options['index']['min']){
-                                                            $set = [
-                                                                false
-                                                            ];
-                                                            break 2;
+                                                        } else {
+                                                            //sort[1] === $value
+                                                            //min becomes seek + 1
+                                                            $options['index']['min'] = $seek + 1;
+                                                            if($options['index']['max'] < $options['index']['min']){
+                                                                $set = [
+                                                                    false
+                                                                ];
+                                                                break 2;
+                                                            }
+                                                            break 3;
                                                         }
-                                                        break 3;
+                                                    } else {
+                                                        ddd($set);
                                                     }
+
                                                 } else {
                                                     $set_index_2 = [$set[2]];
                                                     $set_index_2 = $this->where_process($record, $set_index_2);
