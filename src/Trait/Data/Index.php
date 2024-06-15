@@ -1104,6 +1104,8 @@ trait Index {
                                                                 switch($toggle){
                                                                     case 'left' :
                                                                         $leftSearch--;
+                                                                        d('leftsearch: ' . $rightSearch);
+                                                                        d('min:' . $options['index']['min']);
                                                                         while ($leftSearch >= $options['index']['min']) {
                                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                                 $file[$nr]->seek($leftSearch);
@@ -1130,6 +1132,8 @@ trait Index {
                                                                          break;
                                                                     case 'right' :
                                                                         $rightSearch++;
+                                                                        d('rightsearch: ' . $rightSearch);
+                                                                        d('max:' . $options['index']['max']);
                                                                         while ($rightSearch <= $options['index']['max']) {
                                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                                 $file[$nr]->seek($rightSearch);
