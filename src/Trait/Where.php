@@ -652,14 +652,16 @@ trait Where {
                         array_shift($set);
                         array_shift($set);
                         array_shift($set);
-                        /*
-                        $set[0] = [
-                            'attribute' => 'uuid',
-                            'operator' => '===',
-                            'value' => $record->uuid,
-                            'match' => false
-                        ];
-                        */
+
+                        array_unshift($set,
+                            [
+                                'attribute' => 'uuid',
+                                'operator' => '===',
+                                'value' => $record->uuid,
+                                'match' => false
+                            ]
+                        );
+
                         d($key);
                         d($where);
                         d($set);
