@@ -779,6 +779,7 @@ trait Index {
                             if(array_key_exists(0, $set_init)){
                                 $set_index_0 = [$set_init[0]];
                             } else {
+                                d($set);
                                 d($index_where);
                                 ddd('end1');
                             }
