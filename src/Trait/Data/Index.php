@@ -1322,7 +1322,7 @@ trait Index {
                     }
                     if(
                         array_key_exists(0, $where_process) &&
-                        $where_process[0] === false
+                        $where_process[0]['match'] === false
                     ){
                         $record = false;
                         d('found: 26');
