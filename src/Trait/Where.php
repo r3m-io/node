@@ -302,7 +302,7 @@ trait Where {
         if(!is_array($set)){
             return [];
         }
-        d($set);
+//        d($set);
         $count = count($set);
         $set_init = $set;
 //        d($record);
