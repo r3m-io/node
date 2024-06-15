@@ -1337,14 +1337,29 @@ trait Index {
                     d($where_process);
                     if(
                         $record === false &&
-                        empty($where_process)
+                        (
+                            empty($where_process) ||
+                            (
+                                array_key_exists(0, $where_process) &&
+                                $where_process[0]['match'] === false &&
+                                count($where_process) === 1
+                            )
+                        )
                     ){
                         d('found: 24');
                         break 2;
                     }
                     if(
                         $deepest === 0 &&
-                        empty($where_process)
+                        (
+                            empty($where_process) ||
+                            (
+                                array_key_exists(0, $where_process) &&
+                                $where_process[0]['match'] === false &&
+                                count($where_process) === 1
+                            )
+                        )
+
                     ){
                         break;
                     }
