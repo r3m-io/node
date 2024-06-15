@@ -217,6 +217,7 @@ trait NodeList {
                 $local_options['page'] = 1;
                 d($local_options);
                 $record = $this->index_list_record($class, $role, $local_options);
+                ddd($record);
                 $found = [];
                 while($record !== false){
                     $record = $this->index_record_expose($class, $role, $record, $local_options);
