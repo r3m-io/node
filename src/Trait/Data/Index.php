@@ -1347,6 +1347,8 @@ trait Index {
                         break 2;
                     }
                     if($deepest === 0){
+                        d($set);
+                        d($where_process);
                         d('found: 25');
                         break;
                     }
