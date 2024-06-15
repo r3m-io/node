@@ -883,7 +883,7 @@ trait Index {
                                                                         d($record);
                                                                     }
                                                                     $record_where = $this->where($record, $options['where'], $options);
-                                                                    if(stristr($record_where->name, 'task') === false){
+                                                                    if($record_where && stristr($record_where->name, 'task') === false){
                                                                         d($options);
                                                                         ddd($record_where);
                                                                     }
