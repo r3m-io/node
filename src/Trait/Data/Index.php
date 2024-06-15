@@ -884,6 +884,7 @@ trait Index {
                                                     array_key_exists('match', $set[2]) &&
                                                     $set[2]['match'] === false
                                                 ){
+                                                    d($set);
                                                     d($index_where);
                                                     sort($index_where[2], SORT_NATURAL);
                                                     if($index_where[2][0] === $set[2]['value']){
