@@ -1333,6 +1333,8 @@ trait Index {
                             break 2;
                         }
                     }
+                    d($record);
+                    d($where_process);
                     if(
                         $record === false &&
                         empty($where_process)
