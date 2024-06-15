@@ -886,7 +886,7 @@ trait Index {
                                                 ){
                                                     d($set);
                                                     d($index_where);
-                                                    if(!is_array($index_where[2])){
+                                                    if(!is_array($index_where[2][0])){
                                                         sort($index_where[2], SORT_NATURAL);
                                                         if($index_where[2][0] === $set[2]['value']){
                                                             $options['index']['max'] = $seek - 1;
