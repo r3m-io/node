@@ -641,7 +641,6 @@ trait Where {
                                 ];
                             }
                             $set[2]['match'] = false;
-                            ddd($set);
                             $where[$key] = $set[2];
                         }
                         ksort($where, SORT_NATURAL);
