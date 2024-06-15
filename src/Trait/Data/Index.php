@@ -890,6 +890,7 @@ trait Index {
                                     switch($set[1]){
                                         case 'and':
                                             if(array_key_exists(2, $set)){
+                                                d($set);
                                                 ddd('if match === false && match === false, we can do one record === false');
                                                 $set_index_2 = [$set[2]];
                                                 $set_index_2 = $this->where_process($record, $set_index_2);
