@@ -1323,6 +1323,7 @@ trait Index {
                                                 }
                                             }
                                         } elseif(array_key_exists('match', $set[2]) && is_bool($set[2]['match'])) {
+                                            d($set);
                                             array_shift($set);
                                             array_shift($set);
                                             array_shift($set);
