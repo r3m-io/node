@@ -581,6 +581,7 @@ trait Where {
                         ];
                         $and = Filter::list($list)->where($filter_where);
                         if(array_key_exists('debug', $options)){
+                            d($set);
                             d($and);
                             ddd($filter_where);
                         }
