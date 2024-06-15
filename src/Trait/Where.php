@@ -591,7 +591,7 @@ trait Where {
                         if(array_key_exists('debug', $options)){
                             d($set);
                             d($and);
-                            d($filter_where);
+                            ddd($filter_where);
                         }
                         if (!empty($and)) {
                             $set[0] = [
@@ -638,6 +638,8 @@ trait Where {
                         $where = array_values($where);
                         return $set;
                     }
+                    ksort($where, SORT_NATURAL);
+                    $where = array_values($where);
                     ddd($where);
                     return $set;
                 case 'xor' :
@@ -708,7 +710,7 @@ trait Where {
                     return $set;
             }
         }
-//        ksort($where, SORT_NATURAL);
+        ksort($where, SORT_NATURAL);
         $where = array_values($where);
         return [];
     }
