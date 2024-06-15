@@ -727,10 +727,13 @@ trait Where {
                 if(array_key_exists('debug', $options)){
                     d($where);
                     d($index_where);
-                    ddd($set);
+                    d($set);
                 }
 
                 if(empty($set) && $deepest === 0){
+                    if(array_key_exists('debug', $options)){
+                        ddd('here1');
+                    }
                     return $record;
                 }
                 $count_set = count($set);
@@ -802,6 +805,9 @@ trait Where {
             $deepest = $this->where_get_depth($where);
             unset($key);
             $counter++;
+        }
+        if(array_key_exists('debug', $options)){
+            ddd('here2');
         }
         return $record;
     }
