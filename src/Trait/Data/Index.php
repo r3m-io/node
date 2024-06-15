@@ -1088,7 +1088,6 @@ trait Index {
                                                                                 $result[] = $record;
                                                                             }
                                                                         }
-                                                                        ddd($result);
                                                                         return $result;
                                                                     } else {
                                                                         foreach ($options['index']['where'] as $nr => $attribute){
@@ -1478,6 +1477,7 @@ trait Index {
                     unset($key);
                     $counter++;
                     $nested_options = $options;
+                    $nested_options['parallel'] = false;
                     $nested_options['where'] = $where_process;
                     $record = $this->index_list_record($class, $role, $nested_options);
                     if($record){

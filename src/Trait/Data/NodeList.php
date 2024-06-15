@@ -205,6 +205,7 @@ trait NodeList {
                 $options['limit'] === 1 &&
                 $options['page'] === 1
             ){
+                $options['parallel'] = false;
                 $record = $this->index_list_record($class, $role, $options);
                 if($record){
                     $record = $this->index_record_expose($class, $role, $record, $options);
@@ -247,6 +248,9 @@ trait NodeList {
                                 break;
                             }
                         }
+                        d($found);
+                        ddd($list);
+
                     } else {
                         $record = $this->index_record_expose($class, $role, $record, $local_options);
                         if(
