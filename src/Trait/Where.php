@@ -671,7 +671,7 @@ trait Where {
                         d($list);
                         ddd($set);
                     }
-                    ddd($options);
+                    d($options);
                     ksort($where, SORT_NATURAL);
                     $where = array_values($where);
                     return $set;
