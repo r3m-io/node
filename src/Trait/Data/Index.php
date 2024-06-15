@@ -1144,6 +1144,7 @@ trait Index {
                                                                             $record_where = $this->where($record, $options['where'], $options);
                                                                             if($record_where){
                                                                                 $object->config('node.record.rightsearch', $rightSearch);
+                                                                                $leftSearch = $object->config('node.record.leftsearch');
                                                                                 if($leftSearch > 0){
                                                                                     $object->config('node.record.toggle', 'left');
                                                                                 }
@@ -1156,6 +1157,7 @@ trait Index {
                                                                             }
                                                                         }
                                                                         $object->config('node.record.rightsearch', $rightSearch);
+                                                                        $leftSearch = $object->config('node.record.leftsearch');
                                                                         if($leftSearch > 0){
                                                                             $object->config('node.record.toggle', 'left');
                                                                         }
