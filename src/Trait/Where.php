@@ -552,12 +552,6 @@ trait Where {
                             }
                             $set[0]['match'] = false;
                             $set[2]['match'] = false;
-                            $set[0] = [
-                                'attribute' => 'uuid',
-                                'operator' => '===',
-                                'value' => $record->uuid,
-                                'match' => false
-                            ];
                             $where[$key] = $set[0];
                         }
                         ksort($where, SORT_NATURAL);
