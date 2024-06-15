@@ -1359,9 +1359,9 @@ trait Index {
                         array_key_exists(0, $where_process) &&
                         $where_process[0]['match'] === false
                     ){
-                        $record = false;
+                        $where_process = [];
                         d('found: 26');
-                        break 2;
+                        break;
                     }
 //                    d($where_process);
                     $deepest = $this->where_get_depth($where_process);
