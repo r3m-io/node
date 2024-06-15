@@ -1305,6 +1305,9 @@ trait Index {
                         }
                         $counter++;
                         if($counter > 1024){
+                            d($set);
+                            d($where_process);
+                            d($index_where);
                             d('found: 23');
                             break 2;
                         }
