@@ -911,9 +911,9 @@ trait Index {
                                                             break 3;
                                                         }
                                                     } else {
-                                                        ddd($set);
+                                                        $set_index_2 = [$set[2]];
+                                                        d($set);
                                                     }
-
                                                 } else {
                                                     $set_index_2 = [$set[2]];
                                                     $set_index_2 = $this->where_process($record, $set_index_2);
