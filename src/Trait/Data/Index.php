@@ -1106,7 +1106,7 @@ trait Index {
                                                                         $leftSearch--;
                                                                         d('leftsearch: ' . $leftSearch);
                                                                         d('min:' . $options['index']['min']);
-                                                                        while ($leftSearch >= 0) {
+                                                                        while ($leftSearch >= $options['index']['min']) {
                                                                             foreach ($options['index']['where'] as $nr => $attribute){
                                                                                 $file[$nr]->seek($leftSearch);
                                                                                 $line = $file[$nr]->current();
