@@ -1056,9 +1056,9 @@ trait Index {
                                                                                 $object,
                                                                                 $options,
                                                                                 $file,
-                                                                                $record,
                                                                                 $i
                                                                             ) {
+                                                                                $record = (object) [];
                                                                                 foreach ($options['index']['where'] as $nr => $attribute) {
                                                                                     $file[$nr]->seek($i);
                                                                                     $line = $file[$nr]->current();
@@ -1069,14 +1069,20 @@ trait Index {
                                                                                 $line = $file['uuid']->current();
                                                                                 $value = rtrim($line, PHP_EOL);
                                                                                 $record->uuid = $value;
+                                                                                $record_where = $this->where($record, $options['where'], $options);
+                                                                                if($record_where){
+                                                                                    return $record;
+                                                                                }
+                                                                                return false;
                                                                             };
+                                                                            $object->config('node.record.leftsearch', $i);
                                                                         }
                                                                         d($options);
                                                                         $chunks = array_chunk($closures, $options['thread'] ?? 8);
-                                                                        ddd(count($chunks));
-                                                                        ddd($closures);
-
-                                                                        $list = Parallel::new()->execute($closures);
+                                                                        foreach($chunks as $chunk){
+                                                                            $list = Parallel::new()->execute($chunk);
+                                                                            ddd($list);
+                                                                        }
 
                                                                         /*
 
