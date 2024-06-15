@@ -760,10 +760,18 @@ trait Index {
                         d($operator);
                         d($index_where);
                         d($where_process);
-                        if(empty($set) && $deepest === 0){
+                        if(
+                            empty($set) &&
+                            empty($where_process) &&
+                            $deepest === 0
+                        ){
                             return $record;
                         }
-                        elseif(empty($set) && $deepest > 0){
+                        elseif(
+                            empty($set) &&
+                            empty($where_process) &&
+                            $deepest > 0
+                        ){
                             break;
                         }
                         if(is_array($set)){
