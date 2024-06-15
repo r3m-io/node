@@ -1129,6 +1129,7 @@ trait Index {
                                                                         }
                                                                         $object->config('node.record.leftsearch', $leftSearch);
                                                                         $object->config('node.record.toggle', 'right');
+                                                                        d('leftsearch: ' . $rightSearch);
                                                                          break;
                                                                     case 'right' :
                                                                         $rightSearch++;
@@ -1162,6 +1163,10 @@ trait Index {
                                                                         }
                                                                         $object->config('node.record.rightsearch', $rightSearch);
                                                                         $leftSearch = $object->config('node.record.leftsearch');
+                                                                        d('rightsearch: ' . $rightSearch);
+                                                                        d('leftsearch: ' . $leftSearch);
+
+
                                                                         if($leftSearch > 0){
                                                                             $object->config('node.record.toggle', 'left');
                                                                         }
