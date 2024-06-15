@@ -912,7 +912,7 @@ trait Index {
                                                         }
                                                     } else {
                                                         $set_index_2 = [$set[2]];
-                                                        d($set);
+//                                                        d($set);
                                                     }
                                                 } else {
                                                     $set_index_2 = [$set[2]];
