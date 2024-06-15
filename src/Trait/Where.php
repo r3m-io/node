@@ -638,9 +638,9 @@ trait Where {
                         $where = array_values($where);
                         return $set;
                     }
+                    ddd($options);
                     ksort($where, SORT_NATURAL);
                     $where = array_values($where);
-                    ddd($where);
                     return $set;
                 case 'xor' :
                     $operator = 'xor';
