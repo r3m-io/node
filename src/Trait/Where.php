@@ -495,7 +495,9 @@ trait Where {
                         array_key_exists('operator', $set[0]) &&
                         array_key_exists('attribute', $set[2]) &&
                         array_key_exists('value', $set[2]) &&
-                        array_key_exists('operator', $set[2])
+                        array_key_exists('operator', $set[2]) &&
+                        !array_key_exists('match', $set[0]) &&
+                        !array_key_exists('match', $set[2])
                     ) {
                         $filter_where = [
                             $set[0]['attribute'] => [
