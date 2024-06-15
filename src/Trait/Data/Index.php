@@ -753,6 +753,8 @@ trait Index {
                             $set_init = $set;
                         }
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
+                        d($set);
+                        d($deepest);
                         if(empty($set) && $deepest === 0){
                             return $record;
                         }
@@ -1168,6 +1170,7 @@ trait Index {
                             }
                             */
                             if(
+                                is_array($set) &&
                                 array_key_exists(0, $set) &&
                                 array_key_exists(1, $set) &&
                                 array_key_exists(2, $set)
