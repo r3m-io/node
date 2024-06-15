@@ -674,7 +674,6 @@ trait Where {
                         array_key_exists('value', $set[2]) &&
                         array_key_exists('operator', $set[2])
                     ) {
-                        d($set);
                         array_shift($set);
                         array_shift($set);
                         array_shift($set);
@@ -688,10 +687,6 @@ trait Where {
                             ]
                         );
                         $where[$key] = $set[0];
-                        d($key);
-                        d($where);
-                        d($set);
-                        d('this end will never return true without an or');
                     } else {
                         d($where);
                         d($list);
