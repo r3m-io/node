@@ -1144,7 +1144,9 @@ trait Index {
                                                                             $record_where = $this->where($record, $options['where'], $options);
                                                                             if($record_where){
                                                                                 $object->config('node.record.rightsearch', $rightSearch);
-                                                                                $object->config('node.record.toggle', 'left');
+                                                                                if($leftSearch > 0){
+                                                                                    $object->config('node.record.toggle', 'left');
+                                                                                }
                                                                                 return $record;
                                                                             }
                                                                             elseif($rightSearch < PHP_INT_MAX){
@@ -1154,7 +1156,9 @@ trait Index {
                                                                             }
                                                                         }
                                                                         $object->config('node.record.rightsearch', $rightSearch);
-                                                                        $object->config('node.record.toggle', 'left');
+                                                                        if($leftSearch > 0){
+                                                                            $object->config('node.record.toggle', 'left');
+                                                                        }
                                                                 }
                                                             break;
                                                             case 'around-right-start' :
