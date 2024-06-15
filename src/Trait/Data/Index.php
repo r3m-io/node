@@ -883,13 +883,17 @@ trait Index {
                                         }
                                     }
                                 }
-                            }  else {
-//                                d($set_init);
+                            } else {
+                                d($set_init);
                                 if(array_key_exists(1, $set_init)){
                                     switch($set_init[1]){
                                         case 'and':
-                                            $set_index_2 = [$set_init[2]];
-                                            $set_index_2 = $this->where_process($record, $set_index_2);
+                                            if(array_key_exists(2, $set_init)){
+                                                $set_index_2 = [$set_init[2]];
+                                                $set_index_2 = $this->where_process($record, $set_index_2);
+                                            } else {
+                                                $set_index_2[0]['match'] === false;
+                                            }
                                             if($set_index_0[0]['match'] === true && $set_index_2[0]['match'] === true){
                                                 array_shift($set);
                                                 array_shift($set);
@@ -1148,6 +1152,8 @@ trait Index {
                                                     }
                                                     break 3;
                                                 }
+                                                d($index_where);
+                                                d($set_init);
                                                 sort($index_where[2], SORT_NATURAL);
                                                 if($index_where[2][0] === $set_init[2]['value']){
                                                     $options['index']['max'] = $seek - 1;
