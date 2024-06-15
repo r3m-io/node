@@ -894,6 +894,8 @@ trait Index {
                                             } else {
                                                 $set_index_2[0]['match'] === false;
                                             }
+                                            d($set_index_0);
+                                            d($set_index_2);
                                             if($set_index_0[0]['match'] === true && $set_index_2[0]['match'] === true){
                                                 array_shift($set);
                                                 array_shift($set);
