@@ -484,64 +484,6 @@ trait Where {
                     return $set;
                 case 'and':
                     $operator = 'and';
-//                    d($set);
-                    /*
-                    if(array_key_exists('match', $set[0])){
-                        if(array_key_exists('match', $set[2])){
-                            if ($set[0]['match'] === true && $set[2]['match'] === true) {
-                                $where[$key] = $set[0];
-                                return $set;
-                            }
-                            elseif ($set[0]['match'] === false && $set[2]['match'] === false) {
-                                $where[$key] = $set[0];
-                                return $set;
-                            } else {
-                                $set[0]['match'] = false;
-                                $set[2]['match'] = false;
-                                $where[$key] = $set[0];
-                                return $set;
-                            }
-                        } else {
-                            //need to do the right side
-                            $list = [];
-                            $list[] = $record;
-//                            d($record);
-                            $filter_where = [
-                                $set[2]['attribute'] => [
-                                    'value' => $set[2]['value'],
-                                    'operator' => $set[2]['operator'],
-                                    'strict' => $set[2]['strict'] ?? true
-                                ]
-                            ];
-                            $right = Filter::list($list)->where($filter_where);
-                            if (!empty($right)) {
-                                $where[$key] = $set[2];
-                                $where[$key]['match'] = true;
-                                $set[2] = [
-                                    'attribute' => 'uuid',
-                                    'operator' => '===',
-                                    'value' => $record->uuid,
-                                    'match' => true
-                                ];
-                            } else {
-                                $set[2]['match'] = false;
-                            }
-                            if ($set[0]['match'] === true && $set[2]['match'] === true) {
-                                $where[$key] = $set[0];
-                                return $set;
-                            }
-                            elseif ($set[0]['match'] === false && $set[2]['match'] === false) {
-                                $where[$key] = $set[0];
-                                return $set;
-                            } else {
-                                $set[0]['match'] = false;
-                                $set[2]['match'] = false;
-                                $where[$key] = $set[0];
-                                return $set;
-                            }
-                        }
-                    }
-                    */
                     $list = [];
                     $list[] = $record;
 //                    d($set);
@@ -610,6 +552,12 @@ trait Where {
                             }
                             $set[0]['match'] = false;
                             $set[2]['match'] = false;
+                            $set[0] = [
+                                'attribute' => 'uuid',
+                                'operator' => '===',
+                                'value' => $record->uuid,
+                                'match' => false
+                            ];
                             $where[$key] = $set[0];
                         }
                         ksort($where, SORT_NATURAL);
