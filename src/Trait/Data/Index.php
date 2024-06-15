@@ -879,7 +879,9 @@ trait Index {
                                                                     $value = rtrim($line, PHP_EOL);
                                                                     $record->uuid = $value;
                                                                     $record_where = $this->where($record, $options['where'], $options);
-                                                                    ddd($record_where);
+                                                                    if(stristr($record_where->name, 'task') === false){
+                                                                        ddd($record_where);
+                                                                    }
                                                                     if($record_where){
                                                                         $object->config('node.record.leftsearch', $leftSearch);
                                                                         return $record;
