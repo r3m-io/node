@@ -1049,6 +1049,9 @@ trait Index {
                                                                 //search all of left
                                                                 $leftSearch--;
                                                                 while ($leftSearch >= $options['index']['min']) {
+                                                                    ddd($options);
+
+
                                                                     foreach ($options['index']['where'] as $nr => $attribute){
                                                                         $file[$nr]->seek($leftSearch);
                                                                         $line = $file[$nr]->current();
