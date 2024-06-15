@@ -648,6 +648,8 @@ trait Where {
                         array_key_exists('value', $set[2]) &&
                         array_key_exists('operator', $set[2])
                     ) {
+                        d($key);
+                        d($where);
                         d($set);
                         ddd('this end will never return true without an or');
                     } else {
