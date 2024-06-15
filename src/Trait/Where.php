@@ -648,15 +648,18 @@ trait Where {
                         array_key_exists('value', $set[2]) &&
                         array_key_exists('operator', $set[2])
                     ) {
+                        d($set);
                         array_shift($set);
                         array_shift($set);
                         array_shift($set);
+                        /*
                         $set[0] = [
                             'attribute' => 'uuid',
                             'operator' => '===',
                             'value' => $record->uuid,
                             'match' => false
                         ];
+                        */
                         d($key);
                         d($where);
                         d($set);
