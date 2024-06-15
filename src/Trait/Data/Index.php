@@ -809,19 +809,23 @@ trait Index {
                             array_key_exists(0, $set)
                         ){
 
-                            ddd($set);
-                            $set_index_0 = [$set[0]];
-                            $set_index_0 = $this->where_process($record, $set_index_0);
+                            d($set);
+                            if(array_key_exists('match', $set[0])){
+                                $set_index_0 = [$set[0]];
+                            } else {
+                                $set_index_0 = [$set[0]];
+                                $set_index_0 = $this->where_process($record, $set_index_0);
+                            }
                             $set_index_2 = null;
 //                            d($set_index_0);
 //                            d($index_where);
                             if($set_index_0[0]['match'] === false){
                                 if(
-                                    array_key_exists('match', $set_init[0]) &&
-                                    $set_init[0]['match'] === false
+                                    array_key_exists('match', $set[0]) &&
+                                    $set[0]['match'] === false
                                 ){
                                     sort($index_where[2], SORT_NATURAL);
-                                    if($index_where[2][0] === $set_init[2]['value']){
+                                    if($index_where[2][0] === $set[2]['value']){
                                         $options['index']['max'] = $seek - 1;
                                         break 2;
 
@@ -837,7 +841,7 @@ trait Index {
                                         array_key_exists(2, $index_where)
                                     ){
                                         sort($index_where[2], SORT_NATURAL);
-                                        if($index_where[2][0] === $set_init[2]['value']){
+                                        if($index_where[2][0] === $set[2]['value']){
                                             $options['index']['max'] = $seek - 1;
                                             break 2;
 
@@ -849,12 +853,10 @@ trait Index {
                                         }
                                     } else {
                                         sort($index_where[0], SORT_NATURAL);
-                                        if($index_where[0][0] === $set_init[0]['value']){
+                                        if($index_where[0][0] === $set[0]['value']){
                                             $options['index']['max'] = $seek - 1;
                                             if($options['index']['max'] < $options['index']['min']){
-                                                $set = [
-                                                    false
-                                                ];
+                                                ddd('found');
                                                 $record = false;
                                                 break;
                                             }
@@ -864,9 +866,7 @@ trait Index {
                                             //min becomes seek + 1
                                             $options['index']['min'] = $seek + 1;
                                             if($options['index']['max'] < $options['index']['min']){
-                                                $set = [
-                                                    false
-                                                ];
+                                                ddd('found');
                                                 $record = false;
                                                 break;
                                             }
@@ -891,9 +891,7 @@ trait Index {
                                                         if($index_where[2][0] === $set[2]['value']){
                                                             $options['index']['max'] = $seek - 1;
                                                             if($options['index']['max'] < $options['index']['min']){
-                                                                $set = [
-                                                                    false
-                                                                ];
+                                                                ddd($set);
                                                                 break 2;
                                                             }
                                                             break 3;
@@ -903,9 +901,7 @@ trait Index {
                                                             //min becomes seek + 1
                                                             $options['index']['min'] = $seek + 1;
                                                             if($options['index']['max'] < $options['index']['min']){
-                                                                $set = [
-                                                                    false
-                                                                ];
+                                                                ddd($set);
                                                                 break 2;
                                                             }
                                                             break 3;
