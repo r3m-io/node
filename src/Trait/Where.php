@@ -709,7 +709,7 @@ trait Where {
         }
 //        ksort($where, SORT_NATURAL);
         $where = array_values($where);
-        return null;
+        return [];
     }
 
     /**
