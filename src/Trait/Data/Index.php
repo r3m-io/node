@@ -809,6 +809,7 @@ trait Index {
                             array_key_exists(0, $set)
                         ){
 
+                            ddd($set);
                             $set_index_0 = [$set[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
                             $set_index_2 = null;
