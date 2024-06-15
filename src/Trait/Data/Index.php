@@ -809,7 +809,7 @@ trait Index {
                             array_key_exists(0, $set)
                         ){
 
-                            d($set);
+//                            d($set);
                             if(array_key_exists('match', $set[0])){
                                 $set_index_0 = [$set[0]];
                             } else {
