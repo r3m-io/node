@@ -637,6 +637,10 @@ trait Where {
                         ksort($where, SORT_NATURAL);
                         $where = array_values($where);
                         return $set;
+                    } else {
+                        d($where);
+                        d($list);
+                        ddd($set);
                     }
                     ddd($options);
                     ksort($where, SORT_NATURAL);
