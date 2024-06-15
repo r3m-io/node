@@ -299,6 +299,9 @@ trait Where {
      */
     private function where_process($record, $set=[], &$where=[], &$key=null, &$operator=null, &$index_where=null, $options=[]): ?array
     {
+        if(!is_array($set)){
+            return $set;
+        }
         $count = count($set);
         $set_init = $set;
 //        d($record);
