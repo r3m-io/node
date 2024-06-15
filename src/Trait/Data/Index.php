@@ -816,10 +816,11 @@ trait Index {
                         }
                         if(
                             $index_where &&
-                            is_array($set_init) &&
-                            array_key_exists(0, $set_init)
+                            is_array($set) &&
+                            array_key_exists(0, $set)
                         ){
-                            $set_index_0 = [$set_init[0]];
+                            ddd($set);
+                            $set_index_0 = [$set[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
                             $set_index_2 = null;
                             d($set_index_0);
@@ -885,12 +886,12 @@ trait Index {
                                 }
                             } else {
                                 d($set_init);
-                                ddd($set);
-                                if(array_key_exists(1, $set_init)){
-                                    switch($set_init[1]){
+                                if(array_key_exists(1, $set)){
+                                    switch($set[1]){
                                         case 'and':
-                                            if(array_key_exists(2, $set_init)){
-                                                $set_index_2 = [$set_init[2]];
+                                            if(array_key_exists(2, $set)){
+                                                ddd('if match === false && match === false, we can do one record === false');
+                                                $set_index_2 = [$set[2]];
                                                 $set_index_2 = $this->where_process($record, $set_index_2);
                                             } else {
                                                 $set_index_2[0]['match'] === false;
