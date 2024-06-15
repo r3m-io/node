@@ -1342,14 +1342,17 @@ trait Index {
                             break 2;
                         }
                     }
-                    if($record === false){
+                    if(
+                        $record === false &&
+                        empty($where_process)
+                    ){
                         d('found: 24');
                         break 2;
                     }
-                    if($deepest === 0){
-                        d($set);
-                        d($where_process);
-                        d('found: 25');
+                    if(
+                        $deepest === 0 &&
+                        empty($where_process)
+                    ){
                         break;
                     }
                     if(
