@@ -752,14 +752,14 @@ trait Index {
                         if(!$set_init){
                             $set_init = $set;
                         }
-                        d($set);
-                        d($where_process);
+//                        d($set);
+//                        d($where_process);
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
-                        d($set) ;
-                        d($deepest);
-                        d($operator);
-                        d($index_where);
-                        d($where_process);
+//                        d($set) ;
+//                        d($deepest);
+//                        d($operator);
+//                        d($index_where);
+//                        d($where_process);
                         if(
                             empty($set) &&
                             empty($where_process) &&
@@ -813,8 +813,8 @@ trait Index {
                             $set_index_0 = [$set[0]];
                             $set_index_0 = $this->where_process($record, $set_index_0);
                             $set_index_2 = null;
-                            d($set_index_0);
-                            d($index_where);
+//                            d($set_index_0);
+//                            d($index_where);
                             if($set_index_0[0]['match'] === false){
                                 if(
                                     array_key_exists('match', $set_init[0]) &&
@@ -875,7 +875,7 @@ trait Index {
                                     }
                                 }
                             } else {
-                                d($set_init);
+//                                d($set_init);
                                 if(array_key_exists(1, $set)){
                                     switch($set[1]){
                                         case 'and':
@@ -884,8 +884,8 @@ trait Index {
                                                     array_key_exists('match', $set[2]) &&
                                                     $set[2]['match'] === false
                                                 ){
-                                                    d($set);
-                                                    d($index_where);
+//                                                    d($set);
+//                                                    d($index_where);
                                                     if(!is_array($index_where[2][0])){
                                                         sort($index_where[2], SORT_NATURAL);
                                                         if($index_where[2][0] === $set[2]['value']){
