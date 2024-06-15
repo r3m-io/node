@@ -1081,28 +1081,8 @@ trait Index {
                                                                         $chunks = array_chunk($closures, $options['thread'] ?? 8);
                                                                         foreach($chunks as $chunk){
                                                                             $list = Parallel::new()->execute($chunk);
-                                                                            ddd($list);
+                                                                            return $list;
                                                                         }
-
-                                                                        /*
-
-                                                                            foreach ($options['index']['where'] as $nr => $attribute){
-                                                                                $file[$nr]->seek($i);
-                                                                                $line = $file[$nr]->current();
-                                                                                $value = rtrim($line, PHP_EOL);
-                                                                                $record->{$attribute} = $value;
-                                                                            }
-                                                                            $file['uuid']->seek($i);
-                                                                            $line = $file['uuid']->current();
-                                                                            $value = rtrim($line, PHP_EOL);
-                                                                            $record->uuid = $value;
-                                                                            $record_where = $this->where($record, $options['where'], $options);
-                                                                            if($record_where){
-                                                                                $object->config('node.record.leftsearch', $i);
-                                                                                return $record;
-                                                                            }
-                                                                        }
-                                                                        */
                                                                     } else {
                                                                         foreach ($options['index']['where'] as $nr => $attribute){
                                                                             $file[$nr]->seek($leftSearch);
