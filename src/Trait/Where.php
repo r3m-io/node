@@ -640,11 +640,9 @@ trait Where {
                                     $record->{$set[2]['attribute']}
                                 ];
                             }
-                            d($set);
-                            ddd($index_where);
-                            $set[0]['match'] = false;
                             $set[2]['match'] = false;
-                            $where[$key] = $set[0];
+                            ddd($set);
+                            $where[$key] = $set[2];
                         }
                         ksort($where, SORT_NATURAL);
                         $where = array_values($where);
