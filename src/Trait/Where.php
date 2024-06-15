@@ -637,6 +637,18 @@ trait Where {
                         ksort($where, SORT_NATURAL);
                         $where = array_values($where);
                         return $set;
+                    }
+                    elseif(
+                        array_key_exists('match', $set[0]) &&
+                        $set[0]['match'] === false &&
+                        array_key_exists(1, $set) &&
+                        $set[1] === 'and' &&
+                        is_array($set[2]) &&
+                        array_key_exists('attribute', $set[2]) &&
+                        array_key_exists('value', $set[2]) &&
+                        array_key_exists('operator', $set[2])
+                    ) {
+                        ddd('this end will never return true without an or');
                     } else {
                         d($where);
                         d($list);
