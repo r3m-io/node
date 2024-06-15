@@ -1377,9 +1377,9 @@ trait Index {
             }
             $seek_old = $seek;
         }
-        d($options['index']['min']);
-        d($options['index']['max']);
-        d('found: 28');
+//        d($options['index']['min']);
+//        d($options['index']['max']);
+//        d('found: 28');
         return $record;
     }
 
