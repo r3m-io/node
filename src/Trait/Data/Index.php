@@ -1083,6 +1083,7 @@ trait Index {
                                                                             $list = Parallel::new()->execute($chunk);
                                                                             foreach($list as $nr => $record){
                                                                                 if(!$record){
+                                                                                    ddd('yes');
                                                                                     break 2;
                                                                                 }
                                                                                 $result[] = $record;
