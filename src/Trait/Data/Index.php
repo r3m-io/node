@@ -1071,6 +1071,8 @@ trait Index {
                                                                                 $record->uuid = $value;
                                                                             };
                                                                         }
+                                                                        ddd($options);
+                                                                        $chunks = array_chunk($closures, $options['thread'] ?? 8);
                                                                         ddd($closures);
 
                                                                         $list = Parallel::new()->execute($closures);
