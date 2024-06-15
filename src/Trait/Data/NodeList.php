@@ -220,40 +220,70 @@ trait NodeList {
 //                d($record);
                 $found = [];
                 while($record !== false){
-                    $record = $this->index_record_expose($class, $role, $record, $local_options);
-                    if(
-                        !in_array(
-                            $record->uuid,
-                            $found,
-                            true
-                        )
-                    ){
-                        if($count >= ($options['page'] * $options['limit']) - $options['limit']){
-                            $record->{'#index'} = $count;
-                            $list[] = $record;
+                    if(is_array($record)){
+                        foreach($record as $rec){
+                            if($rec === false){
+                                break;
+                            }
+                            $rec = $this->index_record_expose($class, $role, $rec, $local_options);
+                            if(
+                                !in_array(
+                                    $rec->uuid,
+                                    $found,
+                                    true
+                                )
+                            ){
+                                if($count >= ($options['page'] * $options['limit']) - $options['limit']){
+                                    $rec->{'#index'} = $count;
+                                    $list[] = $rec;
+                                }
+                                $found[] = $rec->uuid;
+                                $count++;
+                            }
+                            if(
+                                $options['limit'] !== '*' &&
+                                $count === (($options['page'] * $options['limit']))
+                            ){
+                                break;
+                            }
                         }
-                        $found[] = $record->uuid;
-                        $count++;
-                    }
+                    } else {
+                        $record = $this->index_record_expose($class, $role, $record, $local_options);
+                        if(
+                            !in_array(
+                                $record->uuid,
+                                $found,
+                                true
+                            )
+                        ){
+                            if($count >= ($options['page'] * $options['limit']) - $options['limit']){
+                                $record->{'#index'} = $count;
+                                $list[] = $record;
+                            }
+                            $found[] = $record->uuid;
+                            $count++;
+                        }
 //                    d($count);
 //                    d($options['page']);
 //                    d($options['limit']);
-                    if(
-                        $options['limit'] !== '*' &&
-                        $count === (($options['page'] * $options['limit']))
-                    ){
+                        if(
+                            $options['limit'] !== '*' &&
+                            $count === (($options['page'] * $options['limit']))
+                        ){
 //                        d($options['limit']);
 //                        d($options['page']);
 //                        d($list);
 //                        d($found);
 //                        d($count);
-                        break;
+                            break;
+                        }
+                        $options_where = $this->index_record_next($found, $options);
+                        $local_options['where'] = $options_where;
+                        $local_options['limit'] = 1;
+                        $local_options['page'] = 1;
+                        $record = $this->index_list_record($class, $role, $local_options);
                     }
-                    $options_where = $this->index_record_next($found, $options);
-                    $local_options['where'] = $options_where;
-                    $local_options['limit'] = 1;
-                    $local_options['page'] = 1;
-                    $record = $this->index_list_record($class, $role, $local_options);
+
                 }
                 $object->config('delete', 'node.record.leftsearch');
                 $object->config('delete', 'node.record.rightsearch');

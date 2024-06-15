@@ -667,7 +667,7 @@ trait Index {
     /**
      * @throws Exception
      */
-    public function index_list_record($class, $role, $options=[]): bool | object
+    public function index_list_record($class, $role, $options=[]): bool | array | object
     {
         if(!array_key_exists('index', $options)){
             return false;
@@ -1077,12 +1077,18 @@ trait Index {
                                                                             };
                                                                             $object->config('node.record.leftsearch', $i);
                                                                         }
-                                                                        d($options);
                                                                         $chunks = array_chunk($closures, $options['thread'] ?? 8);
-                                                                        foreach($chunks as $chunk){
+                                                                        $result = [];
+                                                                        foreach($chunks as $chunk_nr => $chunk){
                                                                             $list = Parallel::new()->execute($chunk);
-                                                                            return $list;
+                                                                            foreach($list as $nr => $record){
+                                                                                if(!$record){
+                                                                                    break 2;
+                                                                                }
+                                                                                $result[] = $record;
+                                                                            }
                                                                         }
+                                                                        return $result;
                                                                     } else {
                                                                         foreach ($options['index']['where'] as $nr => $attribute){
                                                                             $file[$nr]->seek($leftSearch);
