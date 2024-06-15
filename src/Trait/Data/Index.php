@@ -697,7 +697,6 @@ trait Index {
         }
         $options['index']['min'] = 0;
         $options['index']['max'] = $options['index']['count'] - 1;
-
         $counter = 0;
         $max = 4096;
         $seek_old = false;
