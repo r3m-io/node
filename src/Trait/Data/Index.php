@@ -1326,6 +1326,7 @@ trait Index {
                                             array_shift($set);
                                             array_shift($set);
                                             array_shift($set);
+                                            ddd('error');
                                             array_unshift($set, $set[2]);
                                         }
                                         break;
