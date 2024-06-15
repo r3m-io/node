@@ -841,7 +841,7 @@ trait Where {
                                 array_shift($set);
                                 $set[0]['match'] = false;
                             }
-                            d($set);
+//                            d($set);
                             break;
                         case 'or':
                             if(
@@ -879,8 +879,8 @@ trait Where {
             $counter++;
         }
         if(array_key_exists('debug', $options)){
-            d($record);
-            d('here2');
+//            d($record);
+//            d('here2');
         }
         return $record;
     }
