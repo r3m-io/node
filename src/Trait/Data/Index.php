@@ -1100,7 +1100,13 @@ trait Index {
                                                                                         $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                         $thread[$i] = $record;
                                                                                     } else {
-                                                                                        $thread[$i] = $record->uuid;
+                                                                                        $thread[$i] = (object) [
+                                                                                            'record' => $record,
+                                                                                            'where' => $options['where'],
+                                                                                            'i' => $i,
+                                                                                            'partition' =>$partition_nr,
+                                                                                            'error' => true
+                                                                                        ];
                                                                                     }
                                                                                 }
                                                                                 File::write($url, Core::object($thread, Core::OBJECT_JSON));
@@ -1115,6 +1121,9 @@ trait Index {
                                                                             if($data){
                                                                                 foreach($data->data() as $key => $record){
                                                                                     if(is_object($record)){
+                                                                                        if($record->error){
+                                                                                            ddd($record);
+                                                                                        }
                                                                                         $result[] = $record;
                                                                                     } else {
                                                                                         $result[] = [
