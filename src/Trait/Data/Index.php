@@ -1167,7 +1167,9 @@ trait Index {
                                                                                         $duration_where = $after - $before;
                                                                                     }
                                                                                     if ($record_where) {
-                                                                                        $record = $this->index_record_expose($name, $role, $record, $options);
+                                                                                        //make the list expose & not the record, should be faster
+                                                                                        //but less save ?
+//                                                                                        $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                         if($start){
                                                                                             $expose = microtime(true);
                                                                                             if(property_exists($record, '#duration')){
