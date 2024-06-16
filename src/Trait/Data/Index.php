@@ -1081,7 +1081,9 @@ trait Index {
                                                                             */
 //                                                                            $object->config('node.record.leftsearch', $i);
                                                                         }
-                                                                        ddd($left);
+                                                                        $partition = Core::array_partition($left, 8);
+
+                                                                        ddd($partition);
 
                                                                         $chunks = array_chunk($left, $options['thread'] ?? 8);
                                                                         $result = [];
