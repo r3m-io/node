@@ -99,7 +99,7 @@ trait Index {
             //collect relation mtime
         }
         if($start){
-            if([property_exists($record, '#duration')]){
+            if(property_exists($record, '#duration')){
                 $record->{'#duration'} = Core::object_merge(
                     $record->{'#duration'},
                     (object) [
