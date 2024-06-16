@@ -1056,12 +1056,7 @@ trait Index {
                                                                             $left[] = $i;
                                                                         }
                                                                         $partition = Core::array_partition($left, $options['thread'] ?? 8);
-                                                                        d($options['index']);
                                                                         foreach($partition as $partition_nr => $chunk) {
-                                                                            $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
-                                                                            foreach($options['index']['url'] as $nr => $url){
-                                                                                $file[$nr] = new SplFileObject($url);
-                                                                            }
                                                                             $closures[] = function () use (
                                                                                 $object,
                                                                                 $name,
@@ -1069,7 +1064,6 @@ trait Index {
                                                                                 $options,
                                                                                 $partition_nr,
                                                                                 $chunk,
-                                                                                $file
                                                                             ) {
                                                                                 $start = microtime(true);
                                                                                 $url_store = $object->config('ramdisk.url') .
@@ -1095,17 +1089,10 @@ trait Index {
                                                                                 if(!File::exist($options['index']['url_uuid'])){
                                                                                     return false;
                                                                                 }
-                                                                                /*
-                                                                                foreach($file as $nr => $record){
-                                                                                    $file[$nr] = clone $record;
-                                                                                }
-                                                                                */
-                                                                                /*
                                                                                 $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
                                                                                 foreach($options['index']['url'] as $nr => $url){
                                                                                     $file[$nr] = new SplFileObject($url);
                                                                                 }
-                                                                                */
                                                                                 $thread = [];
                                                                                 foreach ($chunk as $chunk_nr => $i) {
                                                                                     $record = (object)[];
