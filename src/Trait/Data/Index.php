@@ -1114,6 +1114,7 @@ trait Index {
                                                                         }
                                                                         $result = [];
                                                                         $list = Parallel::new()->execute($closures);
+                                                                        ddd($list);
                                                                         foreach($list as $nr => $record){
                                                                             if(!$record){
                                                                                 continue;
