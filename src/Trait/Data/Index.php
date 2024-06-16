@@ -1088,6 +1088,7 @@ trait Index {
                                                                                 $name,
                                                                                 $options,
                                                                                 $file,
+                                                                                $partition_nr,
                                                                                 $chunk
                                                                             ) {
                                                                                 $url = $object->config('ramdisk.url') .
@@ -1099,11 +1100,13 @@ trait Index {
                                                                                     $object->config('ds') .
                                                                                     $name .
                                                                                     '.' .
+                                                                                    'Response' .
+                                                                                    '.' .
+                                                                                    $partition_nr .
+                                                                                    '.' .
                                                                                     Core::uuid() .
                                                                                     $object->config('extension.json')
                                                                                 ;
-
-
                                                                                 $thread = [];
                                                                                 foreach ($chunk as $nr => $i) {
                                                                                     $record = (object)[];
@@ -1124,6 +1127,7 @@ trait Index {
                                                                                         $thread[$i] = false;
                                                                                     }
                                                                                 }
+                                                                                File::write($url, Core::object($thread, Core::OBJECT_JSON);
                                                                                 return $url;
                                                                             };
                                                                         }
