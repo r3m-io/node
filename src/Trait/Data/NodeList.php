@@ -323,8 +323,8 @@ trait NodeList {
             $result['duration'] = (object) [
                 'total' => (microtime(true) - $object->config('time.start')) * 1000,
                 'nodelist' => (microtime(true) - $start) * 1000,
-                'item_per_second' => ($count / $result['#duration']->total) * 1000,
-                'item_per_second_nodelist' => ($count / $result['#duration']->nodelist) * 1000,
+                'item_per_second' => ($count / $result['duration']->total) * 1000,
+                'item_per_second_nodelist' => ($count / $result['duration']->nodelist) * 1000,
                 'startup' => ($start - $object->config('time.start')) * 1000
             ];
             return $result;
