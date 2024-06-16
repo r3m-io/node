@@ -118,7 +118,15 @@ trait NodeList {
             $result['ramdisk'] = $options['ramdisk'] ?? false;
             $result['mtime'] = $mtime;
             $result['transaction'] = $options['transaction'] ?? false;
-            $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+            if($start){
+                $result['#duration'] = (object) [
+                    'boot' => ($start - $object->config('time.start')) * 1000,
+                    'total' => (microtime(true) - $object->config('time.start')) * 1000,
+                    'nodelist' => (microtime(true) - $start) * 1000
+                ];
+                $result['#duration']->item_per_second = 0;
+                $result['#duration']->item_per_second_nodelist = 0;
+            }
             return $result;
         }
         if (!array_key_exists('index', $options)) {
@@ -178,7 +186,15 @@ trait NodeList {
             $result['ramdisk'] = $options['ramdisk'] ?? false;
             $result['mtime'] = $mtime;
             $result['transaction'] = $options['transaction'] ?? false;
-            $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+            if($start){
+                $result['#duration'] = (object) [
+                    'boot' => ($start - $object->config('time.start')) * 1000,
+                    'total' => (microtime(true) - $object->config('time.start')) * 1000,
+                    'nodelist' => (microtime(true) - $start) * 1000
+                ];
+                $result['#duration']->item_per_second = 0;
+                $result['#duration']->item_per_second_nodelist = 0;
+            }
             return $result;
         }
         $mtime = File::mtime($data_url);
@@ -328,7 +344,7 @@ trait NodeList {
             $result['transaction'] = $options['transaction'] ?? false;
             if($start){
                 $result['#duration'] = (object) [
-                    'startup' => ($start - $object->config('time.start')) * 1000,
+                    'boot' => ($start - $object->config('time.start')) * 1000,
                     'total' => (microtime(true) - $object->config('time.start')) * 1000,
                     'nodelist' => (microtime(true) - $start) * 1000
                 ];
@@ -957,7 +973,15 @@ trait NodeList {
                     $result['ramdisk'] = $options['ramdisk'] ?? false;
                     $result['mtime'] = $mtime;
                     $result['transaction'] = $options['transaction'] ?? false;
-                    $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+                    if($start){
+                        $result['#duration'] = (object) [
+                            'boot' => ($start - $object->config('time.start')) * 1000,
+                            'total' => (microtime(true) - $object->config('time.start')) * 1000,
+                            'nodelist' => (microtime(true) - $start) * 1000
+                        ];
+                        $result['#duration']->item_per_second = ($list_count / $result['#duration']->total) * 1000;
+                        $result['#duration']->item_per_second_nodelist = ($list_count / $result['#duration']->nodelist) * 1000;
+                    }
                     if(
                         array_key_exists('ramdisk', $options) &&
                         $options['ramdisk'] === true &&
@@ -1016,7 +1040,15 @@ trait NodeList {
                 $result['ramdisk'] = $options['ramdisk'] ?? false;
                 $result['mtime'] = $mtime;
                 $result['transaction'] = $options['transaction'] ?? false;
-                $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+                if($start){
+                    $result['#duration'] = (object) [
+                        'boot' => ($start - $object->config('time.start')) * 1000,
+                        'total' => (microtime(true) - $object->config('time.start')) * 1000,
+                        'nodelist' => (microtime(true) - $start) * 1000
+                    ];
+                    $result['#duration']->item_per_second = ($list_count / $result['#duration']->total) * 1000;
+                    $result['#duration']->item_per_second_nodelist = ($list_count / $result['#duration']->nodelist) * 1000;
+                }
                 if(
                     array_key_exists('ramdisk', $options) &&
                     $options['ramdisk'] === true &&
@@ -1069,7 +1101,15 @@ trait NodeList {
         $result['ramdisk'] = $options['ramdisk'] ?? false;
         $result['mtime'] = $mtime;
         $result['transaction'] = $options['transaction'] ?? false;
-        $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+        if($start){
+            $result['#duration'] = (object) [
+                'boot' => ($start - $object->config('time.start')) * 1000,
+                'total' => (microtime(true) - $object->config('time.start')) * 1000,
+                'nodelist' => (microtime(true) - $start) * 1000
+            ];
+            $result['#duration']->item_per_second = 0;
+            $result['#duration']->item_per_second_nodelist = 0;
+        }
         return $result;
     }
 
