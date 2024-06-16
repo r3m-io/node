@@ -116,7 +116,7 @@ trait Index {
                     'start' => $start,
                     'from_cache' => $duration_from_cache,
                     'expose_get' => $duration_expose_get,
-                    'expose' => $duration_expose,
+                    'expose_function' => $duration_expose,
                     'data' => $duration_data,
                 ];
             }
