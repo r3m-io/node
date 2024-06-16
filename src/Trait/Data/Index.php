@@ -1085,10 +1085,25 @@ trait Index {
                                                                         foreach($partition as $partition_nr => $chunk) {
                                                                             $closures[] = function () use (
                                                                                 $object,
+                                                                                $name,
                                                                                 $options,
                                                                                 $file,
                                                                                 $chunk
                                                                             ) {
+                                                                                $url = $object->config('ramdisk.url') .
+                                                                                    $object->config(Config::POSIX_ID) .
+                                                                                    $object->config('ds') .
+                                                                                    'Node' .
+                                                                                    $object->config('ds') .
+                                                                                    'Index' .
+                                                                                    $object->config('ds') .
+                                                                                    $name .
+                                                                                    '.' .
+                                                                                    Core::uuid() .
+                                                                                    $object->config('extension.json')
+                                                                                ;
+
+
                                                                                 $thread = [];
                                                                                 foreach ($chunk as $nr => $i) {
                                                                                     $record = (object)[];
@@ -1109,11 +1124,12 @@ trait Index {
                                                                                         $thread[$i] = false;
                                                                                     }
                                                                                 }
-                                                                                return $thread;
+                                                                                return $url;
                                                                             };
                                                                         }
                                                                         $result = [];
                                                                         $list = Parallel::new()->execute($closures);
+                                                                        ddd($list);
                                                                         foreach($list as $chunk_nr => $chunk){
                                                                             foreach($chunk as $record){
                                                                                 if(!$record){
