@@ -1100,7 +1100,7 @@ trait Index {
                                                                                         $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                         $thread[$i] = $record;
                                                                                     } else {
-                                                                                        $thread[$i] = false;
+                                                                                        $thread[$i] = $record->uuid;
                                                                                     }
                                                                                 }
                                                                                 File::write($url, Core::object($thread, Core::OBJECT_JSON));
@@ -1114,10 +1114,13 @@ trait Index {
                                                                             $data = $object->data_read($data_url);
                                                                             if($data){
                                                                                 foreach($data->data() as $key => $record){
-                                                                                    if($record){
+                                                                                    if(is_object($record)){
                                                                                         $result[] = $record;
                                                                                     } else {
-                                                                                        $result[] = $key;
+                                                                                        $result[] = [
+                                                                                            $key,
+                                                                                            $record
+                                                                                        ];
                                                                                     }
                                                                                 }
                                                                             }
