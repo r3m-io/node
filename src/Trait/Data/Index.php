@@ -1057,6 +1057,7 @@ trait Index {
                                                                         }
                                                                         $partition = Core::array_partition($left, $options['thread'] ?? 8);
                                                                         d($options['index']);
+                                                                        ddd($file);
                                                                         foreach($partition as $partition_nr => $chunk) {
                                                                             $closures[] = function () use (
                                                                                 $object,
