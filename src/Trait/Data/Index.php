@@ -1113,18 +1113,23 @@ trait Index {
                                                                                         $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                         $thread[$i] = $record;
                                                                                     } else {
-                                                                                        $thread[$i] = false;
                                                                                         break;
                                                                                     }
                                                                                 }
-                                                                                File::write($url_store, Core::object($thread, Core::OBJECT_JSON));
-                                                                                return $url_store;
+                                                                                if(!empty($thread)){
+                                                                                    File::write($url_store, Core::object($thread, Core::OBJECT_JSON));
+                                                                                    return $url_store;
+                                                                                }
+                                                                                return false;
                                                                             };
                                                                         }
                                                                         $result = [];
                                                                         $list = Parallel::new()->execute($closures);
                                                                         d($list);
                                                                         foreach($list as $chunk_nr => $data_url){
+                                                                            if($data_url === false){
+                                                                                continue;
+                                                                            }
                                                                             $data = $object->data_read($data_url);
                                                                             if($data){
                                                                                 foreach($data->data() as $key => $record){
