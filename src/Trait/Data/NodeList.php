@@ -226,6 +226,9 @@ trait NodeList {
                             if($rec === false){
                                 ddd($record);
                             }
+                            if(is_string($rec)){
+                                ddd($rec);
+                            }
                             //index_record_expose is handled in the separate thread
                             if(
                                 $rec &&
