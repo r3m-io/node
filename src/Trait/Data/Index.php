@@ -1177,7 +1177,7 @@ trait Index {
                                                                                                     $record->{'#duration'},
                                                                                                     (object) [
                                                                                                         'start' => $start,
-                                                                                                        'before' => $duration_before * 1000,
+                                                                                                        'wait' => $duration_before * 1000,
                                                                                                         'where' => $duration_where * 1000,
                                                                                                         'expose' => ($expose - $after) * 1000
                                                                                                     ]
@@ -1185,7 +1185,7 @@ trait Index {
                                                                                             } else {
                                                                                                 $record->{'#duration'} = (object) [
                                                                                                     'start' => $start,
-                                                                                                    'before' => $duration_before * 1000,
+                                                                                                    'wait' => $duration_before * 1000,
                                                                                                     'where' => $duration_where * 1000,
                                                                                                     'expose' => ($expose - $after) * 1000
                                                                                                 ];
