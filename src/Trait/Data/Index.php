@@ -33,6 +33,7 @@ trait Index {
      */
     private function index_record_expose($class, $role, $record, $options): mixed
     {
+        $start = false;
         if(
             array_key_exists('duration', $options) &&
             $options['duration'] === true
@@ -1109,6 +1110,7 @@ trait Index {
                                                                                 $partition_nr,
                                                                                 $chunk,
                                                                             ) {
+                                                                                $start = false;
                                                                                 if(
                                                                                     array_key_exists('duration', $options) &&
                                                                                     $options['duration'] === true
