@@ -1113,14 +1113,7 @@ trait Index {
                                                                                         $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                         $thread[$i] = $record;
                                                                                     } else {
-                                                                                        $thread[$i] = (object) [
-                                                                                            'record' => $record,
-                                                                                            'where' => $options['where'],
-                                                                                            'i' => $i,
-                                                                                            'partition' =>$partition_nr,
-                                                                                            'values' => $values,
-                                                                                            'error' => true
-                                                                                        ];
+                                                                                        $thread[$i] = false;
                                                                                     }
                                                                                 }
                                                                                 File::write($url_store, Core::object($thread, Core::OBJECT_JSON));
