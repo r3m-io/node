@@ -1127,17 +1127,10 @@ trait Index {
                                                                             $data = $object->data_read($data_url);
                                                                             if($data){
                                                                                 foreach($data->data() as $key => $record){
-                                                                                    if(is_object($record)){
-                                                                                        if(property_exists($record,'error')){
-                                                                                            ddd($record);
-                                                                                        }
-                                                                                        $result[] = $record;
-                                                                                    } else {
-                                                                                        $result[] = [
-                                                                                            $key,
-                                                                                            $record
-                                                                                        ];
+                                                                                    if(empty($record)){
+                                                                                        continue;
                                                                                     }
+                                                                                    $result[] = $record;
                                                                                 }
                                                                             }
 //                                                                            File::delete($data_url);
