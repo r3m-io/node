@@ -1114,12 +1114,13 @@ trait Index {
                                                                         }
                                                                         $result = [];
                                                                         $list = Parallel::new()->execute($closures);
-                                                                        ddd($list);
-                                                                        foreach($list as $nr => $record){
-                                                                            if(!$record){
-                                                                                continue;
+                                                                        foreach($list as $chunk_nr => $chunk){
+                                                                            foreach($chunk as $record){
+                                                                                if(!$record){
+                                                                                    continue;
+                                                                                }
+                                                                                $result[] = $record;
                                                                             }
-                                                                            $result[] = $record;
                                                                         }
                                                                         ddd($result);
                                                                         return $result;
