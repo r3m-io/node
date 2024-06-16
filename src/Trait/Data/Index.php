@@ -1084,11 +1084,13 @@ trait Index {
                                                                                     $object->config('extension.json')
                                                                                 ;
                                                                                 $thread = [];
-                                                                                foreach ($chunk as $nr => $i) {
+                                                                                foreach ($chunk as $chunk_nr => $i) {
                                                                                     $record = (object)[];
+                                                                                    $values = [];
                                                                                     foreach ($options['index']['where'] as $nr => $attribute) {
                                                                                         $file[$nr]->seek($i);
                                                                                         $line = $file[$nr]->current();
+                                                                                        $values[] = $line;
                                                                                         $value = rtrim($line, PHP_EOL);
                                                                                         $record->{$attribute} = $value;
                                                                                     }
