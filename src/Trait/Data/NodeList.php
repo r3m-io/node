@@ -227,7 +227,6 @@ trait NodeList {
                                 break;
                             }
                             $rec = $this->index_record_expose($class, $role, (object) ['uuid' => $rec], $local_options);
-                            ddd($rec);
                             if(
                                 !in_array(
                                     $rec->uuid,
