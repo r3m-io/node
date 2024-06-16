@@ -1107,14 +1107,13 @@ trait Index {
                                                                         }
                                                                         $result = [];
                                                                         $list = Parallel::new()->execute($closures);
-                                                                        foreach($list as $chunk_nr => $chunk){
-                                                                            foreach($chunk as $data_url){
-                                                                                $data = $object->data_read($data_url);
-                                                                                if($data){
-                                                                                    dd($data);
-                                                                                }
-                                                                                $result[] = $record;
+                                                                        foreach($list as $chunk_nr => $data_url){
+                                                                            $data = $object->data_read($data_url);
+                                                                            if($data){
+                                                                                dd($data);
                                                                             }
+//                                                                            $result[] = $record;
+
                                                                         }
                                                                         return $result;
                                                                     } else {
