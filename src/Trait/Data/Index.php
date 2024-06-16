@@ -1097,9 +1097,6 @@ trait Index {
                                                                                 $thread = [];
                                                                                 foreach ($chunk as $chunk_nr => $i) {
                                                                                     $record = (object)[];
-                                                                                    $record->duration = (object) [
-                                                                                        'start' => $start
-                                                                                    ];
                                                                                     $values = [];
                                                                                     foreach ($options['index']['where'] as $nr => $attribute) {
                                                                                         $file[$nr]->seek($i);
@@ -1112,12 +1109,17 @@ trait Index {
                                                                                     $line = $file['uuid']->current();
                                                                                     $value = rtrim($line, PHP_EOL);
                                                                                     $record->uuid = $value;
-                                                                                    $record->duration->before = (microtime(true) - $start) * 1000;
+                                                                                    $duration_before = (microtime(true) - $start) * 1000;
                                                                                     $record_where = $this->where($record, $options['where'], $options);
-                                                                                    $record->duration->where = (microtime(true) - $start) * 1000;
+                                                                                    $duration_where = (microtime(true) - $start) * 1000;
                                                                                     if ($record_where) {
                                                                                         $record = $this->index_record_expose($name, $role, $record, $options);
-                                                                                        $record->duration->expose = (microtime(true) - $start) * 1000;
+                                                                                        $record->duration = (object) [
+                                                                                            'start' => $start,
+                                                                                            'before' => $duration_before,
+                                                                                            'where' => $duration_where,
+                                                                                            'expose' => (microtime(true) - $start) * 1000
+                                                                                        ];
                                                                                         $thread[$i] = $record;
                                                                                     } else {
                                                                                         break;
