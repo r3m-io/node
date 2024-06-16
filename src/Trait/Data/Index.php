@@ -1051,7 +1051,10 @@ trait Index {
                                                                 while ($leftSearch >= $options['index']['min']) {
                                                                     if($options['parallel'] === true){
                                                                         $closures = [];
+                                                                        $left = [];
                                                                         for($i = $leftSearch; $i >= $options['index']['min']; $i--) {
+                                                                            $left[] = $i;
+                                                                            /*
                                                                             $closures[] = function () use (
                                                                                 $object,
                                                                                 $options,
@@ -1075,9 +1078,11 @@ trait Index {
                                                                                 }
                                                                                 return false;
                                                                             };
-                                                                            $object->config('node.record.leftsearch', $i);
+                                                                            */
+//                                                                            $object->config('node.record.leftsearch', $i);
                                                                         }
-                                                                        $chunks = array_chunk($closures, $options['thread'] ?? 8);
+                                                                        $chunks = array_chunk($left, $options['thread'] ?? 8);
+                                                                        ddd($chunks);
                                                                         $result = [];
                                                                         foreach($chunks as $chunk_nr => $chunk){
                                                                             $list = Parallel::new()->execute($chunk);
