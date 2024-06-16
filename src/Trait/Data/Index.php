@@ -1111,10 +1111,13 @@ trait Index {
                                                                         foreach($list as $chunk_nr => $data_url){
                                                                             $data = $object->data_read($data_url);
                                                                             if($data){
-                                                                                dd($data);
+                                                                                foreach($data->data() as $record){
+                                                                                    if($record){
+                                                                                        $result[] = $record;
+                                                                                    }
+                                                                                }
                                                                             }
-//                                                                            $result[] = $record;
-
+                                                                            File::delete($data_url);
                                                                         }
                                                                         return $result;
                                                                     } else {
