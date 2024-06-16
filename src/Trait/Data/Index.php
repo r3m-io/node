@@ -1060,6 +1060,7 @@ trait Index {
                                                                             $closures[] = function () use (
                                                                                 $object,
                                                                                 $name,
+                                                                                $role,
                                                                                 $options,
                                                                                 $file,
                                                                                 $partition_nr,
@@ -1096,7 +1097,8 @@ trait Index {
                                                                                     $record->uuid = $value;
                                                                                     $record_where = $this->where($record, $options['where'], $options);
                                                                                     if ($record_where) {
-                                                                                        $thread[$i] = $record->uuid;
+                                                                                        $record = $this->index_record_expose($name, $role, $record, $options);
+                                                                                        $thread[$i] = $record;
                                                                                     } else {
                                                                                         $thread[$i] = false;
                                                                                     }
