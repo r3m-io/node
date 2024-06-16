@@ -1064,7 +1064,8 @@ trait Index {
                                                                                 $role,
                                                                                 $options,
                                                                                 $partition_nr,
-                                                                                $chunk
+                                                                                $chunk,
+                                                                                $file
                                                                             ) {
                                                                                 $start = microtime(true);
                                                                                 $url_store = $object->config('ramdisk.url') .
@@ -1090,10 +1091,15 @@ trait Index {
                                                                                 if(!File::exist($options['index']['url_uuid'])){
                                                                                     return false;
                                                                                 }
+                                                                                foreach($file as $nr => $record){
+                                                                                    $file[$nr] = clone $record;
+                                                                                }
+                                                                                /*
                                                                                 $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
                                                                                 foreach($options['index']['url'] as $nr => $url){
                                                                                     $file[$nr] = new SplFileObject($url);
                                                                                 }
+                                                                                */
                                                                                 $thread = [];
                                                                                 foreach ($chunk as $chunk_nr => $i) {
                                                                                     $record = (object)[];
