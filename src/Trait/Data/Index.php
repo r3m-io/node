@@ -1127,7 +1127,7 @@ trait Index {
                                                                                         $thread[$i] = false;
                                                                                     }
                                                                                 }
-                                                                                File::write($url, Core::object($thread, Core::OBJECT_JSON);
+                                                                                File::write($url, Core::object($thread, Core::OBJECT_JSON));
                                                                                 return $url;
                                                                             };
                                                                         }
