@@ -1113,9 +1113,11 @@ trait Index {
                                                                         foreach($list as $chunk_nr => $data_url){
                                                                             $data = $object->data_read($data_url);
                                                                             if($data){
-                                                                                foreach($data->data() as $record){
+                                                                                foreach($data->data() as $key => $record){
                                                                                     if($record){
                                                                                         $result[] = $record;
+                                                                                    } else {
+                                                                                        $result[] = $key;
                                                                                     }
                                                                                 }
                                                                             }
