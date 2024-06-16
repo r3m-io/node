@@ -323,6 +323,8 @@ trait NodeList {
             $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
             $result['duration_nodelist'] = (microtime(true) - $start) * 1000;
             $result['item_per_second'] = ($count /  $result['duration']) * 1000;
+            $result['item_per_second_nodelist'] = ($count /  $result['duration_nodelist']) * 1000;
+            $result['duration_startup'] = ($start - $object->config('time.start')) * 1000;
             return $result;
         }
 
