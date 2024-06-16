@@ -226,8 +226,8 @@ trait NodeList {
                             if($rec === false){
                                 break;
                             }
+                            $rec = $this->index_record_expose($class, $role, (object) ['uuid' => $rec], $local_options);
                             ddd($rec);
-                            $rec = $this->index_record_expose($class, $role, $rec, $local_options);
                             if(
                                 !in_array(
                                     $rec->uuid,
