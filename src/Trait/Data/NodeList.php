@@ -34,7 +34,14 @@ trait NodeList {
      */
     public function list($class, $role, $options=[]): array
     {
-        $start = microtime(true);
+        $start = false;
+        if(
+            array_key_exists('duration', $options) &&
+            $options['duration'] === true
+        ){
+            $start = microtime(true);
+        }
+
         $mtime = false;
         $name = Controller::name($class);
         $options = Core::object($options, Core::OBJECT_ARRAY);
@@ -320,13 +327,16 @@ trait NodeList {
             $result['ramdisk'] = $options['ramdisk'] ?? false;
             $result['mtime'] = $mtime;
             $result['transaction'] = $options['transaction'] ?? false;
-            $result['duration'] = (object) [
-                'startup' => ($start - $object->config('time.start')) * 1000,
-                'total' => (microtime(true) - $object->config('time.start')) * 1000,
-                'nodelist' => (microtime(true) - $start) * 1000
-            ];
-            $result['duration']->item_per_second = ($count / $result['duration']->total) * 1000;
-            $result['duration']->item_per_second_nodelist = ($count / $result['duration']->nodelist) * 1000;
+            if($start){
+                $result['#duration'] = (object) [
+                    'startup' => ($start - $object->config('time.start')) * 1000,
+                    'total' => (microtime(true) - $object->config('time.start')) * 1000,
+                    'nodelist' => (microtime(true) - $start) * 1000
+                ];
+                $result['#duration']->item_per_second = ($count / $result['#duration']->total) * 1000;
+                $result['#duration']->item_per_second_nodelist = ($count / $result['#duration']->nodelist) * 1000;
+            }
+
             return $result;
         }
 
