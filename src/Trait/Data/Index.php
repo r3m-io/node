@@ -1168,7 +1168,7 @@ trait Index {
                                                                                         $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                         if($start){
                                                                                             $expose = microtime(true);
-                                                                                            if([property_exists($record, '#duration')]){
+                                                                                            if(property_exists($record, '#duration')){
                                                                                                 $record->{'#duration'} = Core::object_merge(
                                                                                                     $record->{'#duration'},
                                                                                                     (object) [
