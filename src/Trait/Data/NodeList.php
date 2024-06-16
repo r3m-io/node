@@ -320,7 +320,7 @@ trait NodeList {
             $result['ramdisk'] = $options['ramdisk'] ?? false;
             $result['mtime'] = $mtime;
             $result['transaction'] = $options['transaction'] ?? false;
-            $result['#duration'] = (object) [
+            $result['duration'] = (object) [
                 'total' => (microtime(true) - $object->config('time.start')) * 1000,
                 'nodelist' => (microtime(true) - $start) * 1000,
                 'item_per_second' => ($count / $result['#duration']->total) * 1000,
