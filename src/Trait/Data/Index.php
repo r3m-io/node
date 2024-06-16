@@ -1121,7 +1121,6 @@ trait Index {
                                                                             }
 //                                                                            File::delete($data_url);
                                                                         }
-                                                                        dd('end');
                                                                         return $result;
                                                                     } else {
                                                                         foreach ($options['index']['where'] as $nr => $attribute){
