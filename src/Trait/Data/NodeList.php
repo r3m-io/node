@@ -320,11 +320,13 @@ trait NodeList {
             $result['ramdisk'] = $options['ramdisk'] ?? false;
             $result['mtime'] = $mtime;
             $result['transaction'] = $options['transaction'] ?? false;
-            $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
-            $result['duration_nodelist'] = (microtime(true) - $start) * 1000;
-            $result['item_per_second'] = ($count /  $result['duration']) * 1000;
-            $result['item_per_second_nodelist'] = ($count /  $result['duration_nodelist']) * 1000;
-            $result['duration_startup'] = ($start - $object->config('time.start')) * 1000;
+            $result['#duration'] = (object) [
+                'total' => (microtime(true) - $object->config('time.start')) * 1000,
+                'nodelist' => (microtime(true) - $start) * 1000,
+                'item_per_second' => ($count / $result['#duration']->total) * 1000,
+                'item_per_second_nodelist' => ($count / $result['#duration']->nodelist) * 1000,
+                'startup' => ($start - $object->config('time.start')) * 1000
+            ];
             return $result;
         }
 
