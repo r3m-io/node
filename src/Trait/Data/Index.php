@@ -1122,7 +1122,7 @@ trait Index {
                                                                                     $record->uuid = $value;
                                                                                     $record_where = $this->where($record, $options['where'], $options);
                                                                                     if ($record_where) {
-                                                                                        $thread[$i] = $record->uuid;
+                                                                                        $thread[$i] = $record;
                                                                                     } else {
                                                                                         $thread[$i] = false;
                                                                                     }
