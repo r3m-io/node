@@ -1109,16 +1109,19 @@ trait Index {
                                                                                     $line = $file['uuid']->current();
                                                                                     $value = rtrim($line, PHP_EOL);
                                                                                     $record->uuid = $value;
-                                                                                    $duration_before = (microtime(true) - $start);
+                                                                                    $before = microtime(true);
+                                                                                    $duration_before = $before - $start;
                                                                                     $record_where = $this->where($record, $options['where'], $options);
-                                                                                    $duration_where = (microtime(true) - $duration_before);
+                                                                                    $after = microtime(true);
+                                                                                    $duration_where = $after - $before;
                                                                                     if ($record_where) {
                                                                                         $record = $this->index_record_expose($name, $role, $record, $options);
+                                                                                        $expose = microtime(true);
                                                                                         $record->duration = (object) [
                                                                                             'start' => $start,
                                                                                             'before' => $duration_before * 1000,
                                                                                             'where' => $duration_where * 1000,
-                                                                                            'expose' => (microtime(true) - $duration_where) * 1000
+                                                                                            'expose' => ($expose - $after) * 1000
                                                                                         ];
                                                                                         $thread[$i] = $record;
                                                                                     } else {
