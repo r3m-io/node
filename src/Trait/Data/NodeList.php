@@ -322,7 +322,7 @@ trait NodeList {
             $result['transaction'] = $options['transaction'] ?? false;
             $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
             $result['duration_nodelist'] = (microtime(true) - $start) * 1000;
-            $result['item_per_second'] = ($count / (microtime(true) - $start));
+            $result['item_per_second'] = ($count /  $result['duration']) * 1000);
             return $result;
         }
 
