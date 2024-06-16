@@ -85,8 +85,8 @@ trait Index {
 //                                                $record = $this->relation($record, $object_data, $role, $options);
             //collect relation mtime
         }
-        $record->expose = (object) [];
-        $record->expose->duration = (object) [
+        ddd($options);
+        $record->{'#duration'} = (object) [
             'start' => $start,
             'from_cache' => $duration_from_cache,
             'expose_get' => $duration_expose_get,
