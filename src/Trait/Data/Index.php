@@ -33,7 +33,12 @@ trait Index {
      */
     private function index_record_expose($class, $role, $record, $options): mixed
     {
-        $start = microtime(true);
+        if(
+            array_key_exists('duration', $options) &&
+            $options['duration'] === true
+        ){
+            $start = microtime(true);
+        }
         $object = $this->object();
         $name = Controller::name($class);
         $dir_data = $object->config('project.dir.node') .
@@ -55,8 +60,10 @@ trait Index {
         ) {
             $record = $data[$record->uuid];
         }
-        $after_cache = microtime(true);
-        $duration_from_cache = ($after_cache - $start) * 1000;
+        if($start){
+            $after_cache = microtime(true);
+            $duration_from_cache = ($after_cache - $start) * 1000;
+        }
         if(!property_exists($record, '#class')){
             return false;
         }
@@ -65,8 +72,10 @@ trait Index {
             $record->{'#class'},
             $record->{'#class'} . '.' . $options['function'] . '.output'
         );
-        $after_expose_get = microtime(true);
-        $duration_expose_get = ($after_expose_get - $after_cache) * 1000;
+        if($start){
+            $after_expose_get = microtime(true);
+            $duration_expose_get = ($after_expose_get - $after_cache) * 1000;
+        }
         $node = new Storage($record);
         $node = $this->expose(
             $node,
@@ -75,24 +84,42 @@ trait Index {
             $options['function'],
             $role
         );
-        $after_expose = microtime(true);
-        $duration_expose = ($after_expose - $after_expose_get) * 1000;
+        if($start){
+            $after_expose = microtime(true);
+            $duration_expose = ($after_expose - $after_expose_get) * 1000;
+        }
         $record = $node->data();
-        $after_data = microtime(true);
-        $duration_data = ($after_data - $after_expose) * 1000;
+        if($start){
+            $after_data = microtime(true);
+            $duration_data = ($after_data - $after_expose) * 1000;
+        }
         if ($options['relation'] === true) {
             ddd('need object_data from cache?');
 //                                                $record = $this->relation($record, $object_data, $role, $options);
             //collect relation mtime
         }
-        ddd($options);
-        $record->{'#duration'} = (object) [
-            'start' => $start,
-            'from_cache' => $duration_from_cache,
-            'expose_get' => $duration_expose_get,
-            'expose' => $duration_expose,
-            'data' => $duration_data,
-        ];
+        if($start){
+            if([property_exists($record, '#duration')]){
+                $record->{'#duration'} = Core::object_merge(
+                    $record->{'#duration'},
+                    (object) [
+                        'start' => $start,
+                        'from_cache' => $duration_from_cache,
+                        'expose_get' => $duration_expose_get,
+                        'expose' => $duration_expose,
+                        'data' => $duration_data,
+                    ]
+                );
+            } else {
+                $record->{'#duration'} = (object) [
+                    'start' => $start,
+                    'from_cache' => $duration_from_cache,
+                    'expose_get' => $duration_expose_get,
+                    'expose' => $duration_expose,
+                    'data' => $duration_data,
+                ];
+            }
+        }
         return $record;
     }
 
@@ -1082,7 +1109,12 @@ trait Index {
                                                                                 $partition_nr,
                                                                                 $chunk,
                                                                             ) {
-                                                                                $start = microtime(true);
+                                                                                if(
+                                                                                    array_key_exists('duration', $options) &&
+                                                                                    $options['duration'] === true
+                                                                                ){
+                                                                                    $start = microtime(true);
+                                                                                }
                                                                                 $url_store = $object->config('ramdisk.url') .
                                                                                     $object->config(Config::POSIX_ID) .
                                                                                     $object->config('ds') .
@@ -1128,17 +1160,33 @@ trait Index {
                                                                                     $before = microtime(true);
                                                                                     $duration_before = $before - $start;
                                                                                     $record_where = $this->where($record, $options['where'], $options);
-                                                                                    $after = microtime(true);
-                                                                                    $duration_where = $after - $before;
+                                                                                    if($start){
+                                                                                        $after = microtime(true);
+                                                                                        $duration_where = $after - $before;
+                                                                                    }
                                                                                     if ($record_where) {
                                                                                         $record = $this->index_record_expose($name, $role, $record, $options);
-                                                                                        $expose = microtime(true);
-                                                                                        $record->duration = (object) [
-                                                                                            'start' => $start,
-                                                                                            'before' => $duration_before * 1000,
-                                                                                            'where' => $duration_where * 1000,
-                                                                                            'expose' => ($expose - $after) * 1000
-                                                                                        ];
+                                                                                        if($start){
+                                                                                            $expose = microtime(true);
+                                                                                            if([property_exists($record, '#duration')]){
+                                                                                                $record->{'#duration'} = Core::object_merge(
+                                                                                                    $record->{'#duration'},
+                                                                                                    (object) [
+                                                                                                        'start' => $start,
+                                                                                                        'before' => $duration_before * 1000,
+                                                                                                        'where' => $duration_where * 1000,
+                                                                                                        'expose' => ($expose - $after) * 1000
+                                                                                                    ]
+                                                                                                );
+                                                                                            } else {
+                                                                                                $record->{'#duration'} = (object) [
+                                                                                                    'start' => $start,
+                                                                                                    'before' => $duration_before * 1000,
+                                                                                                    'where' => $duration_where * 1000,
+                                                                                                    'expose' => ($expose - $after) * 1000
+                                                                                                ];
+                                                                                            }
+                                                                                        }
                                                                                         $thread[$i] = $record;
                                                                                     } else {
                                                                                         break;
