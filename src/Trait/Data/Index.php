@@ -1081,8 +1081,7 @@ trait Index {
                                                                             */
 //                                                                            $object->config('node.record.leftsearch', $i);
                                                                         }
-                                                                        ddd($options);
-                                                                        $partition = Core::array_partition($left, $options['thread']);
+                                                                        $partition = Core::array_partition($left, $options['thread'] ?? 8);
                                                                         foreach($partition as $partition_nr => $chunk) {
                                                                             $closures[] = function () use (
                                                                                 $object,
@@ -1117,7 +1116,7 @@ trait Index {
                                                                         $list = Parallel::new()->execute($closures);
                                                                         foreach($list as $nr => $record){
                                                                             if(!$record){
-                                                                                break 2;
+                                                                                continue;
                                                                             }
                                                                             $result[] = $record;
                                                                         }
