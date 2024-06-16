@@ -1050,8 +1050,8 @@ trait Index {
                                                                 $leftSearch--;
                                                                 while ($leftSearch >= $options['index']['min']) {
                                                                     if($options['parallel'] === true){
-                                                                        $closures = [];
                                                                         $left = [];
+                                                                        $closures = [];
                                                                         for($i = $leftSearch; $i >= $options['index']['min']; $i--) {
                                                                             $left[] = $i;
                                                                             /*
@@ -1082,9 +1082,39 @@ trait Index {
 //                                                                            $object->config('node.record.leftsearch', $i);
                                                                         }
                                                                         $chunks = array_chunk($left, $options['thread'] ?? 8);
-                                                                        ddd($chunks);
                                                                         $result = [];
-                                                                        foreach($chunks as $chunk_nr => $chunk){
+                                                                        foreach($chunks as $chunk_nr => $chunk) {
+                                                                            $closures[] = function () use (
+                                                                                $object,
+                                                                                $options,
+                                                                                $file,
+                                                                                $chunk
+                                                                            ) {
+                                                                                $thread = [];
+                                                                                foreach ($chunk as $nr => $i) {
+                                                                                    $record = (object)[];
+                                                                                    foreach ($options['index']['where'] as $nr => $attribute) {
+                                                                                        $file[$nr]->seek($i);
+                                                                                        $line = $file[$nr]->current();
+                                                                                        $value = rtrim($line, PHP_EOL);
+                                                                                        $record->{$attribute} = $value;
+                                                                                    }
+                                                                                    $file['uuid']->seek($i);
+                                                                                    $line = $file['uuid']->current();
+                                                                                    $value = rtrim($line, PHP_EOL);
+                                                                                    $record->uuid = $value;
+                                                                                    $record_where = $this->where($record, $options['where'], $options);
+                                                                                    if ($record_where) {
+                                                                                        $thread[$i] = $record->uuid;
+                                                                                    } else {
+                                                                                        $thread[$i] = false;
+                                                                                    }
+                                                                                }
+                                                                                return $thread;
+                                                                            };
+                                                                        }
+                                                                        ddd(count($closures));
+                                                                        /*
                                                                             $list = Parallel::new()->execute($chunk);
                                                                             foreach($list as $nr => $record){
                                                                                 if(!$record){
@@ -1093,7 +1123,10 @@ trait Index {
                                                                                 $result[] = $record;
                                                                             }
                                                                         }
+                                                                        ddd($result);
                                                                         return $result;
+                                                                        */
+                                                                        return false;
                                                                     } else {
                                                                         foreach ($options['index']['where'] as $nr => $attribute){
                                                                             $file[$nr]->seek($leftSearch);
