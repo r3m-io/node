@@ -1066,7 +1066,7 @@ trait Index {
                                                                                 $partition_nr,
                                                                                 $chunk
                                                                             ) {
-                                                                                $url = $object->config('ramdisk.url') .
+                                                                                $url_store = $object->config('ramdisk.url') .
                                                                                     $object->config(Config::POSIX_ID) .
                                                                                     $object->config('ds') .
                                                                                     'Node' .
@@ -1123,8 +1123,8 @@ trait Index {
                                                                                         ];
                                                                                     }
                                                                                 }
-                                                                                File::write($url, Core::object($thread, Core::OBJECT_JSON));
-                                                                                return $url;
+                                                                                File::write($url_store, Core::object($thread, Core::OBJECT_JSON));
+                                                                                return $url_store;
                                                                             };
                                                                         }
                                                                         $result = [];
