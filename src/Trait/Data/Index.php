@@ -1084,7 +1084,7 @@ trait Index {
                                                                                     Core::uuid() .
                                                                                     $object->config('extension.json')
                                                                                 ;
-                                                                                $file = [];
+//                                                                                $file = [];
                                                                                 if(!array_key_exists('url_uuid', $options['index'])){
                                                                                     return false;
                                                                                 }
