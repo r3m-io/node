@@ -1057,14 +1057,12 @@ trait Index {
                                                                         }
                                                                         $partition = Core::array_partition($left, $options['thread'] ?? 8);
                                                                         d($options['index']);
-                                                                        ddd($file);
                                                                         foreach($partition as $partition_nr => $chunk) {
                                                                             $closures[] = function () use (
                                                                                 $object,
                                                                                 $name,
                                                                                 $role,
                                                                                 $options,
-                                                                                $file,
                                                                                 $partition_nr,
                                                                                 $chunk
                                                                             ) {
@@ -1084,6 +1082,17 @@ trait Index {
                                                                                     Core::uuid() .
                                                                                     $object->config('extension.json')
                                                                                 ;
+                                                                                $file = [];
+                                                                                if(!array_key_exists('url_uuid', $options['index'])){
+                                                                                    return false;
+                                                                                }
+                                                                                if(!File::exist($options['index']['url_uuid'])){
+                                                                                    return false;
+                                                                                }
+                                                                                $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
+                                                                                foreach($options['index']['url'] as $nr => $url){
+                                                                                    $file[$nr] = new SplFileObject($url);
+                                                                                }
                                                                                 $thread = [];
                                                                                 foreach ($chunk as $chunk_nr => $i) {
                                                                                     $record = (object)[];
