@@ -1121,7 +1121,7 @@ trait Index {
                                                                             if($data){
                                                                                 foreach($data->data() as $key => $record){
                                                                                     if(is_object($record)){
-                                                                                        if($record->error){
+                                                                                        if(property_exists($record,'error')){
                                                                                             ddd($record);
                                                                                         }
                                                                                         $result[] = $record;
