@@ -1111,14 +1111,14 @@ trait Index {
                                                                                     $record->uuid = $value;
                                                                                     $duration_before = (microtime(true) - $start) * 1000;
                                                                                     $record_where = $this->where($record, $options['where'], $options);
-                                                                                    $duration_where = (microtime(true) - $start) * 1000;
+                                                                                    $duration_where = (microtime(true) - $duration_before) * 1000;
                                                                                     if ($record_where) {
                                                                                         $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                         $record->duration = (object) [
                                                                                             'start' => $start,
                                                                                             'before' => $duration_before,
                                                                                             'where' => $duration_where,
-                                                                                            'expose' => (microtime(true) - $start) * 1000
+                                                                                            'expose' => (microtime(true) - $duration_where) * 1000
                                                                                         ];
                                                                                         $thread[$i] = $record;
                                                                                     } else {
