@@ -1108,6 +1108,7 @@ trait Index {
                                                                                             'where' => $options['where'],
                                                                                             'i' => $i,
                                                                                             'partition' =>$partition_nr,
+                                                                                            'values' => $values,
                                                                                             'error' => true
                                                                                         ];
                                                                                     }
