@@ -1081,6 +1081,8 @@ trait Index {
                                                                             */
 //                                                                            $object->config('node.record.leftsearch', $i);
                                                                         }
+                                                                        ddd($left);
+
                                                                         $chunks = array_chunk($left, $options['thread'] ?? 8);
                                                                         $result = [];
                                                                         foreach($chunks as $chunk_nr => $chunk) {
