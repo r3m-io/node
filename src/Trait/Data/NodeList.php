@@ -226,6 +226,7 @@ trait NodeList {
                             if($rec === false){
                                 break;
                             }
+                            ddd($rec);
                             $rec = $this->index_record_expose($class, $role, $rec, $local_options);
                             if(
                                 !in_array(

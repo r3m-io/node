@@ -1122,7 +1122,6 @@ trait Index {
                                                                                 $result[] = $record;
                                                                             }
                                                                         }
-                                                                        ddd($result);
                                                                         return $result;
                                                                     } else {
                                                                         foreach ($options['index']['where'] as $nr => $attribute){
