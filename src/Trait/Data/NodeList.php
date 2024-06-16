@@ -224,7 +224,7 @@ trait NodeList {
                     if(is_array($record)){
                         foreach($record as $rec){
                             if($rec === false){
-                                break;
+                                ddd($record);
                             }
                             //index_record_expose is handled in the separate thread
                             if(
