@@ -34,6 +34,9 @@ trait NodeList {
      */
     public function list($class, $role, $options=[]): array
     {
+        $mtime = false;
+        $name = Controller::name($class);
+        $options = Core::object($options, Core::OBJECT_ARRAY);
         $start = false;
         if(
             array_key_exists('duration', $options) &&
@@ -41,10 +44,6 @@ trait NodeList {
         ){
             $start = microtime(true);
         }
-
-        $mtime = false;
-        $name = Controller::name($class);
-        $options = Core::object($options, Core::OBJECT_ARRAY);
 //        d($options);
 //        d($name);
         $object = $this->object();
