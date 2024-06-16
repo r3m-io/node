@@ -1112,20 +1112,16 @@ trait Index {
                                                                                 return $thread;
                                                                             };
                                                                         }
-                                                                        ddd(count($closures));
-                                                                        /*
-                                                                            $list = Parallel::new()->execute($chunk);
-                                                                            foreach($list as $nr => $record){
-                                                                                if(!$record){
-                                                                                    break 2;
-                                                                                }
-                                                                                $result[] = $record;
+                                                                        $result = [];
+                                                                        $list = Parallel::new()->execute($closures);
+                                                                        foreach($list as $nr => $record){
+                                                                            if(!$record){
+                                                                                break 2;
                                                                             }
+                                                                            $result[] = $record;
                                                                         }
                                                                         ddd($result);
                                                                         return $result;
-                                                                        */
-                                                                        return false;
                                                                     } else {
                                                                         foreach ($options['index']['where'] as $nr => $attribute){
                                                                             $file[$nr]->seek($leftSearch);
