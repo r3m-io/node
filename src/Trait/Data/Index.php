@@ -1146,6 +1146,9 @@ trait Index {
                                                                                 }
                                                                                 $thread = [];
                                                                                 foreach ($chunk as $chunk_nr => $i) {
+                                                                                    if($start){
+                                                                                        $init = microtime(true);
+                                                                                    }
                                                                                     $record = (object)[];
                                                                                     $values = [];
                                                                                     foreach ($options['index']['where'] as $nr => $attribute) {
@@ -1180,7 +1183,7 @@ trait Index {
                                                                                                         'wait' => $duration_before * 1000,
                                                                                                         'where' => $duration_where * 1000,
                                                                                                         'expose' => ($expose - $after) * 1000,
-                                                                                                        'total' => ($expose - $start) * 1000
+                                                                                                        'total' => ($expose - $init) * 1000
                                                                                                     ]
                                                                                                 );
                                                                                             } else {
@@ -1189,7 +1192,7 @@ trait Index {
                                                                                                     'wait' => $duration_before * 1000,
                                                                                                     'where' => $duration_where * 1000,
                                                                                                     'expose' => ($expose - $after) * 1000,
-                                                                                                    'total' => ($expose - $start) * 1000
+                                                                                                    'total' => ($expose - $init) * 1000
                                                                                                 ];
                                                                                             }
                                                                                         }
