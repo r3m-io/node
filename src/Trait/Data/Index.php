@@ -1114,6 +1114,7 @@ trait Index {
                                                                                         $thread[$i] = $record;
                                                                                     } else {
                                                                                         $thread[$i] = false;
+                                                                                        break;
                                                                                     }
                                                                                 }
                                                                                 File::write($url_store, Core::object($thread, Core::OBJECT_JSON));
