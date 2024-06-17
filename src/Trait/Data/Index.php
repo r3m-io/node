@@ -1328,7 +1328,6 @@ trait Index {
                                                                                 }
                                                                                 if(!empty($thread)){
                                                                                     $thread = $this->index_list_expose($name, $role, $thread, $options);
-                                                                                    ddd($thread);
                                                                                     File::write($url_store, Core::object($thread, Core::OBJECT_JSON));
                                                                                     return $url_store;
                                                                                 }
