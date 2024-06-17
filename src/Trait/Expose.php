@@ -432,7 +432,12 @@ trait Expose {
             }
         }
         if($is_expose === false){
-            throw new Exception('No permission found for ' . str_replace('.', ':', Controller::name($class)) . ':' . str_replace('_', '.', $function));
+            throw new Exception(
+                'No permission found for ' .
+                str_replace('.', ':', Controller::name($class)) .
+                ':' .
+                str_replace('_', '.', $function)
+            );
         }
         return $nodeList;
     }
