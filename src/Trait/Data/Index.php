@@ -1332,7 +1332,6 @@ trait Index {
                                                                         }
                                                                         $result = [];
                                                                         $list = Parallel::new()->execute($closures);
-                                                                        ddd($list);
                                                                         foreach($list as $chunk_nr => $data_url){
                                                                             if($data_url === false){
                                                                                 continue;
