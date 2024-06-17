@@ -20,6 +20,11 @@ use R3m\Io\Exception\AuthorizationException;
 
 trait Expose {
 
+    /**
+     * @throws AuthorizationException
+     * @throws ObjectException
+     * @throws Exception
+     */
     public function expose($node, $expose=[], $class='', $function='', $internalRole=false, $parentRole=false): Storage
     {
         $list = [$node];
