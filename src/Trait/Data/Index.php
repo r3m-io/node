@@ -124,6 +124,107 @@ trait Index {
         return $record;
     }
 
+    /**
+     * @throws AuthorizationException
+     * @throws ObjectException
+     * @throws Exception
+     */
+    private function index_list_expose($class, $role, $nodeList, $options): mixed
+    {
+        $start = false;
+        if(
+            array_key_exists('duration', $options) &&
+            $options['duration'] === true
+        ){
+            $start = microtime(true);
+        }
+        $object = $this->object();
+        $name = Controller::name($class);
+        $dir_data = $object->config('project.dir.node') .
+            'Data' .
+            $object->config('ds')
+        ;
+        $url_data = $dir_data . $name . $object->config('extension.json');
+        $url_mtime = File::mtime($url_data);
+        $cache = $object->data(App::CACHE);
+        $data = $cache->get(sha1($url_data) . '_index');
+
+        ddd($nodeList);
+
+        if (
+            is_object($data) &&
+            property_exists($data, $record->uuid)
+        ) {
+            $record = $data->{$record->uuid};
+        } elseif (
+            is_array($data) &&
+            array_key_exists($record->uuid, $data)
+        ) {
+            $record = $data[$record->uuid];
+        }
+        if($start){
+            $after_cache = microtime(true);
+            $duration_from_cache = ($after_cache - $start) * 1000;
+        }
+        if(!property_exists($record, '#class')){
+            return false;
+        }
+        $expose = $this->expose_get(
+            $object,
+            $record->{'#class'},
+            $record->{'#class'} . '.' . $options['function'] . '.output'
+        );
+        if($start){
+            $after_expose_get = microtime(true);
+            $duration_expose_get = ($after_expose_get - $after_cache) * 1000;
+        }
+        $node = new Storage($record);
+        $node = $this->expose(
+            $node,
+            $expose,
+            $record->{'#class'},
+            $options['function'],
+            $role
+        );
+        if($start){
+            $after_expose = microtime(true);
+            $duration_expose = ($after_expose - $after_expose_get) * 1000;
+        }
+        $record = $node->data();
+        if($start){
+            $after_data = microtime(true);
+            $duration_data = ($after_data - $after_expose) * 1000;
+        }
+        if ($options['relation'] === true) {
+            ddd('need object_data from cache?');
+//                                                $record = $this->relation($record, $object_data, $role, $options);
+            //collect relation mtime
+        }
+        if($start){
+            if(property_exists($record, '#duration')){
+                $record->{'#duration'} = Core::object_merge(
+                    $record->{'#duration'},
+                    (object) [
+                        'start' => $start,
+                        'from_cache' => $duration_from_cache,
+                        'expose_get' => $duration_expose_get,
+                        'expose' => $duration_expose,
+                        'data' => $duration_data,
+                    ]
+                );
+            } else {
+                $record->{'#duration'} = (object) [
+                    'start' => $start,
+                    'from_cache' => $duration_from_cache,
+                    'expose_get' => $duration_expose_get,
+                    'expose_function' => $duration_expose,
+                    'data' => $duration_data,
+                ];
+            }
+        }
+        return $record;
+    }
+
     private function list_index($class, $role, $options=[]): bool | array
     {
         $object = $this->object();
@@ -1202,6 +1303,7 @@ trait Index {
                                                                                     }
                                                                                 }
                                                                                 if(!empty($thread)){
+                                                                                    $thread = $this->index_list_expose($name, $role, $thread, $options);
                                                                                     File::write($url_store, Core::object($thread, Core::OBJECT_JSON));
                                                                                     return $url_store;
                                                                                 }
