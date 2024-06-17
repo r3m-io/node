@@ -157,25 +157,17 @@ trait Index {
                 is_object($data) &&
                 property_exists($data, $record->uuid)
             ) {
-                $nodeList[$nr] = $data->{$record->uuid};
+                $nodeList[$nr] = new Storage($data->{$record->uuid});
             } elseif (
                 is_array($data) &&
                 array_key_exists($record->uuid, $data)
             ) {
-                $nodeList[$nr] = $data[$record->uuid];
+                $nodeList[$nr] = new Storage($data[$record->uuid]);
             }
         }
-
-
-        ddd($nodeList);
-
-
         if($start){
             $after_cache = microtime(true);
             $duration_from_cache = ($after_cache - $start) * 1000;
-        }
-        if(!property_exists($record, '#class')){
-            return false;
         }
         $expose = $this->expose_get(
             $object,
@@ -186,6 +178,17 @@ trait Index {
             $after_expose_get = microtime(true);
             $duration_expose_get = ($after_expose_get - $after_cache) * 1000;
         }
+        foreach($nodeList as $nr => $record){
+            $nodeList[$nr] = $record->data();
+        }
+        return $nodeList;
+
+
+        /*
+        if(!property_exists($record, '#class')){
+            return false;
+        }
+
         $node = new Storage($record);
         $node = $this->expose(
             $node,
@@ -231,6 +234,7 @@ trait Index {
             }
         }
         return $record;
+        */
     }
 
     private function list_index($class, $role, $options=[]): bool | array
