@@ -1003,30 +1003,27 @@ trait NodeList {
                     $limit === '*'
                 ){
                     $list_count = 0;
-                    d($options_limit);
-                    if($options_limit !== '*'){
-                        $max = $options_limit;
-                    } else {
-                        $max = null;
-                    }
                     foreach($list_sort as $index => $record){
                         if(is_object($record)){
                             $record->{'#index'} = $list_count;
                         }
                         $list_count++;
                     }
-                    if($options_limit !== '*'){
-                        ddd($options);
+                    if($options['limit'] !== '*'){
+                        $list_sort = Limit::list($list_sort)->with([
+                            'page' => $options['page'],
+                            'limit' => $options['limit']
+                        ]);
+                        ddd($list_sort);
                     }
-
 
                     if(array_key_exists('view', $options)){
                         d($list_sort);
                     }
                     $result = [];
-                    $result['page'] = 1;
-                    $result['limit'] = $list_count;
-                    $result['count'] = $list_count;
+                    $result['page'] = $options['page'] ?? 1;
+                    $result['limit'] = $options['limit'] ?? $limit;
+                    $result['count'] = count($list_sort);
                     $result['max'] = $max;
                     $result['list'] = $this->nodelist_output_filter($object, $list_sort, $options);
                     $result['sort'] = $options['sort'] ?? [];
