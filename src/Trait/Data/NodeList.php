@@ -689,7 +689,7 @@ trait NodeList {
                                     $name . '.' . $options['function'] . '.output'
                                 );
                             }
-                            $chunk = $this->expose(
+                            $chunk = $this->expose_list(
                                 $chunk,
                                 $expose,
                                 $name,
