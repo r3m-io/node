@@ -1172,7 +1172,7 @@ trait Index {
                                                                                     if ($record_where) {
                                                                                         //make the list expose & not the record, should be faster
                                                                                         //but less safe ?
-                                                                                        $record = $this->index_record_expose($name, $role, $record, $options);
+//                                                                                        $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                         if($start){
                                                                                             $expose = microtime(true);
                                                                                             if(property_exists($record, '#duration')){
