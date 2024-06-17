@@ -171,13 +171,20 @@ trait Index {
         }
         $expose = $this->expose_get(
             $object,
-            $record->{'#class'},
-            $record->{'#class'} . '.' . $options['function'] . '.output'
+            $name,
+            $name . '.' . $options['function'] . '.output'
         );
         if($start){
             $after_expose_get = microtime(true);
             $duration_expose_get = ($after_expose_get - $after_cache) * 1000;
         }
+        $nodeList = $this->expose_list(
+            $nodeList,
+            $expose,
+            $name,
+            $options['function'],
+            $role
+        );
         foreach($nodeList as $nr => $record){
             $nodeList[$nr] = $record->data();
         }
