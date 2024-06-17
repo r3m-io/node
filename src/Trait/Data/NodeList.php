@@ -245,15 +245,6 @@ trait NodeList {
                 while($record !== false){
                     if(is_array($record)){
                         foreach($record as $rec){
-                            if($rec === false){
-                                ddd($record);
-                            }
-                            if(is_string($rec)){
-                                ddd($rec);
-                            }
-                            if(is_array($rec)){
-                                ddd($rec);
-                            }
                             //index_record_expose is handled in the separate thread
                             if(
                                 $rec &&
@@ -656,6 +647,7 @@ trait NodeList {
                                     is_object($record) &&
                                     property_exists($record, '#class')
                                 ) {
+                                    /*
                                     if (!$expose) {
                                         $expose = $this->expose_get(
                                             $object,
@@ -672,6 +664,7 @@ trait NodeList {
                                         $role
                                     );
                                     $record = $node->data();
+                                    */
                                     if ($has_relation) {
                                         $record = $this->relation($record, $object_data, $role, $options);
                                         //collect relation mtime
@@ -689,6 +682,7 @@ trait NodeList {
                                     $chunk[$i] = $record;
                                 }
                             }
+                            ddd($chunk);
                             if(
                                 $ramdisk_dir_parallel &&
                                 $ramdisk_dir_parallel_name
