@@ -640,6 +640,25 @@ trait NodeList {
                             //we have valid cache of the chunk.
                             $read = $object->data_read($chunk_url);
                             $chunk = $read->data();
+                            /* below not needed, is done in the parallel closure
+                            if (!$expose) {
+                                $expose = $this->expose_get(
+                                    $object,
+                                    $name,
+                                    $name . '.' . $options['function'] . '.output'
+                                );
+                            }
+                            $chunk = $this->expose_list(
+                                $chunk,
+                                $expose,
+                                $name,
+                                $options['function'],
+                                $role
+                            );
+                            foreach($chunk as $i => $record){
+                                $chunk[$i] = $record->data();
+                            }
+                            */
                         } else {
                             for ($i = 0; $i < $forks; $i++) {
                                 $record = $chunk[$i];
@@ -807,6 +826,7 @@ trait NodeList {
                                         $view_data = $object->data_read($view_url, sha1($view_url));
                                         if($view_data){
                                             $record = $view_data->data();
+                                            /*
                                             if (!$expose) {
                                                 $expose = $this->expose_get(
                                                     $object,
@@ -823,6 +843,7 @@ trait NodeList {
                                                 $role
                                             );
                                             $record = $node->data();
+                                            */
                                             if ($has_relation) {
                                                 $record = $this->relation($record, $object_data, $role, $options);
                                                 //collect relation mtime
@@ -835,6 +856,25 @@ trait NodeList {
                         }
                     }
                     $list = $result;
+                    /* not needed, is done in the parallel closure
+                    if (!$expose) {
+                        $expose = $this->expose_get(
+                            $object,
+                            $name,
+                            $name . '.' . $options['function'] . '.output'
+                        );
+                    }
+                    $list = $this->expose_list(
+                        $list,
+                        $expose,
+                        $name,
+                        $options['function'],
+                        $role
+                    );
+                    foreach($list as $i => $record){
+                        $list[$i] = $record->data();
+                    }
+                    */
                     if(
                         !empty($options['sort']) &&
                         is_array($options['sort'])
@@ -856,6 +896,7 @@ trait NodeList {
                             is_object($record) &&
                             property_exists($record, '#class')
                         ){
+                            /*
                             if(!$expose){
                                 $expose = $this->expose_get(
                                     $object,
@@ -872,6 +913,7 @@ trait NodeList {
                                 $role
                             );
                             $record = $node->data();
+                            */
                             if($has_relation){
                                 $record = $this->relation($record, $object_data, $role, $options);
                                 //collect relation mtime
@@ -909,6 +951,7 @@ trait NodeList {
                             }
                             elseif(is_array($options['key'])) {
                                 $key = [];
+                                $node = new Storage($record);
                                 foreach($options['key'] as $attribute){
                                     $value = $node->get($attribute);
                                     if(is_scalar($value) || $value === null){
