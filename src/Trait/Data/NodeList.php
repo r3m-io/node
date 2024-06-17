@@ -679,9 +679,26 @@ trait NodeList {
                                         $record = $parse->compile($record, $object->data(), $parse->storage());
                                         $chunks[$chunk_nr][$i] = $record;
                                     }
-                                    $chunk[$i] = $record;
+                                    $chunk[$i] = new Storage($record);
                                 }
                             }
+                            if (!$expose) {
+                                $expose = $this->expose_get(
+                                    $object,
+                                    $name,
+                                    $name . '.' . $options['function'] . '.output'
+                                );
+                            }
+                            $chunk = $this->expose(
+                                $chunk,
+                                $expose,
+                                $name,
+                                $options['function'],
+                                $role
+                            );
+                            ddd($chunk);
+
+
                             ddd($chunk);
                             if(
                                 $ramdisk_dir_parallel &&
