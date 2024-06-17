@@ -131,6 +131,7 @@ trait Index {
      */
     private function index_list_expose($class, $role, $nodeList, $options): mixed
     {
+        ddd('yes');
         $start = false;
         if(
             array_key_exists('duration', $options) &&
