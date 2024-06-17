@@ -1017,7 +1017,7 @@ trait NodeList {
                     }
 
                     if(array_key_exists('view', $options)){
-                        d($list_sort);
+//                        d($list_sort);
                     }
                     $result = [];
                     $result['page'] = $options['page'] ?? 1;
