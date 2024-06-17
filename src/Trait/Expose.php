@@ -431,6 +431,7 @@ trait Expose {
                 }
             }
         }
+        ddd($is_expose);
         ddd($nodeList);
         if($is_expose === false){
             throw new Exception(
