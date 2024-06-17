@@ -185,6 +185,7 @@ trait Index {
             $options['function'],
             $role
         );
+        ddd($nodeList);
         foreach($nodeList as $nr => $record){
             $nodeList[$nr] = $record->data();
         }
