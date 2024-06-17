@@ -344,61 +344,6 @@ trait NodeList {
             }
             return $result;
         }
-
-
-        /*
-        if(
-            $options['index'] !== false &&
-            $options['index'] !== 'create' &&
-            array_key_exists('url', $options['index']) &&
-            array_key_exists('count', $options['index']) &&
-            array_key_exists('filter', $options['index']) &&
-            array_key_exists('is_uuid', $options['index'])
-        ){
-            $is_filter = false;
-            if (
-                !empty(
-                $options['filter']) &&
-                is_array($options['filter'])
-            ) {
-                $is_filter = true;
-            }
-            $options['mtime'] = $mtime;
-            $options['set']['index'] = 0;
-            $result = $this->list_index($class, $role, $options);
-            if (
-                $options['limit'] === 1 &&
-                $options['page'] === 1 &&
-                $result === false
-            ) {
-                $list = [];
-                $result = [];
-                $result['page'] = $options['page'];
-                $result['limit'] = $options['limit'];
-                $result['count'] = 0;
-                $result['max'] = $options['index']['count'];
-                $result['list'] = $list;
-                $result['sort'] = $options['sort'] ?? [];
-                if (!empty($options['filter'])) {
-                    $result['filter'] = $options['filter'];
-                }
-                if (!empty($options['where'])) {
-                    $result['where'] = $options['where'];
-                }
-                $result['relation'] = $options['relation'];
-                $result['parse'] = $options['parse'];
-                $result['pre-compile'] = $options['pre-compile'] ?? false;
-                $result['ramdisk'] = $options['ramdisk'] ?? false;
-                $result['mtime'] = $mtime;
-                $result['transaction'] = $options['transaction'] ?? false;
-                $result['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
-                return $result;
-            }
-            elseif($result){
-                return $result;
-            }
-        }
-        */
         $ramdisk_dir = false;
         $ramdisk_dir_node = false;
         $ramdisk_dir_list = false;
