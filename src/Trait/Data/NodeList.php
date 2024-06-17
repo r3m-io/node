@@ -696,10 +696,9 @@ trait NodeList {
                                 $options['function'],
                                 $role
                             );
-                            ddd($chunk);
-
-
-                            ddd($chunk);
+                            foreach($chunk as $i => $record){
+                                $chunk[$i] = $record->data();
+                            }
                             if(
                                 $ramdisk_dir_parallel &&
                                 $ramdisk_dir_parallel_name
