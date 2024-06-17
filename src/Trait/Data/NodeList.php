@@ -1004,11 +1004,20 @@ trait NodeList {
                 ){
                     $list_count = 0;
                     d($options_limit);
+                    if($options_limit !== '*'){
+                        $max = $options_limit;
+                    } else {
+                        $max = null;
+                    }
                     foreach($list_sort as $index => $record){
                         if(is_object($record)){
                             $record->{'#index'} = $list_count;
                         }
                         $list_count++;
+                        if($max  && $list_count >= $max){
+                            break;
+                        }
+
                     }
                     if(array_key_exists('view', $options)){
                         d($list_sort);
