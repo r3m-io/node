@@ -260,20 +260,6 @@ trait Expose {
         $is_expose = false;
         foreach ($roles as $role) {
             if (
-                property_exists($role, 'uuid') &&
-                property_exists($role, 'name') &&
-                $role->name === 'ROLE_SYSTEM' &&
-                !property_exists($role, 'permission')
-            ) {
-                $permission = [];
-                $permission['uuid'] = Core::uuid();
-                $permission['name'] = str_replace('.', ':', Controller::name($class)) . '.' . str_replace('_', '.', $function);
-                $permission['property'] = [];
-                $permission['role'] = $role->uuid;
-                $role->permission = [];
-                $role->permission[] = (object) $permission;
-            }
-            if (
                 property_exists($role, 'name') &&
                 property_exists($role, 'permission') &&
                 is_array($role->permission)
