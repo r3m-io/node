@@ -232,11 +232,11 @@ trait Expose {
      * @throws Exception
      * @throws AuthorizationException
      */
-    public function expose_list($nodeList, $expose=[], $class='', $function='', $internalRole=false, $parentRole=false): Storage
+    public function expose_list($nodeList, $expose=[], $class='', $function='', $internalRole=false, $parentRole=false): mixed
     {
         $object = $this->object();
         if (!is_array($expose)) {
-            return new Storage();
+            return [];
         }
         $roles = [];
         if ($internalRole) {
