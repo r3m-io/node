@@ -1014,7 +1014,6 @@ trait NodeList {
                             'page' => $options['page'],
                             'limit' => $options['limit']
                         ]);
-                        ddd($list_sort);
                     }
 
                     if(array_key_exists('view', $options)){
