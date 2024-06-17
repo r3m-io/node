@@ -257,7 +257,6 @@ trait Expose {
         if (empty($roles)) {
             throw new Exception('Roles failed...');
         }
-        $record = [];
         $is_expose = false;
         foreach ($roles as $role) {
             if (
@@ -303,59 +302,97 @@ trait Expose {
                             )
                         ) {
                             $is_expose = true;
-                            ddd($action);
-                            if (
-                                property_exists($action, 'property') &&
-                                is_array($action->property)
-                            ) {
-                                foreach ($action->property as $property) {
-                                    $is_optional = false;
-                                    if(substr($property, 0, 1) === '?'){
-                                        $is_optional = true;
-                                        $property = substr($property, 1);
-                                    }
-                                    $assertion = $property;
-                                    $explode = explode(':', $property, 2);
-                                    $compare = null;
-                                    if (array_key_exists(1, $explode)) {
-                                        $record_property = $node->get($explode[0]);
-                                        $compare = $explode[1];
-                                        $attribute = $explode[0];
-                                        if ($compare) {
-                                            $parse = new Parse($object, $object->data());
-                                            $compare = $parse->compile($compare, $object->data());
-                                            if ($record_property !== $compare) {
-                                                throw new Exception('Assertion failed: ' . $assertion . ' values [' . $record_property . ', ' . $compare . ']');
+
+                            foreach($nodeList as $node) {
+                                $record = [];
+                                if (
+                                    property_exists($action, 'property') &&
+                                    is_array($action->property)
+                                ) {
+                                    foreach ($action->property as $property) {
+                                        $is_optional = false;
+                                        if (substr($property, 0, 1) === '?') {
+                                            $is_optional = true;
+                                            $property = substr($property, 1);
+                                        }
+                                        $assertion = $property;
+                                        $explode = explode(':', $property, 2);
+                                        $compare = null;
+                                        if (array_key_exists(1, $explode)) {
+                                            $record_property = $node->get($explode[0]);
+                                            $compare = $explode[1];
+                                            $attribute = $explode[0];
+                                            if ($compare) {
+                                                $parse = new Parse($object, $object->data());
+                                                $compare = $parse->compile($compare, $object->data());
+                                                if ($record_property !== $compare) {
+                                                    throw new Exception('Assertion failed: ' . $assertion . ' values [' . $record_property . ', ' . $compare . ']');
+                                                }
                                             }
                                         }
-                                    }
-                                    if (
-                                        property_exists($action, 'object') &&
-                                        property_exists($action->object, $property) &&
-                                        property_exists($action->object->$property, 'output')
-                                    ) {
                                         if (
-                                            property_exists($action->object->$property, 'multiple') &&
-                                            $action->object->$property->multiple === true &&
-                                            $node->has($property)
+                                            property_exists($action, 'object') &&
+                                            property_exists($action->object, $property) &&
+                                            property_exists($action->object->$property, 'output')
                                         ) {
-                                            $array = $node->get($property);
+                                            if (
+                                                property_exists($action->object->$property, 'multiple') &&
+                                                $action->object->$property->multiple === true &&
+                                                $node->has($property)
+                                            ) {
+                                                $array = $node->get($property);
 
-                                            if(is_array($array) || is_object($array)){
-                                                $record[$property] = [];
-                                                foreach ($array as $child) {
+                                                if (is_array($array) || is_object($array)) {
+                                                    $record[$property] = [];
+                                                    foreach ($array as $child) {
+                                                        $child = new Storage($child);
+                                                        $child_expose = [];
+                                                        if (
+                                                            property_exists($action->object->$property, 'object')
+                                                        ) {
+                                                            $child_expose[] = (object)[
+                                                                'property' => $action->object->$property->output,
+                                                                'object' => $action->object->$property->object,
+                                                                'role' => $action->role,
+                                                            ];
+                                                        } else {
+                                                            $child_expose[] = (object)[
+                                                                'property' => $action->object->$property->output,
+                                                                'role' => $action->role,
+                                                            ];
+                                                        }
+                                                        $child = $this->expose(
+                                                            $child,
+                                                            $child_expose,
+                                                            $property,
+                                                            'child',
+                                                            $role,
+                                                            $action->role
+                                                        );
+                                                        $record[$property][] = $child->data();
+                                                    }
+                                                } else {
+                                                    //leave intact for read without parse
+                                                    $record[$property] = $array;
+                                                }
+                                            } elseif (
+                                                $node->has($property)
+                                            ) {
+                                                $child = $node->get($property);
+                                                if (!empty($child)) {
+                                                    $record[$property] = null;
                                                     $child = new Storage($child);
-                                                    $child_expose =[];
-                                                    if(
+                                                    $child_expose = [];
+                                                    if (
                                                         property_exists($action->object->$property, 'object')
-                                                    ){
-                                                        $child_expose[] = (object) [
+                                                    ) {
+                                                        $child_expose[] = (object)[
                                                             'property' => $action->object->$property->output,
                                                             'object' => $action->object->$property->object,
                                                             'role' => $action->role,
                                                         ];
-                                                    }  else {
-                                                        $child_expose[] = (object) [
+                                                    } else {
+                                                        $child_expose[] = (object)[
                                                             'property' => $action->object->$property->output,
                                                             'role' => $action->role,
                                                         ];
@@ -368,57 +405,23 @@ trait Expose {
                                                         $role,
                                                         $action->role
                                                     );
-                                                    $record[$property][] = $child->data();
+                                                    $record[$property] = $child->data();
                                                 }
-                                            } else {
-                                                //leave intact for read without parse
-                                                $record[$property] = $array;
-                                            }
-                                        } elseif (
-                                            $node->has($property)
-                                        ) {
-                                            $child = $node->get($property);
-                                            if (!empty($child)) {
-                                                $record[$property] = null;
-                                                $child = new Storage($child);
-                                                $child_expose =[];
-                                                if(
-                                                    property_exists($action->object->$property, 'object')
-                                                ){
-                                                    $child_expose[] = (object) [
-                                                        'property' => $action->object->$property->output,
-                                                        'object' => $action->object->$property->object,
-                                                        'role' => $action->role,
-                                                    ];
-                                                }  else {
-                                                    $child_expose[] = (object) [
-                                                        'property' => $action->object->$property->output,
-                                                        'role' => $action->role,
-                                                    ];
+                                                if (!array_key_exists($property, $record)) {
+                                                    $record[$property] = null;
                                                 }
-                                                $child = $this->expose(
-                                                    $child,
-                                                    $child_expose,
-                                                    $property,
-                                                    'child',
-                                                    $role,
-                                                    $action->role
-                                                );
-                                                $record[$property] = $child->data();
                                             }
-                                            if (!array_key_exists($property, $record)) {
-                                                $record[$property] = null;
+                                        } else {
+                                            if ($node->has($property)) {
+                                                $record[$property] = $node->get($property);
                                             }
-                                        }
-                                    } else {
-                                        if ($node->has($property)) {
-                                            $record[$property] = $node->get($property);
                                         }
                                     }
+                                    if (!empty($record)) {
+                                        break 3;
+                                    }
                                 }
-                                if(!empty($record)){
-                                    break 3;
-                                }
+                                ddd($record);
                             }
                         }
                     }
