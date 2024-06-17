@@ -1014,11 +1014,12 @@ trait NodeList {
                             $record->{'#index'} = $list_count;
                         }
                         $list_count++;
-                        if($max  && $list_count >= $max){
-                            break;
-                        }
-
                     }
+                    if($options_limit !== '*'){
+                        ddd($options);
+                    }
+
+
                     if(array_key_exists('view', $options)){
                         d($list_sort);
                     }
