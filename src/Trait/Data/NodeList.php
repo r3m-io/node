@@ -342,7 +342,6 @@ trait NodeList {
                 $result['#duration']->item_per_second = ($count / $result['#duration']->total) * 1000;
                 $result['#duration']->item_per_second_nodelist = ($count / $result['#duration']->nodelist) * 1000;
             }
-
             return $result;
         }
 
@@ -1034,15 +1033,6 @@ trait NodeList {
                     $result['ramdisk'] = $options['ramdisk'] ?? false;
                     $result['mtime'] = $mtime;
                     $result['transaction'] = $options['transaction'] ?? false;
-                    if($start){
-                        $result['#duration'] = (object) [
-                            'boot' => ($start - $object->config('time.start')) * 1000,
-                            'total' => (microtime(true) - $object->config('time.start')) * 1000,
-                            'nodelist' => (microtime(true) - $start) * 1000
-                        ];
-                        $result['#duration']->item_per_second = ($list_count / $result['#duration']->total) * 1000;
-                        $result['#duration']->item_per_second_nodelist = ($list_count / $result['#duration']->nodelist) * 1000;
-                    }
                     if(
                         array_key_exists('ramdisk', $options) &&
                         $options['ramdisk'] === true &&
@@ -1054,6 +1044,15 @@ trait NodeList {
                         $ramdisk->set('response', $result);
                         $ramdisk->set('relation', $relation_mtime);
                         $ramdisk->write($ramdisk_url_node);
+                    }
+                    if($start){
+                        $result['#duration'] = (object) [
+                            'boot' => ($start - $object->config('time.start')) * 1000,
+                            'total' => (microtime(true) - $object->config('time.start')) * 1000,
+                            'nodelist' => (microtime(true) - $start) * 1000
+                        ];
+                        $result['#duration']->item_per_second = ($list_count / $result['#duration']->total) * 1000;
+                        $result['#duration']->item_per_second_nodelist = ($list_count / $result['#duration']->nodelist) * 1000;
                     }
                     return $result;
                 }
@@ -1101,15 +1100,6 @@ trait NodeList {
                 $result['ramdisk'] = $options['ramdisk'] ?? false;
                 $result['mtime'] = $mtime;
                 $result['transaction'] = $options['transaction'] ?? false;
-                if($start){
-                    $result['#duration'] = (object) [
-                        'boot' => ($start - $object->config('time.start')) * 1000,
-                        'total' => (microtime(true) - $object->config('time.start')) * 1000,
-                        'nodelist' => (microtime(true) - $start) * 1000
-                    ];
-                    $result['#duration']->item_per_second = ($list_count / $result['#duration']->total) * 1000;
-                    $result['#duration']->item_per_second_nodelist = ($list_count / $result['#duration']->nodelist) * 1000;
-                }
                 if(
                     array_key_exists('ramdisk', $options) &&
                     $options['ramdisk'] === true &&
@@ -1138,6 +1128,15 @@ trait NodeList {
                             'ramdisk_url_node' => $ramdisk_url_node,
                         ]);
                     }
+                }
+                if($start){
+                    $result['#duration'] = (object) [
+                        'boot' => ($start - $object->config('time.start')) * 1000,
+                        'total' => (microtime(true) - $object->config('time.start')) * 1000,
+                        'nodelist' => (microtime(true) - $start) * 1000
+                    ];
+                    $result['#duration']->item_per_second = ($list_count / $result['#duration']->total) * 1000;
+                    $result['#duration']->item_per_second_nodelist = ($list_count / $result['#duration']->nodelist) * 1000;
                 }
                 return $result;
             }
