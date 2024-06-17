@@ -596,6 +596,7 @@ trait NodeList {
                     $is_where = true;
                 }
                 $limit = $options['limit'] ?? 4096;
+                $options_limit = $limit;
                 if ($options['parallel'] === true && Core::is_cli()) {
                     $threads = $options['thread'];
                     $chunks = array_chunk($list, ceil(count($list) / $threads));
@@ -888,7 +889,6 @@ trait NodeList {
                     } else {
                         $list_sort = $list;
                     }
-                    $options_limit = $limit;
                     $limit = '*'; //handler
                 } else {
                     $expose = false;
