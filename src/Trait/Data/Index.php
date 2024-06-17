@@ -131,7 +131,7 @@ trait Index {
      */
     private function index_list_expose($class, $role, $nodeList, $options): mixed
     {
-        ddd('yes');
+        d('yes1');
         $start = false;
         if(
             array_key_exists('duration', $options) &&
@@ -151,6 +151,7 @@ trait Index {
         $data = $cache->get(sha1($url_data) . '_index');
 
         if(!is_array($nodeList)){
+            d('yes2');
             return [];
         }
         foreach($nodeList as $nr => $record){
@@ -179,6 +180,7 @@ trait Index {
             $after_expose_get = microtime(true);
             $duration_expose_get = ($after_expose_get - $after_cache) * 1000;
         }
+        d('yes3');
         $nodeList = $this->expose_list(
             $nodeList,
             $expose,
@@ -186,7 +188,7 @@ trait Index {
             $options['function'],
             $role
         );
-        ddd($nodeList);
+        d('yes4');
         foreach($nodeList as $nr => $record){
             $nodeList[$nr] = $record->data();
         }
