@@ -303,7 +303,7 @@ trait Expose {
                         ) {
                             $is_expose = true;
 
-                            foreach($nodeList as $node) {
+                            foreach($nodeList as $nr => $node) {
                                 $record = [];
                                 if (
                                     property_exists($action, 'property') &&
@@ -423,22 +423,18 @@ trait Expose {
                                     }
                                     */
                                 }
-                                ddd($record);
+                                $nodeList[$nr] = new Storage((object) $record);
                             }
-                            break;
+                            break 3;
                         }
                     }
                 }
             }
         }
         if($is_expose === false){
-            if($role){
-                d($expose);
-                d(end($role->permission));
-            }
             throw new Exception('No permission found for ' . str_replace('.', ':', Controller::name($class)) . ':' . str_replace('_', '.', $function));
         }
-        return new Storage((object) $record);
+        return $nodeList;
     }
 
     /**
