@@ -24,7 +24,10 @@ trait Expose {
     {
         $list = [$node];
         $list = $this->expose_list($list, $expose, $class, $function, $internalRole, $parentRole);
-        if($list[0]){
+        if(
+            is_array($list) &&
+            array_key_exists(0, $list)
+        ){
             return $list[0];
         }
         return new Storage();
