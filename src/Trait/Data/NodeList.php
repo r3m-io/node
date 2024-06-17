@@ -888,6 +888,7 @@ trait NodeList {
                     } else {
                         $list_sort = $list;
                     }
+                    ddd($limit);
                     $limit = '*'; //handler
                 } else {
                     $expose = false;
