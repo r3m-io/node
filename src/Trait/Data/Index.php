@@ -188,6 +188,7 @@ trait Index {
         foreach($nodeList as $nr => $record){
             $nodeList[$nr] = $record->data();
         }
+        d($nodeList);
         return $nodeList;
 
 
