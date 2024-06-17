@@ -417,12 +417,15 @@ trait Expose {
                                             }
                                         }
                                     }
+                                    /*
                                     if (!empty($record)) {
                                         break 3;
                                     }
+                                    */
                                 }
                                 ddd($record);
                             }
+                            break;
                         }
                     }
                 }
