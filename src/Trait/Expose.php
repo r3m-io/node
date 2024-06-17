@@ -361,15 +361,17 @@ trait Expose {
                                                                 'role' => $action->role,
                                                             ];
                                                         }
-                                                        $child = $this->expose(
-                                                            $child,
+                                                        $child_list = $this->expose_list(
+                                                            [$child],
                                                             $child_expose,
                                                             $property,
                                                             'child',
                                                             $role,
                                                             $action->role
                                                         );
-                                                        $record[$property][] = $child->data();
+                                                        if (array_key_exists(0, $child_list)){
+                                                            $record[$property][] = $child_list[0]->data();
+                                                        }
                                                     }
                                                 } else {
                                                     //leave intact for read without parse
@@ -397,15 +399,17 @@ trait Expose {
                                                             'role' => $action->role,
                                                         ];
                                                     }
-                                                    $child = $this->expose(
-                                                        $child,
+                                                    $child_list = $this->expose_list(
+                                                        [$child],
                                                         $child_expose,
                                                         $property,
                                                         'child',
                                                         $role,
                                                         $action->role
                                                     );
-                                                    $record[$property] = $child->data();
+                                                    if(array_key_exists(0, $child_list)){
+                                                        $record[$property] = $child_list[0]->data();
+                                                    }
                                                 }
                                                 if (!array_key_exists($property, $record)) {
                                                     $record[$property] = null;
@@ -417,11 +421,6 @@ trait Expose {
                                             }
                                         }
                                     }
-                                    /*
-                                    if (!empty($record)) {
-                                        break 3;
-                                    }
-                                    */
                                 }
                                 $nodeList[$nr] = new Storage((object) $record);
                             }
