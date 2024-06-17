@@ -888,7 +888,7 @@ trait NodeList {
                     } else {
                         $list_sort = $list;
                     }
-                    ddd($limit);
+                    $options_limit = $limit;
                     $limit = '*'; //handler
                 } else {
                     $expose = false;
@@ -1003,6 +1003,7 @@ trait NodeList {
                     $limit === '*'
                 ){
                     $list_count = 0;
+                    d($options_limit);
                     foreach($list_sort as $index => $record){
                         if(is_object($record)){
                             $record->{'#index'} = $list_count;
