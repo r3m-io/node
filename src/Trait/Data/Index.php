@@ -157,12 +157,12 @@ trait Index {
                 is_object($data) &&
                 property_exists($data, $record->uuid)
             ) {
-                $record = $data->{$record->uuid};
+                $nodeList[$nr] = $data->{$record->uuid};
             } elseif (
                 is_array($data) &&
                 array_key_exists($record->uuid, $data)
             ) {
-                $record = $data[$record->uuid];
+                $nodeList[$nr] = $data[$record->uuid];
             }
         }
 
