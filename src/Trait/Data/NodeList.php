@@ -476,7 +476,6 @@ trait NodeList {
                         $is_cache_miss = true;
                     }
                     if ($is_cache_miss === false) {
-                        ddd($ramdisk);
                         $response = (array)$ramdisk->get('response');
                         if ($response) {
                             if($start){
@@ -485,8 +484,10 @@ trait NodeList {
                                     'total' => (microtime(true) - $object->config('time.start')) * 1000,
                                     'nodelist' => (microtime(true) - $start) * 1000
                                 ];
-//                                $response['#duration']->item_per_second = (count($response['list']) / $response['#duration']->total) * 1000;
-//                                $response['#duration']->item_per_second_nodelist = ($count / $response['#duration']->nodelist) * 1000;
+                                if(array_key_exists('count', $response)){
+                                    $response['#duration']->item_per_second = ($response['count'] / $response['#duration']->total) * 1000;
+                                    $response['#duration']->item_per_second_nodelist = ($response['count'] / $response['#duration']->nodelist) * 1000;    
+                                }
                             }
                             return $response;
                         }
