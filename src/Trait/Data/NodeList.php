@@ -476,7 +476,7 @@ trait NodeList {
                         $is_cache_miss = true;
                     }
                     if ($is_cache_miss === false) {
-                        $response = (array)$ramdisk->get('response');
+                        $response = (array) $ramdisk->get('response');
                         if ($response) {
                             if($start){
                                 $response['#duration'] = (object) [
