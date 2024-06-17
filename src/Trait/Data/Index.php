@@ -149,19 +149,27 @@ trait Index {
         $cache = $object->data(App::CACHE);
         $data = $cache->get(sha1($url_data) . '_index');
 
+        if(!is_array($nodeList)){
+            return [];
+        }
+        foreach($nodeList as $nr => $record){
+            if (
+                is_object($data) &&
+                property_exists($data, $record->uuid)
+            ) {
+                $record = $data->{$record->uuid};
+            } elseif (
+                is_array($data) &&
+                array_key_exists($record->uuid, $data)
+            ) {
+                $record = $data[$record->uuid];
+            }
+        }
+
+
         ddd($nodeList);
 
-        if (
-            is_object($data) &&
-            property_exists($data, $record->uuid)
-        ) {
-            $record = $data->{$record->uuid};
-        } elseif (
-            is_array($data) &&
-            array_key_exists($record->uuid, $data)
-        ) {
-            $record = $data[$record->uuid];
-        }
+
         if($start){
             $after_cache = microtime(true);
             $duration_from_cache = ($after_cache - $start) * 1000;
