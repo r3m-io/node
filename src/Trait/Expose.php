@@ -439,6 +439,7 @@ trait Expose {
                 str_replace('_', '.', $function)
             );
         }
+        ddd($nodeList);
         return $nodeList;
     }
 
