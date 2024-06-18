@@ -793,7 +793,94 @@ trait NodeList {
                             $object->config('ds')
                         ;
                     }
-                    ddd($chunks);
+                    for ($i = 0; $i < $options['thread']; $i++) {
+                        // Create a pipe
+                        $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+                        if ($sockets === false) {
+                            die("Unable to create socket pair for child $i");
+                        }
+
+                        $pid = pcntl_fork();
+                        if ($pid == -1) {
+                            die("Could not fork for child $i");
+                        } elseif ($pid) {
+                            // Parent process
+                            // Close the child's socket
+                            fclose($sockets[0]);
+
+                            // Store the parent socket and child PID
+                            $pipes[$i] = $sockets[1];
+                            $children[$i] = $pid;
+                        } else {
+                            // Child process
+                            // Close the parent's socket
+                            fclose($sockets[1]);
+                            $result = [];
+                            $chunk = $chunks[$i];
+                            if($is_filter){
+                                foreach($chunk as $nr => $record){
+                                    $record = $this->filter($record, $options['filter'], $options);
+                                    if (!$record) {
+                                        $result[$nr] = 0;
+                                        continue;
+                                    }
+                                    $result[$nr] = 1;
+                                    if(
+                                        $limit === 1 &&
+                                        $options['page'] === 1
+                                    ){
+                                        break;
+                                    }
+                                }
+                            }
+                            elseif ($is_where) {
+                                foreach($chunk as $nr => $record){
+                                    $record = $this->where($record, $options['where'], $options);
+                                    if (!$record) {
+                                        $result[$nr] = 0;
+                                        continue;
+                                    }
+                                    $result[$nr] = 1;
+                                    if(
+                                        $limit === 1 &&
+                                        $options['page'] === 1
+                                    ){
+                                        break;
+                                    }
+                                }
+                            }
+                            // Send serialized data to the parent
+                            fwrite($sockets[0], Core::object($result, Core::OBJECT_JSON_LINE));
+                            fclose($sockets[0]);
+                            exit(0);
+                        }
+                    }
+
+// Parent process: read data from each child
+                    foreach ($pipes as $i => $pipe) {
+                        // Read serialized data from the pipe
+                        $data = stream_get_contents($pipe);
+                        fclose($pipe);
+                        $data = Core::object($data, Core::OBJECT_ARRAY);
+                        ddd($data);
+                        if(array_key_exists('response', $data)){
+                            $response = (array) $data['response'];
+                            if(array_key_exists('list', $response)) {
+                                foreach($response['list'] as $item){
+                                    $list[] = $item;
+                                }
+                            }
+                        }
+                    }
+// Wait for all children to exit
+                    foreach ($children as $child) {
+                        pcntl_waitpid($child, $status);
+                    }
+
+
+
+
+
                     foreach ($chunks as $chunk_nr => $chunk) {
                         $forks = count($chunk);
                         $chunk_url = null;
@@ -910,93 +997,6 @@ trait NodeList {
                             }
                             */
                         }
-                        for ($i = 0; $i < $options['thread']; $i++) {
-                            // Create a pipe
-                            $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
-                            if ($sockets === false) {
-                                die("Unable to create socket pair for child $i");
-                            }
-
-                            $pid = pcntl_fork();
-                            if ($pid == -1) {
-                                die("Could not fork for child $i");
-                            } elseif ($pid) {
-                                // Parent process
-                                // Close the child's socket
-                                fclose($sockets[0]);
-
-                                // Store the parent socket and child PID
-                                $pipes[$i] = $sockets[1];
-                                $children[$i] = $pid;
-                            } else {
-                                // Child process
-                                // Close the parent's socket
-                                fclose($sockets[1]);
-                                $result = [];
-                                if($is_filter){
-                                    foreach($chunk as $nr => $record){
-                                        $record = $this->filter($record, $options['filter'], $options);
-                                        if (!$record) {
-                                            $result[$nr] = 0;
-                                            continue;
-                                        }
-                                        $result[$nr] = 1;
-                                        if(
-                                            $limit === 1 &&
-                                            $options['page'] === 1
-                                        ){
-                                            break;
-                                        }
-                                    }
-                                }
-                                elseif ($is_where) {
-                                    foreach($chunk as $nr => $record){
-                                        $record = $this->where($record, $options['where'], $options);
-                                        if (!$record) {
-                                            $result[$nr] = 0;
-                                            continue;
-                                        }
-                                        $result[$nr] = 1;
-                                        if(
-                                            $limit === 1 &&
-                                            $options['page'] === 1
-                                        ){
-                                            break;
-                                        }
-                                    }
-                                }
-                                // Send serialized data to the parent
-                                fwrite($sockets[0], Core::object($result, Core::OBJECT_JSON_LINE));
-                                fclose($sockets[0]);
-                                exit(0);
-                            }
-                        }
-
-// Parent process: read data from each child
-                        $list = [];
-                        $response = false;
-                        foreach ($pipes as $i => $pipe) {
-                            // Read serialized data from the pipe
-                            $data = stream_get_contents($pipe);
-                            fclose($pipe);
-                            $data = (array) Core::object($data, Core::OBJECT_OBJECT);
-                            if(array_key_exists('response', $data)){
-                                $response = (array) $data['response'];
-                                if(array_key_exists('list', $response)) {
-                                    foreach($response['list'] as $item){
-                                        $list[] = $item;
-                                    }
-                                }
-                            }
-                        }
-// Wait for all children to exit
-                        foreach ($children as $child) {
-                            pcntl_waitpid($child, $status);
-                        }
-
-
-
-
 //                        $this->index_create_chunk($object_data, $chunk, $chunk_nr, $threads, $mtime);
                         $closures[] = function () use (
                             $object,
