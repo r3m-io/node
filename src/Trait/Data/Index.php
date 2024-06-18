@@ -902,6 +902,7 @@ trait Index {
 //           d($options['where']);
             $record_where = $this->where($record, $options['where'], $options);
             if($record_where){
+                d('yes1');
                 return $record;
             } else {
                 $where = $options['where'];
@@ -1393,6 +1394,7 @@ trait Index {
                                                                             pcntl_waitpid($child, $status);
                                 
                                                                         }
+                                                                        $object->config('node.record.leftsearch', $leftSearch);
                                                                         return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
                                                                         foreach ($options['index']['where'] as $nr => $attribute){
