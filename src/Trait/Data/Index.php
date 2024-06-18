@@ -1371,6 +1371,7 @@ trait Index {
                                                                             d(strlen($data));
                                                                             fclose($pipe);
                                                                             $data = Core::object($data, Core::OBJECT_OBJECT);
+                                                                            d('test');
                                                                             ddd($data);
                                                                         }
 // Wait for all children to exit
