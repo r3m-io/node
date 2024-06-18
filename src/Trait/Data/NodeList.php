@@ -875,7 +875,7 @@ trait NodeList {
                                     $record = $this->relation($record, $object_data, $role, $options);
                                     //collect relation mtime
                                 }
-                                $result[] = $record;
+                                $result[] = new Storage($record);
                             }
                         }
                     }
