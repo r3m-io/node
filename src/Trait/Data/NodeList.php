@@ -1009,7 +1009,7 @@ trait NodeList {
                         ){
                             d($ramdisk_url_nodelist);
                             d($options);
-                            $result_ramdisk = Core::array_partition($result, $options['thread']);
+                            $result_ramdisk = Core::array_partition($result['list'], $options['thread']);
                             ddd($result_ramdisk);
 
                         } else {
