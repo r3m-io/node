@@ -255,7 +255,7 @@ trait NodeList {
                 $options['parallel'] = false;
                 $record = $this->index_list_record($class, $role, $options);
                 if($record){
-                    $record = $this->index_record_expose($class, $role, $record, $options);
+//                    $record = $this->index_record_expose($class, $role, $record, $options);
                     $list[] = new Storage($record);
                     $count++;
                 }

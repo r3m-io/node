@@ -1382,6 +1382,7 @@ trait Index {
                                                                                     $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
                                                                                     if(File::exist($url_ramdisk_record)){
                                                                                         $result[] = $object->data_read($url_ramdisk_record);
+                                                                                        ddd($result);
                                                                                     }
                                                                                 }
                                                                             }
