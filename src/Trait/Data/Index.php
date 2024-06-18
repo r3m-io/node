@@ -1380,16 +1380,20 @@ trait Index {
 
                                                                                 $data_read = $cache->get(sha1($data_url) . '_index');
 //                                                                                $chunk = $partition[$i];
-                                                                                foreach($data as $nr => $record){
-                                                                                    $result[] = $record;
-                                                                                    /*
-                                                                                    if($bool === 1){
-                                                                                        if(array_key_exists($nr, $chunk)){
-                                                                                            $result[] = $chunk[$nr];
+                                                                                ddd($data_read);
+                                                                                if($data_read){
+                                                                                    foreach($data as $nr => $record){
+                                                                                        $result[] = $record;
+                                                                                        /*
+                                                                                        if($bool === 1){
+                                                                                            if(array_key_exists($nr, $chunk)){
+                                                                                                $result[] = $chunk[$nr];
+                                                                                            }
                                                                                         }
+                                                                                        */
                                                                                     }
-                                                                                    */
                                                                                 }
+
                                                                             }
                                                                         }
 // Wait for all children to exit
