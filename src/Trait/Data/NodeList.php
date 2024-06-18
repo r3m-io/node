@@ -466,7 +466,7 @@ trait NodeList {
                                 if($is_cache_miss){
                                     return false;
                                 }
-                                return serialize($data->data());
+                                return Core::object($data->data(), Core::OBJECT_JSON_LINE);
                             } else {
                                 return false;
                             }
@@ -481,7 +481,7 @@ trait NodeList {
                             break;
                         }
                         try {
-                            $item = unserialize($item);
+                            ddd($item);
                             $response = (array) $item->response;
                             if(array_key_exists('list', $response)) {
                                 foreach($response['list'] as $item){
