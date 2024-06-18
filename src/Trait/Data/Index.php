@@ -1212,6 +1212,7 @@ trait Index {
                                                                 $object->config('node.record.leftsearch', $leftSearch);
                                                             break;
                                                             case 'left-only' :
+                                                                set_time_limit(600);
                                                                 //search all of left
                                                                 $leftSearch--;
                                                                 while ($leftSearch >= $options['index']['min']) {
