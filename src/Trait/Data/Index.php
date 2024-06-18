@@ -1119,11 +1119,11 @@ trait Index {
                                                         )
                                                     ) {
                                                         $strategy = $options['strategy'] ?? 'around';
-                                                        d($strategy);
+//                                                        d($strategy);
                                                         $leftSearch = $object->config('node.record.leftsearch') ?? $seek;
                                                         $rightSearch = $object->config('node.record.rightsearch') ?? $seek;
-                                                        d($leftSearch);
-                                                        d($rightSearch);
+//                                                        d($leftSearch);
+//                                                        d($rightSearch);
                                                         switch(strtolower($strategy)){
                                                             case 'left' :
                                                                 $leftSearch--;
