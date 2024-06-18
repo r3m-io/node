@@ -15,6 +15,7 @@ use R3m\Io\Module\Limit;
 use R3m\Io\Module\Parallel;
 use R3m\Io\Module\Parse;
 use R3m\Io\Module\Route;
+use R3m\Io\Module\SharedMemory;
 use R3m\Io\Module\Sort;
 
 use R3m\Io\Node\Service\Security;
@@ -466,7 +467,9 @@ trait NodeList {
                                 if($is_cache_miss){
                                     return false;
                                 }
-                                return Core::object($data->data(), Core::OBJECT_JSON_LINE);
+                                $shm = SharedMemory::open(ftok($ramdisk_url_nodelist_item, 'a'), 'c');
+                                SharedMemory::write($shm, Core::object($data->data(), Core::OBJECT_JSON_LINE));
+                                return $ramdisk_url_nodelist_item;
                             } else {
                                 return false;
                             }
