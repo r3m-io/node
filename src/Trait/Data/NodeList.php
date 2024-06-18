@@ -847,6 +847,20 @@ trait NodeList {
                                         break;
                                     }
                                 }
+                            } else {
+                                foreach($chunk as $nr => $record){
+                                    if (!$record) {
+                                        $result[$nr] = 0;
+                                        continue;
+                                    }
+                                    $result[$nr] = 1;
+                                    if(
+                                        $limit === 1 &&
+                                        $options['page'] === 1
+                                    ){
+                                        break;
+                                    }
+                                }
                             }
                             // Send serialized data to the parent
                             fwrite($sockets[0], Core::object($result, Core::OBJECT_JSON_LINE));
