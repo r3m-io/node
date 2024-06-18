@@ -479,13 +479,20 @@ trait NodeList {
                             $is_ok = false;
                             break;
                         }
-                        $item = unserialize($item);
-                        $response = (array) $item->response;
-                        if(array_key_exists('list', $response)) {
-                            foreach($response['list'] as $item){
-                                $list[] = $item;
+                        try {
+                            $item = unserialize($item);
+                            $response = (array) $item->response;
+                            if(array_key_exists('list', $response)) {
+                                foreach($response['list'] as $item){
+                                    $list[] = $item;
+                                }
                             }
                         }
+                        catch(ErrorException $exception){
+                            ddd($list_parallel[$i]);
+                        }
+
+
                     }
                     if($is_ok && $response){
                         $response['list'] = $list;
