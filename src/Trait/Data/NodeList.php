@@ -484,7 +484,9 @@ trait NodeList {
                             break;
                         }
                         try {
-                            ddd($item);
+                            $shm = SharedMemory::open(ftok($item, 'a'), 'a');
+                            $data = SharedMemory::read($shm);
+                            ddd($data);
                             $response = (array) $item->response;
                             if(array_key_exists('list', $response)) {
                                 foreach($response['list'] as $item){
