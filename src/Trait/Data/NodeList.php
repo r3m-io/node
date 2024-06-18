@@ -232,6 +232,7 @@ trait NodeList {
             array_key_exists('where', $options['index'])
         ){
             if($options['index']['count'] === 0){
+                ddd('need count url');
                 $cache = $object->data(App::CACHE);
                 $count = $cache->get(sha1($data_url) . '_count');
                 if($count === null){
