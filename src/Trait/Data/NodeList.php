@@ -281,11 +281,11 @@ trait NodeList {
                             ){
                                 if($options['page'] === 1 && $options['limit'] === '*'){
                                     $rec->{'#index'} = $count;
-                                    $list[] = $rec;
+                                    $list[] = new Storage($rec);
                                 }
                                 elseif($count >= ($options['page'] * $options['limit']) - $options['limit']){
                                     $rec->{'#index'} = $count;
-                                    $list[] = $rec;
+                                    $list[] = new Storage($rec);
                                 } else {
                                     break;
                                 }
@@ -311,11 +311,11 @@ trait NodeList {
                         ){
                             if($options['page'] === 1 && $options['limit'] === '*'){
                                 $record->{'#index'} = $count;
-                                $list[] = $record;
+                                $list[] = new Storage($record);
                             }
                             elseif($count >= ($options['page'] * $options['limit']) - $options['limit']){
                                 $record->{'#index'} = $count;
-                                $list[] = $record;
+                                $list[] = new Storage($record);
                             }
                             $found[] = $record->uuid;
                             $count++;
