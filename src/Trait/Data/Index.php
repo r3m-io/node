@@ -1110,6 +1110,7 @@ trait Index {
                                                     is_array($index_where[2][0]) &&
                                                     $set_init[2]['operator'] === 'not-in'
                                                 ){
+                                                    d($index_where);
                                                     if(
                                                         in_array(
                                                             $index_where[2][1],
