@@ -1380,17 +1380,11 @@ trait Index {
 
                                                                                 $data_read = $cache->get(sha1($data_url) . '_index');
 //                                                                                $chunk = $partition[$i];
-                                                                                ddd($data_read);
                                                                                 if($data_read){
                                                                                     foreach($data as $nr => $record){
-                                                                                        $result[] = $record;
-                                                                                        /*
-                                                                                        if($bool === 1){
-                                                                                            if(array_key_exists($nr, $chunk)){
-                                                                                                $result[] = $chunk[$nr];
-                                                                                            }
+                                                                                        if(property_exists($data_read, $record)){
+                                                                                            $result[] = $data_read->{$record};
                                                                                         }
-                                                                                        */
                                                                                     }
                                                                                 }
 
