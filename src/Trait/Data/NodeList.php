@@ -398,7 +398,7 @@ trait NodeList {
 
             $ramdisk_url_nodelist = [];
             if($options['parallel'] === true){
-                foreach($i=0; $i<$options['thread']; $i++){
+                for($i=0; $i<$options['thread']; $i++){
                     $ramdisk_url_nodelist[] = $ramdisk_dir_list .
                         $name .
                         '.' .
