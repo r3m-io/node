@@ -1223,7 +1223,6 @@ trait Index {
                                                                             $left[] = $i;
                                                                         }
                                                                         $partition = Core::array_partition($left, $options['thread'] ?? 8);
-                                                                        ddd($partition);
                                                                         $pipes = [];
                                                                         $children = [];
 // Create pipes and fork processes
@@ -1340,6 +1339,7 @@ trait Index {
                                                                                             break;
                                                                                         }
                                                                                     }
+                                                                                    d($result);
                                                                                     fwrite($sockets[0], Core::object($result, Core::OBJECT_JSON_LINE));
                                                                                     fclose($sockets[0]);
                                                                                     exit(0);
