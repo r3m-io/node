@@ -339,14 +339,13 @@ trait NodeList {
                         $local_options['limit'] = 1;
                         $local_options['page'] = 1;
                         $local_options['debug'] = true;
-                        d($local_options);
                         $record = $this->index_list_record($class, $role, $local_options);
-                        d($record);
                     }
                 }
                 $object->config('delete', 'node.record.leftsearch');
                 $object->config('delete', 'node.record.rightsearch');
             }
+            ddd($list);
             $list = $this->index_list_expose($class, $role, $list, $options);
             d('from index:' . $name);
             $result = [];
