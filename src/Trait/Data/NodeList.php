@@ -966,7 +966,7 @@ trait NodeList {
                                     }
                                 }
                                 // Send serialized data to the parent
-                                fwrite($sockets[0], Core::object($result, Core::OBJECT_JSON_LINE);
+                                fwrite($sockets[0], Core::object($result, Core::OBJECT_JSON_LINE));
                                 fclose($sockets[0]);
                                 exit(0);
                             }
