@@ -1370,24 +1370,20 @@ trait Index {
                                                                                 $data &&
                                                                                 array_key_exists($i, $partition)
                                                                             ){
-                                                                                $cache = $object->data(App::CACHE);
-
-                                                                                $data_url = $object->config('project.dir.node') .
-                                                                                    'Data' .
-                                                                                    $object->config('ds') .
-                                                                                    $name .
-                                                                                    $object->config('extension.json');
-
-                                                                                $data_read = $cache->get(sha1($data_url) . '_index');
-//                                                                                $chunk = $partition[$i];
-                                                                                if($data_read){
-                                                                                    foreach($data as $nr => $record){
-                                                                                        if(property_exists($data_read, $record)){
-                                                                                            $result[] = $data_read->{$record};
-                                                                                        }
+                                                                                $dir_ramdisk_record = $object->config('ramdisk.url') .
+                                                                                    $this->config(Config::POSIX_ID) .
+                                                                                    $this->config('ds') .
+                                                                                    'Node' .
+                                                                                    $this->config('ds') .
+                                                                                    'Record' .
+                                                                                    $this->config('ds')
+                                                                                ;
+                                                                                foreach($data as $nr => $uuid){
+                                                                                    $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
+                                                                                    if(File::exist($url_ramdisk_record)){
+                                                                                        $result[] = $object->data_read($url_ramdisk_record);
                                                                                     }
                                                                                 }
-
                                                                             }
                                                                         }
 // Wait for all children to exit

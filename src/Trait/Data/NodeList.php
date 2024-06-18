@@ -233,15 +233,7 @@ trait NodeList {
             array_key_exists('where', $options['index'])
         ){
             if($options['index']['count'] === 0){
-                $dir_ramdisk_record = $this->config('ramdisk.url') .
-                    $this->config(Config::POSIX_ID) .
-                    $this->config('ds') .
-                    'Node' .
-                    $this->config('ds') .
-                    'Record' .
-                    $this->config('ds')
-                ;
-                $dir_ramdisk_count = $this->config('ramdisk.url') .
+                $dir_ramdisk_count = $object->config('ramdisk.url') .
                     $this->config(Config::POSIX_ID) .
                     $this->config('ds') .
                     'Node' .
