@@ -345,8 +345,12 @@ trait NodeList {
                 $object->config('delete', 'node.record.leftsearch');
                 $object->config('delete', 'node.record.rightsearch');
             }
-            ddd($list);
             $list = $this->index_list_expose($class, $role, $list, $options);
+            $index = 0;
+            foreach($list as $nr => $record){
+                $record->{'#index'} = $index;
+                $index++;
+            }
             d('from index:' . $name);
             $result = [];
             $result['page'] = $options['page'];
