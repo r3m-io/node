@@ -450,36 +450,35 @@ trait NodeList {
                         };
                     }
                     $list_parallel = Parallel::new()->execute($closures);
-                    ddd($list_parallel);
-                    /*
-                        $response = (array) $ramdisk[0]->get('response');
-                        $list = [];
+                    $is_ok = true;
+                    $list = [];
+                    foreach($list_parallel as $i => $item){
+                        if(!$item){
+                            $is_ok = false;
+                            break;
+                        }
+                        $response = (array) $item->get('response');
                         if(array_key_exists('list', $response)) {
-                            $list = $response['list'];
-                        }
-                        for($i = 1; $i < $options['thread']; $i++) {
-                            $ramdisk_response = (array)$ramdisk[$i]->get('response');
-                            if (array_key_exists('list', $ramdisk_response)) {
-                                $list = array_merge($list, $ramdisk_response['list']);
+                            foreach($response['list'] as $item){
+                                $list[] = $item;
                             }
-                        }
-                        if ($response) {
-                            $response['list'] = $list;
-                            if ($start) {
-                                $response['#duration'] = (object)[
-                                    'boot' => ($start - $object->config('time.start')) * 1000,
-                                    'total' => (microtime(true) - $object->config('time.start')) * 1000,
-                                    'nodelist' => (microtime(true) - $start) * 1000
-                                ];
-                                if (array_key_exists('count', $response)) {
-                                    $response['#duration']->item_per_second = ($response['count'] / $response['#duration']->total) * 1000;
-                                    $response['#duration']->item_per_second_nodelist = ($response['count'] / $response['#duration']->nodelist) * 1000;
-                                }
-                            }
-                            return $response;
                         }
                     }
-                    */
+                    if($is_ok && $response){
+                        $response['list'] = $list;
+                        if ($start) {
+                            $response['#duration'] = (object)[
+                                'boot' => ($start - $object->config('time.start')) * 1000,
+                                'total' => (microtime(true) - $object->config('time.start')) * 1000,
+                                'nodelist' => (microtime(true) - $start) * 1000
+                            ];
+                            if (array_key_exists('count', $response)) {
+                                $response['#duration']->item_per_second = ($response['count'] / $response['#duration']->total) * 1000;
+                                $response['#duration']->item_per_second_nodelist = ($response['count'] / $response['#duration']->nodelist) * 1000;
+                            }
+                        }
+                        return $response;
+                    }
                 }
             }
             if (File::exist($ramdisk_url_node)) {
