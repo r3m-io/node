@@ -867,7 +867,7 @@ trait Index {
         $counter = 0;
         $max = 4096;
         $seek_old = false;
-        d('find record');
+//        d('find record');
         while($options['index']['min'] <= $options['index']['max']) {
             $seek = $options['index']['min'] +
                 floor(
@@ -904,7 +904,6 @@ trait Index {
             $record_where = $this->where($record, $options['where'], $options);
 //            d($record_where);
             if($record_where){
-                d('yes1');
                 return $record;
             } else {
                 $where = $options['where'];
