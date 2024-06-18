@@ -1374,7 +1374,9 @@ trait Index {
                                                                                 $chunk = $partition[$i];
                                                                                 foreach($data as $nr => $bool){
                                                                                     if($bool === 1){
-                                                                                        $result[] = $chunk[$nr];
+                                                                                        if(array_key_exists($nr, $chunk)){
+                                                                                            $result[] = $chunk[$nr];
+                                                                                        }
                                                                                     }
                                                                                 }
                                                                             }
