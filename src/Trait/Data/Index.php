@@ -927,8 +927,9 @@ trait Index {
 //                        d($set) ;
 //                        d($deepest);
 //                        d($operator);
-//                        d($index_where);
-//                        d($where_process);
+                        d($index_where);
+                        d($where_process);
+
                         if(
                             empty($set) &&
                             empty($where_process) &&
