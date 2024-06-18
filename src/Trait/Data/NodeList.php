@@ -861,22 +861,26 @@ trait NodeList {
                         // Read serialized data from the pipe
                         $data = stream_get_contents($pipe);
                         fclose($pipe);
-                        $data = Core::object($data, Core::OBJECT_ARRAY);
+                        $array = Core::object($data, Core::OBJECT_ARRAY);
                         $chunk = $chunks[$i];
-                        foreach($chunk as $nr => $record){
-                            if($data[$nr] === 1){
-                                if(
-                                    $options['parse'] === true &&
-                                    $parse !== false
-                                ){
-                                    $record = $parse->compile($record, $object->data(), $parse->storage());
+                        if(is_array($array)){
+                            foreach($chunk as $nr => $record){
+                                if($array[$nr] === 1){
+                                    if(
+                                        $options['parse'] === true &&
+                                        $parse !== false
+                                    ){
+                                        $record = $parse->compile($record, $object->data(), $parse->storage());
+                                    }
+                                    if ($has_relation) {
+                                        $record = $this->relation($record, $object_data, $role, $options);
+                                        //collect relation mtime
+                                    }
+                                    $result[] = new Storage($record);
                                 }
-                                if ($has_relation) {
-                                    $record = $this->relation($record, $object_data, $role, $options);
-                                    //collect relation mtime
-                                }
-                                $result[] = new Storage($record);
                             }
+                        } else {
+                            ddd($data);
                         }
                     }
 // Wait for all children to exit
