@@ -467,7 +467,10 @@ trait NodeList {
                                 if($is_cache_miss){
                                     return false;
                                 }
-                                $shm = SharedMemory::open(ftok($ramdisk_url_nodelist_item, 'a'), 'c');
+                                $shm = SharedMemory::open(ftok($ramdisk_url_nodelist_item, 'a'), 'n');
+                                if($shm === false){
+                                    return false;
+                                }
                                 $size = SharedMemory::write($shm, Core::object($data->data(), Core::OBJECT_JSON_LINE));
                                 return [
                                     'url' => $ramdisk_url_nodelist_item,
