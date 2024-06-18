@@ -432,9 +432,79 @@ trait NodeList {
                         $object->config('extension.json');
                 }
                 if(File::exist($ramdisk_url_nodelist[0])){
+                    $pipes = [];
+                    $children = [];
+
+// Create pipes and fork processes
+                    for ($i = 0; $i < 8; $i++) {
+                        // Create a pipe
+                        $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+                        if ($sockets === false) {
+                            die("Unable to create socket pair for child $i");
+                        }
+
+                        $pid = pcntl_fork();
+                        if ($pid == -1) {
+                            die("Could not fork for child $i");
+                        } elseif ($pid) {
+                            // Parent process
+                            // Close the child's socket
+                            fclose($sockets[0]);
+
+                            // Store the parent socket and child PID
+                            $pipes[$i] = $sockets[1];
+                            $children[$i] = $pid;
+                        } else {
+                            // Child process
+                            // Close the parent's socket
+                            fclose($sockets[1]);
+
+                            // Prepare data to send to the parent
+                            $data = [
+                                'message' => "Hello from child $i",
+                                'timestamp' => time(),
+                                'pid' => posix_getpid()
+                            ];
+
+                            // Serialize the data
+                            $serializedData = serialize($data);
+
+                            // Send serialized data to the parent
+                            fwrite($sockets[0], $serializedData);
+                            fclose($sockets[0]);
+
+                            exit(0);
+                        }
+                    }
+
+// Parent process: read data from each child
+                    foreach ($pipes as $i => $pipe) {
+                        // Read serialized data from the pipe
+                        $serializedData = stream_get_contents($pipe);
+                        fclose($pipe);
+
+                        // Unserialize the data
+                        $data = unserialize($serializedData);
+
+                        echo "Child $i said: ";
+                        print_r($data);
+                    }
+
+// Wait for all children to exit
+                    foreach ($children as $child) {
+                        pcntl_waitpid($child, $status);
+                    }
+
+                    echo "All children have exited.\n";
+                    die;
+
                     //fix transaction
                     $is_cache_miss = [];
                     $ramdisk = [];
+
+
+
+                    /*
                     $closures = [];
 
                     foreach($ramdisk_url_nodelist as $i => $ramdisk_url_nodelist_item) {
@@ -504,8 +574,6 @@ trait NodeList {
                         catch(ErrorException $exception){
                             ddd($list_parallel[$i]);
                         }
-
-
                     }
                     if($is_ok && $response){
                         $response['list'] = $list;
@@ -522,6 +590,7 @@ trait NodeList {
                         }
                         return $response;
                     }
+                    */
                 }
             }
             if (File::exist($ramdisk_url_node)) {
