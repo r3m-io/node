@@ -669,6 +669,7 @@ trait NodeList {
                             foreach($chunk as $i => $record){
                                 $chunk[$i] = $record->data();
                             }
+                            /*
                             if(
                                 $ramdisk_dir_parallel &&
                                 $ramdisk_dir_parallel_name
@@ -684,6 +685,7 @@ trait NodeList {
                                     ]);
                                 }
                             }
+                            */
                         }
 //                        $this->index_create_chunk($object_data, $chunk, $chunk_nr, $threads, $mtime);
                         $closures[] = function () use (
@@ -989,6 +991,8 @@ trait NodeList {
                         $options['ramdisk'] === true &&
                         $ramdisk_url_node !== false
                     ){
+                        d($options);
+                        ddd($result);
                         $relation_mtime = $this->relation_mtime($object_data);
                         $ramdisk = new Storage();
                         $ramdisk->set('mtime', $mtime);
