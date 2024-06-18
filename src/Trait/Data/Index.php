@@ -1839,8 +1839,6 @@ trait Index {
                             break 2;
                         }
                     }
-                    d($record);
-                    d($where_process);
                     if(
                         $record === false &&
                         (
@@ -1854,13 +1852,6 @@ trait Index {
                     ){
                         $rightSearch = $object->config('node.record.rightsearch');
                         $toggle = $object->config('node.record.toggle');
-                        d($rightSearch);
-                        d($toggle);
-                        $debug = debug_backtrace(1);
-                        d($debug[0]['line'] . ' ' . $debug[0]['file'] . ' ' . $debug[0]['function']);
-                        d($debug[1]['line'] . ' ' . $debug[1]['file'] . ' ' . $debug[1]['function']);
-                        d($debug[2]['line'] . ' ' . $debug[2]['file'] . ' ' . $debug[2]['function']);
-                        d('found: 24');
                         break 2;
                     }
                     if(
@@ -1873,7 +1864,6 @@ trait Index {
                                 count($where_process) === 1
                             )
                         )
-
                     ){
                         break;
                     }
