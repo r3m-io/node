@@ -256,7 +256,7 @@ trait NodeList {
                 $record = $this->index_list_record($class, $role, $options);
                 if($record){
                     $record = $this->index_record_expose($class, $role, $record, $options);
-                    $list[] = $record;
+                    $list[] = new Storage($record);
                     $count++;
                 }
             } else {
