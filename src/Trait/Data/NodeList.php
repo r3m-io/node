@@ -269,6 +269,8 @@ trait NodeList {
                 $found = [];
                 while($record !== false){
                     if(is_array($record)){
+                        ddd(count($record));
+
                         foreach($record as $rec){
                             //index_record_expose is handled in the separate thread
                             if(
@@ -280,11 +282,9 @@ trait NodeList {
                                 )
                             ){
                                 if($options['page'] === 1 && $options['limit'] === '*'){
-                                    $rec->{'#index'} = $count;
                                     $list[] = new Storage($rec);
                                 }
                                 elseif($count >= ($options['page'] * $options['limit']) - $options['limit']){
-                                    $rec->{'#index'} = $count;
                                     $list[] = new Storage($rec);
                                 } else {
                                     break;
@@ -310,11 +310,9 @@ trait NodeList {
                             )
                         ){
                             if($options['page'] === 1 && $options['limit'] === '*'){
-                                $record->{'#index'} = $count;
                                 $list[] = new Storage($record);
                             }
                             elseif($count >= ($options['page'] * $options['limit']) - $options['limit']){
-                                $record->{'#index'} = $count;
                                 $list[] = new Storage($record);
                             }
                             $found[] = $record->uuid;
