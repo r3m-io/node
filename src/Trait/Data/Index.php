@@ -1395,8 +1395,7 @@ trait Index {
                                                                             pcntl_waitpid($child, $status);
                                 
                                                                         }
-                                                                        d($result);
-                                                                        return $result;
+                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
                                                                         foreach ($options['index']['where'] as $nr => $attribute){
                                                                             $file[$nr]->seek($leftSearch);
