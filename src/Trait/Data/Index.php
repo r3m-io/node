@@ -1228,7 +1228,7 @@ trait Index {
                                                                 $object->config('node.record.leftsearch', $leftSearch);
                                                             break;
                                                             case 'left-only' :
-                                                                set_time_limit(600);
+//                                                                set_time_limit(600);
                                                                 //search all of left
                                                                 $leftSearch--;
                                                                 while ($leftSearch >= $options['index']['min']) {
@@ -1420,6 +1420,7 @@ trait Index {
                                                                         $line = $file['uuid']->current();
                                                                         $value = rtrim($line, PHP_EOL);
                                                                         $record->uuid = $value;
+                                                                        d($record);
                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                         if($record_where){
                                                                             $object->config('node.record.leftsearch', $leftSearch);
