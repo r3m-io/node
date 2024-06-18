@@ -411,34 +411,47 @@ trait NodeList {
                     //fix transaction
                     $is_cache_miss = [];
                     $ramdisk = [];
+                    $closures = [];
+
                     foreach($ramdisk_url_nodelist as $i => $ramdisk_url_nodelist_item) {
-                        if ($options['transaction'] === true) {
-                            $ramdisk[$i] = $object->data_read($ramdisk_url_node, sha1($ramdisk_url_nodelist_item));
-                        } else {
-                            $ramdisk[$i] = $object->data_read($ramdisk_url_nodelist_item);
-                        }
-                        if ($ramdisk[$i]) {
-                            $is_cache_miss[$i] = false;
-                            if ($mtime === $ramdisk[$i]->get('mtime')) {
-                                $relations = $ramdisk[$i]->get('relation');
-                                if ($relations) {
-                                    foreach ($relations as $relation_url => $relation_mtime) {
-                                        if (!File::exist($relation_url)) {
-                                            $is_cache_miss[$i] = true;
-                                            break 2;
-                                        }
-                                        if ($relation_mtime !== File::mtime($relation_url)) {
-                                            $is_cache_miss[$i] = true;
-                                            break 2;
+                        $closures[] = function () use (
+                            $object,
+                            $options,
+                            $mtime,
+                            $ramdisk_url_nodelist_item
+                        ) {
+                            $data = $object->data_read($ramdisk_url_nodelist_item);
+                            if ($data) {
+                                $is_cache_miss = false;
+                                if ($mtime === $data->get('mtime')) {
+                                    $relations = $data->get('relation');
+                                    if ($relations) {
+                                        foreach ($relations as $relation_url => $relation_mtime) {
+                                            if (!File::exist($relation_url)) {
+                                                $is_cache_miss = true;
+                                                break;
+                                            }
+                                            if ($relation_mtime !== File::mtime($relation_url)) {
+                                                $is_cache_miss = true;
+                                                break;
+                                            }
                                         }
                                     }
+                                } else {
+                                    $is_cache_miss = true;
                                 }
+                                if($is_cache_miss){
+                                    return false;
+                                }
+                                return $data;
                             } else {
-                                $is_cache_miss[$i] = true;
+                                return false;
                             }
-                        }
+                        };
                     }
-                    if(!in_array(true, $is_cache_miss, true)){
+                    $list_parallel = Parallel::new()->execute($closures);
+                    ddd($list_parallel);
+                    /*
                         $response = (array) $ramdisk[0]->get('response');
                         $list = [];
                         if(array_key_exists('list', $response)) {
@@ -466,6 +479,7 @@ trait NodeList {
                             return $response;
                         }
                     }
+                    */
                 }
             }
             if (File::exist($ramdisk_url_node)) {
