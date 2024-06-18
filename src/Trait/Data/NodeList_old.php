@@ -29,7 +29,7 @@ use SplFileObject;
  * app r3m_io/node list -class=RaXon.Php.Word.Embedding -page=1 -limit=100 -parallel -thread=96 -ramdisk
  * count 9600 duration: 1050.85 msec
  */
-trait NodeList {
+trait NodeList_old {
 
     /**
      * @throws Exception
@@ -856,7 +856,6 @@ trait NodeList {
                     }
 
 // Parent process: read data from each child
-                    $result = [];
                     foreach ($pipes as $i => $pipe) {
                         // Read serialized data from the pipe
                         $data = stream_get_contents($pipe);
@@ -865,25 +864,259 @@ trait NodeList {
                         $chunk = $chunks[$i];
                         foreach($chunk as $nr => $record){
                             if($data[$nr] === 1){
-                                if(
-                                    $options['parse'] === true &&
-                                    $parse !== false
-                                ){
-                                    $record = $parse->compile($record, $object->data(), $parse->storage());
-                                }
-                                if ($has_relation) {
-                                    $record = $this->relation($record, $object_data, $role, $options);
-                                    //collect relation mtime
-                                }
-                                $result[] = $record;
+                                $list_filtered[] = $record;
                             }
                         }
+                        ddd($data);
                     }
 // Wait for all children to exit
                     foreach ($children as $child) {
                         pcntl_waitpid($child, $status);
                     }
+
+
+
+
+
+                    foreach ($chunks as $chunk_nr => $chunk) {
+                        $forks = count($chunk);
+                        $chunk_url = null;
+                        if($ramdisk_dir_parallel_name){
+                            $chunk_url = $ramdisk_dir_parallel_name .
+                                'Chunk-' .
+                                ($chunk_nr + 1) .
+                                '-' .
+                                $threads .
+                                $object->config('extension.json')
+                            ;
+                        }
+                        if(
+                            $chunk_url !== null &&
+                            File::exist($chunk_url) &&
+                            File::mtime($chunk_url) === $mtime
+                        ){
+                            //we have valid cache of the chunk.
+                            $read = $object->data_read($chunk_url);
+                            $chunk = $read->data();
+                            /* below not needed, is done in the parallel closure
+                            if (!$expose) {
+                                $expose = $this->expose_get(
+                                    $object,
+                                    $name,
+                                    $name . '.' . $options['function'] . '.output'
+                                );
+                            }
+                            $chunk = $this->expose_list(
+                                $chunk,
+                                $expose,
+                                $name,
+                                $options['function'],
+                                $role
+                            );
+                            foreach($chunk as $i => $record){
+                                $chunk[$i] = $record->data();
+                            }
+                            */
+                        } else {
+                            for ($i = 0; $i < $forks; $i++) {
+                                $record = $chunk[$i];
+                                if (
+                                    is_object($record) &&
+                                    property_exists($record, '#class')
+                                ) {
+                                    /*
+                                    if (!$expose) {
+                                        $expose = $this->expose_get(
+                                            $object,
+                                            $record->{'#class'},
+                                            $record->{'#class'} . '.' . $options['function'] . '.output'
+                                        );
+                                    }
+                                    $node = new Storage($record);
+                                    $node = $this->expose(
+                                        $node,
+                                        $expose,
+                                        $record->{'#class'},
+                                        $options['function'],
+                                        $role
+                                    );
+                                    $record = $node->data();
+                                    */
+                                    if ($has_relation) {
+                                        $record = $this->relation($record, $object_data, $role, $options);
+                                        //collect relation mtime
+                                    }
+                                    //parse the record if parse is enabled, parsing cannot run in parallel
+                                    // this should be called: pre.compile
+                                    if(
+                                        array_key_exists('pre-compile', $options) &&
+                                        $options['pre-compile'] === true &&
+                                        $parse !== false
+                                    ){
+                                        $record = $parse->compile($record, $object->data(), $parse->storage());
+                                        $chunks[$chunk_nr][$i] = $record;
+                                    }
+                                    $chunk[$i] = new Storage($record);
+                                }
+                            }
+                            if (!$expose) {
+                                $expose = $this->expose_get(
+                                    $object,
+                                    $name,
+                                    $name . '.' . $options['function'] . '.output'
+                                );
+                            }
+                            $chunk = $this->expose_list(
+                                $chunk,
+                                $expose,
+                                $name,
+                                $options['function'],
+                                $role
+                            );
+                            foreach($chunk as $i => $record){
+                                $chunk[$i] = $record->data();
+                            }
+                            /*
+                            if(
+                                $ramdisk_dir_parallel &&
+                                $ramdisk_dir_parallel_name
+                            ){
+                                Dir::create($ramdisk_dir_parallel_name, Dir::CHMOD);
+                                File::write($chunk_url, Core::object($chunk, Core::OBJECT_JSON));
+                                File::touch($chunk_url, $mtime);
+                                if($object->config('posix.id') !== 0){
+                                    File::permission($object, [
+                                        'ramdisk_dir_parallel' => $ramdisk_dir_parallel,
+                                        'ramdisk_dir_parallel_name' => $ramdisk_dir_parallel_name,
+                                        'chunk_url' => $chunk_url,
+                                    ]);
+                                }
+                            }
+                            */
+                        }
+//                        $this->index_create_chunk($object_data, $chunk, $chunk_nr, $threads, $mtime);
+                        $closures[] = function () use (
+                            $object,
+                            $chunk,
+                            $chunk_nr,
+                            $threads,
+                            $forks,
+                            $limit,
+                            $count,
+                            $mtime,
+                            $name,
+                            $options,
+                            $is_filter,
+                            $is_where
+                        ) {
+                            $result = [];
+                            /*
+                            $options['index'] = [
+                                'class' => $name,
+                                'chunk_nr' => $chunk_nr,
+                                'threads' => $threads,
+                                'mtime' => $mtime,
+                                'unique' => true
+                            ];
+                            */
+                            for ($i = 0; $i < $forks; $i++) {
+                                $record = $chunk[$i];
+//                                $options['index']['iterator'] = $i;
+                                if ($is_filter) {
+                                    $record = $this->filter($record, $options['filter'], $options);
+                                    if (!$record) {
+                                        $result[$i] = 0;
+                                        continue;
+                                    }
+                                } elseif ($is_where) {
+                                    $record = $this->where($record, $options['where'], $options);
+                                    if (!$record) {
+                                        $result[$i] = 0;
+                                        continue;
+                                    }
+                                }
+                                $result[$i] = 1;
+                                if(
+                                    $limit === 1 &&
+                                    $options['page'] === 1
+                                ){
+                                    break;
+                                }
+                                $count++;
+                                /*
+                                if (
+                                    $limit !=='*' &&
+                                    $count === ($options['page'] * $limit)
+                                ) {
+                                    break;
+                                }
+                                */
+                            }
+                            return $result;
+                        };
+                    }
+                    $expose = false;
+                    $list_parallel = Parallel::new()->execute($closures);
+                    foreach($list_parallel as $nr => $list_parallel_result){
+                        if(is_array($list_parallel_result)){
+                            foreach($list_parallel_result as $i => $bool){
+                                if($bool === 1){
+                                    $record = $chunks[$nr][$i];
+                                    if(
+                                        $options['parse'] === true &&
+                                        $parse !== false
+                                    ){
+                                        $record = $parse->compile($record, $object->data(), $parse->storage());
+                                    }
+                                    if(array_key_exists('view', $options)){
+                                        $view_url = $object->config('ramdisk.url') .
+                                            $object->config('posix.id') .
+                                            $object->config('ds') .
+                                            'Node' .
+                                            $object->config('ds') .
+                                            'View' .
+                                            $object->config('ds') .
+                                            $name .
+                                            $object->config('ds') .
+                                            'Record' .
+                                            $object->config('ds') .
+                                            $record->uuid .
+                                            $object->config('extension.json')
+                                        ;
+                                        $view_data = $object->data_read($view_url, sha1($view_url));
+                                        if($view_data){
+                                            $record = $view_data->data();
+                                            /*
+                                            if (!$expose) {
+                                                $expose = $this->expose_get(
+                                                    $object,
+                                                    $record->{'#class'},
+                                                    $record->{'#class'} . '.' . $options['function'] . '.output'
+                                                );
+                                            }
+                                            $node = new Storage($record);
+                                            $node = $this->expose(
+                                                $node,
+                                                $expose,
+                                                $record->{'#class'},
+                                                $options['function'],
+                                                $role
+                                            );
+                                            $record = $node->data();
+                                            */
+                                            if ($has_relation) {
+                                                $record = $this->relation($record, $object_data, $role, $options);
+                                                //collect relation mtime
+                                            }
+                                        }
+                                    }
+                                    $result[] = $record;
+                                }
+                            }
+                        }
+                    }
                     $list = $result;
+                    /* not needed, is done in the parallel closure
                     if (!$expose) {
                         $expose = $this->expose_get(
                             $object,
@@ -901,6 +1134,7 @@ trait NodeList {
                     foreach($list as $i => $record){
                         $list[$i] = $record->data();
                     }
+                    */
                     if(
                         !empty($options['sort']) &&
                         is_array($options['sort'])
