@@ -793,6 +793,7 @@ trait NodeList {
                             $object->config('ds')
                         ;
                     }
+                    ddd($chunks);
                     foreach ($chunks as $chunk_nr => $chunk) {
                         $forks = count($chunk);
                         $chunk_url = null;
@@ -909,7 +910,6 @@ trait NodeList {
                             }
                             */
                         }
-                        ddd($chunk);
                         for ($i = 0; $i < $options['thread']; $i++) {
                             // Create a pipe
                             $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
@@ -932,24 +932,42 @@ trait NodeList {
                                 // Child process
                                 // Close the parent's socket
                                 fclose($sockets[1]);
-
-                                $data = File::read($ramdisk_url_nodelist[$i]);
-
-                                // Prepare data to send o the parent
-                                /*
-                                $data = [
-                                    'message' => "Hello from child $i",
-                                    'timestamp' => time(),
-                                    'pid' => posix_getpid()
-                                ];
-                                */
-                                // Serialize the data
-//                            $serializedData = serialize($data);
-
+                                $result = [];
+                                if($is_filter){
+                                    foreach($chunk as $nr => $record){
+                                        $record = $this->filter($record, $options['filter'], $options);
+                                        if (!$record) {
+                                            $result[$nr] = 0;
+                                            continue;
+                                        }
+                                        $result[$nr] = 1;
+                                        if(
+                                            $limit === 1 &&
+                                            $options['page'] === 1
+                                        ){
+                                            break;
+                                        }
+                                    }
+                                }
+                                elseif ($is_where) {
+                                    foreach($chunk as $nr => $record){
+                                        $record = $this->where($record, $options['where'], $options);
+                                        if (!$record) {
+                                            $result[$nr] = 0;
+                                            continue;
+                                        }
+                                        $result[$nr] = 1;
+                                        if(
+                                            $limit === 1 &&
+                                            $options['page'] === 1
+                                        ){
+                                            break;
+                                        }
+                                    }
+                                }
                                 // Send serialized data to the parent
-                                fwrite($sockets[0], $data);
+                                fwrite($sockets[0], Core::object($result, Core::OBJECT_JSON_LINE);
                                 fclose($sockets[0]);
-
                                 exit(0);
                             }
                         }
