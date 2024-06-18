@@ -1372,6 +1372,7 @@ trait Index {
                                                                                 array_key_exists($i, $partition)
                                                                             ){
                                                                                 $chunk = $partition[$i];
+                                                                                ddd($chunk);
                                                                                 foreach($data as $nr => $bool){
                                                                                     if($bool === 1){
                                                                                         if(array_key_exists($nr, $chunk)){
