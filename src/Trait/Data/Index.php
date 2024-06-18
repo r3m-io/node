@@ -928,7 +928,7 @@ trait Index {
                         d($deepest);
                         d($operator);
                         d($index_where);
-                        ddd($where_process);
+                        d($where_process);
 
                         if(
                             empty($set) &&
@@ -1094,7 +1094,10 @@ trait Index {
                                                 array_shift($set);
                                                 array_shift($set);
                                             }
+                                            d($set_index_0);
+                                            d($set_index_2);
                                             if($set_index_2[0]['match'] === false){
+                                                ddd($index_where);
                                                 if(
                                                     is_array($index_where[2][0]) &&
                                                     $set_init[2]['operator'] === 'not-in'
