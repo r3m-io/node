@@ -407,6 +407,66 @@ trait NodeList {
                         $i .
                         $object->config('extension.json');
                 }
+                if(File::exist($ramdisk_url_nodelist[0])){
+                    //fix transaction
+                    $is_cache_miss = [];
+                    $ramdisk = [];
+                    foreach($ramdisk_url_nodelist as $i => $ramdisk_url_nodelist_item) {
+                        if ($options['transaction'] === true) {
+                            $ramdisk[$i] = $object->data_read($ramdisk_url_node, sha1($ramdisk_url_nodelist_item));
+                        } else {
+                            $ramdisk[$i] = $object->data_read($ramdisk_url_nodelist_item);
+                        }
+                        if ($ramdisk[$i]) {
+                            $is_cache_miss[$i] = false;
+                            if ($mtime === $ramdisk[$i]->get('mtime')) {
+                                $relations = $ramdisk[$i]->get('relation');
+                                if ($relations) {
+                                    foreach ($relations as $relation_url => $relation_mtime) {
+                                        if (!File::exist($relation_url)) {
+                                            $is_cache_miss[$i] = true;
+                                            break 2;
+                                        }
+                                        if ($relation_mtime !== File::mtime($relation_url)) {
+                                            $is_cache_miss[$i] = true;
+                                            break 2;
+                                        }
+                                    }
+                                }
+                            } else {
+                                $is_cache_miss[$i] = true;
+                            }
+                        }
+                    }
+                    if(!in_array(true, $is_cache_miss, true)){
+                        $response = (array) $ramdisk[0]->get('response');
+                        $list = [];
+                        if(array_key_exists('list', $response)) {
+                            $list = $response['list'];
+                        }
+                        for($i = 1; $i < $options['thread']; $i++) {
+                            $ramdisk_response = (array)$ramdisk[$i]->get('response');
+                            if (array_key_exists('list', $ramdisk_response)) {
+                                $list = array_merge($list, $ramdisk_response['list']);
+                            }
+                        }
+                        if ($response) {
+                            $response['list'] = $list;
+                            if ($start) {
+                                $response['#duration'] = (object)[
+                                    'boot' => ($start - $object->config('time.start')) * 1000,
+                                    'total' => (microtime(true) - $object->config('time.start')) * 1000,
+                                    'nodelist' => (microtime(true) - $start) * 1000
+                                ];
+                                if (array_key_exists('count', $response)) {
+                                    $response['#duration']->item_per_second = ($response['count'] / $response['#duration']->total) * 1000;
+                                    $response['#duration']->item_per_second_nodelist = ($response['count'] / $response['#duration']->nodelist) * 1000;
+                                }
+                            }
+                            return $response;
+                        }
+                    }
+                }
             }
             if (File::exist($ramdisk_url_node)) {
                 if ($options['transaction'] === true) {
@@ -1007,8 +1067,6 @@ trait NodeList {
                         if(
                             $options['parallel'] === true
                         ){
-                            d($ramdisk_url_nodelist);
-                            d($options);
                             $result_ramdisk = $result;
                             $result_ramdisk['list'] = Core::array_partition($result['list'], $options['thread']);
                             $relation_mtime = $this->relation_mtime($object_data);
@@ -1020,9 +1078,19 @@ trait NodeList {
                                 $ramdisk->set('response', $ramdisk_data);
                                 $ramdisk->set('relation', $relation_mtime);
                                 $ramdisk->write($ramdisk_url_nodelist_item);
+                                if($object->config('posix.id') !== 0){
+                                    File::permission($object, [
+                                        'ramdisk_url_nodelist_item' => $ramdisk_url_nodelist_item,
+                                    ]);
+                                }
                             }
-                            ddd($result_ramdisk);
-
+                            if($object->config('posix.id') !== 0){
+                                File::permission($object, [
+                                    'ramdisk_dir' => $ramdisk_dir,
+                                    'ramdisk_dir_node' => $ramdisk_dir_node,
+                                    'ramdisk_dir_list' => $ramdisk_dir_list,
+                                ]);
+                            }
                         } else {
                             $relation_mtime = $this->relation_mtime($object_data);
                             $ramdisk = new Storage();
@@ -1030,6 +1098,14 @@ trait NodeList {
                             $ramdisk->set('response', $result);
                             $ramdisk->set('relation', $relation_mtime);
                             $ramdisk->write($ramdisk_url_node);
+                            if($object->config('posix.id') !== 0){
+                                File::permission($object, [
+                                    'ramdisk_dir' => $ramdisk_dir,
+                                    'ramdisk_dir_node' => $ramdisk_dir_node,
+                                    'ramdisk_dir_list' => $ramdisk_dir_list,
+                                    'ramdisk_url_node' => $ramdisk_url_node,
+                                ]);
+                            }
                         }
                     }
                     if($start){
@@ -1095,33 +1171,56 @@ trait NodeList {
                     $ramdisk_dir_node !== false
                 ){
                     if(
-                        array_key_exists('parallel', $options) &&
                         $options['parallel'] === true
                     ){
-                        d($options);
-                        ddd($result);
-                    }
-                    $relation_mtime = $this->relation_mtime($object_data);
-                    $ramdisk = new Storage();
-                    $ramdisk->set('mtime', $mtime);
-                    $ramdisk->set('response', $result);
-                    $ramdisk->set('relation', $relation_mtime);
-                    $ramdisk->write($ramdisk_url_node);
-                    if($object->config('posix.id') === 0){
-                        //nothing
-                        /*
-                        File::permission($object, [
-                            'ramdisk_dir' => $ramdisk_dir
-                        ]);
-                        */
+                        $result_ramdisk = $result;
+                        $result_ramdisk['list'] = Core::array_partition($result['list'], $options['thread']);
+                        $relation_mtime = $this->relation_mtime($object_data);
+                        foreach($ramdisk_url_nodelist as $i => $ramdisk_url_nodelist_item){
+                            $ramdisk_data = $result_ramdisk;
+                            $ramdisk_data['list'] = $result_ramdisk['list'][$i];
+                            $ramdisk = new Storage();
+                            $ramdisk->set('mtime', $mtime);
+                            $ramdisk->set('response', $ramdisk_data);
+                            $ramdisk->set('relation', $relation_mtime);
+                            $ramdisk->write($ramdisk_url_nodelist_item);
+                            if($object->config('posix.id') !== 0){
+                                File::permission($object, [
+                                    'ramdisk_url_nodelist_item' => $ramdisk_url_nodelist_item,
+                                ]);
+                            }
+                        }
+                        if($object->config('posix.id') !== 0){
+                            File::permission($object, [
+                                'ramdisk_dir' => $ramdisk_dir,
+                                'ramdisk_dir_node' => $ramdisk_dir_node,
+                                'ramdisk_dir_list' => $ramdisk_dir_list,
+                            ]);
+                        }
                     } else {
-                        File::permission($object, [
-                            'ramdisk_dir' => $ramdisk_dir,
-                            'ramdisk_dir_node' => $ramdisk_dir_node,
-                            'ramdisk_dir_list' => $ramdisk_dir_list,
-                            'ramdisk_url_node' => $ramdisk_url_node,
-                        ]);
+                        $relation_mtime = $this->relation_mtime($object_data);
+                        $ramdisk = new Storage();
+                        $ramdisk->set('mtime', $mtime);
+                        $ramdisk->set('response', $result);
+                        $ramdisk->set('relation', $relation_mtime);
+                        $ramdisk->write($ramdisk_url_node);
+                        if($object->config('posix.id') === 0){
+                            //nothing
+                            /*
+                            File::permission($object, [
+                                'ramdisk_dir' => $ramdisk_dir
+                            ]);
+                            */
+                        } else {
+                            File::permission($object, [
+                                'ramdisk_dir' => $ramdisk_dir,
+                                'ramdisk_dir_node' => $ramdisk_dir_node,
+                                'ramdisk_dir_list' => $ramdisk_dir_list,
+                                'ramdisk_url_node' => $ramdisk_url_node,
+                            ]);
+                        }
                     }
+
                 }
                 if($start){
                     $result['#duration'] = (object) [
