@@ -1370,6 +1370,7 @@ trait Index {
                                                                         foreach ($pipes as $i => $pipe) {
                                                                             // Read serialized data from the pipe
                                                                             $data = stream_get_contents($pipe);
+                                                                            d(strlen($data));
                                                                             fclose($pipe);
                                                                             $data = Core::object($data, Core::OBJECT_OBJECT);
                                                                             ddd($data);
