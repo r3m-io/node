@@ -1067,6 +1067,13 @@ trait NodeList {
                     $ramdisk_dir !== false &&
                     $ramdisk_dir_node !== false
                 ){
+                    if(
+                        array_key_exists('parallel', $options) &&
+                        $options['parallel'] === true
+                    ){
+                        d($options);
+                        ddd($result);
+                    }
                     $relation_mtime = $this->relation_mtime($object_data);
                     $ramdisk = new Storage();
                     $ramdisk->set('mtime', $mtime);
