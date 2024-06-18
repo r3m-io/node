@@ -1367,7 +1367,10 @@ trait Index {
                                                                             d(strlen($data));
                                                                             fclose($pipe);
                                                                             $data = Core::object($data, Core::OBJECT_OBJECT);
-                                                                            if($data){
+                                                                            if(
+                                                                                $data &&
+                                                                                array_key_exists($i, $partition)
+                                                                            ){
                                                                                 $chunk = $partition[$i];
                                                                                 foreach($data as $nr => $bool){
                                                                                     if($bool === 1){
