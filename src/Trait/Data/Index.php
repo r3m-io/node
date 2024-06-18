@@ -1379,11 +1379,6 @@ trait Index {
                                                                                     $object->config('extension.json');
 
                                                                                 $data_read = $cache->get(sha1($data_url) . '_index');
-                                                                                ddd($data_read);
-                                                                                $cache = $object->data(App::CACHE);
-
-
-
 //                                                                                $chunk = $partition[$i];
                                                                                 foreach($data as $nr => $record){
                                                                                     $result[] = $record;
@@ -1400,7 +1395,9 @@ trait Index {
 // Wait for all children to exit
                                                                         foreach ($children as $child) {
                                                                             pcntl_waitpid($child, $status);
+                                
                                                                         }
+                                                                        d($result);
                                                                         return $result;
                                                                     } else {
                                                                         foreach ($options['index']['where'] as $nr => $attribute){
