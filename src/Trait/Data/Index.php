@@ -1282,9 +1282,8 @@ trait Index {
                                                                                 foreach ($options['index']['url'] as $nr => $url) {
                                                                                     $file[$nr] = new SplFileObject($url);
                                                                                 }
-                                                                                $thread = [];
+                                                                                $result = [];
                                                                                 if (array_key_exists($i, $partition)) {
-
                                                                                     $chunk = $partition[$i];
                                                                                     foreach ($chunk as $chunk_nr => $i) {
                                                                                         if ($start) {
@@ -1335,15 +1334,13 @@ trait Index {
                                                                                                     ];
                                                                                                 }
                                                                                             }
-                                                                                            $thread[$i] = $record;
+                                                                                            $result[$i] = 1;
                                                                                         } else {
                                                                                             break;
                                                                                         }
                                                                                     }
-                                                                                    d($thread);
-                                                                                    if (!empty($thread)) {
-                                                                                        $thread = $this->index_list_expose($name, $role, $thread, $options);
-                                                                                        fwrite($sockets[0], Core::object($thread, Core::OBJECT_JSON_LINE));
+                                                                                    if (!empty($result)) {
+                                                                                        fwrite($sockets[0], Core::object($result, Core::OBJECT_JSON_LINE));
                                                                                         fclose($sockets[0]);
                                                                                         exit(0);
                                                                                     }
