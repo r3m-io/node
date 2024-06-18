@@ -901,6 +901,7 @@ trait Index {
 //            d($record);
 //           d($options['where']);
             $record_where = $this->where($record, $options['where'], $options);
+            d($record_where);
             if($record_where){
                 d('yes1');
                 return $record;
