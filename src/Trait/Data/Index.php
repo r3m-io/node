@@ -1062,9 +1062,13 @@ trait Index {
                                                         if($index_where[2][0] === $set[2]['value']){
                                                             $options['index']['max'] = $seek - 1;
                                                             if($options['index']['max'] < $options['index']['min']){
+                                                                $record = false;
+                                                                break 2;
+                                                                /* old error
                                                                 $set = [];
                                                                 ddd('error1');
                                                                 break 2;
+                                                                */
                                                             }
                                                             break 3;
 
@@ -1073,9 +1077,13 @@ trait Index {
                                                             //min becomes seek + 1
                                                             $options['index']['min'] = $seek + 1;
                                                             if($options['index']['max'] < $options['index']['min']){
+                                                                $record = false;
+                                                                break 2;
+                                                                /* old error
                                                                 $set = [];
                                                                 ddd('error2');
                                                                 break 2;
+                                                                */
                                                             }
                                                             break 3;
                                                         }
