@@ -1360,153 +1360,25 @@ trait Index {
 
                                                                                 // Send serialized data to the parent
 // Parent process: read data from each child
-                                                                        $list = [];
-                                                                        $response = false;
+                                                                        $result = [];
                                                                         foreach ($pipes as $i => $pipe) {
                                                                             // Read serialized data from the pipe
                                                                             $data = stream_get_contents($pipe);
                                                                             d(strlen($data));
                                                                             fclose($pipe);
                                                                             $data = Core::object($data, Core::OBJECT_OBJECT);
-                                                                            d('test');
-                                                                            ddd($data);
+                                                                            if($data){
+                                                                                $chunk = $partition[$i];
+                                                                                foreach($data as $nr => $bool){
+                                                                                    if($bool === 1){
+                                                                                        $result[] = $chunk[$nr];
+                                                                                    }
+                                                                                }
+                                                                            }
                                                                         }
 // Wait for all children to exit
                                                                         foreach ($children as $child) {
                                                                             pcntl_waitpid($child, $status);
-                                                                        }
-                                                                        if($response) {
-
-                                                                        }
-                                                                        d('test');
-                                                                        ddd($partition);
-
-
-
-                                                                        foreach($partition as $partition_nr => $chunk) {
-                                                                            $closures[] = function () use (
-                                                                                $object,
-                                                                                $name,
-                                                                                $role,
-                                                                                $options,
-                                                                                $partition_nr,
-                                                                                $chunk,
-                                                                            ) {
-                                                                                $start = false;
-                                                                                if(
-                                                                                    array_key_exists('duration', $options) &&
-                                                                                    $options['duration'] === true
-                                                                                ){
-                                                                                    $start = microtime(true);
-                                                                                }
-                                                                                $url_store = $object->config('ramdisk.url') .
-                                                                                    $object->config(Config::POSIX_ID) .
-                                                                                    $object->config('ds') .
-                                                                                    'Node' .
-                                                                                    $object->config('ds') .
-                                                                                    'Index' .
-                                                                                    $object->config('ds') .
-                                                                                    $name .
-                                                                                    '.' .
-                                                                                    'Response' .
-                                                                                    '.' .
-                                                                                    $partition_nr .
-                                                                                    '.' .
-                                                                                    Core::uuid() .
-                                                                                    $object->config('extension.json')
-                                                                                ;
-                                                                                $file = [];
-                                                                                if(!array_key_exists('url_uuid', $options['index'])){
-                                                                                    return false;
-                                                                                }
-                                                                                if(!File::exist($options['index']['url_uuid'])){
-                                                                                    return false;
-                                                                                }
-                                                                                $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
-                                                                                foreach($options['index']['url'] as $nr => $url){
-                                                                                    $file[$nr] = new SplFileObject($url);
-                                                                                }
-                                                                                $thread = [];
-                                                                                foreach ($chunk as $chunk_nr => $i) {
-                                                                                    if($start){
-                                                                                        $init = microtime(true);
-                                                                                    }
-                                                                                    $record = (object)[];
-                                                                                    $values = [];
-                                                                                    foreach ($options['index']['where'] as $nr => $attribute) {
-                                                                                        $file[$nr]->seek($i);
-                                                                                        $line = $file[$nr]->current();
-                                                                                        $values[] = $line;
-                                                                                        $value = rtrim($line, PHP_EOL);
-                                                                                        $record->{$attribute} = $value;
-                                                                                    }
-                                                                                    $file['uuid']->seek($i);
-                                                                                    $line = $file['uuid']->current();
-                                                                                    $value = rtrim($line, PHP_EOL);
-                                                                                    $record->uuid = $value;
-                                                                                    $before = microtime(true);
-                                                                                    $duration_before = $before - $start;
-                                                                                    $record_where = $this->where($record, $options['where'], $options);
-                                                                                    if($start){
-                                                                                        $after = microtime(true);
-                                                                                        $duration_where = $after - $before;
-                                                                                    }
-                                                                                    if ($record_where) {
-                                                                                        //make the list expose & not the record, should be faster
-                                                                                        //but less safe ?
-//                                                                                        $record = $this->index_record_expose($name, $role, $record, $options);
-                                                                                        if($start){
-                                                                                            $expose = microtime(true);
-                                                                                            if(property_exists($record, '#duration')){
-                                                                                                $record->{'#duration'} = Core::object_merge(
-                                                                                                    $record->{'#duration'},
-                                                                                                    (object) [
-                                                                                                        'start' => $start,
-                                                                                                        'wait' => $duration_before * 1000,
-                                                                                                        'where' => $duration_where * 1000,
-                                                                                                        'expose' => ($expose - $after) * 1000,
-                                                                                                        'total' => ($expose - $init) * 1000
-                                                                                                    ]
-                                                                                                );
-                                                                                            } else {
-                                                                                                $record->{'#duration'} = (object) [
-                                                                                                    'start' => $start,
-                                                                                                    'wait' => $duration_before * 1000,
-                                                                                                    'where' => $duration_where * 1000,
-                                                                                                    'expose' => ($expose - $after) * 1000,
-                                                                                                    'total' => ($expose - $init) * 1000
-                                                                                                ];
-                                                                                            }
-                                                                                        }
-                                                                                        $thread[$i] = $record;
-                                                                                    } else {
-                                                                                        break;
-                                                                                    }
-                                                                                }
-                                                                                if(!empty($thread)){
-                                                                                    $thread = $this->index_list_expose($name, $role, $thread, $options);
-                                                                                    File::write($url_store, Core::object($thread, Core::OBJECT_JSON));
-                                                                                    return $url_store;
-                                                                                }
-                                                                                return false;
-                                                                            };
-                                                                        }
-                                                                        $result = [];
-                                                                        $list = Parallel::new()->execute($closures);
-                                                                        foreach($list as $chunk_nr => $data_url){
-                                                                            if($data_url === false){
-                                                                                continue;
-                                                                            }
-                                                                            $data = $object->data_read($data_url);
-                                                                            if($data){
-                                                                                foreach($data->data() as $key => $record){
-                                                                                    if(empty($record)){
-                                                                                        continue;
-                                                                                    }
-                                                                                    $result[] = $record;
-                                                                                }
-                                                                            }
-//                                                                            File::delete($data_url);
                                                                         }
                                                                         return $result;
                                                                     } else {
