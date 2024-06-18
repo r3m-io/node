@@ -1213,6 +1213,7 @@ trait Index {
                                                             break;
                                                             case 'left-only' :
                                                                 //search all of left
+                                                                ddd('found');
                                                                 $leftSearch--;
                                                                 while ($leftSearch >= $options['index']['min']) {
                                                                     if($options['parallel'] === true){
