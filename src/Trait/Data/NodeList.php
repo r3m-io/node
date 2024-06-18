@@ -499,9 +499,10 @@ trait NodeList {
                         pcntl_waitpid($child, $status);
                     }
                     if($response){
+                        ddd($response);
                         $response['list'] = $list;
                         if ($start) {
-                            $response['#duration'] = (object)[
+                            $response['#duration'] = (object) [
                                 'boot' => ($start - $object->config('time.start')) * 1000,
                                 'total' => (microtime(true) - $object->config('time.start')) * 1000,
                                 'nodelist' => (microtime(true) - $start) * 1000
