@@ -468,8 +468,11 @@ trait NodeList {
                                     return false;
                                 }
                                 $shm = SharedMemory::open(ftok($ramdisk_url_nodelist_item, 'a'), 'c');
-                                SharedMemory::write($shm, Core::object($data->data(), Core::OBJECT_JSON_LINE));
-                                return $ramdisk_url_nodelist_item;
+                                $size = SharedMemory::write($shm, Core::object($data->data(), Core::OBJECT_JSON_LINE));
+                                return [
+                                    'url' => $ramdisk_url_nodelist_item,
+                                    'size' => $size
+                                ];
                             } else {
                                 return false;
                             }
@@ -484,8 +487,8 @@ trait NodeList {
                             break;
                         }
                         try {
-                            $shm = SharedMemory::open(ftok($item, 'a'), 'a');
-                            $data = SharedMemory::read($shm);
+                            $shm = SharedMemory::open(ftok($item['url'], 'a'), 'a');
+                            $data = SharedMemory::read($shm, 0, $item['size']);
                             ddd($data);
                             $response = (array) $item->response;
                             if(array_key_exists('list', $response)) {
