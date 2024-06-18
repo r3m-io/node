@@ -5,6 +5,7 @@ namespace R3m\Io\Node\Trait\Data;
 use ErrorException;
 use R3m\Io\App;
 
+use R3m\Io\Config;
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
@@ -232,16 +233,23 @@ trait NodeList {
             array_key_exists('where', $options['index'])
         ){
             if($options['index']['count'] === 0){
-                ddd('need count url');
-                $cache = $object->data(App::CACHE);
-                $count = $cache->get(sha1($data_url) . '_count');
-                if($count === null){
-                    $object->data_read($data_url, sha1($data_url), [
-                        'index' => 'create',
-                        'class' => $name
-                    ]);
-                    $count = $cache->get(sha1($data_url) . '_count');
-                }
+                $dir_ramdisk_record = $this->config('ramdisk.url') .
+                    $this->config(Config::POSIX_ID) .
+                    $this->config('ds') .
+                    'Node' .
+                    $this->config('ds') .
+                    'Record' .
+                    $this->config('ds')
+                ;
+                $dir_ramdisk_count = $this->config('ramdisk.url') .
+                    $this->config(Config::POSIX_ID) .
+                    $this->config('ds') .
+                    'Node' .
+                    $this->config('ds') .
+                    'Count' .
+                    $this->config('ds')
+                ;
+                $count = File::read($dir_ramdisk_count . sha1($data_url) . $object->config('extension.txt'));
                 if($count){
                     $options['index']['count'] = $count;
                 }
