@@ -9,7 +9,7 @@
         "ext-posix": "*",
         "ext-zlib": "*",
         "ext-iconv": "*",
-        "r3m_io/framework": "*",
+        "r3m_io/framework": "*"
 
     },
     "license" : "MIT",
