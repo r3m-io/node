@@ -421,12 +421,22 @@ trait NodeList {
                 $object->config('extension.json');
 
             $ramdisk_url_nodelist = [];
+            $ramdisk_url_nodelist_shm = [];
             if($options['parallel'] === true){
                 for($i=0; $i<$options['thread']; $i++){
                     $ramdisk_url_nodelist[] = $ramdisk_dir_list .
                         $name .
                         '.' .
                         $key .
+                        '.' .
+                        $i .
+                        $object->config('extension.json');
+                    $ramdisk_url_nodelist_shm[] = $ramdisk_dir_list .
+                        $name .
+                        '.' .
+                        $key .
+                        '.' .
+                        'shm' .
                         '.' .
                         $i .
                         $object->config('extension.json');
