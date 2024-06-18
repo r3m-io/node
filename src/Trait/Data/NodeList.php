@@ -1009,14 +1009,17 @@ trait NodeList {
                         ){
                             d($ramdisk_url_nodelist);
                             d($options);
-                            ddd($result);
+                            $result_ramdisk = Core::array_partition($result, $options['thread']);
+                            ddd($result_ramdisk);
+
+                        } else {
+                            $relation_mtime = $this->relation_mtime($object_data);
+                            $ramdisk = new Storage();
+                            $ramdisk->set('mtime', $mtime);
+                            $ramdisk->set('response', $result);
+                            $ramdisk->set('relation', $relation_mtime);
+                            $ramdisk->write($ramdisk_url_node);
                         }
-                        $relation_mtime = $this->relation_mtime($object_data);
-                        $ramdisk = new Storage();
-                        $ramdisk->set('mtime', $mtime);
-                        $ramdisk->set('response', $result);
-                        $ramdisk->set('relation', $relation_mtime);
-                        $ramdisk->write($ramdisk_url_node);
                     }
                     if($start){
                         $result['#duration'] = (object) [
