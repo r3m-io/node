@@ -511,8 +511,8 @@ trait NodeList {
                                 $response['#duration']->item_per_second_nodelist = ($response['count'] / $response['#duration']->nodelist) * 1000;
                             } else {
                                 $response['#duration']->item_per_second_with_limit = true;
-                                $response['#duration']->item_per_second = ($options['limit'] / $response['#duration']->total) * 1000;
-                                $response['#duration']->item_per_second_nodelist = ($options['limit'] / $response['#duration']->nodelist) * 1000;
+                                $response['#duration']->item_per_second = ( (int) $options['limit'] / $response['#duration']->total) * 1000;
+                                $response['#duration']->item_per_second_nodelist = ( (int) $options['limit'] / $response['#duration']->nodelist) * 1000;
                             }
                         }
                         return $response;
