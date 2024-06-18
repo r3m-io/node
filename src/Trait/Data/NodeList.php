@@ -1011,6 +1011,7 @@ trait NodeList {
                             d($options);
                             $result_ramdisk = $result;
                             $result_ramdisk['list'] = Core::array_partition($result['list'], $options['thread']);
+                            $relation_mtime = $this->relation_mtime($object_data);
                             foreach($ramdisk_url_nodelist as $i => $ramdisk_url_nodelist_item){
                                 $ramdisk_data = $result_ramdisk;
                                 $ramdisk_data['list'] = $result_ramdisk['list'][$i];
