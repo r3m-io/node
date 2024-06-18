@@ -1339,7 +1339,6 @@ trait Index {
                                                                                             break;
                                                                                         }
                                                                                     }
-                                                                                    d($result);
                                                                                     fwrite($sockets[0], Core::object($result, Core::OBJECT_JSON_LINE));
                                                                                     fclose($sockets[0]);
                                                                                     exit(0);
