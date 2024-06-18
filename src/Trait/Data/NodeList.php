@@ -2,6 +2,7 @@
 
 namespace R3m\Io\Node\Trait\Data;
 
+use ErrorException;
 use R3m\Io\App;
 
 use R3m\Io\Module\Controller;
