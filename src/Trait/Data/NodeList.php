@@ -294,7 +294,7 @@ trait NodeList {
                         }
                         $record = false;
                     } else {
-                        $record = $this->index_record_expose($class, $role, $record, $local_options);
+//                        $record = $this->index_record_expose($class, $role, $record, $local_options);
                         if(
                             !in_array(
                                 $record->uuid,
@@ -333,11 +333,11 @@ trait NodeList {
                         $local_options['page'] = 1;
                         $record = $this->index_list_record($class, $role, $local_options);
                     }
-
                 }
                 $object->config('delete', 'node.record.leftsearch');
                 $object->config('delete', 'node.record.rightsearch');
             }
+            $list = $this->index_list_expose($class, $role, $list, $options);
             d('from index:' . $name);
             $result = [];
             $result['page'] = $options['page'];
