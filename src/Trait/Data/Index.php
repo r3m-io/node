@@ -1310,7 +1310,6 @@ trait Index {
                                                                                             $after = microtime(true);
                                                                                             $duration_where = $after - $before;
                                                                                         }
-                                                                                        ddd($record_where);
                                                                                         if ($record_where) {
 //                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                             if ($start) {
@@ -1341,6 +1340,7 @@ trait Index {
                                                                                             break;
                                                                                         }
                                                                                     }
+                                                                                    d($thread);
                                                                                     if (!empty($thread)) {
                                                                                         $thread = $this->index_list_expose($name, $role, $thread, $options);
                                                                                         fwrite($sockets[0], Core::object($thread, Core::OBJECT_JSON_LINE));
