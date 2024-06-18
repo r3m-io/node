@@ -1213,7 +1213,6 @@ trait Index {
                                                             break;
                                                             case 'left-only' :
                                                                 //search all of left
-                                                                ddd('found');
                                                                 $leftSearch--;
                                                                 while ($leftSearch >= $options['index']['min']) {
                                                                     if($options['parallel'] === true){
@@ -1223,6 +1222,11 @@ trait Index {
                                                                             $left[] = $i;
                                                                         }
                                                                         $partition = Core::array_partition($left, $options['thread'] ?? 8);
+
+                                                                        ddd($partion);
+
+
+
                                                                         foreach($partition as $partition_nr => $chunk) {
                                                                             $closures[] = function () use (
                                                                                 $object,
