@@ -481,25 +481,28 @@ trait NodeList {
                     }
 
 // Parent process: read data from each child
+                    $list = [];
+                    $response = false;
                     foreach ($pipes as $i => $pipe) {
                         // Read serialized data from the pipe
                         $data = stream_get_contents($pipe);
                         fclose($pipe);
-
-                        // Unserialize the data
-//                        $data = unserialize($serializedData);
-
-                        echo "Child $i said: ";
-                        print_r($data);
+                        $response = (array) Core::object($data, Core::OBJECT_OBJECT);
+                        if(array_key_exists('list', $response)) {
+                            foreach($response['list'] as $item){
+                                $list[] = $item;
+                            }
+                        }
                     }
-
 // Wait for all children to exit
                     foreach ($children as $child) {
                         pcntl_waitpid($child, $status);
                     }
+                    if($response){
+                        $response['list'] = $list;
+                        return $response;
+                    }
 
-                    echo "All children have exited.\n";
-                    die;
 
                     //fix transaction
                     $is_cache_miss = [];
