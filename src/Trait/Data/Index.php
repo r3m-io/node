@@ -1223,6 +1223,7 @@ trait Index {
                                                                 $object->config('node.record.leftsearch', $leftSearch);
                                                             break;
                                                             case 'left-only' :
+                                                                ddd($options);
 //                                                                set_time_limit(600);
                                                                 //search all of left
                                                                 $leftSearch--;
