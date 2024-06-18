@@ -167,6 +167,22 @@ trait NodeList {
             $name .
             $object->config('extension.json');
         if(stristr($name, 'account.permission')){
+            $data = $object->data_read($data_url);
+            if($data){
+                $start = 0;
+                $limit = 1000000;
+                $list = [];
+                for($i=$start; $i < $limit; $i++){
+                    $record = (object) [
+                        'uuid' => Core::uuid(),
+                        '#class' => $name,
+                        'name' => 'permission:' . $i,
+                    ];
+                    $list[]= $record;
+                }
+                $data->data($name, $list);
+                $data->write($data_url);
+            }
             ddd($data_url);
         }
 
