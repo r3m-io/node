@@ -1103,14 +1103,14 @@ trait Index {
                                                 array_shift($set);
                                                 array_shift($set);
                                             }
-                                            d($set_index_0);
-                                            d($set_index_2);
+//                                            d($set_index_0);
+//                                            d($set_index_2);
                                             if($set_index_2[0]['match'] === false){
                                                 if(
                                                     is_array($index_where[2][0]) &&
                                                     $set_init[2]['operator'] === 'not-in'
                                                 ){
-                                                    d($index_where);
+//                                                    d($index_where);
                                                     if(
                                                         in_array(
                                                             $index_where[2][1],
