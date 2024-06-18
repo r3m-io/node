@@ -436,7 +436,7 @@ trait NodeList {
                     $children = [];
 
 // Create pipes and fork processes
-                    for ($i = 0; $i < 8; $i++) {
+                    for ($i = 0; $i < $options['thread']; $i++) {
                         // Create a pipe
                         $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
                         if ($sockets === false) {
@@ -459,18 +459,21 @@ trait NodeList {
                             // Close the parent's socket
                             fclose($sockets[1]);
 
-                            // Prepare data to send to the parent
+                            $data = File::read($ramdisk_url_nodelist[$i]);
+
+                            // Prepare data to send o the parent
+                            /*
                             $data = [
                                 'message' => "Hello from child $i",
                                 'timestamp' => time(),
                                 'pid' => posix_getpid()
                             ];
-
+                            */
                             // Serialize the data
-                            $serializedData = serialize($data);
+//                            $serializedData = serialize($data);
 
                             // Send serialized data to the parent
-                            fwrite($sockets[0], $serializedData);
+                            fwrite($sockets[0], $data);
                             fclose($sockets[0]);
 
                             exit(0);
@@ -480,11 +483,11 @@ trait NodeList {
 // Parent process: read data from each child
                     foreach ($pipes as $i => $pipe) {
                         // Read serialized data from the pipe
-                        $serializedData = stream_get_contents($pipe);
+                        $data = stream_get_contents($pipe);
                         fclose($pipe);
 
                         // Unserialize the data
-                        $data = unserialize($serializedData);
+//                        $data = unserialize($serializedData);
 
                         echo "Child $i said: ";
                         print_r($data);
