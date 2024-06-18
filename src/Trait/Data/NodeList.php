@@ -487,10 +487,13 @@ trait NodeList {
                         // Read serialized data from the pipe
                         $data = stream_get_contents($pipe);
                         fclose($pipe);
-                        $response = (array) Core::object($data, Core::OBJECT_OBJECT);
-                        if(array_key_exists('list', $response)) {
-                            foreach($response['list'] as $item){
-                                $list[] = $item;
+                        $data = (array) Core::object($data, Core::OBJECT_OBJECT);
+                        if(array_key_exists('response', $data)){
+                            $response = $data['response'];
+                            if(array_key_exists('list', $response)) {
+                                foreach($response['list'] as $item){
+                                    $list[] = $item;
+                                }
                             }
                         }
                     }
@@ -499,7 +502,6 @@ trait NodeList {
                         pcntl_waitpid($child, $status);
                     }
                     if($response){
-                        ddd($response);
                         $response['list'] = $list;
                         if ($start) {
                             $response['#duration'] = (object) [
