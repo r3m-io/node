@@ -468,8 +468,8 @@ trait NodeList {
                                     return false;
                                 }
                                 $shm = SharedMemory::open(ftok($ramdisk_url_nodelist_item, 'a'), 'n');
-                                if($shm === false){
-                                    return false;
+                                if($shm !== false){
+                                    SharedMemory::delete($shm);
                                 }
                                 $size = SharedMemory::write($shm, Core::object($data->data(), Core::OBJECT_JSON_LINE));
                                 return [
