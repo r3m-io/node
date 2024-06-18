@@ -865,6 +865,9 @@ trait NodeList {
                         $chunk = $chunks[$i];
                         if(is_array($array)){
                             foreach($chunk as $nr => $record){
+                                if(!array_key_exists($nr, $array)){
+                                    ddd($array);
+                                }
                                 if($array[$nr] === 1){
                                     if(
                                         $options['parse'] === true &&
