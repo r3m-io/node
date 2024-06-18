@@ -1139,15 +1139,7 @@ trait Index {
                                                                     $line = $file['uuid']->current();
                                                                     $value = rtrim($line, PHP_EOL);
                                                                     $record->uuid = $value;
-                                                                    if(stristr($record->name, 'system') !== false){
-                                                                        $options['debug'] = true;
-                                                                        d($record);
-                                                                    }
                                                                     $record_where = $this->where($record, $options['where'], $options);
-                                                                    if($record_where && stristr($record_where->name, 'task') === false){
-                                                                        d($options);
-                                                                        ddd($record_where);
-                                                                    }
                                                                     if($record_where){
                                                                         $object->config('node.record.leftsearch', $leftSearch);
                                                                         return $record;
