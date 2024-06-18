@@ -171,7 +171,7 @@ trait NodeList {
             $data = $object->data_read($data_url);
             if($data){
                 $start = 0;
-                $limit = 10000;
+                $limit = 50000;
                 $list = [];
                 for($i=$start; $i < $limit; $i++){
                     $record = (object) [
