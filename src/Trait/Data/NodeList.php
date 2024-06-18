@@ -866,6 +866,7 @@ trait NodeList {
                         if(is_array($array)){
                             foreach($chunk as $nr => $record){
                                 if(!array_key_exists($nr, $array)){
+                                    d($data);
                                     ddd($array);
                                 }
                                 if($array[$nr] === 1){
