@@ -1334,7 +1334,7 @@ trait Index {
                                                                                                     ];
                                                                                                 }
                                                                                             }
-                                                                                            $result[$i] = 1;
+                                                                                            $result[$i] = $record;
                                                                                         } else {
                                                                                             break;
                                                                                         }
@@ -1371,14 +1371,16 @@ trait Index {
                                                                                 $data &&
                                                                                 array_key_exists($i, $partition)
                                                                             ){
-                                                                                $chunk = $partition[$i];
-                                                                                ddd($chunk);
-                                                                                foreach($data as $nr => $bool){
+//                                                                                $chunk = $partition[$i];
+                                                                                foreach($data as $nr => $record){
+                                                                                    $result[] = $record;
+                                                                                    /*
                                                                                     if($bool === 1){
                                                                                         if(array_key_exists($nr, $chunk)){
                                                                                             $result[] = $chunk[$nr];
                                                                                         }
                                                                                     }
+                                                                                    */
                                                                                 }
                                                                             }
                                                                         }
