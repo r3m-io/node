@@ -166,6 +166,7 @@ trait NodeList {
             $object->config('ds') .
             $name .
             $object->config('extension.json');
+        ddd($data_url);
         if (!File::exist($data_url)) {
             $list = [];
             $result = [];
