@@ -924,11 +924,11 @@ trait Index {
 //                        d($set);
 //                        d($where_process);
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
-//                        d($set) ;
-//                        d($deepest);
-//                        d($operator);
+                        d($set) ;
+                        d($deepest);
+                        d($operator);
                         d($index_where);
-                        d($where_process);
+                        ddd($where_process);
 
                         if(
                             empty($set) &&
