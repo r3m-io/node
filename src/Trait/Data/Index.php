@@ -901,7 +901,7 @@ trait Index {
 //            d($record);
 //           d($options['where']);
             $record_where = $this->where($record, $options['where'], $options);
-            d($record_where);
+//            d($record_where);
             if($record_where){
                 d('yes1');
                 return $record;
@@ -924,11 +924,11 @@ trait Index {
 //                        d($set);
 //                        d($where_process);
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
-                        d($set) ;
-                        d($deepest);
-                        d($operator);
-                        d($index_where);
-                        d($where_process);
+//                        d($set) ;
+//                        d($deepest);
+//                        d($operator);
+//                        d($index_where);
+//                        d($where_process);
 
                         if(
                             empty($set) &&
@@ -1027,7 +1027,6 @@ trait Index {
                                         if($index_where[0][0] === $set[0]['value']){
                                             $options['index']['max'] = $seek - 1;
                                             if($options['index']['max'] < $options['index']['min']){
-                                                ddd('found');
                                                 $record = false;
                                                 break;
                                             }
@@ -1037,7 +1036,6 @@ trait Index {
                                             //min becomes seek + 1
                                             $options['index']['min'] = $seek + 1;
                                             if($options['index']['max'] < $options['index']['min']){
-                                                ddd('found');
                                                 $record = false;
                                                 break;
                                             }
@@ -1056,7 +1054,7 @@ trait Index {
                                                     $set[2]['match'] === false
                                                 ){
 //                                                    d($set);
-                                                    d($index_where);
+//                                                    d($index_where);
                                                     if(!is_array($index_where[2][0])){
                                                         sort($index_where[2], SORT_NATURAL);
                                                         if($index_where[2][0] === $set[2]['value']){
