@@ -1074,6 +1074,7 @@ trait Index {
                                                             $options['index']['min'] = $seek + 1;
                                                             if($options['index']['max'] < $options['index']['min']){
                                                                 $set = [];
+                                                                ddd('error2');
                                                                 break 2;
                                                             }
                                                             break 3;
