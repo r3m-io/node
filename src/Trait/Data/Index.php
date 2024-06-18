@@ -1310,6 +1310,7 @@ trait Index {
                                                                                             $after = microtime(true);
                                                                                             $duration_where = $after - $before;
                                                                                         }
+                                                                                        ddd($record_where);
                                                                                         if ($record_where) {
 //                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                             if ($start) {
