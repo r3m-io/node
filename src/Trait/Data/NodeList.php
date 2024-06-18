@@ -465,7 +465,7 @@ trait NodeList {
                                 if($is_cache_miss){
                                     return false;
                                 }
-                                return $data;
+                                return serialize($data);
                             } else {
                                 return false;
                             }
@@ -479,6 +479,7 @@ trait NodeList {
                             $is_ok = false;
                             break;
                         }
+                        $item = unserialize($item);
                         $response = (array) $item->get('response');
                         if(array_key_exists('list', $response)) {
                             foreach($response['list'] as $item){
