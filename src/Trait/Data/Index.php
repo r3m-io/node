@@ -1223,7 +1223,7 @@ trait Index {
                                                                         }
                                                                         $partition = Core::array_partition($left, $options['thread'] ?? 8);
 
-                                                                        ddd($partion);
+                                                                        ddd($partition);
 
 
 
