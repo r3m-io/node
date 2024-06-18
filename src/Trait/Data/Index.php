@@ -1223,6 +1223,10 @@ trait Index {
                                                                 $object->config('node.record.leftsearch', $leftSearch);
                                                             break;
                                                             case 'left-only' :
+                                                                $debug = debug_backtrace(1);
+                                                                d($debug[0]['line'] . ' ' . $debug[0]['file'] . ' ' . $debug[0]['function']);
+                                                                d($debug[1]['line'] . ' ' . $debug[1]['file'] . ' ' . $debug[1]['function']);
+                                                                d($debug[2]['line'] . ' ' . $debug[2]['file'] . ' ' . $debug[2]['function']);
                                                                 ddd($options);
 //                                                                set_time_limit(600);
                                                                 //search all of left
