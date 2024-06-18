@@ -1366,10 +1366,7 @@ trait Index {
                                                                             $data = stream_get_contents($pipe);
                                                                             fclose($pipe);
                                                                             $data = Core::object($data, Core::OBJECT_OBJECT);
-                                                                            if(
-                                                                                $data &&
-                                                                                array_key_exists($i, $partition)
-                                                                            ){
+                                                                            if($data){
                                                                                 $dir_ramdisk_record = $object->config('ramdisk.url') .
                                                                                     $object->config(Config::POSIX_ID) .
                                                                                     $object->config('ds') .
@@ -1756,16 +1753,6 @@ trait Index {
                         array_key_exists(0, $where_process) &&
                         $where_process[0]['match'] === false
                     ){
-                        $debug = debug_backtrace(1);
-                        d($debug[0]['line'] . ' ' . $debug[0]['file'] . ' ' . $debug[0]['function']);
-                        d($debug[1]['line'] . ' ' . $debug[1]['file'] . ' ' . $debug[1]['function']);
-                        d($debug[2]['line'] . ' ' . $debug[2]['file'] . ' ' . $debug[2]['function']);
-
-                        d($set_init);
-                        d($set);
-                        ddd($where_process);
-//                        $where_process = [];
-                        d('found: 26');
                         break;
                     }
 //                    d($where_process);
