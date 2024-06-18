@@ -302,7 +302,11 @@ trait NodeList {
                                 true
                             )
                         ){
-                            if($count >= ($options['page'] * $options['limit']) - $options['limit']){
+                            if($options['page'] === 1 && $options['limit'] === '*'){
+                                $record->{'#index'} = $count;
+                                $list[] = $record;
+                            }
+                            elseif($count >= ($options['page'] * $options['limit']) - $options['limit']){
                                 $record->{'#index'} = $count;
                                 $list[] = $record;
                             }
