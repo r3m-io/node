@@ -1315,6 +1315,8 @@ trait Index {
                                                                                         if ($record_where) {
 //                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                             $result[$i] = $record->uuid;
+                                                                                            d($count);
+                                                                                            ddd($options);
                                                                                             if($options['page'] === 1 && $options['limit'] === '*'){
                                                                                                 $result[$i] = $record->uuid;
                                                                                             }
