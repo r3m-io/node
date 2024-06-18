@@ -1303,7 +1303,6 @@ trait Index {
                                                                                         $line = $file['uuid']->current();
                                                                                         $value = rtrim($line, PHP_EOL);
                                                                                         $record->uuid = $value;
-                                                                                        ddd($record);
                                                                                         $before = microtime(true);
                                                                                         $duration_before = $before - $start;
                                                                                         $record_where = $this->where($record, $options['where'], $options);
