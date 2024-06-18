@@ -166,7 +166,7 @@ trait NodeList {
             $object->config('ds') .
             $name .
             $object->config('extension.json');
-
+        /*
         if(stristr($name, 'account.permission')){
             $data = $object->data_read($data_url);
             if($data){
@@ -186,7 +186,7 @@ trait NodeList {
             }
             ddd($data_url);
         }
-
+        */
 
         if (!File::exist($data_url)) {
             $list = [];
