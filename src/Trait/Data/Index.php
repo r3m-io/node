@@ -1235,7 +1235,6 @@ trait Index {
 //                                                                set_time_limit(600);
                                                                 //search all of left
                                                                 $leftSearch--;
-                                                                ddd($options);
                                                                 while ($leftSearch >= $options['index']['min']) {
                                                                     if($options['parallel'] === true){
                                                                         $left = [];
