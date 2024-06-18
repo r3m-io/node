@@ -487,6 +487,7 @@ trait NodeList {
                             break;
                         }
                         try {
+                            ddd($item);
                             $shm = SharedMemory::open(ftok($item['url'], 'a'), 'a');
                             $data = SharedMemory::read($shm, 0, $item['size']);
                             ddd($data);
