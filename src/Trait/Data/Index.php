@@ -1334,7 +1334,7 @@ trait Index {
                                                                                                     ];
                                                                                                 }
                                                                                             }
-                                                                                            $result[$i] = $record;
+                                                                                            $result[$i] = $record->uuid;
                                                                                         } else {
                                                                                             break;
                                                                                         }
@@ -1370,6 +1370,20 @@ trait Index {
                                                                                 $data &&
                                                                                 array_key_exists($i, $partition)
                                                                             ){
+                                                                                $cache = $object->data(App::CACHE);
+
+                                                                                $data_url = $object->config('project.dir.node') .
+                                                                                    'Data' .
+                                                                                    $object->config('ds') .
+                                                                                    $name .
+                                                                                    $object->config('extension.json');
+
+                                                                                $data_read = $cache->get(sha1($data_url) . '_index');
+                                                                                ddd($data_read);
+                                                                                $cache = $object->data(App::CACHE);
+
+
+
 //                                                                                $chunk = $partition[$i];
                                                                                 foreach($data as $nr => $record){
                                                                                     $result[] = $record;
