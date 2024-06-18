@@ -489,7 +489,7 @@ trait NodeList {
                         fclose($pipe);
                         $data = (array) Core::object($data, Core::OBJECT_OBJECT);
                         if(array_key_exists('response', $data)){
-                            $response = $data['response'];
+                            $response = (array) $data['response'];
                             if(array_key_exists('list', $response)) {
                                 foreach($response['list'] as $item){
                                     $list[] = $item;
