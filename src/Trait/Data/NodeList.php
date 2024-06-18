@@ -395,6 +395,19 @@ trait NodeList {
                 '.' .
                 $key .
                 $object->config('extension.json');
+
+            $ramdisk_url_nodelist = [];
+            if($options['parallel'] === true){
+                foreach($i=0; $i<$options['thread']; $i++){
+                    $ramdisk_url_nodelist[] = $ramdisk_dir_list .
+                        $name .
+                        '.' .
+                        $key .
+                        '.' .
+                        $i .
+                        $object->config('extension.json');
+                }
+            }
             if (File::exist($ramdisk_url_node)) {
                 if ($options['transaction'] === true) {
                     $ramdisk = $object->data_read($ramdisk_url_node, sha1($ramdisk_url_node));
@@ -992,9 +1005,9 @@ trait NodeList {
                         $ramdisk_url_node !== false
                     ){
                         if(
-                            array_key_exists('parallel', $options) &&
                             $options['parallel'] === true
                         ){
+                            d($ramdisk_url_nodelist);
                             d($options);
                             ddd($result);
                         }
