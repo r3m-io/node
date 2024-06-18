@@ -1222,7 +1222,166 @@ trait Index {
                                                                             $left[] = $i;
                                                                         }
                                                                         $partition = Core::array_partition($left, $options['thread'] ?? 8);
+                                                                        $pipes = [];
+                                                                        $children = [];
+// Create pipes and fork processes
+                                                                        for ($i = 0; $i < $options['thread']; $i++) {
+                                                                            // Create a pipe
+                                                                            $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+                                                                            if ($sockets === false) {
+                                                                                die("Unable to create socket pair for child $i");
+                                                                            }
 
+                                                                            $pid = pcntl_fork();
+                                                                            if ($pid == -1) {
+                                                                                die("Could not fork for child $i");
+                                                                            } elseif ($pid) {
+                                                                                // Parent process
+                                                                                // Close the child's socket
+                                                                                fclose($sockets[0]);
+
+                                                                                // Store the parent socket and child PID
+                                                                                $pipes[$i] = $sockets[1];
+                                                                                $children[$i] = $pid;
+                                                                            } else {
+                                                                                // Child process
+                                                                                // Close the parent's socket
+                                                                                fclose($sockets[1]);
+
+                                                                                $start = false;
+                                                                                if (
+                                                                                    array_key_exists('duration', $options) &&
+                                                                                    $options['duration'] === true
+                                                                                ) {
+                                                                                    $start = microtime(true);
+                                                                                }
+                                                                                $url_store = $object->config('ramdisk.url') .
+                                                                                    $object->config(Config::POSIX_ID) .
+                                                                                    $object->config('ds') .
+                                                                                    'Node' .
+                                                                                    $object->config('ds') .
+                                                                                    'Index' .
+                                                                                    $object->config('ds') .
+                                                                                    $name .
+                                                                                    '.' .
+                                                                                    'Response' .
+                                                                                    '.' .
+                                                                                    $i .
+                                                                                    '.' .
+                                                                                    Core::uuid() .
+                                                                                    $object->config('extension.json');
+                                                                                $file = [];
+                                                                                if (!array_key_exists('url_uuid', $options['index'])) {
+                                                                                    return false;
+                                                                                }
+                                                                                if (!File::exist($options['index']['url_uuid'])) {
+                                                                                    return false;
+                                                                                }
+                                                                                $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
+                                                                                foreach ($options['index']['url'] as $nr => $url) {
+                                                                                    $file[$nr] = new SplFileObject($url);
+                                                                                }
+                                                                                $thread = [];
+                                                                                if (array_key_exists($i, $partition)) {
+
+                                                                                    $chunk = $partition[$i];
+                                                                                    foreach ($chunk as $chunk_nr => $i) {
+                                                                                        if ($start) {
+                                                                                            $init = microtime(true);
+                                                                                        }
+                                                                                        $record = (object)[];
+                                                                                        $values = [];
+                                                                                        foreach ($options['index']['where'] as $nr => $attribute) {
+                                                                                            $file[$nr]->seek($i);
+                                                                                            $line = $file[$nr]->current();
+                                                                                            $values[] = $line;
+                                                                                            $value = rtrim($line, PHP_EOL);
+                                                                                            $record->{$attribute} = $value;
+                                                                                        }
+                                                                                        $file['uuid']->seek($i);
+                                                                                        $line = $file['uuid']->current();
+                                                                                        $value = rtrim($line, PHP_EOL);
+                                                                                        $record->uuid = $value;
+                                                                                        $before = microtime(true);
+                                                                                        $duration_before = $before - $start;
+                                                                                        $record_where = $this->where($record, $options['where'], $options);
+                                                                                        if ($start) {
+                                                                                            $after = microtime(true);
+                                                                                            $duration_where = $after - $before;
+                                                                                        }
+                                                                                        if ($record_where) {
+                                                                                            //make the list expose & not the record, should be faster
+                                                                                            //but less safe ?
+                                                                                            //                                                                                        $record = $this->index_record_expose($name, $role, $record, $options);
+                                                                                            if ($start) {
+                                                                                                $expose = microtime(true);
+                                                                                                if (property_exists($record, '#duration')) {
+                                                                                                    $record->{'#duration'} = Core::object_merge(
+                                                                                                        $record->{'#duration'},
+                                                                                                        (object)[
+                                                                                                            'start' => $start,
+                                                                                                            'wait' => $duration_before * 1000,
+                                                                                                            'where' => $duration_where * 1000,
+                                                                                                            'expose' => ($expose - $after) * 1000,
+                                                                                                            'total' => ($expose - $init) * 1000
+                                                                                                        ]
+                                                                                                    );
+                                                                                                } else {
+                                                                                                    $record->{'#duration'} = (object)[
+                                                                                                        'start' => $start,
+                                                                                                        'wait' => $duration_before * 1000,
+                                                                                                        'where' => $duration_where * 1000,
+                                                                                                        'expose' => ($expose - $after) * 1000,
+                                                                                                        'total' => ($expose - $init) * 1000
+                                                                                                    ];
+                                                                                                }
+                                                                                            }
+                                                                                            $thread[$i] = $record;
+                                                                                        } else {
+                                                                                            break;
+                                                                                        }
+                                                                                    }
+                                                                                    if (!empty($thread)) {
+                                                                                        $thread = $this->index_list_expose($name, $role, $thread, $options);
+                                                                                        fwrite($sockets[0], Core::object($thread, Core::OBJECT_JSON_LINE));
+                                                                                        fclose($sockets[0]);
+                                                                                        exit(0);
+                                                                                    }
+                                                                                    return false;
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        $result = [];
+
+                                                                                // Prepare data to send o the parent
+                                                                                /*
+                                                                                $data = [
+                                                                                    'message' => "Hello from child $i",
+                                                                                    'timestamp' => time(),
+                                                                                    'pid' => posix_getpid()
+                                                                                ];
+                                                                                */
+                                                                                // Serialize the data
+//                            $serializedData = serialize($data);
+
+                                                                                // Send serialized data to the parent
+// Parent process: read data from each child
+                                                                        $list = [];
+                                                                        $response = false;
+                                                                        foreach ($pipes as $i => $pipe) {
+                                                                            // Read serialized data from the pipe
+                                                                            $data = stream_get_contents($pipe);
+                                                                            fclose($pipe);
+                                                                            $data = Core::object($data, Core::OBJECT_OBJECT);
+                                                                            ddd($data);
+                                                                        }
+// Wait for all children to exit
+                                                                        foreach ($children as $child) {
+                                                                            pcntl_waitpid($child, $status);
+                                                                        }
+                                                                        if($response) {
+
+                                                                        }
                                                                         ddd($partition);
 
 

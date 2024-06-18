@@ -5,10 +5,12 @@
     "keywords" : ["node", "r3m", "library", "framework", "node", "r3m.io"],
     "homepage": "https://r3m.io",
     "require" : {
+        "ext-pcntl": "*",
         "ext-posix": "*",
         "ext-zlib": "*",
         "ext-iconv": "*",
-        "r3m_io/framework": "*"
+        "r3m_io/framework": "*",
+
     },
     "license" : "MIT",
     "authors" : [{
