@@ -234,12 +234,12 @@ trait NodeList {
         ){
             if($options['index']['count'] === 0){
                 $dir_ramdisk_count = $object->config('ramdisk.url') .
-                    $this->config(Config::POSIX_ID) .
-                    $this->config('ds') .
+                    $object->config(Config::POSIX_ID) .
+                    $object->config('ds') .
                     'Node' .
-                    $this->config('ds') .
+                    $object->config('ds') .
                     'Count' .
-                    $this->config('ds')
+                    $object->config('ds')
                 ;
                 $count = File::read($dir_ramdisk_count . sha1($data_url) . $object->config('extension.txt'));
                 if($count){

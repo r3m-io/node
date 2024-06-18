@@ -1371,12 +1371,12 @@ trait Index {
                                                                                 array_key_exists($i, $partition)
                                                                             ){
                                                                                 $dir_ramdisk_record = $object->config('ramdisk.url') .
-                                                                                    $this->config(Config::POSIX_ID) .
-                                                                                    $this->config('ds') .
+                                                                                    $object->config(Config::POSIX_ID) .
+                                                                                    $object->config('ds') .
                                                                                     'Node' .
-                                                                                    $this->config('ds') .
+                                                                                    $object->config('ds') .
                                                                                     'Record' .
-                                                                                    $this->config('ds')
+                                                                                    $object->config('ds')
                                                                                 ;
                                                                                 foreach($data as $nr => $uuid){
                                                                                     $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
