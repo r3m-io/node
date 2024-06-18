@@ -1383,6 +1383,8 @@ trait Index {
                                                                                     if(File::exist($url_ramdisk_record)){
                                                                                         $result[] = $object->data_read($url_ramdisk_record);
                                                                                         ddd($result);
+                                                                                    } else {
+                                                                                        ddd($url_ramdisk_record);
                                                                                     }
                                                                                 }
                                                                             }
