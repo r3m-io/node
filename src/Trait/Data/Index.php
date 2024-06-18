@@ -1305,10 +1305,8 @@ trait Index {
                                                                                 $result = [];
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
+                                                                                    $count =0;
                                                                                     foreach ($chunk as $chunk_nr => $i) {
-                                                                                        if ($start) {
-                                                                                            $init = microtime(true);
-                                                                                        }
                                                                                         $record = (object)[];
                                                                                         $values = [];
                                                                                         foreach ($options['index']['where'] as $nr => $attribute) {
@@ -1322,39 +1320,19 @@ trait Index {
                                                                                         $line = $file['uuid']->current();
                                                                                         $value = rtrim($line, PHP_EOL);
                                                                                         $record->uuid = $value;
-                                                                                        $before = microtime(true);
-                                                                                        $duration_before = $before - $start;
                                                                                         $record_where = $this->where($record, $options['where'], $options);
-                                                                                        if ($start) {
-                                                                                            $after = microtime(true);
-                                                                                            $duration_where = $after - $before;
-                                                                                        }
                                                                                         if ($record_where) {
 //                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
-                                                                                            if ($start) {
-                                                                                                $expose = microtime(true);
-                                                                                                if (property_exists($record, '#duration')) {
-                                                                                                    $record->{'#duration'} = Core::object_merge(
-                                                                                                        $record->{'#duration'},
-                                                                                                        (object)[
-                                                                                                            'start' => $start,
-                                                                                                            'wait' => $duration_before * 1000,
-                                                                                                            'where' => $duration_where * 1000,
-                                                                                                            'expose' => ($expose - $after) * 1000,
-                                                                                                            'total' => ($expose - $init) * 1000
-                                                                                                        ]
-                                                                                                    );
-                                                                                                } else {
-                                                                                                    $record->{'#duration'} = (object)[
-                                                                                                        'start' => $start,
-                                                                                                        'wait' => $duration_before * 1000,
-                                                                                                        'where' => $duration_where * 1000,
-                                                                                                        'expose' => ($expose - $after) * 1000,
-                                                                                                        'total' => ($expose - $init) * 1000
-                                                                                                    ];
-                                                                                                }
-                                                                                            }
                                                                                             $result[$i] = $record->uuid;
+                                                                                            if($options['page'] === 1 && $options['limit'] === '*'){
+                                                                                                $result[$i] = $record->uuid;
+                                                                                            }
+                                                                                            elseif($count >= ($options['page'] * $options['limit']) - $options['limit']){
+                                                                                                $result[$i] = $record->uuid;
+                                                                                            } else {
+                                                                                                break;
+                                                                                            }
+                                                                                            $count++;
                                                                                         } else {
                                                                                             break;
                                                                                         }
@@ -1399,9 +1377,6 @@ trait Index {
                                                                                     $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
                                                                                     if(File::exist($url_ramdisk_record)){
                                                                                         $result[] = $object->data_read($url_ramdisk_record);
-                                                                                        ddd($result);
-                                                                                    } else {
-                                                                                        ddd($url_ramdisk_record);
                                                                                     }
                                                                                 }
                                                                             }
