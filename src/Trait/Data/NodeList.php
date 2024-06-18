@@ -166,12 +166,12 @@ trait NodeList {
             $object->config('ds') .
             $name .
             $object->config('extension.json');
-        /*
+
         if(stristr($name, 'account.permission')){
             $data = $object->data_read($data_url);
             if($data){
                 $start = 0;
-                $limit = 10000000;
+                $limit = 10000;
                 $list = [];
                 for($i=$start; $i < $limit; $i++){
                     $record = (object) [
@@ -186,7 +186,7 @@ trait NodeList {
             }
             ddd($data_url);
         }
-        */
+
 
         if (!File::exist($data_url)) {
             $list = [];
