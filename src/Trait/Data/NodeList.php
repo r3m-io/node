@@ -287,7 +287,6 @@ trait NodeList {
                             }
                         }
                         //one record to much, the binarysearch start
-                        array_shift($list);
                         if($options['parallel'] === true){
                             ddd($list);
                         } else {
