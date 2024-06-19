@@ -289,7 +289,6 @@ trait NodeList {
                             $partition = Core::array_partition($list, $options['thread'], false, $count);
                             $total = 0;
                             $result = [];
-                            ddd($partition);
                             foreach($partition as $nr => $list){
                                 if($options['limit'] !== '*'){
                                     $count = 0;
@@ -297,6 +296,8 @@ trait NodeList {
                                         'limit' => $options['limit'],
                                         'page' => $options['page']
                                     ], [], $count);
+                                    d($count);
+                                    ddd($list);
                                 }
                                 $total += $count;
                                 foreach($list as $record){
