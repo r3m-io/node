@@ -295,6 +295,7 @@ trait NodeList {
                                 'limit' => $options['limit'],
                                 'page' => $options['page']
                             ]);
+                            ddd($list);
                         }
                         $record = false;
                     } else {
