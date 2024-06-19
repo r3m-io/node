@@ -261,16 +261,14 @@ trait NodeList {
                 }
             } else {
                 $local_options = $options;
-//                $local_options['limit'] = 1;
-//                $local_options['page'] = 1;
+                $local_options['limit'] = 1;
+                $local_options['page'] = 1;
                 d($local_options);
                 $record = $this->index_list_record($class, $role, $local_options);
 //                d($record);
                 $found = [];
                 while($record !== false){
                     if(is_array($record)){
-                        ddd(count($record));
-
                         foreach($record as $rec){
                             //index_record_expose is handled in the separate thread
                             if(
@@ -334,8 +332,8 @@ trait NodeList {
                         }
                         $options_where = $this->index_record_next($found, $options);
                         $local_options['where'] = $options_where;
-                        $local_options['limit'] = 1;
-                        $local_options['page'] = 1;
+//                        $local_options['limit'] = 1;
+//                        $local_options['page'] = 1;
                         $local_options['debug'] = true;
                         $record = $this->index_list_record($class, $role, $local_options);
                     }
