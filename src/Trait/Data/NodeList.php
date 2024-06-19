@@ -290,6 +290,11 @@ trait NodeList {
                         array_shift($list);
                         if($options['parallel'] === true){
                             ddd($list);
+                        } else {
+                            $list = Limit::list($list)->with([
+                                'limit' => $options['limit'],
+                                'page' => $options['page']
+                            ]);
                         }
                         $record = false;
                     } else {
