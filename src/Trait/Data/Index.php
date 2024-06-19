@@ -1293,17 +1293,17 @@ trait Index {
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
                                                                                     $count = 0;
-                                                                                    foreach ($chunk as $chunk_nr => $i) {
+                                                                                    foreach ($chunk as $chunk_nr => $pointer) {
                                                                                         $record = (object)[];
                                                                                         $values = [];
                                                                                         foreach ($options['index']['where'] as $nr => $attribute) {
-                                                                                            $file[$nr]->seek($i);
+                                                                                            $file[$nr]->seek($pointer);
                                                                                             $line = $file[$nr]->current();
                                                                                             $values[] = $line;
                                                                                             $value = rtrim($line, PHP_EOL);
                                                                                             $record->{$attribute} = $value;
                                                                                         }
-                                                                                        $file['uuid']->seek($i);
+                                                                                        $file['uuid']->seek($pointer);
                                                                                         $line = $file['uuid']->current();
                                                                                         $value = rtrim($line, PHP_EOL);
                                                                                         $record->uuid = $value;
@@ -1311,14 +1311,14 @@ trait Index {
                                                                                         if ($record_where) {
 //                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                             if($options['page'] === 1 && $options['limit'] === '*'){
-                                                                                                $result[$i] = $record->uuid;
+                                                                                                $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
                                                                                             elseif(
                                                                                                 $count >= ($options['page'] * $options['limit']) - $options['limit'] &&
                                                                                                 $count < $options['page'] * $options['limit']
                                                                                             ){
-                                                                                                $result[$i] = $record->uuid;
+                                                                                                $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
                                                                                             elseif($count < ($options['page'] * $options['limit']) - $options['limit']){
