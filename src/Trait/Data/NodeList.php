@@ -327,7 +327,6 @@ trait NodeList {
                             $found[] = $record->get('uuid');
                             $count++;
                         }
-                        ddd($list);
 //                    d($count);
 //                    d($options['page']);
 //                    d($options['limit']);
