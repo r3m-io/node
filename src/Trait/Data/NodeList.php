@@ -283,12 +283,6 @@ trait NodeList {
                                 $found[] = $rec->uuid;
                                 $count++;
                             }
-                            if(
-                                $options['limit'] !== '*' &&
-                                $count === (($options['page'] * $options['limit']))
-                            ){
-                                break;
-                            }
                         }
                         $record = false;
                     } else {
