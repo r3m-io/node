@@ -1368,6 +1368,7 @@ trait Index {
                                                                                                     // Socket is ready for writing
                                                                                                     continue;
                                                                                                 } else {
+                                                                                                    d($except);
                                                                                                     echo "Stream select failed or no stream is ready\n";
                                                                                                     break;
                                                                                                 }
