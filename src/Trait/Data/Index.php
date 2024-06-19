@@ -854,6 +854,14 @@ trait Index {
         $counter = 0;
         $max = 4096;
         $seek_old = false;
+        $dir_ramdisk_record = $object->config('ramdisk.url') .
+            $object->config(Config::POSIX_ID) .
+            $object->config('ds') .
+            'Node' .
+            $object->config('ds') .
+            'Record' .
+            $object->config('ds')
+        ;
 //        d('find record');
         while($options['index']['min'] <= $options['index']['max']) {
             $seek = $options['index']['min'] +
@@ -891,6 +899,11 @@ trait Index {
             $record_where = $this->where($record, $options['where'], $options);
 //            d($record_where);
             if($record_where){
+                $url_ramdisk_record = $dir_ramdisk_record .
+                    $record->uuid .
+                    $object->config('extension.json')
+                ;
+                $record = $object->data_read($url_ramdisk_record);
                 return $record;
             } else {
                 $where = $options['where'];
@@ -1105,14 +1118,6 @@ trait Index {
                                                         )
                                                     ) {
                                                         $strategy = $options['strategy'] ?? 'around';
-                                                        $dir_ramdisk_record = $object->config('ramdisk.url') .
-                                                            $object->config(Config::POSIX_ID) .
-                                                            $object->config('ds') .
-                                                            'Node' .
-                                                            $object->config('ds') .
-                                                            'Record' .
-                                                            $object->config('ds')
-                                                        ;
                                                         $leftSearch = $object->config('node.record.leftsearch') ?? $seek;
                                                         $rightSearch = $object->config('node.record.rightsearch') ?? $seek;
 //                                                        d($leftSearch);
