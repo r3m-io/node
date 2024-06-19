@@ -1296,7 +1296,7 @@ trait Index {
                                                                                 $result = [];
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
-                                                                                    $count =0;
+                                                                                    $count = 0;
                                                                                     foreach ($chunk as $chunk_nr => $i) {
                                                                                         $record = (object)[];
                                                                                         $values = [];
@@ -1314,7 +1314,6 @@ trait Index {
                                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                                         if ($record_where) {
 //                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
-                                                                                            $result[$i] = $record->uuid;
                                                                                             if($options['page'] === 1 && $options['limit'] === '*'){
                                                                                                 $result[$i] = $record->uuid;
                                                                                                 $count++;
