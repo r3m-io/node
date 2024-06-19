@@ -291,6 +291,7 @@ trait NodeList {
                         if($options['parallel'] === true){
                             ddd($list);
                         } else {
+                            d($list);
                             $list = Limit::list($list)->with([
                                 'limit' => $options['limit'],
                                 'page' => $options['page']
