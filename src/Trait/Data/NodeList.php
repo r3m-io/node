@@ -359,7 +359,11 @@ trait NodeList {
                     'key_reset' => true,
                 ]
             );
-            $index = 0;
+            if($options['limit'] === '*'){
+                $index = 0;
+            } else {
+                $index = ($options['limit'] * $options['page']) -$options['limit'];
+            }
             foreach($list as $nr => $record){
                 $record->{'#index'} = $index;
                 $index++;
