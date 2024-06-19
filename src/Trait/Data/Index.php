@@ -1394,11 +1394,11 @@ trait Index {
                                                                             }
                                                                             $count++;
                                                                             $leftSearch--;
+                                                                            if($options['page'] * $options['limit'] === $count){
+                                                                                break;
+                                                                            }
                                                                         }
                                                                         elseif($leftSearch >= 0){
-                                                                            break;
-                                                                        }
-                                                                        elseif($options['page'] * $options['limit'] === $count){
                                                                             break;
                                                                         }
                                                                     }
