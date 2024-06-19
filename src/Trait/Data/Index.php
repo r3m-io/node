@@ -1294,6 +1294,9 @@ trait Index {
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
                                                                                     $count = 0;
+                                                                                    if($i === 0){
+                                                                                        $count++;
+                                                                                    }
                                                                                     foreach ($chunk as $chunk_nr => $pointer) {
                                                                                         $record = (object)[];
                                                                                         $values = [];
@@ -1326,6 +1329,7 @@ trait Index {
                                                                                             break;
                                                                                         }
                                                                                     }
+
                                                                                     fwrite($sockets[0], Core::object($result, Core::OBJECT_JSON_LINE));
                                                                                     fclose($sockets[0]);
                                                                                     exit(0);
