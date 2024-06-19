@@ -269,8 +269,9 @@ trait NodeList {
                 $found = [];
                 while($record !== false){
                     if(is_array($record)){
+                        ddd($record);
                         //parallel left + right search
-                        $limit = $options['limit'] * $options['thread'];
+                        $limit = $options['limit'] * $options['thread'] * $options['page'];
                         foreach($record as $rec){
                             //index_record_expose is handled in the separate thread
                             if(
