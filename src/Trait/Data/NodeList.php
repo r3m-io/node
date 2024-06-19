@@ -332,8 +332,8 @@ trait NodeList {
                         }
                         $options_where = $this->index_record_next($found, $options);
                         $local_options['where'] = $options_where;
-//                        $local_options['limit'] = 1;
-//                        $local_options['page'] = 1;
+                        $local_options['limit'] = $options['limit'];
+                        $local_options['page'] = $options['page'];
                         $local_options['debug'] = true;
                         $record = $this->index_list_record($class, $role, $local_options);
                     }
