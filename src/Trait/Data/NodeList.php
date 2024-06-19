@@ -289,7 +289,7 @@ trait NodeList {
                         if($options['parallel'] === true){
                             d(count($list));
                             d($count);
-                            $partition = Core::array_partition($list, $options['thread'], $count-1);
+                            $partition = Core::array_partition($list, $options['thread'], false, $count-1);
                             ddd($partition);
                         } else {
                             d($list);
