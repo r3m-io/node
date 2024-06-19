@@ -1259,14 +1259,7 @@ trait Index {
                                                                                 // Child process
                                                                                 // Close the parent's socket
                                                                                 fclose($sockets[1]);
-
-                                                                                $start = false;
-                                                                                if (
-                                                                                    array_key_exists('duration', $options) &&
-                                                                                    $options['duration'] === true
-                                                                                ) {
-                                                                                    $start = microtime(true);
-                                                                                }
+                                                                                /*
                                                                                 $url_store = $object->config('ramdisk.url') .
                                                                                     $object->config(Config::POSIX_ID) .
                                                                                     $object->config('ds') .
@@ -1282,6 +1275,7 @@ trait Index {
                                                                                     '.' .
                                                                                     Core::uuid() .
                                                                                     $object->config('extension.json');
+                                                                                */
                                                                                 $file = [];
                                                                                 if (!array_key_exists('url_uuid', $options['index'])) {
                                                                                     return false;
@@ -1312,6 +1306,7 @@ trait Index {
                                                                                         $value = rtrim($line, PHP_EOL);
                                                                                         $record->uuid = $value;
                                                                                         $record_where = $this->where($record, $options['where'], $options);
+                                                                                        ddd($options);
                                                                                         if ($record_where) {
 //                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                             if($options['page'] === 1 && $options['limit'] === '*'){
