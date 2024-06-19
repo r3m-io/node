@@ -303,7 +303,6 @@ trait NodeList {
                                 }
                             }
                             $list = $result;
-                            ddd($list);
                             $count = $total;
                             unset($result);
                         } elseif($options['limit'] !== '*'){
@@ -352,7 +351,7 @@ trait NodeList {
                 $object->config('delete', 'node.record.rightsearch');
             }
             $list = $this->index_list_expose($class, $role, $list, $options);
-
+            ddd($list);
             $list = Sort::list($list)->with(
                 $options['sort'],
                 [
