@@ -1226,6 +1226,8 @@ trait Index {
 //                                                                set_time_limit(600);
                                                                 //search all of left
                                                                 $leftSearch--;
+                                                                d($leftSearch);
+                                                                d($options['index']['min']);
                                                                 while ($leftSearch >= $options['index']['min']) {
                                                                     if($options['parallel'] === true){
                                                                         $left = [];
@@ -1305,6 +1307,7 @@ trait Index {
                                                                                         $line = $file['uuid']->current();
                                                                                         $value = rtrim($line, PHP_EOL);
                                                                                         $record->uuid = $value;
+                                                                                        ddd($record);
                                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                                         if ($record_where) {
 //                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
