@@ -288,7 +288,22 @@ trait NodeList {
                         //one record to much, the binarysearch start
                         if($options['parallel'] === true){
                             $partition = Core::array_partition($list, $options['thread'], false, $count);
-                            ddd($partition);
+                            $total = 0;
+                            $result = [];
+                            foreach($partition as $nr => $list){
+                                $count = 0;
+                                $list = Limit::list($list)->with([
+                                    'limit' => $options['limit'],
+                                    'page' => $options['page']
+                                ], [], $count);
+                                $total += $count;
+                                foreach($list as $record){
+                                    $result[] = $record;
+                                }
+                            }
+                            $list = $result;
+                            $count = $total;
+                            unset($result);
                         } else {
                             d($list);
                             $count = 0;
@@ -342,6 +357,12 @@ trait NodeList {
                 $record->{'#index'} = $index;
                 $index++;
             }
+            $list = Sort::list($list)->with(
+                $options['sort'],
+                [
+                    'key_reset' => true,
+                ]
+            );
             //add sort
             d('from index:' . $name);
             $result = [];
