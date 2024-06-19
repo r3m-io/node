@@ -380,8 +380,25 @@ trait NodeList {
             if($options['limit'] !== '*'){
                 if($options['parallel']){
                     $result['range'] = [
-                        ($options['page'] * $options['limit'] * $options['thread']) - $options['limit'],
-                        ($options['page'] * $options['limit'] * $options['thread']) - $options['limit'] + $count
+                        (
+                            $options['page'] *
+                            $options['limit'] *
+                            $options['thread']
+                        ) -
+                        (
+                            $options['limit'] *
+                            $options['thread']
+                        ),
+                        (
+                            $options['page'] *
+                            $options['limit'] *
+                            $options['thread']
+                        ) -
+                        (
+                            $options['limit']  *
+                            $options['thread']
+                        ) +
+                        $count
                     ];
                 } else {
                     $result['range'] = [
