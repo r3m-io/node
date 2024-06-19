@@ -296,8 +296,6 @@ trait NodeList {
                                         'limit' => $options['limit'],
                                         'page' => $options['page']
                                     ], [], $count);
-                                    d($count);
-                                    ddd($list);
                                 }
                                 $total += $count;
                                 foreach($list as $record){
@@ -305,6 +303,7 @@ trait NodeList {
                                 }
                             }
                             $list = $result;
+                            ddd($list);
                             $count = $total;
                             unset($result);
                         } elseif($options['limit'] !== '*'){
