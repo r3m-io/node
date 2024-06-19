@@ -265,7 +265,6 @@ trait NodeList {
                 $local_options['page'] = 1;
                 d($local_options);
                 $record = $this->index_list_record($class, $role, $local_options);
-                ddd($record);
                 $found = [];
                 while($record !== false){
                     if(is_array($record)){
@@ -277,13 +276,13 @@ trait NodeList {
                             if(
                                 $rec &&
                                 !in_array(
-                                    $rec->uuid,
+                                    $rec->get('uuid'),
                                     $found,
                                     true
                                 )
                             ){
-                                $list[] = new Storage($rec);
-                                $found[] = $rec->uuid;
+                                $list[] = $rec;
+                                $found[] = $rec->get('uuid');
                                 $count++;
                             }
                         }
@@ -305,13 +304,13 @@ trait NodeList {
 //                        $record = $this->index_record_expose($class, $role, $record, $local_options);
                         if(
                             !in_array(
-                                $record->uuid,
+                                $record->get('uuid'),
                                 $found,
                                 true
                             )
                         ){
-                            $list[] = new Storage($record);
-                            $found[] = $record->uuid;
+                            $list[] = $record;
+                            $found[] = $record->get('uuid');
                             $count++;
                         }
 //                    d($count);
