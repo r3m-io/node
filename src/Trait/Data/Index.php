@@ -1299,10 +1299,6 @@ trait Index {
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
                                                                                     $count = 0;
-                                                                                    if($i === 0){
-                                                                                        //1st one is binarysearch
-                                                                                        $count++;
-                                                                                    }
                                                                                     foreach ($chunk as $chunk_nr => $pointer) {
                                                                                         $record = (object)[];
                                                                                         $values = [];

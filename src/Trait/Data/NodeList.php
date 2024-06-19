@@ -351,7 +351,6 @@ trait NodeList {
                 $object->config('delete', 'node.record.rightsearch');
             }
             $list = $this->index_list_expose($class, $role, $list, $options);
-            ddd($list);
             $list = Sort::list($list)->with(
                 $options['sort'],
                 [
@@ -361,7 +360,7 @@ trait NodeList {
             if($options['limit'] === '*'){
                 $index = 0;
             } else {
-                $index = ($options['limit'] * $options['page']) -$options['limit'];
+                $index = ($options['limit'] * $options['page']) - $options['limit'];
             }
             foreach($list as $nr => $record){
                 $record->{'#index'} = $index;
