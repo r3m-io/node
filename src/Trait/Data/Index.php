@@ -1300,6 +1300,7 @@ trait Index {
                                                                                     $chunk = $partition[$i];
                                                                                     $count = 0;
                                                                                     if($options['limit'] !== '*' && $i === 0){
+                                                                                        //we already have the first hit, so we need to align the limit
                                                                                         $options['limit'] = $options['limit'] - 1;
                                                                                     }
                                                                                     foreach ($chunk as $chunk_nr => $pointer) {
