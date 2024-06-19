@@ -294,7 +294,7 @@ trait NodeList {
                             $list = Limit::list($list)->with([
                                 'limit' => $options['limit'],
                                 'page' => $options['page']
-                            ], [], $count);
+                            ], [], $count = 0);
                         }
                         $record = false;
                     } else {
