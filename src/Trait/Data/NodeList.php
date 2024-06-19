@@ -378,7 +378,7 @@ trait NodeList {
             $result['count'] = $count;
             $result['max'] = $options['index']['count'];
             if($options['limit'] !== '*'){
-                if($result['thread'] > 1){
+                if($options['parallel']){
                     $result['range'] = [
                         ($options['page'] * $options['limit'] * $options['thread']) - $options['limit'],
                         ($options['page'] * $options['limit'] * $options['thread']) - $options['limit'] + $count
