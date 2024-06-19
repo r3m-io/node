@@ -1242,7 +1242,6 @@ trait Index {
                                                                             $left[] = $i;
                                                                         }
                                                                         $partition = Core::array_partition($left, $options['thread'] ?? 8);
-                                                                        ddd($partition);
                                                                         $pipes = [];
                                                                         $children = [];
 // Create pipes and fork processes
@@ -1398,6 +1397,7 @@ trait Index {
                                                                                 ){
                                                                                 break;
                                                                             }
+                                                                            d($leftSearch);
                                                                         }
                                                                         elseif($leftSearch >= 0){
                                                                             break;
