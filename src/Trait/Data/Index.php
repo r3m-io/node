@@ -1307,7 +1307,6 @@ trait Index {
                                                                                         $line = $file['uuid']->current();
                                                                                         $value = rtrim($line, PHP_EOL);
                                                                                         $record->uuid = $value;
-                                                                                        ddd($record);
                                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                                         if ($record_where) {
 //                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
