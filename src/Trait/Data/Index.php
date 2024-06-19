@@ -1317,16 +1317,17 @@ trait Index {
                                                                                             $result[$i] = $record->uuid;
                                                                                             if($options['page'] === 1 && $options['limit'] === '*'){
                                                                                                 $result[$i] = $record->uuid;
+                                                                                                $count++;
                                                                                             }
                                                                                             elseif(
                                                                                                 $count >= ($options['page'] * $options['limit']) - $options['limit'] &&
                                                                                                 $count < $options['page'] * $options['limit']
                                                                                             ){
                                                                                                 $result[$i] = $record->uuid;
+                                                                                                $count++;
                                                                                             } else {
                                                                                                 break;
                                                                                             }
-                                                                                            $count++;
                                                                                         } else {
                                                                                             break;
                                                                                         }
