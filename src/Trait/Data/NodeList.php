@@ -269,7 +269,6 @@ trait NodeList {
                 $found = [];
                 while($record !== false){
                     if(is_array($record)){
-                        ddd($record);
                         foreach($record as $rec){
                             //index_record_expose is handled in the separate thread
                             if(
