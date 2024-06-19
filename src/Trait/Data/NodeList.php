@@ -378,10 +378,18 @@ trait NodeList {
             $result['count'] = $count;
             $result['max'] = $options['index']['count'];
             if($options['limit'] !== '*'){
-                $result['range'] = [
-                    ($options['page'] * $options['limit']) - $options['limit'],
-                    ($options['page'] * $options['limit']) - $options['limit'] + $count
-                ];
+                if($result['thread'] > 1){
+                    $result['range'] = [
+                        ($options['page'] * $options['limit'] * $options['thread']) - $options['limit'],
+                        ($options['page'] * $options['limit'] * $options['thread']) - $options['limit'] + $count
+                    ];
+                } else {
+                    $result['range'] = [
+                        ($options['page'] * $options['limit']) - $options['limit'],
+                        ($options['page'] * $options['limit']) - $options['limit'] + $count
+                    ];
+                }
+
             }
             $result['list'] = $list;
             $result['sort'] = $options['sort'] ?? [];
