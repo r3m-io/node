@@ -269,7 +269,7 @@ trait NodeList {
                 $found = [];
                 while($record !== false){
                     if(is_array($record)){
-                        ddd($record);
+                        d($record);
                         //parallel left + right search
 //                        $limit = $options['limit'] * $options['thread'] * $options['page'];
                         foreach($record as $rec){
@@ -287,7 +287,7 @@ trait NodeList {
                                 $count++;
                             }
                         }
-                        ddd($count);
+                        d($count);
                         $record = false;
                     } else {
 //                        $record = $this->index_record_expose($class, $role, $record, $local_options);
