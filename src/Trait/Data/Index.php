@@ -1350,17 +1350,18 @@ trait Index {
                                                                                     }
                                                                                     $data = Core::object($result, Core::OBJECT_JSON_LINE);
                                                                                     $totalBytes = strlen($data);
+                                                                                    echo 'bytes: ' . $totalBytes . "\n";
                                                                                     $bytesWritten = 0;
 
                                                                                     while ($bytesWritten < $totalBytes) {
-                                                                                        $result = fwrite($socket[0], substr($data, $bytesWritten));
+                                                                                        $result = fwrite($sockets[0], substr($data, $bytesWritten));
 
                                                                                         if ($result === false) {
-                                                                                            $metaData = stream_get_meta_data($socket[0]);
+                                                                                            $metaData = stream_get_meta_data($sockets[0]);
                                                                                             if ($metaData['timed_out'] || $metaData['blocked']) {
                                                                                                 // Resource temporarily unavailable, use stream_select to wait
                                                                                                 $read = null;
-                                                                                                $write = [$socket[0]];
+                                                                                                $write = [$sockets[0]];
                                                                                                 $except = null;
 
                                                                                                 if (stream_select($read, $write, $except, null) > 0) {
