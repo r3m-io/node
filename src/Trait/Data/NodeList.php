@@ -378,7 +378,7 @@ trait NodeList {
             if($options['limit'] !== '*'){
                 $result['range'] = [
                     ($options['page'] * $options['limit'] - $options['limit']),
-                    ($options['page'] * $options['limit'])
+                    ($options['page'] * $options['limit'] - $options['limit'] + $count)
                 ];
             }
             $result['list'] = $list;
