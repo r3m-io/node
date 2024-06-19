@@ -1251,7 +1251,7 @@ trait Index {
                                                                             if ($sockets === false) {
                                                                                 die("Unable to create socket pair for child $i");
                                                                             }
-                                                                            stream_set_blocking($socket[1], false);
+                                                                            stream_set_blocking($sockets[0], false);
                                                                             $pid = pcntl_fork();
                                                                             if ($pid == -1) {
                                                                                 die("Could not fork for child $i");
