@@ -1251,7 +1251,7 @@ trait Index {
                                                                             if ($sockets === false) {
                                                                                 die("Unable to create socket pair for child $i");
                                                                             }
-
+                                                                            stream_set_blocking($socket[1], false);
                                                                             $pid = pcntl_fork();
                                                                             if ($pid == -1) {
                                                                                 die("Could not fork for child $i");
@@ -1348,7 +1348,38 @@ trait Index {
                                                                                             break;
                                                                                         }
                                                                                     }
-                                                                                    fwrite($sockets[0], Core::object($result, Core::OBJECT_JSON_LINE));
+                                                                                    $data = Core::object($result, Core::OBJECT_JSON_LINE);
+                                                                                    $totalBytes = strlen($data);
+                                                                                    $bytesWritten = 0;
+
+                                                                                    while ($bytesWritten < $totalBytes) {
+                                                                                        $result = fwrite($socket[0], substr($data, $bytesWritten));
+
+                                                                                        if ($result === false) {
+                                                                                            $metaData = stream_get_meta_data($socket[0]);
+                                                                                            if ($metaData['timed_out'] || $metaData['blocked']) {
+                                                                                                // Resource temporarily unavailable, use stream_select to wait
+                                                                                                $read = null;
+                                                                                                $write = [$socket[0]];
+                                                                                                $except = null;
+
+                                                                                                if (stream_select($read, $write, $except, null) > 0) {
+                                                                                                    // Socket is ready for writing
+                                                                                                    continue;
+                                                                                                } else {
+                                                                                                    echo "Stream select failed or no stream is ready\n";
+                                                                                                    break;
+                                                                                                }
+                                                                                            } else {
+                                                                                                // Some other error occurred
+                                                                                                d($metaData);
+                                                                                                echo "Error writing to stream\n";
+                                                                                                break;
+                                                                                            }
+                                                                                        } else {
+                                                                                            $bytesWritten += $result;
+                                                                                        }
+                                                                                    }
                                                                                     fclose($sockets[0]);
                                                                                     exit(0);
                                                                                 }
