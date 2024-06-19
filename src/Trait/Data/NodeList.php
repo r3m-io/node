@@ -352,17 +352,18 @@ trait NodeList {
                 $object->config('delete', 'node.record.rightsearch');
             }
             $list = $this->index_list_expose($class, $role, $list, $options);
-            $index = 0;
-            foreach($list as $nr => $record){
-                $record->{'#index'} = $index;
-                $index++;
-            }
+
             $list = Sort::list($list)->with(
                 $options['sort'],
                 [
                     'key_reset' => true,
                 ]
             );
+            $index = 0;
+            foreach($list as $nr => $record){
+                $record->{'#index'} = $index;
+                $index++;
+            }
             //add sort
             d('from index:' . $name);
             $result = [];
