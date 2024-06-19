@@ -1306,7 +1306,6 @@ trait Index {
                                                                                         $value = rtrim($line, PHP_EOL);
                                                                                         $record->uuid = $value;
                                                                                         $record_where = $this->where($record, $options['where'], $options);
-                                                                                        ddd($options);
                                                                                         if ($record_where) {
 //                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                             if($options['page'] === 1 && $options['limit'] === '*'){
@@ -1319,7 +1318,11 @@ trait Index {
                                                                                             ){
                                                                                                 $result[$i] = $record->uuid;
                                                                                                 $count++;
-                                                                                            } else {
+                                                                                            }
+                                                                                            elseif($count < ($options['page'] * $options['limit']) - $options['limit']){
+                                                                                                $count++;
+                                                                                            }
+                                                                                            else {
                                                                                                 break;
                                                                                             }
                                                                                         } else {
