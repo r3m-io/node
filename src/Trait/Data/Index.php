@@ -1298,8 +1298,10 @@ trait Index {
                                                                                 $result = [];
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
-                                                                                    ddd($chunk);
                                                                                     $count = 0;
+                                                                                    if($options['limit'] !== '*' && $i === 0){
+                                                                                        $options['limit'] = $options['limit']--;
+                                                                                    }
                                                                                     foreach ($chunk as $chunk_nr => $pointer) {
                                                                                         $record = (object)[];
                                                                                         $values = [];
@@ -1331,10 +1333,6 @@ trait Index {
                                                                                         } else {
                                                                                             break;
                                                                                         }
-                                                                                    }
-                                                                                    if($options['limit'] !== '*' && $i === 0){
-                                                                                        array_pop($result[$pointer]);
-                                                                                        $count--;
                                                                                     }
                                                                                     fwrite($sockets[0], Core::object($result, Core::OBJECT_JSON_LINE));
                                                                                     fclose($sockets[0]);
