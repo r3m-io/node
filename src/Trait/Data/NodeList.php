@@ -284,6 +284,7 @@ trait NodeList {
                                 $count++;
                             }
                         }
+                        ddd($list);
                         //one record to much, the binarysearch start
                         if($options['parallel'] === true){
                             $partition = Core::array_partition($list, $options['thread'], false, $count);
@@ -344,7 +345,6 @@ trait NodeList {
                         $local_options['where'] = $options_where;
                         $local_options['limit'] = $options['limit'];
                         $local_options['page'] = $options['page'];
-                        $local_options['debug'] = true;
                         $record = $this->index_list_record($class, $role, $local_options);
                     }
                 }
