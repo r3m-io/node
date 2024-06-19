@@ -359,7 +359,20 @@ trait NodeList {
             if($options['limit'] === '*'){
                 $index = 0;
             } else {
-                $index = ($options['limit'] * $options['page']) - $options['limit'];
+                if($options['parallel'] === true){
+                    $index = (
+                        $options['limit'] *
+                        $options['page'] *
+                        $options['thread']
+                    ) -
+                    (
+                        $options['limit'] *
+                        $options['thread']
+                    );
+                } else {
+                    $index = ($options['limit'] * $options['page']) - $options['limit'];
+                }
+
             }
             foreach($list as $nr => $record){
                 $record->{'#index'} = $index;
