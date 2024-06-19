@@ -279,14 +279,7 @@ trait NodeList {
                                     true
                                 )
                             ){
-                                if($options['page'] === 1 && $options['limit'] === '*'){
-                                    $list[] = new Storage($rec);
-                                }
-                                elseif($count >= ($options['page'] * $options['limit']) - $options['limit']){
-                                    $list[] = new Storage($rec);
-                                } else {
-                                    break;
-                                }
+                                $list[] = new Storage($rec);
                                 $found[] = $rec->uuid;
                                 $count++;
                             }
