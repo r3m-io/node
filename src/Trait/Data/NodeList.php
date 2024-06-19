@@ -265,13 +265,14 @@ trait NodeList {
 //                $local_options['page'] = 1;
                 d($local_options);
                 $record = $this->index_list_record($class, $role, $local_options);
+                $
                 d($record);
                 $found = [];
                 while($record !== false){
                     if(is_array($record)){
                         ddd($record);
                         //parallel left + right search
-                        $limit = $options['limit'] * $options['thread'] * $options['page'];
+//                        $limit = $options['limit'] * $options['thread'] * $options['page'];
                         foreach($record as $rec){
                             //index_record_expose is handled in the separate thread
                             if(
@@ -280,8 +281,7 @@ trait NodeList {
                                     $rec->uuid,
                                     $found,
                                     true
-                                ) &&
-                                $count < $limit
+                                )
                             ){
                                 $list[] = new Storage($rec);
                                 $found[] = $rec->uuid;
