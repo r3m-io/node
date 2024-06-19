@@ -297,9 +297,9 @@ trait NodeList {
                                         'page' => $options['page']
                                     ], [], $count);
                                 }
-                                $total += $count;
                                 foreach($list as $record){
                                     $result[] = $record;
+                                    $total++;
                                 }
                             }
                             $list = $result;
