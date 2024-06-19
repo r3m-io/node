@@ -797,9 +797,6 @@ trait Where {
                 }
 
                 if(empty($set) && $deepest === 0){
-                    if(array_key_exists('debug', $options)){
-                        ddd('here1');
-                    }
                     return $record;
                 }
                 $count_set = count($set);
