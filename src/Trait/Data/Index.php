@@ -147,23 +147,10 @@ trait Index {
         $url_data = $dir_data . $name . $object->config('extension.json');
         $url_mtime = File::mtime($url_data);
         $cache = $object->data(App::CACHE);
-        $data = $cache->get(sha1($url_data) . '_index');
+//        $data = $cache->get(sha1($url_data) . '_index');
 
         if(!is_array($nodeList)){
             return [];
-        }
-        foreach($nodeList as $nr => $record){
-            if (
-                is_object($data) &&
-                property_exists($data, $record->uuid)
-            ) {
-                $nodeList[$nr] = new Storage($data->{$record->uuid});
-            } elseif (
-                is_array($data) &&
-                array_key_exists($record->uuid, $data)
-            ) {
-                $nodeList[$nr] = new Storage($data[$record->uuid]);
-            }
         }
         if($start){
             $after_cache = microtime(true);
