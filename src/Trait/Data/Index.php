@@ -1356,14 +1356,17 @@ trait Index {
                                                                             $data = stream_get_contents($pipe);
                                                                             fclose($pipe);
                                                                             $data = Core::object($data, Core::OBJECT_OBJECT);
+                                                                            $count = 0;
                                                                             if($data){
                                                                                 foreach($data as $nr => $uuid){
                                                                                     $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
+                                                                                    $count++;
                                                                                     if(File::exist($url_ramdisk_record)){
                                                                                         $result[] = $object->data_read($url_ramdisk_record);
                                                                                     }
                                                                                 }
                                                                             }
+                                                                            d($count);
                                                                         }
 // Wait for all children to exit
                                                                         foreach ($children as $child) {
@@ -1397,7 +1400,6 @@ trait Index {
                                                                                 ){
                                                                                 break;
                                                                             }
-                                                                            d($leftSearch);
                                                                         }
                                                                         elseif($leftSearch >= 0){
                                                                             break;
