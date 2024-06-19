@@ -289,7 +289,6 @@ trait NodeList {
                         d($count);
                         $record = false;
                     } else {
-                        ddd($record);
 //                        $record = $this->index_record_expose($class, $role, $record, $local_options);
                         if(
                             !in_array(
@@ -298,19 +297,9 @@ trait NodeList {
                                 true
                             )
                         ){
-                            if($options['page'] === 1 && $options['limit'] === '*'){
-                                $list[] = new Storage($record);
-                                $found[] = $record->uuid;
-                                $count++;
-                            }
-                            elseif(
-                                $count >= ($options['page'] * $options['limit']) - $options['limit'] &&
-                                $count < ($options['page'] * $options['limit'])
-                            ){
-                                $list[] = new Storage($record);
-                                $found[] = $record->uuid;
-                                $count++;
-                            }
+                            $list[] = new Storage($record);
+                            $found[] = $record->uuid;
+                            $count++;
                         }
 //                    d($count);
 //                    d($options['page']);
