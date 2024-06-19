@@ -1234,6 +1234,7 @@ trait Index {
                                                                 //search all of left
                                                                 $leftSearch--;
                                                                 $result = [];
+                                                                $count = 0;
                                                                 d($leftSearch);
                                                                 d($options['index']['min']);
                                                                 while ($leftSearch >= $options['index']['min']) {
@@ -1391,9 +1392,13 @@ trait Index {
                                                                             if(File::exist($url_ramdisk_record)){
                                                                                 $result[] = $object->data_read($url_ramdisk_record);
                                                                             }
+                                                                            $count++;
                                                                             $leftSearch--;
                                                                         }
                                                                         elseif($leftSearch >= 0){
+                                                                            break;
+                                                                        }
+                                                                        elseif($options['page'] * $options['limit'] === $count){
                                                                             break;
                                                                         }
                                                                     }
