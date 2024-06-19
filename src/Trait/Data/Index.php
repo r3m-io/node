@@ -853,7 +853,7 @@ trait Index {
         $options['index']['max'] = $options['index']['count'] - 1;
         $counter = 0;
         $max = 4096;
-        $seek_old = false;
+        $seek_old = null;
         $dir_ramdisk_record = $object->config('ramdisk.url') .
             $object->config(Config::POSIX_ID) .
             $object->config('ds') .
@@ -889,7 +889,7 @@ trait Index {
                 $value = rtrim($line, PHP_EOL);
                 $record->{$attribute} = $value;
             }
-            d('seek: ' . $seek . ', old seek: ' . $seek_old);
+            d('seek: ' . $seek . ', old seek: ' . $seek_old ?? 'null');
             $file['uuid']->seek($seek);
             $line = $file['uuid']->current();
             $value = rtrim($line, PHP_EOL);
