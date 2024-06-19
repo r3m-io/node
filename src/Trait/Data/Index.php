@@ -1227,8 +1227,8 @@ trait Index {
                                                                 $leftSearch--;
                                                                 $result = [];
                                                                 $count = 0;
-                                                                d($leftSearch);
-                                                                d($options['index']['min']);
+//                                                                d($leftSearch);
+//                                                                d($options['index']['min']);
                                                                 while ($leftSearch >= $options['index']['min']) {
                                                                     if($options['parallel'] === true){
                                                                         $left = [];

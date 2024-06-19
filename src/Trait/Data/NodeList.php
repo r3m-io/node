@@ -291,11 +291,13 @@ trait NodeList {
                             $total = 0;
                             $result = [];
                             foreach($partition as $nr => $list){
-                                $count = 0;
-                                $list = Limit::list($list)->with([
-                                    'limit' => $options['limit'],
-                                    'page' => $options['page']
-                                ], [], $count);
+                                if($options['limit'] !== '*'){
+                                    $count = 0;
+                                    $list = Limit::list($list)->with([
+                                        'limit' => $options['limit'],
+                                        'page' => $options['page']
+                                    ], [], $count);
+                                }
                                 $total += $count;
                                 foreach($list as $record){
                                     $result[] = $record;
@@ -304,7 +306,7 @@ trait NodeList {
                             $list = $result;
                             $count = $total;
                             unset($result);
-                        } else {
+                        } elseif($options['limit'] !== '*'){
                             $count = 0;
                             $list = Limit::list($list)->with([
                                 'limit' => $options['limit'],
