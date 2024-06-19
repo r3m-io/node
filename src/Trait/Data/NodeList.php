@@ -286,7 +286,9 @@ trait NodeList {
                                 $count++;
                             }
                         }
-                        d($count);
+                        //one record to much, the binarysearch start
+                        array_shift($list);
+                        ddd($list);
                         $record = false;
                     } else {
 //                        $record = $this->index_record_expose($class, $role, $record, $local_options);
