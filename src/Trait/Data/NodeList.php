@@ -289,6 +289,7 @@ trait NodeList {
                         d($count);
                         $record = false;
                     } else {
+                        ddd($record);
 //                        $record = $this->index_record_expose($class, $role, $record, $local_options);
                         if(
                             !in_array(
