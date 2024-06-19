@@ -269,6 +269,8 @@ trait NodeList {
                 $found = [];
                 while($record !== false){
                     if(is_array($record)){
+                        //parallel left + right search
+                        $limit = $options['limit'] * $options['thread'];
                         foreach($record as $rec){
                             //index_record_expose is handled in the separate thread
                             if(
@@ -277,7 +279,8 @@ trait NodeList {
                                     $rec->uuid,
                                     $found,
                                     true
-                                )
+                                ) &&
+                                $count < $limit
                             ){
                                 $list[] = new Storage($rec);
                                 $found[] = $rec->uuid;
