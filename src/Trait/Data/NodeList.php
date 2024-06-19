@@ -291,10 +291,11 @@ trait NodeList {
                             ddd($list);
                         } else {
                             d($list);
+                            $count = 0;
                             $list = Limit::list($list)->with([
                                 'limit' => $options['limit'],
                                 'page' => $options['page']
-                            ], [], $count = 0);
+                            ], [], $count);
                         }
                         $record = false;
                     } else {
