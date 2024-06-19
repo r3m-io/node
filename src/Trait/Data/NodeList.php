@@ -333,6 +333,7 @@ trait NodeList {
                         $local_options['page'] = $options['page'];
                         $local_options['debug'] = true;
                         $record = $this->index_list_record($class, $role, $local_options);
+                        ddd($record);
                     }
                 }
                 $object->config('delete', 'node.record.leftsearch');
