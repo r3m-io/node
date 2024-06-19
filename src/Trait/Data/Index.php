@@ -1314,7 +1314,7 @@ trait Index {
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
-                                                                                            elseif($count < ($options['page'] * $options['limit']) - $options['limit']){
+                                                                                            elseif($count < ($options['page'] * $options['limit'])){
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
