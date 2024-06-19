@@ -288,7 +288,8 @@ trait NodeList {
                         //one record to much, the binarysearch start
                         if($options['parallel'] === true){
                             d(count($list));
-                            $partition = Core::array_partition($list, $options['thread']);
+                            d($count);
+                            $partition = Core::array_partition($list, $options['thread'], $count-1);
                             ddd($partition);
                         } else {
                             d($list);
