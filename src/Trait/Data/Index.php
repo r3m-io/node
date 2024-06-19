@@ -1118,7 +1118,14 @@ trait Index {
                                                         )
                                                     ) {
                                                         $strategy = $options['strategy'] ?? 'around';
-                                                        d($strategy);
+                                                        $dir_ramdisk_record = $object->config('ramdisk.url') .
+                                                            $object->config(Config::POSIX_ID) .
+                                                            $object->config('ds') .
+                                                            'Node' .
+                                                            $object->config('ds') .
+                                                            'Record' .
+                                                            $object->config('ds')
+                                                        ;
                                                         $leftSearch = $object->config('node.record.leftsearch') ?? $seek;
                                                         $rightSearch = $object->config('node.record.rightsearch') ?? $seek;
 //                                                        d($leftSearch);
@@ -1226,6 +1233,7 @@ trait Index {
 //                                                                set_time_limit(600);
                                                                 //search all of left
                                                                 $leftSearch--;
+                                                                $result = [];
                                                                 d($leftSearch);
                                                                 d($options['index']['min']);
                                                                 while ($leftSearch >= $options['index']['min']) {
@@ -1331,7 +1339,6 @@ trait Index {
                                                                                 }
                                                                             }
                                                                         }
-                                                                        $result = [];
 
                                                                                 // Prepare data to send o the parent
                                                                                 /*
@@ -1346,21 +1353,12 @@ trait Index {
 
                                                                                 // Send serialized data to the parent
 // Parent process: read data from each child
-                                                                        $result = [];
                                                                         foreach ($pipes as $i => $pipe) {
                                                                             // Read serialized data from the pipe
                                                                             $data = stream_get_contents($pipe);
                                                                             fclose($pipe);
                                                                             $data = Core::object($data, Core::OBJECT_OBJECT);
                                                                             if($data){
-                                                                                $dir_ramdisk_record = $object->config('ramdisk.url') .
-                                                                                    $object->config(Config::POSIX_ID) .
-                                                                                    $object->config('ds') .
-                                                                                    'Node' .
-                                                                                    $object->config('ds') .
-                                                                                    'Record' .
-                                                                                    $object->config('ds')
-                                                                                ;
                                                                                 foreach($data as $nr => $uuid){
                                                                                     $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
                                                                                     if(File::exist($url_ramdisk_record)){
@@ -1374,8 +1372,8 @@ trait Index {
                                                                             pcntl_waitpid($child, $status);
                                 
                                                                         }
-                                                                        $object->config('node.record.leftsearch', $leftSearch);
-                                                                        return $this->index_list_expose($class, $role, $result, $options);
+                                                                        break;
+//                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
                                                                         foreach ($options['index']['where'] as $nr => $attribute){
                                                                             $file[$nr]->seek($leftSearch);
@@ -1387,18 +1385,21 @@ trait Index {
                                                                         $line = $file['uuid']->current();
                                                                         $value = rtrim($line, PHP_EOL);
                                                                         $record->uuid = $value;
-                                                                        d($record);
                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                         if($record_where){
-                                                                            $object->config('node.record.leftsearch', $leftSearch);
-                                                                            return $record;
+                                                                            $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
+                                                                            if(File::exist($url_ramdisk_record)){
+                                                                                $result[] = $object->data_read($url_ramdisk_record);
+                                                                            }
+                                                                            $leftSearch--;
                                                                         }
                                                                         elseif($leftSearch >= 0){
-                                                                            $leftSearch--;
+                                                                            break;
                                                                         }
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
+                                                                return $result;
                                                             break;
                                                             case 'right-only' :
                                                                 //search all of right
