@@ -305,7 +305,6 @@ trait NodeList {
                             $count = $total;
                             unset($result);
                         } else {
-                            d($list);
                             $count = 0;
                             $list = Limit::list($list)->with([
                                 'limit' => $options['limit'],
