@@ -295,10 +295,7 @@ trait NodeList {
                                 'limit' => $options['limit'],
                                 'page' => $options['page']
                             ]);
-                            ddd($list);
                         }
-                        d($options['parallel']);
-                        ddd($list);
                         $record = false;
                     } else {
 //                        $record = $this->index_record_expose($class, $role, $record, $local_options);
