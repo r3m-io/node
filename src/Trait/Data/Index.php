@@ -1332,6 +1332,13 @@ trait Index {
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
+                                                                                            elseif(
+                                                                                                $options['parallel'] === true &&
+                                                                                                $count < ($options['page'] * $options['thread'] * $limit)
+                                                                                            ){
+                                                                                                $result[$pointer] = $record->uuid;
+                                                                                                $count++;
+                                                                                            }
                                                                                             elseif($count < ($options['page'] * $limit)){
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
