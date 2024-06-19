@@ -291,11 +291,10 @@ trait NodeList {
                             $result = [];
                             foreach($partition as $nr => $list){
                                 if($options['limit'] !== '*'){
-                                    $count = 0;
                                     $list = Limit::list($list)->with([
                                         'limit' => $options['limit'],
                                         'page' => $options['page']
-                                    ], [], $count);
+                                    ]);
                                 }
                                 foreach($list as $record){
                                     $result[] = $record;
