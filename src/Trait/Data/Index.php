@@ -1299,8 +1299,13 @@ trait Index {
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
                                                                                     $count = 0;
-                                                                                    if($options['limit'] !== '*' && $i === 0){
+                                                                                    if(
+                                                                                        $options['limit'] !== '*' &&
+                                                                                        $i === 0 &&
+                                                                                        $options['page'] === 1
+                                                                                    ){
                                                                                         //we already have the first hit, so we need to align the limit
+                                                                                        //after page 1 the  record will be filter out
                                                                                         $options['limit'] = $options['limit'] - 1;
                                                                                     }
                                                                                     foreach ($chunk as $chunk_nr => $pointer) {
