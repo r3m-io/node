@@ -1299,6 +1299,7 @@ trait Index {
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
                                                                                     $count = 0;
+                                                                                    $limit = $options['limit'];
                                                                                     if(
                                                                                         $options['limit'] !== '*' &&
                                                                                         $i === 0 &&
@@ -1306,7 +1307,7 @@ trait Index {
                                                                                     ){
                                                                                         //we already have the first hit, so we need to align the limit
                                                                                         //after page 1 the  record will be filter out
-                                                                                        $options['limit'] = $options['limit'] - 1;
+                                                                                        $limit = $options['limit'] - 1;
                                                                                     }
                                                                                     foreach ($chunk as $chunk_nr => $pointer) {
                                                                                         $record = (object)[];
@@ -1325,11 +1326,11 @@ trait Index {
                                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                                         if ($record_where) {
 //                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
-                                                                                            if($options['limit'] === '*'){
+                                                                                            if($limit === '*'){
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
-                                                                                            elseif($count < ($options['page'] * $options['limit'])){
+                                                                                            elseif($count < ($options['page'] * $limit)){
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
@@ -1405,7 +1406,7 @@ trait Index {
                                                                             if(
                                                                                 $options['limit'] !== '*' &&
                                                                                 $options['page'] * $options['limit'] === $count
-                                                                                ){
+                                                                            ){
                                                                                 break;
                                                                             }
                                                                         }

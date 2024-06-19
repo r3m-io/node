@@ -370,6 +370,11 @@ trait NodeList {
             $result = [];
             $result['page'] = $options['page'];
             $result['limit'] = $options['limit'];
+            if($options['parallel']){
+                $result['thread'] = $options['thread'];
+            } else {
+                $result['thread'] = 1;
+            }
             $result['count'] = $count;
             $result['max'] = $options['index']['count'];
             if($options['limit'] !== '*'){
