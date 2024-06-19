@@ -269,7 +269,7 @@ trait NodeList {
                 $found = [];
                 while($record !== false){
                     if(is_array($record)){
-                        ddd($record);
+                        d($record);
                         //parallel left + right search
                         $limit = $options['limit'] * $options['thread'] * $options['page'];
                         foreach($record as $rec){
@@ -300,15 +300,17 @@ trait NodeList {
                         ){
                             if($options['page'] === 1 && $options['limit'] === '*'){
                                 $list[] = new Storage($record);
+                                $found[] = $record->uuid;
+                                $count++;
                             }
                             elseif(
                                 $count >= ($options['page'] * $options['limit']) - $options['limit'] &&
                                 $count < ($options['page'] * $options['limit'])
                             ){
                                 $list[] = new Storage($record);
+                                $found[] = $record->uuid;
+                                $count++;
                             }
-                            $found[] = $record->uuid;
-                            $count++;
                         }
 //                    d($count);
 //                    d($options['page']);
