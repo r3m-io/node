@@ -1366,7 +1366,6 @@ trait Index {
                                                                                     }
                                                                                 }
                                                                             }
-                                                                            d($count);
                                                                         }
 // Wait for all children to exit
                                                                         foreach ($children as $child) {
