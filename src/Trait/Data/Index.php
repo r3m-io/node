@@ -831,7 +831,7 @@ trait Index {
         if(!array_key_exists('url_uuid', $options['index'])){
             return false;
         }
-        d($options);
+//        d($options);
         if(!array_key_exists('count', $options['index'])){
             return false;
         }
