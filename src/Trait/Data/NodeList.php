@@ -296,6 +296,7 @@ trait NodeList {
                                         'limit' => $options['limit'],
                                         'page' => $options['page']
                                     ], [], $count);
+                                    d($count);
                                 }
                                 foreach($list as $record){
                                     $result[] = $record;
