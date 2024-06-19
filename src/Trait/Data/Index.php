@@ -1300,7 +1300,7 @@ trait Index {
                                                                                     $chunk = $partition[$i];
                                                                                     $count = 0;
                                                                                     if($options['limit'] !== '*' && $i === 0){
-                                                                                        $options['limit'] = $options['limit'] -1;
+                                                                                        $options['limit'] = $options['limit'] - 1;
                                                                                     }
                                                                                     foreach ($chunk as $chunk_nr => $pointer) {
                                                                                         $record = (object)[];
