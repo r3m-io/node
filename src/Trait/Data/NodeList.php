@@ -264,7 +264,6 @@ trait NodeList {
                 $local_options['limit'] = 1;
                 $local_options['page'] = 1;
                 $record = $this->index_list_record($class, $role, $local_options);
-                d($record);
                 $found = [];
                 while($record !== false){
                     if(is_array($record)){
@@ -314,11 +313,7 @@ trait NodeList {
                         }
                         $record = false;
                     } else {
-                        if(!method_exists($record, 'get')){
-                            $debug = debug_backtrace(1);
-                            ddd($debug);
-                            ddd($record);
-                        }
+
 //                        $record = $this->index_record_expose($class, $role, $record, $local_options);
                         if(
                             !in_array(
