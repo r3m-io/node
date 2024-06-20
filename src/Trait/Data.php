@@ -15,6 +15,8 @@ use R3m\Io\Node\Service\Security;
 
 trait Data {
 
+    use Compact;
+    use Expand;
     use Expose;
     use Filter;
     use Relation;
@@ -24,6 +26,8 @@ trait Data {
     use Validate;
     use View;
     use Where;
+
+
     use Data\Count;
     use Data\Create;
     use Data\Delete;
