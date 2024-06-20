@@ -314,9 +314,9 @@ trait NodeList {
                         }
                         $record = false;
                     } else {
-                        trace();
                         if(!method_exists($record, 'get')){
-                            trace();
+                            $debug = debug_backtrace(1);
+                            ddd($debug);
                             ddd($record);
                         }
 //                        $record = $this->index_record_expose($class, $role, $record, $local_options);
