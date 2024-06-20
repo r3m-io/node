@@ -37,6 +37,7 @@ trait NodeList {
      */
     public function list($class, $role, $options=[]): array
     {
+        set_time_limit(30 * 60);
         $mtime = false;
         $name = Controller::name($class);
         $options = Core::object($options, Core::OBJECT_ARRAY);
