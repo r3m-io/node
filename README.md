@@ -115,7 +115,28 @@ Boot, total & nodelist (function) durations are in milliseconds.
   "parallel": true,
   "threads": 16,
   "limit": "*",
-  
+  "#duration.create.1": {
+    "boot": 149.08909797668457,
+    "total": 124308.60614776611,
+    "nodelist": 124159.5299243927,
+    "item_per_second": 8044.495316851162,
+    "item_per_second_nodelist": 8054.154204747334
+  },
+  "#duration.run.2": {
+    "boot": 122.47490882873535,
+    "total": 3325.2649307250977,
+    "nodelist": 3202.799081802368,
+    "item_per_second": 300727.91817581374,
+    "item_per_second_nodelist": 312226.8910596953,
+    "item_per_second_nodelist": 312226.8910596953
+  },
+  "#duration.run.3": {
+    "boot": 133.25905799865723,
+    "total": 2666.7540073394775,
+    "nodelist": 2533.5049629211426,
+    "item_per_second": 374987.7181201513,
+    "item_per_second_nodelist": 394710.1010794925
+  }
 }
 ```
 
