@@ -2,6 +2,10 @@
 
 ### Benchmarks
 
+Count: 1,000,000
+
+Boot, total & nodelist (function) durations are in milliseconds.
+
 #### app r3m_io/node list -class=Account.Permission -duration
 
 ```json
