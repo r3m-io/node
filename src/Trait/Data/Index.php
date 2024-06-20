@@ -1374,9 +1374,36 @@ trait Index {
                                                                                     $bytesWritten = 0;
 
                                                                                     while ($bytesWritten < $totalBytes) {
-                                                                                        $result = fwrite($sockets[0], substr($data, $bytesWritten));
+                                                                                        try {
+                                                                                            $result = fwrite($sockets[0], substr($data, $bytesWritten));
 
-                                                                                        if ($result === false) {
+                                                                                            if ($result === false) {
+                                                                                                $metaData = stream_get_meta_data($sockets[0]);
+                                                                                                if ($metaData['timed_out'] || $metaData['blocked']) {
+                                                                                                    // Resource temporarily unavailable, use stream_select to wait
+                                                                                                    $read = null;
+                                                                                                    $write = [$sockets[0]];
+                                                                                                    $except = null;
+
+                                                                                                    if (stream_select($read, $write, $except, null) > 0) {
+                                                                                                        // Socket is ready for writing
+                                                                                                        continue;
+                                                                                                    } else {
+                                                                                                        d($except);
+                                                                                                        echo "Stream select failed or no stream is ready\n";
+                                                                                                        break;
+                                                                                                    }
+                                                                                                } else {
+                                                                                                    // Some other error occurred
+                                                                                                    d($metaData);
+                                                                                                    echo "Error writing to stream\n";
+                                                                                                    break;
+                                                                                                }
+                                                                                            } else {
+                                                                                                $bytesWritten += $result;
+                                                                                            }
+                                                                                        }
+                                                                                        catch (ErrorException $exception){
                                                                                             $metaData = stream_get_meta_data($sockets[0]);
                                                                                             if ($metaData['timed_out'] || $metaData['blocked']) {
                                                                                                 // Resource temporarily unavailable, use stream_select to wait
@@ -1398,9 +1425,8 @@ trait Index {
                                                                                                 echo "Error writing to stream\n";
                                                                                                 break;
                                                                                             }
-                                                                                        } else {
-                                                                                            $bytesWritten += $result;
                                                                                         }
+
                                                                                     }
                                                                                     fclose($sockets[0]);
                                                                                     exit(0);

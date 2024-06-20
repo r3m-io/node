@@ -140,3 +140,14 @@ Boot, total & nodelist (function) durations are in milliseconds.
 }
 ```
 
+#### app r3m_io/node list -class=Account.Permission -duration -limit=* -ramdisk -parallel -thread=16 -index -where[]="'#class' start 'ac'" -strategy=left-only
+```json
+{
+  "count": 1000000,
+  "page": 1,
+  "ramdisk": true,
+  "parallel": true,
+  "threads": 16,
+  "limit": "*",
+  "index": true,
+  "where": true
