@@ -1426,7 +1426,6 @@ trait Index {
                                                                                                 break;
                                                                                             }
                                                                                         }
-
                                                                                     }
                                                                                     fclose($sockets[0]);
                                                                                     exit(0);
