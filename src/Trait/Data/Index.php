@@ -1145,6 +1145,11 @@ trait Index {
                                                                     $record_where = $this->where($record, $options['where'], $options);
                                                                     if($record_where){
                                                                         $object->config('node.record.leftsearch', $leftSearch);
+                                                                        $url_ramdisk_record = $dir_ramdisk_record .
+                                                                            $record->uuid .
+                                                                            $object->config('extension.json')
+                                                                        ;
+                                                                        $record = $object->data_read($url_ramdisk_record);
                                                                         return $record;
                                                                     }
                                                                     elseif($leftSearch >= 0){
@@ -1167,6 +1172,11 @@ trait Index {
                                                                     $record_where = $this->where($record, $options['where'], $options);
                                                                     if($record_where){
                                                                         $object->config('node.record.rightsearch', $rightSearch);
+                                                                        $url_ramdisk_record = $dir_ramdisk_record .
+                                                                            $record->uuid .
+                                                                            $object->config('extension.json')
+                                                                        ;
+                                                                        $record = $object->data_read($url_ramdisk_record);
                                                                         return $record;
                                                                     }
                                                                     elseif ($rightSearch < PHP_INT_MAX){
@@ -1194,6 +1204,11 @@ trait Index {
                                                                     $record_where = $this->where($record, $options['where'], $options);
                                                                     if($record_where){
                                                                         $object->config('node.record.rightsearch', $rightSearch);
+                                                                        $url_ramdisk_record = $dir_ramdisk_record .
+                                                                            $record->uuid .
+                                                                            $object->config('extension.json')
+                                                                        ;
+                                                                        $record = $object->data_read($url_ramdisk_record);
                                                                         return $record;
                                                                     }
                                                                     elseif($rightSearch < PHP_INT_MAX) {
@@ -1218,6 +1233,11 @@ trait Index {
                                                                     $record_where = $this->where($record, $options['where'], $options);
                                                                     if($record_where){
                                                                         $object->config('node.record.leftsearch', $leftSearch);
+                                                                        $url_ramdisk_record = $dir_ramdisk_record .
+                                                                            $record->uuid .
+                                                                            $object->config('extension.json')
+                                                                        ;
+                                                                        $record = $object->data_read($url_ramdisk_record);
                                                                         return $record;
                                                                     }
                                                                     elseif($leftSearch >= 0) {
@@ -1475,6 +1495,11 @@ trait Index {
                                                                     $record_where = $this->where($record, $options['where'], $options);
                                                                     if($record_where){
                                                                         $object->config('node.record.rightsearch', $rightSearch);
+                                                                        $url_ramdisk_record = $dir_ramdisk_record .
+                                                                            $record->uuid .
+                                                                            $object->config('extension.json')
+                                                                        ;
+                                                                        $record = $object->data_read($url_ramdisk_record);
                                                                         return $record;
                                                                     }
                                                                     elseif ($rightSearch < PHP_INT_MAX) {
@@ -1509,6 +1534,11 @@ trait Index {
                                                                             if($record_where){
                                                                                 $object->config('node.record.leftsearch', $leftSearch);
                                                                                 $object->config('node.record.toggle', 'right');
+                                                                                $url_ramdisk_record = $dir_ramdisk_record .
+                                                                                    $record->uuid .
+                                                                                    $object->config('extension.json')
+                                                                                ;
+                                                                                $record = $object->data_read($url_ramdisk_record);
                                                                                 return $record;
                                                                             }
                                                                             elseif($leftSearch >= 0){
@@ -1539,6 +1569,11 @@ trait Index {
                                                                                 if($leftSearch > 0){
                                                                                     $object->config('node.record.toggle', 'left');
                                                                                 }
+                                                                                $url_ramdisk_record = $dir_ramdisk_record .
+                                                                                    $record->uuid .
+                                                                                    $object->config('extension.json')
+                                                                                ;
+                                                                                $record = $object->data_read($url_ramdisk_record);
                                                                                 return $record;
                                                                             }
                                                                             elseif($rightSearch < PHP_INT_MAX){
@@ -1571,6 +1606,11 @@ trait Index {
                                                                                 if($leftSearch > 0){
                                                                                     $object->config('node.record.toggle', 'left');
                                                                                 }
+                                                                                $url_ramdisk_record = $dir_ramdisk_record .
+                                                                                    $record->uuid .
+                                                                                    $object->config('extension.json')
+                                                                                ;
+                                                                                $record = $object->data_read($url_ramdisk_record);
                                                                                 return $record;
                                                                             }
                                                                             elseif($rightSearch < PHP_INT_MAX){
@@ -1820,7 +1860,7 @@ trait Index {
         }
 //        d($options['index']['min']);
 //        d($options['index']['max']);
-//        d('found: 28');
+        d('found: 28');
         return $record;
     }
 
