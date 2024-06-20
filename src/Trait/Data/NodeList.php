@@ -313,6 +313,7 @@ trait NodeList {
                         }
                         $record = false;
                     } else {
+                        trace();
 //                        $record = $this->index_record_expose($class, $role, $record, $local_options);
                         if(
                             !in_array(
