@@ -21,17 +21,7 @@ use R3m\Io\Exception\AuthorizationException;
 trait Compact {
 
     public function compact($data, $options = []){
-        $result = [];
-        if(is_array($data)){
-            foreach($data as $key => $value){
-                if(is_array($value)){
-                    $result[$key] = $this->compact($value, $options);
-                } else {
-                    $result[$key] = $value;
-                }
-            }
-        }
-        return $result;
+        ddd($options);
     }
 
 }
