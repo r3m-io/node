@@ -315,6 +315,10 @@ trait NodeList {
                         $record = false;
                     } else {
                         trace();
+                        if(!method_exists($record, 'get')){
+                            trace();
+                            ddd($record);
+                        }
 //                        $record = $this->index_record_expose($class, $role, $record, $local_options);
                         if(
                             !in_array(
