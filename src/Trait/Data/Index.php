@@ -1404,7 +1404,7 @@ trait Index {
                                                                                                 $bytesWritten += $result;
                                                                                             }
                                                                                         }
-                                                                                        catch (ErrorException $exception){
+                                                                                        catch (Exception | ErrorException $exception){
                                                                                             $metaData = stream_get_meta_data($sockets[0]);
                                                                                             if ($metaData['timed_out'] || $metaData['blocked']) {
                                                                                                 // Resource temporarily unavailable, use stream_select to wait
