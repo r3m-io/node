@@ -261,6 +261,7 @@ trait NodeList {
                     $count++;
                 }
             } else {
+                echo 'indexing' . PHP_EOL;
                 $local_options = $options;
                 $local_options['limit'] = 1;
                 $local_options['page'] = 1;
