@@ -27,6 +27,10 @@ use SplFileObject;
 
 trait Index {
 
+    public function index_read($url){
+        ddd($url);
+    }
+
     /**
      * @throws AuthorizationException
      * @throws ObjectException
@@ -1312,10 +1316,11 @@ trait Index {
                                                                                 if (!File::exist($options['index']['url_uuid'])) {
                                                                                     return false;
                                                                                 }
-                                                                                $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
+                                                                                $file['uuid'] = $this->index_read($options['index']['url_uuid']);
                                                                                 foreach ($options['index']['url'] as $nr => $url) {
-                                                                                    $file[$nr] = new SplFileObject($url);
+                                                                                    $file[$nr] = $this->index_read($url);
                                                                                 }
+                                                                                ddd($file['uuid']);
                                                                                 $result = [];
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
