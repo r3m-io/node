@@ -1458,10 +1458,6 @@ trait Index {
                                                                         } else {
                                                                             break;
                                                                         }
-                                                                        echo Cli::tput('cursor.up');
-                                                                        echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                                                                        echo Cli::tput('cursor.up');
-                                                                        echo 'count: ' . $count . ', total: ' . $total . PHP_EOL;
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
