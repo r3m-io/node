@@ -1374,6 +1374,9 @@ trait Index {
                                                                                             break;
                                                                                         }
                                                                                     }
+                                                                                    d('partition: ' . $i . ': ' . $count);
+                                                                                    fclose($sockets[0]);
+                                                                                    exit(0);
                                                                                     $data = Core::object($result, Core::OBJECT_JSON_LINE);
                                                                                     $totalBytes = strlen($data);
                                                                                     echo 'bytes: ' . $totalBytes . "\n";
