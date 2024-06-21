@@ -1331,6 +1331,7 @@ trait Index {
                                                                                 $result = [];
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
+                                                                                    d('chunk count: ' . count($chunk));
                                                                                     $count = 0;
                                                                                     $limit = $options['limit'];
                                                                                     if(
