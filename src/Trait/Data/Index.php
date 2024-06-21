@@ -1406,6 +1406,14 @@ trait Index {
                                                                                 $data = $object->data_read($data_url);
                                                                                 if($data){
                                                                                     foreach($data->data() as $nr => $uuid){
+                                                                                        $count++;
+                                                                                        if($count % 100 === 0){
+                                                                                            echo Cli::tput('cursor.up');
+                                                                                            echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                            echo Cli::tput('cursor.up');
+                                                                                            echo 'count: ' . $count . PHP_EOL;
+                                                                                        }
+                                                                                        /*
                                                                                         $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
                                                                                         if(File::exist($url_ramdisk_record)){
                                                                                             $result[] = $object->data_read($url_ramdisk_record);
@@ -1417,6 +1425,7 @@ trait Index {
                                                                                                 echo 'count: ' . $count . PHP_EOL;
                                                                                             }
                                                                                         }
+                                                                                        */
                                                                                     }
                                                                                 }
                                                                             }
