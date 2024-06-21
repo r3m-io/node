@@ -1422,16 +1422,18 @@ trait Index {
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
-                                                                        ddd($file);
-                                                                        foreach ($options['index']['where'] as $nr => $attribute){
-                                                                            $file[$nr]->seek($leftSearch);
-                                                                            $line = $file[$nr]->current();
-                                                                            $value = rtrim($line, PHP_EOL);
+                                                                        foreach ($options['index']['where'] as $nr => $attribute) {
+                                                                            if(!array_key_exists($seek, $file[$nr])){
+                                                                                continue;
+                                                                            }
+                                                                            $value = $file[$nr][$seek];
+                                                                            $values[] = $value;
                                                                             $record->{$attribute} = $value;
                                                                         }
-                                                                        $file['uuid']->seek($leftSearch);
-                                                                        $line = $file['uuid']->current();
-                                                                        $value = rtrim($line, PHP_EOL);
+                                                                        if(!array_key_exists($seek, $file['uuid'])){
+                                                                            continue;
+                                                                        }
+                                                                        $value = $file['uuid'][$seek];
                                                                         $record->uuid = $value;
                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                         if($record_where){
