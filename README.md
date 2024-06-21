@@ -230,7 +230,7 @@ Boot, total & nodelist (function) durations are in milliseconds.
   "parallel": true,
   "threads": 8,
   "ramdisk": false,
-  "limit": "6250 (6250 * 8)",
+  "limit": "6250 * 8 = 50000",
   "index": true,
   "where": true,
   "#duration": {
@@ -252,7 +252,7 @@ Boot, total & nodelist (function) durations are in milliseconds.
   "parallel": true,
   "threads": 8,
   "ramdisk": false,
-  "limit": "1 (1 * 8)",
+  "limit": "1 * 8 = 8",
   "index": true,
   "where": true,
   "#duration": {
@@ -303,4 +303,49 @@ Boot, total & nodelist (function) durations are in milliseconds.
     "item_per_second_nodelist": 2.0213649634262594
   }
 }
+```
+
+#### app r3m_io/node list -class=Account.Permission -duration -limit=1500 -thread=16 -index -parallel -where[]="'#class' start 'ac'" -strategy=left-only
+
+```json
+{
+  "count": 1000000,
+  "page": 1,
+  "ramdisk": false,
+  "parallel": true,
+  "threads": 16,
+  "limit": "1500 * 16 = 24000",
+  "index": true,
+  "where": true,
+  "#duration": {
+    "boot": 237.58697509765625,
+    "total": 26448.110103607178,
+    "nodelist": 26210.533142089844,
+    "item_per_second": 907.4372386527049,
+    "item_per_second_nodelist": 915.6624121262117
+  }
+}
+```
+
+#### app r3m_io/node list -class=Account.Permission -duration -limit=1500 -thread=8 -index -parallel -where[]="'#class' start 'ac'" -strategy=left-only
+
+```json
+{
+  "count": 1000000,
+  "page": 1,
+  "ramdisk": false,
+  "parallel": true,
+  "threads": 8,
+  "limit": "1500 * 8 = 12000",
+  "index": true,
+  "where": true,
+  "#duration": {
+    "boot": 133.46314430236816,
+    "total": 11390.576124191284,
+    "nodelist": 11257.124900817871,
+    "item_per_second": 1053.5024628398226,
+    "item_per_second_nodelist": 1065.9915480841967
+  }  
+}
+
 ```
