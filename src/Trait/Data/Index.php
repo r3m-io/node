@@ -1262,7 +1262,7 @@ trait Index {
                                                                         for($i = $leftSearch; $i >= $options['index']['min']; $i--) {
                                                                             $left[] = $i;
                                                                         }
-                                                                        ddd($left);
+                                                                        d(count($left));
                                                                         $partition = Core::array_partition($left, $options['thread'] ?? 8);
                                                                         foreach($partition as $part){
                                                                             d(count($part));
