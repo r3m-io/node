@@ -248,6 +248,7 @@ trait NodeList {
                     $options['index']['count'] = $count;
                 }
             }
+            $total = $options['index']['count'];
             $count = 0;
             $list = [];
             if(
@@ -272,7 +273,8 @@ trait NodeList {
                     if(is_array($record)){
                         //parallel left + right search
 //                        $limit = $options['limit'] * $options['thread'] * $options['page'];
-                        echo 'count: ' . $count . PHP_EOL;
+                        $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                        echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . PHP_EOL;
                         foreach($record as $rec){
                             //index_record_expose is handled in the separate thread
                             if(
@@ -286,16 +288,20 @@ trait NodeList {
                                 $list[] = $rec;
                                 $found[] = $rec->get('uuid');
                                 $count++;
-                                echo Cli::tput('cursor.up');
-                                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                                echo Cli::tput('cursor.up');
-                                echo 'count: ' . $count . PHP_EOL;
+                                if ($count % 100 === 0) {
+                                    echo Cli::tput('cursor.up');
+                                    echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                    echo Cli::tput('cursor.up');
+                                    $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                    echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . PHP_EOL;
+                                }
                             }
                         }
                         echo Cli::tput('cursor.up');
                         echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
                         echo Cli::tput('cursor.up');
-                        echo 'count: ' . $count . PHP_EOL;
+                        $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                        echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . PHP_EOL;
                         //one record to much, the binarysearch start
                         if($options['parallel'] === true){
                             $partition = Core::array_partition($list, $options['thread'], false, $count);
