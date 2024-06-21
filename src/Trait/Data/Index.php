@@ -1370,6 +1370,7 @@ trait Index {
                                                                                                 $options['parallel'] === true &&
                                                                                                 $count < ($options['page'] * $options['thread'] * $limit)
                                                                                             ){
+                                                                                                d('match: ' . $count . ', ' . ($options['page'] * $options['thread'] * $limit));
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
