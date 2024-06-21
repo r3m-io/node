@@ -1342,8 +1342,6 @@ trait Index {
                                                                                         //after page 1 the  record will be filter out
                                                                                         $limit = $options['limit'] - 1;
                                                                                     }
-                                                                                    d('chunk count: ' . count($chunk));
-                                                                                    d('limit: ' . $limit);
                                                                                     foreach ($chunk as $chunk_nr => $pointer) {
                                                                                         $record = (object)[];
                                                                                         $values = [];
@@ -1375,7 +1373,10 @@ trait Index {
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
-                                                                                            elseif($count < ($options['page'] * $limit)){
+                                                                                            elseif(
+                                                                                                $options['parallel'] === false &&
+                                                                                                $count < ($options['page'] * $limit)
+                                                                                            ){
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
