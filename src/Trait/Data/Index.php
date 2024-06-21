@@ -1395,11 +1395,11 @@ trait Index {
                                                                                 }
                                                                             }
                                                                         }
+                                                                        $count = 0;
                                                                         foreach ($pipes as $i => $pipe) {
                                                                             // Read serialized data from the pipe
                                                                             $data_url = stream_get_contents($pipe);
                                                                             fclose($pipe);
-                                                                            $count = 0;
                                                                             if($data_url && File::exist($data_url)){
                                                                                 $data = $object->data_read($data_url);
                                                                                 if($data){
