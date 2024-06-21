@@ -27,8 +27,14 @@ use SplFileObject;
 
 trait Index {
 
-    public function index_read($url){
-        ddd($url);
+    public function index_read($url): array | bool
+    {
+        if(!File::exist($url)){
+            return false;
+        }
+        $data = File::read($url);
+        $data = explode(PHP_EOL, $data);
+        return $data;
     }
 
     /**
