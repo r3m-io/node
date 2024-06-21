@@ -1366,18 +1366,7 @@ trait Index {
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
-                                                                                            elseif(
-                                                                                                $options['parallel'] === true &&
-                                                                                                $count < ($options['page'] * $options['thread'] * $limit)
-                                                                                            ){
-                                                                                                d('match: ' . $count . ', ' . ($options['page'] * $options['thread'] * $limit));
-                                                                                                $result[$pointer] = $record->uuid;
-                                                                                                $count++;
-                                                                                            }
-                                                                                            elseif(
-                                                                                                $options['parallel'] === false &&
-                                                                                                $count < ($options['page'] * $limit)
-                                                                                            ){
+                                                                                            elseif($count < ($options['page'] * $limit)){
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
