@@ -1402,13 +1402,16 @@ trait Index {
                                                                             $count = 0;
                                                                             if($data_url && File::exist($data_url)){
                                                                                 $data = $object->data_read($data_url);
-                                                                                foreach($data as $nr => $uuid){
-                                                                                    $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
-                                                                                    $count++;
-                                                                                    if(File::exist($url_ramdisk_record)){
-                                                                                        $result[] = $object->data_read($url_ramdisk_record);
+                                                                                if($data){
+                                                                                    foreach($data->data() as $nr => $uuid){
+                                                                                        $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
+                                                                                        $count++;
+                                                                                        if(File::exist($url_ramdisk_record)){
+                                                                                            $result[] = $object->data_read($url_ramdisk_record);
+                                                                                        }
                                                                                     }
                                                                                 }
+
                                                                             }
                                                                         }
                                                                         // Wait for all children to exit
