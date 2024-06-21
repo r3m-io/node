@@ -1359,20 +1359,21 @@ trait Index {
                                                                                         $record->uuid = $value;
                                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                                         if ($record_where) {
+                                                                                            $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
 //                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                             if($limit === '*'){
-                                                                                                $result[$pointer] = $record->uuid;
+                                                                                                $result[$pointer] = File::read($url_ramdisk_record);
                                                                                                 $count++;
                                                                                             }
                                                                                             elseif(
                                                                                                 $options['parallel'] === true &&
                                                                                                 $count < ($options['page'] * $options['thread'] * $limit)
                                                                                             ){
-                                                                                                $result[$pointer] = $record->uuid;
+                                                                                                $result[$pointer] = File::read($url_ramdisk_record);
                                                                                                 $count++;
                                                                                             }
                                                                                             elseif($count < ($options['page'] * $limit)){
-                                                                                                $result[$pointer] = $record->uuid;
+                                                                                                $result[$pointer] = File::read($url_ramdisk_record);
                                                                                                 $count++;
                                                                                             }
                                                                                             else {
@@ -1383,7 +1384,6 @@ trait Index {
                                                                                         }
                                                                                     }
                                                                                     File::write($url_store, Core::object($result, Core::OBJECT_JSON_LINE));
-
                                                                                     try {
                                                                                         $result = fwrite($sockets[0], $url_store);
                                                                                     }
