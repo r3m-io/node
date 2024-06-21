@@ -1428,6 +1428,10 @@ trait Index {
                                                                             pcntl_waitpid($child, $status);
                                 
                                                                         }
+                                                                        echo Cli::tput('cursor.up');
+                                                                        echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                        echo Cli::tput('cursor.up');
+                                                                        echo 'count: ' . $count . PHP_EOL;
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
