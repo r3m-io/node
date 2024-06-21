@@ -160,3 +160,14 @@ Boot, total & nodelist (function) durations are in milliseconds.
   }
 }
 ```
+
+#### app r3m_io/node list -class=Account.Permission -duration -limit=300 -ramdisk -index -where[]="'#class' start 'ac'" -strategy=left-only
+
+"#duration": {
+"boot": 138.53192329406738,
+"total": 1100.5909442901611,
+"nodelist": 962.0671272277832,
+"item_per_second": 0.9086027876096705,
+"item_per_second_nodelist": 1.039428509402999
+}
+
