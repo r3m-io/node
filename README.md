@@ -243,7 +243,7 @@ Boot, total & nodelist (function) durations are in milliseconds.
 }
 ```
 
-####
+#### app r3m_io/node list -class=Account.Permission -duration -limit=1 -index -parallel -where[]="'#class' start 'ac'" -strategy=left-only
 
 ```json
 {
