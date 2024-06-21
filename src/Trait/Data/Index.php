@@ -1421,12 +1421,12 @@ trait Index {
                                                                             pcntl_waitpid($child, $status);
                                 
                                                                         }
-                                                                        /*
                                                                         echo Cli::tput('cursor.up');
                                                                         echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
                                                                         echo Cli::tput('cursor.up');
-                                                                        echo 'count: ' . $count . PHP_EOL;
-                                                                        */
+                                                                        $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                        $size_format = $item_per_second * $size;
+                                                                        echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {

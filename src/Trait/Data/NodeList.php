@@ -273,8 +273,6 @@ trait NodeList {
                     if(is_array($record)){
                         //parallel left + right search
 //                        $limit = $options['limit'] * $options['thread'] * $options['page'];
-                        $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                        echo 'count: ' . $count . '/', $options['limit'] * $options['threads'] . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . PHP_EOL;
                         foreach($record as $rec){
                             //index_record_expose is handled in the separate thread
                             if(
