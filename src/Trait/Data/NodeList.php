@@ -334,6 +334,7 @@ trait NodeList {
                         ){
                             break;
                         } elseif(
+                            $options['parallel'] === false &&
                             $options['limit'] !== '*' &&
                             $count >= ($options['page'] * $options['limit'])
                         ){
