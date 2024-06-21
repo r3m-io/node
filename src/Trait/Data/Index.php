@@ -9,6 +9,7 @@ use R3m\Io\Config;
 use R3m\Io\Exception\AuthorizationException;
 use R3m\Io\Exception\DirectoryCreateException;
 use R3m\Io\Exception\ObjectException;
+use R3m\Io\Module\Cli;
 use R3m\Io\Module\Controller;
 use R3m\Io\Module\Core;
 use R3m\Io\Module\Data as Storage;
@@ -1396,6 +1397,7 @@ trait Index {
                                                                             }
                                                                         }
                                                                         $count = 0;
+                                                                        echo 'count: ' . $count . PHP_EOL;
                                                                         foreach ($pipes as $i => $pipe) {
                                                                             // Read serialized data from the pipe
                                                                             $data_url = stream_get_contents($pipe);
@@ -1408,6 +1410,9 @@ trait Index {
                                                                                         if(File::exist($url_ramdisk_record)){
                                                                                             $result[] = $object->data_read($url_ramdisk_record);
                                                                                             $count++;
+                                                                                            echo Cli::tput('cursor.up');
+                                                                                            echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                            echo Cli::tput('cursor.up');
                                                                                             echo 'count: ' . $count . PHP_EOL;
                                                                                         }
                                                                                     }
