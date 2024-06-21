@@ -1326,7 +1326,6 @@ trait Index {
                                                                                 foreach ($options['index']['url'] as $nr => $url) {
                                                                                     $file[$nr] = $this->index_read($url);
                                                                                 }
-                                                                                ddd($file['uuid']);
                                                                                 $result = [];
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
@@ -1345,11 +1344,15 @@ trait Index {
                                                                                         $record = (object)[];
                                                                                         $values = [];
                                                                                         foreach ($options['index']['where'] as $nr => $attribute) {
-                                                                                            $file[$nr]->seek($pointer);
-                                                                                            $line = $file[$nr]->current();
-                                                                                            $values[] = $line;
-                                                                                            $value = rtrim($line, PHP_EOL);
-                                                                                            $record->{$attribute} = $value;
+                                                                                            if(array_key_exists($pointer, $file[$nr])){
+//                                                                                                $file[$nr]->seek($pointer);
+                                                                                                $line = $file[$nr]['pointer'];
+                                                                                                ddd($line);
+                                                                                                $values[] = $line;
+                                                                                                $value = rtrim($line, PHP_EOL);
+                                                                                                $record->{$attribute} = $value;
+                                                                                            }
+
                                                                                         }
                                                                                         $file['uuid']->seek($pointer);
                                                                                         $line = $file['uuid']->current();
