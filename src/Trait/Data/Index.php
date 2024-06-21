@@ -1443,10 +1443,12 @@ trait Index {
                                                                                 $result[] = $object->data_read($url_ramdisk_record);
                                                                             }
                                                                             $count++;
-                                                                            echo Cli::tput('cursor.up');
-                                                                            echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                                                                            echo Cli::tput('cursor.up');
-                                                                            echo 'count: ' . $count . ', total: ', $total . PHP_EOL;
+                                                                            if($count % 100 === 0){
+                                                                                echo Cli::tput('cursor.up');
+                                                                                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                echo Cli::tput('cursor.up');
+                                                                                echo 'count: ' . $count . ', total: ', $total . ', percentage: ' . round(($count/$total), 2) . PHP_EOL;
+                                                                            }
                                                                             $leftSearch--;
                                                                             if(
                                                                                 $options['limit'] !== '*' &&
