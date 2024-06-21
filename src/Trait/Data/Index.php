@@ -1342,6 +1342,7 @@ trait Index {
                                                                                         //after page 1 the  record will be filter out
                                                                                         $limit = $options['limit'] - 1;
                                                                                     }
+                                                                                    d('limit:' . $limit);
                                                                                     foreach ($chunk as $chunk_nr => $pointer) {
                                                                                         $record = (object)[];
                                                                                         $values = [];
