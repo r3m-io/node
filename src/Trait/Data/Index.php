@@ -1345,13 +1345,11 @@ trait Index {
                                                                                     }
                                                                                     foreach ($chunk as $chunk_nr => $pointer) {
                                                                                         $record = (object)[];
-                                                                                        $values = [];
                                                                                         foreach ($options['index']['where'] as $nr => $attribute) {
                                                                                             if(!array_key_exists($pointer, $file[$nr])){
                                                                                                 continue;
                                                                                             }
                                                                                             $value = $file[$nr][$pointer];
-                                                                                            $values[] = $value;
                                                                                             $record->{$attribute} = $value;
                                                                                         }
                                                                                         if(!array_key_exists($pointer, $file['uuid'])){
@@ -1428,7 +1426,6 @@ trait Index {
                                                                                 continue;
                                                                             }
                                                                             $value = $file[$nr][$seek];
-                                                                            $values[] = $value;
                                                                             $record->{$attribute} = $value;
                                                                         }
                                                                         if(!array_key_exists($seek, $file['uuid'])){
