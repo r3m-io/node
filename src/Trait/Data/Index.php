@@ -1420,7 +1420,7 @@ trait Index {
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
-                                                                        ddd($record);
+                                                                        $record = (object) [];
                                                                         foreach ($options['index']['where'] as $nr => $attribute) {
                                                                             if(!array_key_exists($seek, $file[$nr])){
                                                                                 continue;
