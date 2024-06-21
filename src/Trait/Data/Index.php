@@ -860,10 +860,17 @@ trait Index {
         if(!File::exist($options['index']['url_uuid'])){
             return false;
         }
+        $file['uuid'] = $this->index_read($options['index']['url_uuid']);
+        foreach ($options['index']['url'] as $nr => $url) {
+            $file[$nr] = $this->index_read($url);
+        }
+        /*
         $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
         foreach($options['index']['url'] as $nr => $url){
             $file[$nr] = new SplFileObject($url);
         }
+        */
+
         $options['index']['min'] = 0;
         $options['index']['max'] = $options['index']['count'] - 1;
         $counter = 0;
@@ -898,24 +905,18 @@ trait Index {
                 break;
             }
             $operator = '===';
-            foreach ($options['index']['where'] as $nr => $attribute){
-                $file[$nr]->seek($seek);
-                $line = $file[$nr]->current();
-                $value = rtrim($line, PHP_EOL);
+            foreach ($options['index']['where'] as $nr => $attribute) {
+                if(!array_key_exists($seek, $file[$nr])){
+                    continue;
+                }
+                $value = $file[$nr][$seek];
                 $record->{$attribute} = $value;
             }
-            if($seek_old){
-                d('seek: ' . $seek . ', old seek: ' . $seek_old  . ', class:' . $name);
-            } else {
-                d('seek: ' . $seek . ', class:' . $name);
+            if(!array_key_exists($seek, $file['uuid'])){
+                continue;
             }
-
-            $file['uuid']->seek($seek);
-            $line = $file['uuid']->current();
-            $value = rtrim($line, PHP_EOL);
+            $value = $file['uuid'][$seek];
             $record->uuid = $value;
-//            d($record);
-//           d($options['where']);
             $record_where = $this->where($record, $options['where'], $options);
 //            d($record_where);
             if($record_where){
@@ -1360,7 +1361,7 @@ trait Index {
                                                                                         $record->uuid = $value;
                                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                                         if ($record_where) {
-                                                                                            $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
+//                                                                                            $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
 //                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                             if($limit === '*'){
                                                                                                 $result[$pointer] = $record->uuid;
