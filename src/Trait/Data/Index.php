@@ -1450,7 +1450,7 @@ trait Index {
                                                                                 echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
                                                                                 echo Cli::tput('cursor.up');
                                                                                 $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                                                                                $mb_per_second = round($size_total, 2);
+                                                                                $mb_per_second = round(($size_total/1024/1024), 2);
                                                                                 echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', MB/sec: ' . $mb_per_second . PHP_EOL;
                                                                             }
                                                                             $leftSearch--;
