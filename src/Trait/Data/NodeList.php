@@ -249,7 +249,7 @@ trait NodeList {
                 }
             }
             if($options['parallel'] === true){
-                $total = $options[['limit'] * $options['thread'];
+                $total = $options['limit'] * $options['thread'];
             } else {
                 $total = $options['limit'];
             }
