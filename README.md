@@ -256,13 +256,12 @@ Boot, total & nodelist (function) durations are in milliseconds.
   "index": true,
   "where": true,
   "#duration": {
-    "boot": 166.38779640197754,
-    "total": 2424.546003341675,
-    "nodelist": 2258.174180984497,
-    "item_per_second": 3.2995868046940973,
-    "item_per_second_nodelist": 3.542685089292907
+    "boot": 157.26113319396973,
+    "total": 2279.7961235046387,
+    "nodelist": 2122.6089000701904,
+    "item_per_second": 3.509085710568681,
+    "item_per_second_nodelist": 3.768946789837476
   }
-}
 ```
 
 #### app r3m_io/node list -class=Account.Permission -duration -limit=8 -index -where[]="'#class' start 'ac'" -strategy=left-only
