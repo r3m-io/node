@@ -266,7 +266,6 @@ trait NodeList {
                 $local_options['page'] = 1;
                 $record = $this->index_list_record($class, $role, $local_options);
                 $found = [];
-                ddd($record);
                 while($record !== false){
                     if(is_array($record)){
                         //parallel left + right search
@@ -328,18 +327,16 @@ trait NodeList {
                             $found[] = $record->get('uuid');
                             $count++;
                         }
-//                    d($count);
-//                    d($options['page']);
-//                    d($options['limit']);
                         if(
+                            $options['parallel'] === true &&
                             $options['limit'] !== '*' &&
-                            $count === (($options['page'] * $options['limit']))
+                            $count >= (($options['page'] * $options['limit'] * $options['thread']))
                         ){
-//                        d($options['limit']);
-//                        d($options['page']);
-//                        d($list);
-//                        d($found);
-//                        d($count);
+                            break;
+                        } elseif(
+                            $options['limit'] !== '*' &&
+                            $count >= (($options['page'] * $options['limit']))
+                        ){
                             break;
                         }
                         $options_where = $this->index_record_next($found, $options);
