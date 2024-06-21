@@ -345,7 +345,6 @@ trait NodeList {
                         $local_options['limit'] = $options['limit'];
                         $local_options['page'] = $options['page'];
                         $record = $this->index_list_record($class, $role, $local_options);
-                        ddd($record);
                     }
                 }
                 $object->config('delete', 'node.record.leftsearch');
