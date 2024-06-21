@@ -864,7 +864,16 @@ trait Index {
         foreach ($options['index']['url'] as $nr => $url) {
             $file[$nr] = $this->index_read($url);
         }
-        $total = count($file['uuid']);
+
+        if($options['limit'] === '*'){
+            $total = count($file['uuid']);
+        }  else {
+            if($options['parallel'] === true){
+                $total = $options['limit'] * $options['thread'];
+            } else {
+                $total = $options['limit'];
+            }
+        }
         echo 'count: ' .  $total . PHP_EOL;
         /*
         $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
