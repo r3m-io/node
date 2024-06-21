@@ -1422,16 +1422,16 @@ trait Index {
                                                                     } else {
                                                                         $record = (object) [];
                                                                         foreach ($options['index']['where'] as $nr => $attribute) {
-                                                                            if(!array_key_exists($seek, $file[$nr])){
+                                                                            if(!array_key_exists($leftSearch, $file[$nr])){
                                                                                 continue;
                                                                             }
-                                                                            $value = $file[$nr][$seek];
+                                                                            $value = $file[$nr][$leftSearch];
                                                                             $record->{$attribute} = $value;
                                                                         }
-                                                                        if(!array_key_exists($seek, $file['uuid'])){
+                                                                        if(!array_key_exists($leftSearch, $file['uuid'])){
                                                                             continue;
                                                                         }
-                                                                        $value = $file['uuid'][$seek];
+                                                                        $value = $file['uuid'][$leftSearch];
                                                                         $record->uuid = $value;
                                                                         d($options['where']);
                                                                         ddd($record);
