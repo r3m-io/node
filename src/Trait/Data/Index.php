@@ -1385,7 +1385,7 @@ trait Index {
                                                                                     File::write($url_store, Core::object($result, Core::OBJECT_JSON_LINE));
 
                                                                                     try {
-                                                                                        $result = fwrite($sockets[0], substr($data, $bytesWritten));
+                                                                                        $result = fwrite($sockets[0], $url_store);
                                                                                     }
                                                                                     catch(Exception | ErrorException $exception){
                                                                                         echo $exception;
