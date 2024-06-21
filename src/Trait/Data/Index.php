@@ -1434,7 +1434,6 @@ trait Index {
                                                                         $value = $file['uuid'][$leftSearch];
                                                                         $record->uuid = $value;
                                                                         $record_where = $this->where($record, $options['where'], $options);
-                                                                        ddd($record_where);
                                                                         if($record_where){
                                                                             $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
                                                                             if(File::exist($url_ramdisk_record)){
@@ -1448,8 +1447,7 @@ trait Index {
                                                                             ){
                                                                                 break;
                                                                             }
-                                                                        }
-                                                                        elseif($leftSearch >= 0){
+                                                                        } else {
                                                                             break;
                                                                         }
                                                                     }
