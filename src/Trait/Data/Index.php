@@ -1423,6 +1423,7 @@ trait Index {
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
+                                                                        ddd($leftSearch);
                                                                         $record = (object) [];
                                                                         foreach ($options['index']['where'] as $nr => $attribute) {
                                                                             if(!array_key_exists($leftSearch, $file[$nr])){
@@ -1438,6 +1439,7 @@ trait Index {
                                                                         $record->uuid = $value;
                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                         if($record_where){
+                                                                            $size = 0;
                                                                             $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
                                                                             if(File::exist($url_ramdisk_record)){
                                                                                 $result[] = $object->data_read($url_ramdisk_record);
