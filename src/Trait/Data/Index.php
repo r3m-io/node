@@ -1362,8 +1362,6 @@ trait Index {
                                                                                         $record->uuid = $value;
                                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                                         if ($record_where) {
-//                                                                                            $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
-//                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                             if($limit === '*'){
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
@@ -1403,7 +1401,16 @@ trait Index {
                                                                                         $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
                                                                                         if(File::exist($url_ramdisk_record)){
                                                                                             $result[] = $object->data_read($url_ramdisk_record);
+                                                                                            $size = File::size($url_ramdisk_record);
                                                                                             $count++;
+                                                                                            if ($count % 100 === 0) {
+                                                                                                echo Cli::tput('cursor.up');
+                                                                                                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                                echo Cli::tput('cursor.up');
+                                                                                                $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                                                $size_format = $item_per_second * $size;
+                                                                                                echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                            }
                                                                                         }
                                                                                     }
                                                                                 }
