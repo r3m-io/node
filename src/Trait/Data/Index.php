@@ -1301,7 +1301,6 @@ trait Index {
                                                                                 // Child process
                                                                                 // Close the parent's socket
                                                                                 fclose($sockets[1]);
-                                                                                /*
                                                                                 $url_store = $object->config('ramdisk.url') .
                                                                                     $object->config(Config::POSIX_ID) .
                                                                                     $object->config('ds') .
@@ -1317,7 +1316,6 @@ trait Index {
                                                                                     '.' .
                                                                                     Core::uuid() .
                                                                                     $object->config('extension.json');
-                                                                                */
                                                                                 $file = [];
                                                                                 if (!array_key_exists('url_uuid', $options['index'])) {
                                                                                     return false;
@@ -1384,89 +1382,27 @@ trait Index {
                                                                                             break;
                                                                                         }
                                                                                     }
-                                                                                    $data = Core::object($result, Core::OBJECT_JSON_LINE);
-                                                                                    $totalBytes = strlen($data);
-                                                                                    echo 'bytes: ' . $totalBytes . "\n";
-                                                                                    $bytesWritten = 0;
+                                                                                    File::write($url_store, Core::object($result, Core::OBJECT_JSON_LINE));
 
-                                                                                    while ($bytesWritten < $totalBytes) {
-                                                                                        try {
-                                                                                            $result = fwrite($sockets[0], substr($data, $bytesWritten));
-
-                                                                                            if ($result === false) {
-                                                                                                $metaData = stream_get_meta_data($sockets[0]);
-                                                                                                if ($metaData['timed_out'] || $metaData['blocked']) {
-                                                                                                    // Resource temporarily unavailable, use stream_select to wait
-                                                                                                    $read = null;
-                                                                                                    $write = [$sockets[0]];
-                                                                                                    $except = null;
-
-                                                                                                    if (stream_select($read, $write, $except, null) > 0) {
-                                                                                                        // Socket is ready for writing
-                                                                                                        continue;
-                                                                                                    } else {
-                                                                                                        d($except);
-                                                                                                        echo "Stream select failed or no stream is ready\n";
-                                                                                                        break;
-                                                                                                    }
-                                                                                                } else {
-                                                                                                    // Some other error occurred
-                                                                                                    d($metaData);
-                                                                                                    echo "Error writing to stream\n";
-                                                                                                    break;
-                                                                                                }
-                                                                                            } else {
-                                                                                                $bytesWritten += $result;
-                                                                                            }
-                                                                                        }
-                                                                                        catch (Exception | ErrorException $exception){
-                                                                                            $metaData = stream_get_meta_data($sockets[0]);
-                                                                                            if ($metaData['timed_out'] || $metaData['blocked']) {
-                                                                                                // Resource temporarily unavailable, use stream_select to wait
-                                                                                                $read = null;
-                                                                                                $write = [$sockets[0]];
-                                                                                                $except = null;
-
-                                                                                                if (stream_select($read, $write, $except, null) > 0) {
-                                                                                                    // Socket is ready for writing
-                                                                                                    continue;
-                                                                                                } else {
-                                                                                                    d($except);
-                                                                                                    echo "Stream select failed or no stream is ready\n";
-                                                                                                    break;
-                                                                                                }
-                                                                                            } else {
-                                                                                                // Some other error occurred
-                                                                                                d($metaData);
-                                                                                                echo "Error writing to stream\n";
-                                                                                                break;
-                                                                                            }
-                                                                                        }
+                                                                                    try {
+                                                                                        $result = fwrite($sockets[0], substr($data, $bytesWritten));
+                                                                                    }
+                                                                                    catch(Exception | ErrorException $exception){
+                                                                                        echo $exception;
                                                                                     }
                                                                                     fclose($sockets[0]);
                                                                                     exit(0);
                                                                                 }
                                                                             }
                                                                         }
-
-                                                                                // Prepare data to send o the parent
-                                                                                /*
-                                                                                $data = [
-                                                                                    'message' => "Hello from child $i",
-                                                                                    'timestamp' => time(),
-                                                                                    'pid' => posix_getpid()
-                                                                                ];
-                                                                                */
-                                                                                // Serialize the data
-//                            $serializedData = serialize($data);
-
-                                                                                // Send serialized data to the parent
-// Parent process: read data from each child
                                                                         foreach ($pipes as $i => $pipe) {
                                                                             // Read serialized data from the pipe
                                                                             $data = stream_get_contents($pipe);
                                                                             fclose($pipe);
-                                                                            $data = Core::object($data, Core::OBJECT_OBJECT);
+
+                                                                            echo $data . PHP_EOL;
+
+                                                                            /*
                                                                             $count = 0;
                                                                             if($data){
                                                                                 foreach($data as $nr => $uuid){
@@ -1477,12 +1413,14 @@ trait Index {
                                                                                     }
                                                                                 }
                                                                             }
+                                                                            */
                                                                         }
 // Wait for all children to exit
                                                                         foreach ($children as $child) {
                                                                             pcntl_waitpid($child, $status);
                                 
                                                                         }
+                                                                        $result = [];
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
