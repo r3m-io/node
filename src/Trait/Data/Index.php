@@ -1255,7 +1255,6 @@ trait Index {
                                                                 $count = 0;
 //                                                                d($leftSearch);
 //                                                                d($options['index']['min']);
-                                                            ddd($options);
                                                                 while ($leftSearch >= $options['index']['min']) {
                                                                     if($options['parallel'] === true){
                                                                         $left = [];
@@ -1263,6 +1262,7 @@ trait Index {
                                                                         for($i = $leftSearch; $i >= $options['index']['min']; $i--) {
                                                                             $left[] = $i;
                                                                         }
+                                                                        ddd($left);
                                                                         $partition = Core::array_partition($left, $options['thread'] ?? 8);
                                                                         $pipes = [];
                                                                         $children = [];
