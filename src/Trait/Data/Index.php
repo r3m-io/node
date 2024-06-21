@@ -1331,7 +1331,6 @@ trait Index {
                                                                                 $result = [];
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
-                                                                                    d('chunk count: ' . count($chunk));
                                                                                     $count = 0;
                                                                                     $limit = $options['limit'];
                                                                                     if(
@@ -1343,6 +1342,8 @@ trait Index {
                                                                                         //after page 1 the  record will be filter out
                                                                                         $limit = $options['limit'] - 1;
                                                                                     }
+                                                                                    d('chunk count: ' . count($chunk));
+                                                                                    d('limit: ' . $limit);
                                                                                     foreach ($chunk as $chunk_nr => $pointer) {
                                                                                         $record = (object)[];
                                                                                         $values = [];
