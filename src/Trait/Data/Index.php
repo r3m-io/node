@@ -1270,6 +1270,7 @@ trait Index {
                                                                 $leftSearch--;
                                                                 $result = [];
                                                                 $count = 0;
+                                                                $size_total = 0;
 //                                                                d($leftSearch);
 //                                                                d($options['index']['min']);
                                                                 while ($leftSearch >= $options['index']['min']) {
@@ -1440,13 +1441,17 @@ trait Index {
                                                                             $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
                                                                             if(File::exist($url_ramdisk_record)){
                                                                                 $result[] = $object->data_read($url_ramdisk_record);
+                                                                                $size = File::size($url_ramdisk_record);
+                                                                                $size_total += $size;
                                                                             }
                                                                             $count++;
                                                                             if($count % 100 === 0){
                                                                                 echo Cli::tput('cursor.up');
                                                                                 echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
                                                                                 echo Cli::tput('cursor.up');
-                                                                                echo 'count: ' . $count . ', total: ', $total . ', percentage: ' . round(($count / $total) * 100, 2) . PHP_EOL;
+                                                                                $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                                $mb_per_second = round($size_total / ((microtime(true) - $object->config('time.start'))) / 1024 / 1024, 2);
+                                                                                echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', MB/sec: ' . $mb_per_second . PHP_EOL;
                                                                             }
                                                                             $leftSearch--;
                                                                             if(
