@@ -864,6 +864,7 @@ trait Index {
         foreach ($options['index']['url'] as $nr => $url) {
             $file[$nr] = $this->index_read($url);
         }
+        ddd('count uuid: ' . count($file['uuid']));
         /*
         $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
         foreach($options['index']['url'] as $nr => $url){
