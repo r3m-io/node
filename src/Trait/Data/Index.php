@@ -1346,7 +1346,7 @@ trait Index {
                                                                                         foreach ($options['index']['where'] as $nr => $attribute) {
                                                                                             if(array_key_exists($pointer, $file[$nr])){
 //                                                                                                $file[$nr]->seek($pointer);
-                                                                                                $line = $file[$nr]['pointer'];
+                                                                                                $line = $file[$nr][$pointer];
                                                                                                 ddd($line);
                                                                                                 $values[] = $line;
                                                                                                 $value = rtrim($line, PHP_EOL);
