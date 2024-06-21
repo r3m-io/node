@@ -263,6 +263,9 @@ trait NodeList {
                     $count++;
                 }
             } else {
+                echo Cli::tput('cursor.up');
+                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                echo Cli::tput('cursor.up');
                 echo 'indexing' . PHP_EOL;
                 $local_options = $options;
                 $local_options['limit'] = 1;

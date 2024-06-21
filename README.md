@@ -230,7 +230,7 @@ Boot, total & nodelist (function) durations are in milliseconds.
   "parallel": true,
   "threads": 8,
   "ramdisk": false,
-  "limit": 50000,
+  "limit": "6250 (6250 * 8)",
   "index": true,
   "where": true,
   "#duration": {
