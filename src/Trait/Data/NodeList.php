@@ -266,7 +266,7 @@ trait NodeList {
                 $local_options['page'] = 1;
                 $record = $this->index_list_record($class, $role, $local_options);
                 $found = [];
-                ddd('here');
+                ddd($record);
                 while($record !== false){
                     if(is_array($record)){
                         //parallel left + right search
