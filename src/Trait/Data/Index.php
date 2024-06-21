@@ -1446,7 +1446,7 @@ trait Index {
                                                                                 echo Cli::tput('cursor.up');
                                                                                 echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
                                                                                 echo Cli::tput('cursor.up');
-                                                                                echo 'count: ' . $count . ', total: ', $total . ', percentage: ' . round(($count/$total), 2) . PHP_EOL;
+                                                                                echo 'count: ' . $count . ', total: ', $total . ', percentage: ' . round(($count / $total) * 100, 2) . PHP_EOL;
                                                                             }
                                                                             $leftSearch--;
                                                                             if(
