@@ -34,6 +34,9 @@ trait Index {
         }
         $data = File::read($url);
         $data = explode(PHP_EOL, $data);
+        foreach($data as $nr => $line){
+            $data[$nr] = rtrim($line);
+        }
         return $data;
     }
 
@@ -1344,19 +1347,17 @@ trait Index {
                                                                                         $record = (object)[];
                                                                                         $values = [];
                                                                                         foreach ($options['index']['where'] as $nr => $attribute) {
-                                                                                            if(array_key_exists($pointer, $file[$nr])){
-//                                                                                                $file[$nr]->seek($pointer);
-                                                                                                $line = $file[$nr][$pointer];
-                                                                                                ddd($line);
-                                                                                                $values[] = $line;
-                                                                                                $value = rtrim($line, PHP_EOL);
-                                                                                                $record->{$attribute} = $value;
+                                                                                            if(!array_key_exists($pointer, $file[$nr])){
+                                                                                                continue;
                                                                                             }
-
+                                                                                            $value = $file[$nr][$pointer];
+                                                                                            $values[] = $value;
+                                                                                            $record->{$attribute} = $value;
                                                                                         }
-                                                                                        $file['uuid']->seek($pointer);
-                                                                                        $line = $file['uuid']->current();
-                                                                                        $value = rtrim($line, PHP_EOL);
+                                                                                        if(!array_key_exists($pointer, $file['uuid'])){
+                                                                                            continue;
+                                                                                        }
+                                                                                        $value = $file['uuid'][$pointer];
                                                                                         $record->uuid = $value;
                                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                                         if ($record_where) {
