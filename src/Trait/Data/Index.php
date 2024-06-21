@@ -1362,18 +1362,18 @@ trait Index {
                                                                                             $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
 //                                                                                            $record = $this->index_record_expose($name, $role, $record, $options);
                                                                                             if($limit === '*'){
-                                                                                                $result[$pointer] = $object->data_read($url_ramdisk_record);
+                                                                                                $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
                                                                                             elseif(
                                                                                                 $options['parallel'] === true &&
                                                                                                 $count < ($options['page'] * $options['thread'] * $limit)
                                                                                             ){
-                                                                                                $result[$pointer] = $object->data_read($url_ramdisk_record);
+                                                                                                $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
                                                                                             elseif($count < ($options['page'] * $limit)){
-                                                                                                $result[$pointer] = $object->data_read($url_ramdisk_record);
+                                                                                                $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
                                                                                             else {
