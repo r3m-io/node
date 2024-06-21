@@ -1405,13 +1405,13 @@ trait Index {
                                                                                 if($data){
                                                                                     foreach($data->data() as $nr => $uuid){
                                                                                         $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
-                                                                                        $count++;
                                                                                         if(File::exist($url_ramdisk_record)){
                                                                                             $result[] = $object->data_read($url_ramdisk_record);
+                                                                                            $count++;
+                                                                                            echo 'count: ' . $count . PHP_EOL;
                                                                                         }
                                                                                     }
                                                                                 }
-
                                                                             }
                                                                         }
                                                                         // Wait for all children to exit
