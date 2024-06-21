@@ -330,15 +330,16 @@ trait NodeList {
                         if(
                             $options['parallel'] === true &&
                             $options['limit'] !== '*' &&
-                            $count >= (($options['page'] * $options['limit'] * $options['thread']))
+                            $count >= ($options['page'] * $options['limit'] * $options['thread'])
                         ){
                             break;
                         } elseif(
                             $options['limit'] !== '*' &&
-                            $count >= (($options['page'] * $options['limit']))
+                            $count >= ($options['page'] * $options['limit'])
                         ){
                             break;
                         }
+                        ddd('yes');
                         $options_where = $this->index_record_next($found, $options);
                         $local_options['where'] = $options_where;
                         $local_options['limit'] = $options['limit'];
