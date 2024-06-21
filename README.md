@@ -221,3 +221,86 @@ Boot, total & nodelist (function) durations are in milliseconds.
 }
 ```
 
+#### app r3m_io/node list -class=Account.Permission -duration -limit=6250 -index -parallel -where[]="'#class' start 'ac'" -strategy=left-only
+
+```json
+{
+  "count": 1000000,
+  "page": 1,
+  "parallel": true,
+  "threads": 8,
+  "ramdisk": false,
+  "limit": 50000,
+  "index": true,
+  "where": true,
+  "#duration": {
+    "boot": 204.99396324157715,
+    "total": 140465.09289741516,
+    "nodelist": 140260.11490821838,
+    "item_per_second": 355.9603241533904,
+    "item_per_second_nodelist": 356.4805292845964
+  }
+}
+```
+
+####
+
+```json
+{
+  "count": 1000000,
+  "page": 1,
+  "parallel": true,
+  "threads": 8,
+  "ramdisk": false,
+  "limit": "1 (1 * 8)",
+  "index": true,
+  "where": true,
+  "#duration": {
+    "boot": 166.38779640197754,
+    "total": 2424.546003341675,
+    "nodelist": 2258.174180984497,
+    "item_per_second": 3.2995868046940973,
+    "item_per_second_nodelist": 3.542685089292907
+  }
+}
+```
+
+#### app r3m_io/node list -class=Account.Permission -duration -limit=8 -index -where[]="'#class' start 'ac'" -strategy=left-only
+
+```json
+{
+  "count": 1000000,
+  "page": 1,
+  "ramdisk": false,
+  "limit": 8,
+  "index": true,
+  "where": true,
+  "#duration": {
+    "boot": 139.31798934936523,
+    "total": 1116.6470050811768,
+    "nodelist": 977.3440361022949,
+    "item_per_second": 7.164305249194149,
+    "item_per_second_nodelist": 8.185449242525147
+  }
+}
+```
+
+##### app r3m_io/node list -class=Account.Permission -duration -limit=1 -index -where[]="'#class' start 'ac'" -strategy=left-only
+
+```json
+{
+  "count": 1000000,
+  "page": 1,
+  "ramdisk": false,
+  "limit": 1,
+  "index": true,
+  "where": true,
+  "#duration": {
+    "boot": 144.39797401428223,
+    "total": 639.1000747680664,
+    "nodelist": 494.71521377563477,
+    "item_per_second": 1.564700176827403,
+    "item_per_second_nodelist": 2.0213649634262594
+  }
+}
+```
