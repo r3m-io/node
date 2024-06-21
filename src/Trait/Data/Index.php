@@ -1401,7 +1401,7 @@ trait Index {
                                                                             fclose($pipe);
                                                                             $count = 0;
                                                                             if($data_url && File::exist($data_url)){
-                                                                                $data = $object->data($data_url);
+                                                                                $data = $object->data_read($data_url);
                                                                                 foreach($data as $nr => $uuid){
                                                                                     $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
                                                                                     $count++;
