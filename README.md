@@ -168,7 +168,7 @@ Boot, total & nodelist (function) durations are in milliseconds.
   "count": 1000000,
   "page": 1,
   "ramdisk": false,
-  "limit": "1",
+  "limit": 1,
   "index": true,
   "where": true,
   "#duration": {
@@ -181,13 +181,23 @@ Boot, total & nodelist (function) durations are in milliseconds.
 }
 ```
 
-#### app r3m_io/node list -class=Account.Permission -duration -limit=300 -ramdisk -index -where[]="'#class' start 'ac'" -strategy=left-only
+#### app r3m_io/node list -class=Account.Permission -duration -limit=300 -index -where[]="'#class' start 'ac'" -strategy=left-only
 
-"#duration": {
-"boot": 138.53192329406738,
-"total": 1100.5909442901611,
-"nodelist": 962.0671272277832,
-"item_per_second": 0.9086027876096705,
-"item_per_second_nodelist": 1.039428509402999
+```json
+{
+  "count": 1000000,
+  "page": 1,
+  "ramdisk": false,
+  "limit": 300,
+  "index": true,
+  "where": true,
+  "#duration": {
+    "boot": 218.86396408081055,
+    "total": 1146.9480991363525,
+    "nodelist": 928.0991554260254,
+    "item_per_second": 261.563710010853,
+    "item_per_second_nodelist": 323.24132421205684
+  }
 }
+```
 
