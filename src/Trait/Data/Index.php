@@ -1390,7 +1390,6 @@ trait Index {
                                                                             }
                                                                         }
                                                                         $count = 0;
-                                                                        echo 'count: ' . $count . PHP_EOL;
                                                                         foreach ($pipes as $i => $pipe) {
                                                                             // Read serialized data from the pipe
                                                                             $data_url = stream_get_contents($pipe);
@@ -1403,12 +1402,6 @@ trait Index {
                                                                                         if(File::exist($url_ramdisk_record)){
                                                                                             $result[] = $object->data_read($url_ramdisk_record);
                                                                                             $count++;
-                                                                                            if($count % 100 === 0){
-                                                                                                echo Cli::tput('cursor.up');
-                                                                                                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                                                                                                echo Cli::tput('cursor.up');
-                                                                                                echo 'count: ' . $count . PHP_EOL;
-                                                                                            }
                                                                                         }
                                                                                     }
                                                                                 }
@@ -1419,13 +1412,16 @@ trait Index {
                                                                             pcntl_waitpid($child, $status);
                                 
                                                                         }
+                                                                        /*
                                                                         echo Cli::tput('cursor.up');
                                                                         echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
                                                                         echo Cli::tput('cursor.up');
                                                                         echo 'count: ' . $count . PHP_EOL;
+                                                                        */
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
+                                                                        ddd($file);
                                                                         foreach ($options['index']['where'] as $nr => $attribute){
                                                                             $file[$nr]->seek($leftSearch);
                                                                             $line = $file[$nr]->current();
