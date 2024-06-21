@@ -1433,8 +1433,6 @@ trait Index {
                                                                         }
                                                                         $value = $file['uuid'][$leftSearch];
                                                                         $record->uuid = $value;
-                                                                        d($options['where']);
-                                                                        ddd($record);
                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                         ddd($record_where);
                                                                         if($record_where){
