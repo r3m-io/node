@@ -1262,8 +1262,12 @@ trait Index {
                                                                         for($i = $leftSearch; $i >= $options['index']['min']; $i--) {
                                                                             $left[] = $i;
                                                                         }
+                                                                        ddd($left);
                                                                         $partition = Core::array_partition($left, $options['thread'] ?? 8);
-                                                                        ddd($partition);
+                                                                        foreach($partition as $part){
+                                                                            d(count($part));
+                                                                        }
+                                                                        ddd('end');
                                                                         $pipes = [];
                                                                         $children = [];
 // Create pipes and fork processes
