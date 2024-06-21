@@ -1423,47 +1423,47 @@ trait Index {
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
-                                                                        ddd($leftSearch);
-                                                                        $record = (object) [];
-                                                                        foreach ($options['index']['where'] as $nr => $attribute) {
-                                                                            if(!array_key_exists($leftSearch, $file[$nr])){
+                                                                        for($i = $leftSearch; $i > 0; $i--) {
+                                                                            $record = (object)[];
+                                                                            foreach ($options['index']['where'] as $nr => $attribute) {
+                                                                                if (!array_key_exists($i, $file[$nr])) {
+                                                                                    continue;
+                                                                                }
+                                                                                $value = $file[$nr][$i];
+                                                                                $record->{$attribute} = $value;
+                                                                            }
+                                                                            if (!array_key_exists($i, $file['uuid'])) {
                                                                                 continue;
                                                                             }
-                                                                            $value = $file[$nr][$leftSearch];
-                                                                            $record->{$attribute} = $value;
-                                                                        }
-                                                                        if(!array_key_exists($leftSearch, $file['uuid'])){
-                                                                            continue;
-                                                                        }
-                                                                        $value = $file['uuid'][$leftSearch];
-                                                                        $record->uuid = $value;
-                                                                        $record_where = $this->where($record, $options['where'], $options);
-                                                                        if($record_where){
-                                                                            $size = 0;
-                                                                            $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
-                                                                            if(File::exist($url_ramdisk_record)){
-                                                                                $result[] = $object->data_read($url_ramdisk_record);
-                                                                                $size = File::size($url_ramdisk_record);
-                                                                                $size_total += $size;
+                                                                            $value = $file['uuid'][$i];
+                                                                            $record->uuid = $value;
+                                                                            $record_where = $this->where($record, $options['where'], $options);
+                                                                            if ($record_where) {
+                                                                                $size = 0;
+                                                                                $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
+                                                                                if (File::exist($url_ramdisk_record)) {
+                                                                                    $result[] = $object->data_read($url_ramdisk_record);
+                                                                                    $size = File::size($url_ramdisk_record);
+                                                                                    $size_total += $size;
+                                                                                }
+                                                                                $count++;
+                                                                                if ($count % 100 === 0) {
+                                                                                    echo Cli::tput('cursor.up');
+                                                                                    echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                    echo Cli::tput('cursor.up');
+                                                                                    $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                                    $size_format = $item_per_second * $size;
+                                                                                    echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                }
+                                                                                if (
+                                                                                    $options['limit'] !== '*' &&
+                                                                                    $count === ($options['page'] * $options['limit'])
+                                                                                ) {
+                                                                                    break 2;
+                                                                                }
+                                                                            } else {
+                                                                                break 2;
                                                                             }
-                                                                            $count++;
-                                                                            if($count % 100 === 0){
-                                                                                echo Cli::tput('cursor.up');
-                                                                                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                                                                                echo Cli::tput('cursor.up');
-                                                                                $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                                                                                $size_format = $item_per_second * $size;
-                                                                                echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
-                                                                            }
-                                                                            $leftSearch--;
-                                                                            if(
-                                                                                $options['limit'] !== '*' &&
-                                                                                $count === ($options['page'] * $options['limit'])
-                                                                            ){
-                                                                                break;
-                                                                            }
-                                                                        } else {
-                                                                            break;
                                                                         }
                                                                     }
                                                                 }
