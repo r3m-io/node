@@ -270,6 +270,7 @@ trait NodeList {
                     if(is_array($record)){
                         //parallel left + right search
 //                        $limit = $options['limit'] * $options['thread'] * $options['page'];
+                        echo 'count: ' . $count . PHP_EOL;
                         foreach($record as $rec){
                             //index_record_expose is handled in the separate thread
                             if(
@@ -283,8 +284,16 @@ trait NodeList {
                                 $list[] = $rec;
                                 $found[] = $rec->get('uuid');
                                 $count++;
+                                echo Cli::tput('cursor.up');
+                                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                echo Cli::tput('cursor.up');
+                                echo 'count: ' . $count . PHP_EOL;
                             }
                         }
+                        echo Cli::tput('cursor.up');
+                        echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                        echo Cli::tput('cursor.up');
+                        echo 'count: ' . $count . PHP_EOL;
                         //one record to much, the binarysearch start
                         if($options['parallel'] === true){
                             $partition = Core::array_partition($list, $options['thread'], false, $count);
@@ -314,8 +323,6 @@ trait NodeList {
                         }
                         $record = false;
                     } else {
-
-//                        $record = $this->index_record_expose($class, $role, $record, $local_options);
                         if(
                             !in_array(
                                 $record->get('uuid'),

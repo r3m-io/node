@@ -201,3 +201,23 @@ Boot, total & nodelist (function) durations are in milliseconds.
 }
 ```
 
+#### app r3m_io/node list -class=Account.Permission -duration -limit=4800 -index -where[]="'#class' start 'ac'" -strategy=left-only
+
+```json
+{
+  "count": 1000000,
+  "page": 1,
+  "ramdisk": false,
+  "limit": 4800,
+  "index": true,
+  "where": true,
+  "#duration": {
+    "boot": 169.65198516845703,
+    "total": 3321.491003036499,
+    "nodelist": 3151.85809135437,
+    "item_per_second": 1445.1341266954664,
+    "item_per_second_nodelist": 1522.9112037647021
+  }
+}
+```
+
