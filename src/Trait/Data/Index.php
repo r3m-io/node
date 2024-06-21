@@ -864,7 +864,8 @@ trait Index {
         foreach ($options['index']['url'] as $nr => $url) {
             $file[$nr] = $this->index_read($url);
         }
-        ddd('count uuid: ' . count($file['uuid']));
+        $total = count($file['uuid']);
+        echo 'count: ' .  $total . PHP_EOL;
         /*
         $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
         foreach($options['index']['url'] as $nr => $url){
@@ -1421,6 +1422,7 @@ trait Index {
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
+                                                                        echo 'count: ' . $count . . ', total: ' . $total . PHP_EOL;
                                                                         $record = (object) [];
                                                                         foreach ($options['index']['where'] as $nr => $attribute) {
                                                                             if(!array_key_exists($leftSearch, $file[$nr])){
@@ -1441,6 +1443,10 @@ trait Index {
                                                                                 $result[] = $object->data_read($url_ramdisk_record);
                                                                             }
                                                                             $count++;
+                                                                            echo Cli::tput('cursor.up');
+                                                                            echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                            echo Cli::tput('cursor.up');
+                                                                            echo 'count: ' . $count . ', total: ', $total . PHP_EOL;
                                                                             $leftSearch--;
                                                                             if(
                                                                                 $options['limit'] !== '*' &&
@@ -1451,6 +1457,10 @@ trait Index {
                                                                         } else {
                                                                             break;
                                                                         }
+                                                                        echo Cli::tput('cursor.up');
+                                                                        echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                        echo Cli::tput('cursor.up');
+                                                                        echo 'count: ' . $count . ', total: ' . $total . PHP_EOL;
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
