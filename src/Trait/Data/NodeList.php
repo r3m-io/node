@@ -249,9 +249,9 @@ trait NodeList {
                 }
             }
             if($options['parallel'] === true){
-                $total = $options['index']['limit'] * $options['thread'];
+                $total = $options[['limit'] * $options['thread'];
             } else {
-                $total = $options['index']['limit'];
+                $total = $options['limit'];
             }
             $count = 0;
             $list = [];
