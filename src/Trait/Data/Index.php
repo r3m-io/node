@@ -1435,7 +1435,6 @@ trait Index {
                                                                         }
                                                                         $value = $file['uuid'][$seek];
                                                                         $record->uuid = $value;
-                                                                        ddd($record);
                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                         if($record_where){
                                                                             $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
@@ -1446,7 +1445,7 @@ trait Index {
                                                                             $leftSearch--;
                                                                             if(
                                                                                 $options['limit'] !== '*' &&
-                                                                                $options['page'] * $options['limit'] === $count
+                                                                                $count === ($options['page'] * $options['limit'])
                                                                             ){
                                                                                 break;
                                                                             }
