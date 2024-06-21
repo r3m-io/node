@@ -1397,14 +1397,11 @@ trait Index {
                                                                         }
                                                                         foreach ($pipes as $i => $pipe) {
                                                                             // Read serialized data from the pipe
-                                                                            $data = stream_get_contents($pipe);
+                                                                            $data_url = stream_get_contents($pipe);
                                                                             fclose($pipe);
-
-                                                                            echo $data . PHP_EOL;
-
-                                                                            /*
                                                                             $count = 0;
-                                                                            if($data){
+                                                                            if($data && File::exist($data_url)){
+                                                                                $data = File::read($data);
                                                                                 foreach($data as $nr => $uuid){
                                                                                     $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
                                                                                     $count++;
@@ -1413,14 +1410,12 @@ trait Index {
                                                                                     }
                                                                                 }
                                                                             }
-                                                                            */
                                                                         }
-// Wait for all children to exit
+                                                                        // Wait for all children to exit
                                                                         foreach ($children as $child) {
                                                                             pcntl_waitpid($child, $status);
                                 
                                                                         }
-                                                                        $result = [];
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
