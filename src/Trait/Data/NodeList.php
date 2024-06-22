@@ -252,13 +252,13 @@ trait NodeList {
                 if($options['limit'] === '*'){
                     $total = $options['index']['count'] / $options['thread'];
                 } else {
-                    $total = $options['limit'] * $options['thread'];
+                    $total = $options['limit'] * $options['thread'] * $options['page'];
                 }
             } else {
                 if($options['limit'] === '*'){
                     $total = $options['index']['count'];
                 } else {
-                    $total = $options['limit'];
+                    $total = $options['limit'] * $options['page'];
                 }
             }
             $count = 0;
