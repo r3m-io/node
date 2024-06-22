@@ -299,14 +299,14 @@ trait NodeList {
                                 echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
                                 echo Cli::tput('cursor.up');
                                 $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                                echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . PHP_EOL;
+                                echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . PHP_EOL;
                             }
                         }
                         echo Cli::tput('cursor.up');
                         echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
                         echo Cli::tput('cursor.up');
                         $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                        echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . PHP_EOL;
+                        echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . PHP_EOL;
                         //one record to much, the binarysearch start
                         if($options['parallel'] === true){
                             $partition = Core::array_partition($list, $options['thread'], false, $count);
