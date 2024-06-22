@@ -306,6 +306,8 @@ trait NodeList {
                         echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . PHP_EOL;
                         //one record to much, the binarysearch start
                         if($options['parallel'] === true){
+                            d($list);
+                            ddd($count);
                             $partition = Core::array_partition($list, $options['thread'], false, $count);
                             $total = 0;
                             $result = [];
