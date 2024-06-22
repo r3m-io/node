@@ -290,6 +290,7 @@ trait NodeList {
                     if(is_array($record)){
                         //parallel left + right search
 //                        $limit = $options['limit'] * $options['thread'] * $options['page'];
+                        ddd($record);
                         foreach($record as $rec){
                             //index_record_expose is handled in the separate thread
                             $list[] = $rec;
