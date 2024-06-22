@@ -288,30 +288,10 @@ trait NodeList {
                 $record = $this->index_list_record($class, $role, $local_options);
                 while($record !== false){
                     if(is_array($record)){
-                        //parallel left + right search
-//                        $limit = $options['limit'] * $options['thread'] * $options['page'];
-                        ddd($record);
-                        foreach($record as $rec){
-                            //index_record_expose is handled in the separate thread
-                            $list[] = $rec;
-                            $count++;
-                            if ($count % 100 === 0) {
-                                echo Cli::tput('cursor.up');
-                                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                                echo Cli::tput('cursor.up');
-                                $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                                echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . PHP_EOL;
-                            }
-                        }
-                        echo Cli::tput('cursor.up');
-                        echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                        echo Cli::tput('cursor.up');
-                        $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                        echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . PHP_EOL;
                         //one record to much, the binarysearch start
                         if($options['parallel'] === true){
-                            $partition = Core::array_partition($list, $options['thread'], false, $count);
-                            $total_partition = 0;
+                            $partition = Core::array_partition($record, $options['thread'], false, $count);
+                            $total = 0;
                             $result = [];
                             foreach($partition as $nr => $list){
                                 if($options['limit'] !== '*'){
@@ -322,11 +302,11 @@ trait NodeList {
                                 }
                                 foreach($list as $record){
                                     $result[] = $record;
-                                    $total_partition++;
+                                    $total++;
                                 }
                             }
                             $list = $result;
-                            $count = $total_partition;
+                            $count = $total;
                             unset($result);
                         } elseif($options['limit'] !== '*'){
                             $count = 0;
