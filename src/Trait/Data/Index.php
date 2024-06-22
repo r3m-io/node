@@ -1343,6 +1343,8 @@ trait Index {
                                                                                 $result = [];
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
+                                                                                    d($i);
+                                                                                    d($options['limit']);
                                                                                     ddd(count($chunk));
                                                                                     $count = 0;
                                                                                     $limit = $options['limit'];
