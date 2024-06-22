@@ -338,6 +338,7 @@ trait NodeList {
                         $list[] = $record;
                         $count++;
                     } else {
+                        d($record);
                         $list[] = $record;
                         $count++;
                     }
