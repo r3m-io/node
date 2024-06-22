@@ -283,31 +283,20 @@ trait NodeList {
                 $local_options['limit'] = 1;
                 $local_options['page'] = 1;
                 $record = $this->index_list_record($class, $role, $local_options);
-                $found = [];
                 while($record !== false){
                     if(is_array($record)){
                         //parallel left + right search
 //                        $limit = $options['limit'] * $options['thread'] * $options['page'];
                         foreach($record as $rec){
                             //index_record_expose is handled in the separate thread
-                            if(
-                                $rec &&
-                                !in_array(
-                                    $rec->get('uuid'),
-                                    $found,
-                                    true
-                                )
-                            ){
-                                $list[] = $rec;
-                                $found[] = $rec->get('uuid');
-                                $count++;
-                                if ($count % 100 === 0) {
-                                    echo Cli::tput('cursor.up');
-                                    echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                                    echo Cli::tput('cursor.up');
-                                    $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                                    echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . PHP_EOL;
-                                }
+                            $list[] = $rec;
+                            $count++;
+                            if ($count % 100 === 0) {
+                                echo Cli::tput('cursor.up');
+                                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                echo Cli::tput('cursor.up');
+                                $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . PHP_EOL;
                             }
                         }
                         echo Cli::tput('cursor.up');
@@ -345,36 +334,30 @@ trait NodeList {
                         }
                         $record = false;
                     } else {
-                        if(
-                            !in_array(
-                                $record->get('uuid'),
-                                $found,
-                                true
-                            )
-                        ){
-                            $list[] = $record;
-                            $found[] = $record->get('uuid');
-                            $count++;
-                        }
-                        if(
-                            $options['parallel'] === true &&
-                            $options['limit'] !== '*' &&
-                            $count >= ($options['page'] * $options['limit'] * $options['thread'])
-                        ){
-                            break;
-                        } elseif(
-                            $options['parallel'] === false &&
-                            $options['limit'] !== '*' &&
-                            $count >= ($options['page'] * $options['limit'])
-                        ){
-                            break;
-                        }
-                        $options_where = $this->index_record_next($found, $options);
-                        $local_options['where'] = $options_where;
-                        $local_options['limit'] = $options['limit'];
-                        $local_options['page'] = $options['page'];
-                        $record = $this->index_list_record($class, $role, $local_options);
+                        $list[] = $record;
+                        $count++;
                     }
+                    if(
+                        $options['parallel'] === true &&
+                        $options['limit'] !== '*' &&
+                        $count >= ($options['page'] * $options['limit'] * $options['thread'])
+                    ){
+                        break;
+                    } elseif(
+                        $options['parallel'] === false &&
+                        $options['limit'] !== '*' &&
+                        $count >= ($options['page'] * $options['limit'])
+                    ){
+                        break;
+                    }
+                    $found = [];
+                    $found[] = $record->get('uuid');
+                    $options_where = $this->index_record_next($found, $options);
+                    $local_options['where'] = $options_where;
+                    $local_options['limit'] = $options['limit'];
+                    $local_options['page'] = $options['page'];
+                    $record = $this->index_list_record($class, $role, $local_options);
+                    ddd($record);
                 }
                 $object->config('delete', 'node.record.leftsearch');
                 $object->config('delete', 'node.record.rightsearch');
