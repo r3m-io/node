@@ -310,7 +310,7 @@ trait NodeList {
                         //one record to much, the binarysearch start
                         if($options['parallel'] === true){
                             $partition = Core::array_partition($list, $options['thread'], false, $count);
-                            $total = 0;
+                            $total_partition = 0;
                             $result = [];
                             foreach($partition as $nr => $list){
                                 if($options['limit'] !== '*'){
@@ -321,11 +321,11 @@ trait NodeList {
                                 }
                                 foreach($list as $record){
                                     $result[] = $record;
-                                    $total++;
+                                    $total_partition++;
                                 }
                             }
                             $list = $result;
-                            $count = $total;
+                            $count = $total_partition;
                             unset($result);
                         } elseif($options['limit'] !== '*'){
                             $count = 0;
