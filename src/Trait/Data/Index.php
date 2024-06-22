@@ -1356,7 +1356,7 @@ trait Index {
                                                                                         //we already have the first hit, so we need to align the limit
                                                                                         //after page 1 the  record will be filter out
                                                                                         $limit = $options['limit'] - 1;
-                                                                                        if($limt < 1 ){
+                                                                                        if($limit < 1 ){
                                                                                             $limit = 1;
                                                                                         }
                                                                                     }
