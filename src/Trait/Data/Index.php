@@ -1345,7 +1345,7 @@ trait Index {
                                                                                     $chunk = $partition[$i];
                                                                                     d($i);
                                                                                     d($options['limit']);
-                                                                                    ddd(count($chunk));
+                                                                                    d(count($chunk));
                                                                                     $count = 0;
                                                                                     $limit = $options['limit'];
                                                                                     if(
