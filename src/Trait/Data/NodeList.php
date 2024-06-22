@@ -248,10 +248,19 @@ trait NodeList {
                     $options['index']['count'] = $count;
                 }
             }
-            if($options['parallel'] === true){
-                $total = $options['limit'] * $options['thread'];
+            elseif($options['parallel'] === true){
+                if($options['limit'] === '*'){
+                    $total = $options['index']['count'] / $options['thread'];
+                } else {
+                    $total = $options['limit'] * $options['thread'];
+                }
+
             } else {
-                $total = $options['limit'];
+                if($options['limit'] === '*'){
+                    $total = $options['index']['count'];
+                } else {
+                    $total = $options['limit'];
+                }
             }
             $count = 0;
             $list = [];
