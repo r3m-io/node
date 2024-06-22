@@ -248,7 +248,7 @@ trait NodeList {
                     $options['index']['count'] = $count;
                 }
             }
-            elseif($options['parallel'] === true){
+            if($options['parallel'] === true){
                 if($options['limit'] === '*'){
                     $total = $options['index']['count'] / $options['thread'];
                 } else {
