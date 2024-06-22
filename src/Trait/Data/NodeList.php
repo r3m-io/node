@@ -254,7 +254,6 @@ trait NodeList {
                 } else {
                     $total = $options['limit'] * $options['thread'];
                 }
-
             } else {
                 if($options['limit'] === '*'){
                     $total = $options['index']['count'];
