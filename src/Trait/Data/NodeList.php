@@ -254,13 +254,15 @@ trait NodeList {
                 } else {
                     $total = $options['limit'] * $options['thread'] * $options['page'];
                 }
-            } else {
+            }
+            elseif($options['parallel'] === false) {
                 if($options['limit'] === '*'){
                     $total = $options['index']['count'];
                 } else {
                     $total = $options['limit'] * $options['page'];
                 }
             }
+            d($total);
             $count = 0;
             $list = [];
             if(
