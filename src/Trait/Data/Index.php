@@ -875,7 +875,7 @@ trait Index {
             }
         }
         echo 'count: ' .  $total . PHP_EOL;
-        d($ooptions['limit']);
+        d($options['limit']);
         d($options['thread']);
         ddd('test');
         /*
