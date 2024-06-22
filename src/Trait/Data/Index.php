@@ -875,6 +875,9 @@ trait Index {
             }
         }
         echo 'count: ' .  $total . PHP_EOL;
+        d($ooptions['limit']);
+        d($options['thread']);
+        ddd('test');
         /*
         $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
         foreach($options['index']['url'] as $nr => $url){
