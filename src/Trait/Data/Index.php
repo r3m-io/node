@@ -874,10 +874,6 @@ trait Index {
                 $total = $options['limit'];
             }
         }
-        echo 'count: ' .  $total . PHP_EOL;
-        d($options['limit']);
-        d($options['thread']);
-        ddd('test');
         /*
         $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
         foreach($options['index']['url'] as $nr => $url){
@@ -1409,7 +1405,8 @@ trait Index {
                                                                             if($data_url && File::exist($data_url)){
                                                                                 $data = $object->data_read($data_url);
                                                                                 if($data){
-                                                                                    foreach($data->data() as $nr => $uuid){
+                                                                                    $data = $data->data();
+                                                                                    foreach($data as $nr => $uuid){
                                                                                         $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
                                                                                         if(File::exist($url_ramdisk_record)){
                                                                                             $result[] = $object->data_read($url_ramdisk_record);
