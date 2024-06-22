@@ -336,6 +336,7 @@ trait NodeList {
                         }
                         $record = false;
                     } else {
+                        ddd($options);
                         $list[] = $record;
                         $count++;
                     }
