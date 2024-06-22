@@ -337,10 +337,6 @@ trait NodeList {
                     elseif($options['page'] === 1) {
                         $list[] = $record;
                         $count++;
-                    } else {
-                        d($record);
-                        $list[] = $record;
-                        $count++;
                     }
                     if(
                         $options['parallel'] === true &&
