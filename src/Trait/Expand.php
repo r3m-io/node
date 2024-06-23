@@ -21,20 +21,14 @@ use R3m\Io\Exception\AuthorizationException;
 trait Expand {
 
     public function expand($class, $role, $options = []){
+        $object = $this->object();
         $name = Controller::name($class);
-        d($options);
-        ddd($class);
-
-        $result = [];
-        if(is_array($data)){
-            foreach($data as $key => $value){
-                if(is_array($value)){
-                    $result[$key] = $this->expand($value, $options);
-                } else {
-                    $result[$key] = $value;
-                }
-            }
-        }
-        return $result;
+        $url_data = $object->config('project.dir.node') .
+            'Data' .
+            $object->config('ds') .
+            $name .
+            $object->config('extension.json')
+        ;
+        ddd($url_data);
     }
 }

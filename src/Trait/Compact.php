@@ -27,7 +27,7 @@ trait Compact {
             'Data' .
             $object->config('ds') .
             $name .
-            '.json';
+            $object->config('extension.json');
 
         $data = $object->data_read($url_data);
         if($data){
