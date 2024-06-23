@@ -20,7 +20,7 @@ use R3m\Io\Exception\AuthorizationException;
 
 trait Compact {
 
-    public function compact($data, $options = []){
+    public function compact($class, $role, $options = []){
         ddd($options);
     }
 
