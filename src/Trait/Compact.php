@@ -14,7 +14,8 @@ trait Compact {
      * @throws ObjectException
      * @throws Exception
      */
-    public function compact($class, $role, $options = []){
+    public function compact($class, $role, $options = []): bool | int
+    {
         $object = $this->object();
         $name = Controller::name($class);
         $url_data = $object->config('project.dir.node') .
@@ -25,9 +26,10 @@ trait Compact {
 
         $data = $object->data_read($url_data);
         if($data){
-            $data->write($url_data, [
+            return $data->write($url_data, [
                 'compact' => true
             ]);
         }
+        return false;
     }
 }
