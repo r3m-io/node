@@ -29,6 +29,9 @@ trait Expand {
             $name .
             $object->config('extension.json')
         ;
-        ddd($url_data);
+        $data = $object->data_read($url_data);
+        if($data){
+            $data->write($url_data);
+        }
     }
 }

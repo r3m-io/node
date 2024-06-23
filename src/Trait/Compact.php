@@ -35,7 +35,5 @@ trait Compact {
                 'compact' => true
             ]);
         }
-        ddd($url_data);
     }
-
 }
