@@ -1421,7 +1421,7 @@ trait Index {
                                                                                                 echo Cli::tput('cursor.up');
                                                                                                 $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
                                                                                                 $size_format = $item_per_second * $size;
-                                                                                                echo 'count: ' . $count . '/', ($total * $options['page'] * $options['thread']) . ', percentage: ' . round(($count / ($total * $options['page'] * $options['thread'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                                echo 'count: ' . $count . '/', ($total * $options['thread']) . ', percentage: ' . round(($count / ($total * $options['thread'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                             }
                                                                                         }
                                                                                     }
@@ -1438,7 +1438,7 @@ trait Index {
                                                                         echo Cli::tput('cursor.up');
                                                                         $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
                                                                         $size_format = $item_per_second * $size;
-                                                                        echo 'count: ' . $count . '/', ($total * $options['page'] * $options['thread']) . ', percentage: ' . round(($count / ($total * $options['page'] * $options['thread'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                        echo 'count: ' . $count . '/', ($total * $options['thread']) . ', percentage: ' . round(($count / ($total * $options['thread'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
