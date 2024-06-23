@@ -1,14 +1,15 @@
 {{R3M}}
 {{$request = request()}}
 {{$options = options()}}
+{{$class = data.extract('options.class')}}
+{{if(is.empty($class))}}
 Package: {{$request.package}}
 
 Module: {{$request.module|uppercase.first}}
 
 Submodule: {{$request.submodule|uppercase.first}}
 
-{{$class = data.extract('options.class')}}
-{{if(is.empty($class))}}
+
 You need to provide the option class.
 Available classes:
 {{$read = dir.read(config('project.dir.node') + 'Object/')}}
