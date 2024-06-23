@@ -28,6 +28,13 @@ trait Compact {
             $object->config('ds') .
             $name .
             '.json';
+
+        $data = $object->data_read($url_data);
+        if($data){
+            $data->write($url_data, [
+                'compact' => true
+            ]);
+        }
         ddd($url_data);
     }
 
