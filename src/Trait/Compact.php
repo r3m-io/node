@@ -21,7 +21,14 @@ use R3m\Io\Exception\AuthorizationException;
 trait Compact {
 
     public function compact($class, $role, $options = []){
-        ddd($options);
+        $object = $this->object();
+        $name = Controller::name($class);
+        $url_data = $object->config('project.dir.node') .
+            'Data' .
+            $object->config('ds') .
+            $name .
+            '.json';
+        ddd($url_data);
     }
 
 }
