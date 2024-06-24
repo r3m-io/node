@@ -34,7 +34,7 @@ trait Compact {
             return [
                 'count' => $count,
                 'byte' => $byte,
-                'size' => File::size_calculation($byte)
+                'size' => File::size_format($byte)
             ];
         }
         return false;
