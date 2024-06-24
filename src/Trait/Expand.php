@@ -18,15 +18,21 @@ trait Expand {
     {
         $object = $this->object();
         $name = Controller::name($class);
-        $url_data = $object->config('project.dir.node') .
+        $url = $object->config('project.dir.node') .
             'Data' .
             $object->config('ds') .
             $name .
             $object->config('extension.json')
         ;
-        $data = $object->data_read($url_data);
+        $data = $object->data_read($url);
         if($data){
-            return $data->write($url_data);
+            $count = count($data->data($name));
+            $byte = $data->write($url);
+            return [
+                'count' => $count,
+                'byte' => $byte,
+                'size' => File::size_calculation($byte)
+            ];
         }
         return false;
     }
