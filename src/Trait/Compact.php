@@ -15,7 +15,7 @@ trait Compact {
      * @throws ObjectException
      * @throws Exception
      */
-    public function compact($class, $role, $options = []): bool | int
+    public function compact($class, $role, $options = []): array | bool
     {
         $object = $this->object();
         $name = Controller::name($class);

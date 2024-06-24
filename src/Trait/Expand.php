@@ -15,7 +15,7 @@ trait Expand {
      * @throws ObjectException
      * @throws Exception
      */
-    public function expand($class, $role, $options = []): bool | int
+    public function expand($class, $role, $options = []): array | bool
     {
         $object = $this->object();
         $name = Controller::name($class);
