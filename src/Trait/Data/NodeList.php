@@ -310,6 +310,9 @@ trait NodeList {
                             unset($result);
                         } elseif($options['limit'] !== '*'){
                             $count = 0;
+                            foreach($record as $value){
+                                $list[] = $value;
+                            }
                             $list = Limit::list($list)->with([
                                 'limit' => $options['limit'],
                                 'page' => $options['page']
@@ -334,6 +337,7 @@ trait NodeList {
                     ){
                         break;
                     } elseif($record){
+                        $list[] = $record;
                         $found = [];
                         $found[] = $record->get('uuid');
                         $options_where = $this->index_record_next($found, $options);
@@ -341,7 +345,6 @@ trait NodeList {
                         $local_options['limit'] = $options['limit'];
                         $local_options['page'] = $options['page'];
                         $record = $this->index_list_record($class, $role, $local_options);
-                        ddd($record);
                     }
                 }
                 $object->config('delete', 'node.record.leftsearch');
