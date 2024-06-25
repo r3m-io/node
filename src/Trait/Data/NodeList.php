@@ -1200,19 +1200,16 @@ trait NodeList {
                                 $ramdisk->set('response', $ramdisk_data);
                                 $ramdisk->set('relation', $relation_mtime);
                                 $ramdisk->write($ramdisk_url_nodelist_item);
-                                if($object->config('posix.id') !== 0){
-                                    File::permission($object, [
-                                        'ramdisk_url_nodelist_item' => $ramdisk_url_nodelist_item,
-                                    ]);
-                                }
-                            }
-                            if($object->config('posix.id') !== 0){
                                 File::permission($object, [
-                                    'ramdisk_dir' => $ramdisk_dir,
-                                    'ramdisk_dir_node' => $ramdisk_dir_node,
-                                    'ramdisk_dir_list' => $ramdisk_dir_list,
+                                    'ramdisk_url_nodelist_item' => $ramdisk_url_nodelist_item,
                                 ]);
                             }
+                            File::permission($object, [
+                                'ramdisk_dir' => $ramdisk_dir,
+                                'ramdisk_dir_node' => $ramdisk_dir_node,
+                                'ramdisk_dir_list' => $ramdisk_dir_list,
+                            ]);
+
                         } else {
                             $relation_mtime = $this->relation_mtime($object_data);
                             $ramdisk = new Storage();
@@ -1220,14 +1217,12 @@ trait NodeList {
                             $ramdisk->set('response', $result);
                             $ramdisk->set('relation', $relation_mtime);
                             $ramdisk->write($ramdisk_url_node);
-                            if($object->config('posix.id') !== 0){
-                                File::permission($object, [
-                                    'ramdisk_dir' => $ramdisk_dir,
-                                    'ramdisk_dir_node' => $ramdisk_dir_node,
-                                    'ramdisk_dir_list' => $ramdisk_dir_list,
-                                    'ramdisk_url_node' => $ramdisk_url_node,
-                                ]);
-                            }
+                            File::permission($object, [
+                                'ramdisk_dir' => $ramdisk_dir,
+                                'ramdisk_dir_node' => $ramdisk_dir_node,
+                                'ramdisk_dir_list' => $ramdisk_dir_list,
+                                'ramdisk_url_node' => $ramdisk_url_node,
+                            ]);
                         }
                     }
                     if($start){
