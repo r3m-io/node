@@ -1442,6 +1442,7 @@ trait Index {
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
+                                                                        d($count);
                                                                         d($leftSearch);
                                                                         for($i = $leftSearch; $i > $options['index']['min']; $i--) {
                                                                             $record = (object)[];
@@ -1467,6 +1468,7 @@ trait Index {
                                                                                     $size_total += $size;
                                                                                 }
                                                                                 $count++;
+                                                                                d('count: ' . $count . ' size: ' . $size_total);
                                                                                 if ($count % 100 === 0) {
                                                                                     echo Cli::tput('cursor.up');
                                                                                     echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
@@ -1479,6 +1481,7 @@ trait Index {
                                                                                     $options['limit'] !== '*' &&
                                                                                     $count === ($options['page'] * $options['limit'])
                                                                                 ) {
+                                                                                    d('count: ' . $count . ' size: ' . $size_total);
                                                                                     break 2;
                                                                                 }
                                                                             } else {
