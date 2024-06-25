@@ -850,7 +850,6 @@ trait NodeList {
                 $limit = $options['limit'] ?? 4096;
                 $options_limit = $limit;
                 if ($options['parallel'] === true && Core::is_cli()) {
-                    ddd('here');
                     $threads = $options['thread'];
                     $chunks = array_chunk($list, ceil(count($list) / $threads));
                     $chunk_count = count($chunks);
@@ -911,6 +910,13 @@ trait NodeList {
                                     ){
                                         break;
                                     }
+                                    elseif(
+                                        $limit !== '*' &&
+                                        $count === ($options['page'] * $limit)
+                                    ){
+                                        break;
+                                    }
+                                    $count++;
                                 }
                             }
                             elseif ($is_where) {
@@ -927,6 +933,13 @@ trait NodeList {
                                     ){
                                         break;
                                     }
+                                    elseif(
+                                        $limit !== '*' &&
+                                        $count === ($options['page'] * $limit)
+                                    ){
+                                        break;
+                                    }
+                                    $count++;
                                 }
                             } else {
                                 foreach($chunk as $nr => $record){
@@ -941,6 +954,13 @@ trait NodeList {
                                     ){
                                         break;
                                     }
+                                    elseif(
+                                        $limit !== '*' &&
+                                        $count === ($options['page'] * $limit)
+                                    ){
+                                        break;
+                                    }
+                                    $count++;
                                 }
                             }
                             // Send serialized data to the parent
