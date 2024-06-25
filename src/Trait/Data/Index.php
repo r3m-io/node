@@ -1491,6 +1491,7 @@ trait Index {
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
+                                                                d(count($result));
                                                                 return $result;
                                                             break;
                                                             case 'right-only' :
