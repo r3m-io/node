@@ -1457,9 +1457,9 @@ trait Index {
                                                                             }
                                                                             $value = $file['uuid'][$i];
                                                                             $record->uuid = $value;
-                                                                            d($record);
                                                                             $record_where = $this->where($record, $options['where'], $options);
                                                                             if ($record_where) {
+                                                                                d('yes');
                                                                                 $size = 0;
                                                                                 $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
                                                                                 if (File::exist($url_ramdisk_record)) {
@@ -1480,9 +1480,11 @@ trait Index {
                                                                                     $options['limit'] !== '*' &&
                                                                                     $count === ($options['page'] * $options['limit'])
                                                                                 ) {
+                                                                                    d('yes2');
                                                                                     break 2;
                                                                                 }
                                                                             } else {
+                                                                                d('no');
                                                                                 break 2;
                                                                             }
                                                                         }
