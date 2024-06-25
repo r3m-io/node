@@ -978,9 +978,11 @@ trait NodeList {
                         fclose($pipe);
                         $array = Core::object($data, Core::OBJECT_ARRAY);
                         $chunk = $chunks[$i];
+                        $has_result = false;
                         if(is_array($array)){
                             foreach($chunk as $nr => $record){
                                 if(!array_key_exists($nr, $array)){
+                                    d($nr);
                                     d($data);
                                     ddd($array);
                                 }
@@ -996,6 +998,7 @@ trait NodeList {
                                         //collect relation mtime
                                     }
                                     $result[] = new Storage($record);
+                                    $has_result = true;
                                 }
                             }
                         } else {
