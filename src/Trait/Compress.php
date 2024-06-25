@@ -28,16 +28,15 @@ trait Compress {
 
         $data = $object->data_read($url);
         if($data){
+            $url .= '.gz';
             $count = count($data->data($name));
             $write = $data->write($url, [
                 'compact' => true,
                 'compress' => true
             ]);
-            if($object->config('framework.environment') === Config::MODE_DEVELOPMENT){
-                File::permission($object, [
-                    'url' => $url
-                ]);
-            }
+            File::permission($object, [
+                'url' => $url
+            ]);
             $duration = microtime(true) - $object->config('time.start');
             return [
                 'count' => $count,
