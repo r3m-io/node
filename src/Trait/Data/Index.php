@@ -1443,7 +1443,7 @@ trait Index {
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
                                                                         d($leftSearch);
-                                                                        for($i = $leftSearch; $i > 0; $i--) {
+                                                                        for($i = $leftSearch; $i > $options['index']['min']; $i--) {
                                                                             $record = (object)[];
                                                                             foreach ($options['index']['where'] as $nr => $attribute) {
                                                                                 if (!array_key_exists($i, $file[$nr])) {
