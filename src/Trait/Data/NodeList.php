@@ -334,13 +334,12 @@ trait NodeList {
                     ){
                         break;
                     } elseif($record){
-                        $found = [];
-                        $found[] = $record->get('uuid');
                         $options_where = $this->index_record_next($found, $options);
                         $local_options['where'] = $options_where;
                         $local_options['limit'] = $options['limit'];
                         $local_options['page'] = $options['page'];
                         $record = $this->index_list_record($class, $role, $local_options);
+                        ddd($record);
                     }
                 }
                 $object->config('delete', 'node.record.leftsearch');
