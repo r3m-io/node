@@ -1457,6 +1457,7 @@ trait Index {
                                                                             }
                                                                             $value = $file['uuid'][$i];
                                                                             $record->uuid = $value;
+                                                                            d($record);
                                                                             $record_where = $this->where($record, $options['where'], $options);
                                                                             if ($record_where) {
                                                                                 $size = 0;
