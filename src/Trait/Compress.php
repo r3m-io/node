@@ -28,15 +28,17 @@ trait Compress {
         $data = $object->data_read($url);
         if($data){
             $count = count($data->data($name));
-            $byte = $data->write($url, [
+            $write = $data->write($url, [
                 'compact' => true,
                 'compress' => true
             ]);
+            $duration = microtime(true) - $object->config('time.start');
             return [
                 'count' => $count,
-                'byte' => $byte,
-                'size' => File::size_format($byte),
-                'duration' => round(microtime(true) - $object->config('time.start'), 2) . ' sec'
+                'byte' => $write['byte'],
+                'compression' => round($write['original'] / $write['byte'], 2) . 'x',
+                'size' => File::size_format($write['byte']),
+                'duration' => round($duration, 2) . ' sec'
             ];
         }
         return false;
