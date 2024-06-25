@@ -16,8 +16,10 @@ use R3m\Io\Node\Service\Security;
 trait Data {
 
     use Compact;
+    use Compress;
     use Expand;
     use Expose;
+    use Extract;
     use Filter;
     use Relation;
     use Stats;
