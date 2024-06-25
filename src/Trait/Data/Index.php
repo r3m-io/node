@@ -1468,7 +1468,7 @@ trait Index {
                                                                                     $size_total += $size;
                                                                                 }
                                                                                 $count++;
-                                                                                d('count: ' . $count . ' size: ' . $size_total);
+//                                                                                d('count: ' . $count . ' size: ' . $size_total);
                                                                                 if ($count % 100 === 0) {
                                                                                     echo Cli::tput('cursor.up');
                                                                                     echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
@@ -1481,7 +1481,7 @@ trait Index {
                                                                                     $options['limit'] !== '*' &&
                                                                                     $count === ($options['page'] * $options['limit'])
                                                                                 ) {
-                                                                                    d('count: ' . $count . ' size: ' . $size_total);
+//                                                                                    d('count: ' . $count . ' size: ' . $size_total);
                                                                                     break 2;
                                                                                 }
                                                                             } else {
