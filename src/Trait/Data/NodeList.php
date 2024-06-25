@@ -338,7 +338,6 @@ trait NodeList {
                     ){
                         break;
                     } elseif($record){
-                        $list[] = $record;
                         $found = [];
                         $found[] = $record->get('uuid');
                         $options_where = $this->index_record_next($found, $options);
