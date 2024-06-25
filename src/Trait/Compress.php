@@ -36,10 +36,10 @@ trait Compress {
             return [
                 'count' => $count,
                 'byte' => $write['byte'],
-                'compression' => round($write['original'] / $write['byte'], 2) . 'x',
+                'compression' => round($write['original'] / $write['byte'], 2) . ' x',
                 'size' => File::size_format($write['byte']),
                 'duration' => round($duration, 2) . ' sec',
-                'speed' => File::size_format($write['byte'] / $duration) . '/sec'
+                'speed' => File::size_format($write['byte'] / $duration) . 'per sec'
             ];
         }
         return false;
