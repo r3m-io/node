@@ -36,7 +36,7 @@ trait Compress {
                 'count' => $count,
                 'byte' => $byte,
                 'size' => File::size_format($byte),
-                'duration' => ((microtime(true) - $object->config('time.start')) * 1000) . 'ms'
+                'duration' => round(microtime(true) - $object->config('time.start'), 2) . ' sec'
             ];
         }
         return false;
