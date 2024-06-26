@@ -1051,7 +1051,7 @@ trait NodeList {
                     } else {
                         $list_sort = $list;
                     }
-                    ddd($list);
+                    ddd(count($list));
                     $limit = '*'; //handler
                 } else {
                     $expose = false;
