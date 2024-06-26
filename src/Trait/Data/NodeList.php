@@ -888,6 +888,7 @@ trait NodeList {
                             $object->config('ds')
                         ;
                     }
+                    $pipes = [];
                     for ($i = 0; $i < $options['thread']; $i++) {
                         // Create a pipe
                         $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
@@ -920,12 +921,6 @@ trait NodeList {
                                     }
                                     $result[$nr] = 1;
                                     if(
-                                        $limit === 1 &&
-                                        $options['page'] === 1
-                                    ){
-                                        break;
-                                    }
-                                    elseif(
                                         $limit !== '*' &&
                                         $count === ($options['page'] * $limit)
                                     ){
@@ -943,12 +938,6 @@ trait NodeList {
                                     }
                                     $result[$nr] = 1;
                                     if(
-                                        $limit === 1 &&
-                                        $options['page'] === 1
-                                    ){
-                                        break;
-                                    }
-                                    elseif(
                                         $limit !== '*' &&
                                         $count === ($options['page'] * $limit)
                                     ){
@@ -964,12 +953,6 @@ trait NodeList {
                                     }
                                     $result[$nr] = 1;
                                     if(
-                                        $limit === 1 &&
-                                        $options['page'] === 1
-                                    ){
-                                        break;
-                                    }
-                                    elseif(
                                         $limit !== '*' &&
                                         $count === ($options['page'] * $limit)
                                     ){
@@ -1126,9 +1109,11 @@ trait NodeList {
                                 $key = implode('', $key);
                                 $list_filtered[$key] = $record;
                             }
+                            /*
                             if($limit === 1 && $options['page'] === 1){
                                 break;
                             }
+                            */
                             /*
                             if(
                                 $limit !== '*' &&
