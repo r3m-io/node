@@ -1377,10 +1377,17 @@ trait Index {
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
+                                                                                            elseif($limit === 1){
+                                                                                                $result[$pointer] = $record->uuid;
+                                                                                                $count++;
+                                                                                                break;
+                                                                                            }
+                                                                                            /* can't limit, sort needs to happen at the end...
                                                                                             elseif($count < ($options['page'] * $limit)){
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
+                                                                                            */
                                                                                             else {
                                                                                                 break;
                                                                                             }
@@ -1401,6 +1408,7 @@ trait Index {
                                                                             }
                                                                         }
                                                                         $count = 0;
+                                                                        $size = 0;
                                                                         foreach ($pipes as $i => $pipe) {
                                                                             // Read serialized data from the pipe
                                                                             $data_url = stream_get_contents($pipe);
@@ -1476,6 +1484,9 @@ trait Index {
                                                                                     $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
                                                                                     $size_format = $item_per_second * $size;
                                                                                     echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                }
+                                                                                if($options['limit'] === 1){
+                                                                                    break 2;
                                                                                 }
                                                                                 /* can't limit, sort needs to happen at the end...
                                                                                 if (
