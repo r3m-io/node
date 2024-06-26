@@ -1511,7 +1511,6 @@ trait Index {
                                                                 $result[] = ']';
                                                                 $result[] = '}';
                                                                 $result = implode(',', $result);
-                                                                ddd($result);
                                                                 $result = Core::object($result, Core::OBJECT_OBJECT);
                                                                 ddd($result);
                                                                 return $result;
