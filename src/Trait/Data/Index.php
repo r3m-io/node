@@ -1477,6 +1477,7 @@ trait Index {
                                                                                     $size_format = $item_per_second * $size;
                                                                                     echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                 }
+                                                                                /* can't limit, sort needs to happen at the end...
                                                                                 if (
                                                                                     $options['limit'] !== '*' &&
                                                                                     $count === ($options['page'] * $options['limit'])
@@ -1484,6 +1485,7 @@ trait Index {
 //                                                                                    d('count: ' . $count . ' size: ' . $size_total);
                                                                                     break 2;
                                                                                 }
+                                                                                */
                                                                             } else {
                                                                                 break 2;
                                                                             }
