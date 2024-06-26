@@ -1051,7 +1051,6 @@ trait NodeList {
                     } else {
                         $list_sort = $list;
                     }
-                    ddd(count($list));
                     $limit = '*'; //handler
                 } else {
                     $expose = false;
@@ -1173,10 +1172,18 @@ trait NodeList {
                         $list_count++;
                     }
                     if($options['limit'] !== '*'){
-                        $list_sort = Limit::list($list_sort)->with([
-                            'page' => $options['page'],
-                            'limit' => $options['limit']
-                        ]);
+                        if($options['parallel'] === true){
+                            $list_sort = Limit::list($list_sort)->with([
+                                'page' => $options['page'],
+                                'limit' => $options['limit'] * $options['thread']
+                            ]);
+                        } else {
+                            $list_sort = Limit::list($list_sort)->with([
+                                'page' => $options['page'],
+                                'limit' => $options['limit']
+                            ]);
+                        }
+
                     }
 
                     if(array_key_exists('view', $options)){
