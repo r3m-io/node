@@ -1512,7 +1512,7 @@ trait Index {
                                                                 $json[] = implode(',', $result);
                                                                 $json[] = ']';
                                                                 $json[] = '}';
-                                                                $json = Core::object($json, Core::OBJECT_OBJECT);
+                                                                $json = Core::object(implode('', $json), Core::OBJECT_OBJECT);
                                                                 ddd($json);
                                                                 return $result;
                                                             break;
