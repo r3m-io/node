@@ -1456,6 +1456,7 @@ trait Index {
                                                                     } else {
                                                                         d($count);
                                                                         d($leftSearch);
+                                                                        trace();
                                                                         for($i = $leftSearch; $i > $options['index']['min']; $i--) {
                                                                             $record = (object)[];
                                                                             foreach ($options['index']['where'] as $nr => $attribute) {
