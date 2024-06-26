@@ -1038,7 +1038,6 @@ trait NodeList {
                     } else {
                         $list_sort = $list;
                     }
-                    ddd($list_sort);
                     $limit = '*'; //handler
                 } else {
                     $expose = false;
@@ -1130,13 +1129,8 @@ trait NodeList {
                         }
                     }
                     $list = $list_filtered;
+                    unset($list_filtered);
                     if(
-                        $limit === 1 &&
-                        $options['page'] === 1
-                    ){
-                        $list_sort = $list;
-                    }
-                    elseif(
                         !empty($options['sort']) &&
                         is_array($options['sort'])
                     ){
@@ -1146,9 +1140,11 @@ trait NodeList {
                                 'key_reset' => true,
                             ]
                         );
+
                     } else {
                         $list_sort = $list;
                     }
+                    unset($list);
                 }
                 if(
                     !empty($limit) &&
