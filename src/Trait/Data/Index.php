@@ -1511,6 +1511,7 @@ trait Index {
                                                                                 break 2;
                                                                             }
                                                                         }
+                                                                        break;
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
