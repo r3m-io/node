@@ -293,6 +293,8 @@ trait NodeList {
                             foreach($record as $value){
                                 $list[] = $value;
                             }
+                            d($list);
+                            ddd($options['thread']);
                             $partition = Core::array_partition($list, $options['thread']);
                             $total = 0;
                             $result = [];
