@@ -1457,6 +1457,7 @@ trait Index {
                                                                     } else {
                                                                         d($count);
                                                                         d($leftSearch);
+                                                                        d($options['index']['min']);
                                                                         trace();
                                                                         for($i = $leftSearch; $i > $options['index']['min']; $i--) {
                                                                             $record = (object)[];
@@ -1490,11 +1491,13 @@ trait Index {
                                                                                     echo Cli::tput('cursor.up');
                                                                                     $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
                                                                                     $size_format = $item_per_second * $size;
-                                                                                    echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                    echo 'count 2: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                 }
+                                                                                /* can't limit, sort needs to happen at the end...
                                                                                 if($options['limit'] === 1 && $options['page'] === 1){
                                                                                     break 2;
                                                                                 }
+                                                                                */
                                                                                 /* can't limit, sort needs to happen at the end...
                                                                                 if (
                                                                                     $options['limit'] !== '*' &&
