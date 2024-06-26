@@ -1376,14 +1376,17 @@ trait Index {
                                                                                         $record->uuid = $value;
                                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                                         if ($record_where) {
-                                                                                            if($limit === 1 && $options['page'] === 1){
-                                                                                                $result[$pointer] = $record->uuid;
-                                                                                                $count++;
-                                                                                                break;
-                                                                                            } else {
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                             }
+                                                                                            if($count % 1000 === 0) {
+                                                                                                echo Cli::tput('cursor.up');
+                                                                                                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                                echo Cli::tput('cursor.up');
+                                                                                                $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                                                echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . PHP_EOL;
+                                                                                            }
+
                                                                                             /* can't limit, sort needs to happen at the end...
                                                                                             elseif($count < ($options['page'] * $limit)){
                                                                                                 $result[$pointer] = $record->uuid;
