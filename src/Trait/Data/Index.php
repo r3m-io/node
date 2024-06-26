@@ -1427,7 +1427,7 @@ trait Index {
 //                                                                                            $result[] = $object->data_read($url_ramdisk_record);
                                                                                             $size = File::size($url_ramdisk_record);
                                                                                             $count++;
-                                                                                            if ($count % 100 === 0) {
+                                                                                            if ($count % 1000 === 0) {
                                                                                                 echo Cli::tput('cursor.up');
                                                                                                 echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
                                                                                                 echo Cli::tput('cursor.up');
