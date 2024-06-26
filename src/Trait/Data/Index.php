@@ -1513,8 +1513,9 @@ trait Index {
                                                                 $json[] = ']';
                                                                 $json[] = '}';
                                                                 $json = Core::object(implode('', $json), Core::OBJECT_OBJECT);
-                                                                ddd($json);
-                                                                return $result;
+                                                                if(property_exists($json, 'result')){
+                                                                    return $json->result;
+                                                                }
                                                             break;
                                                             case 'right-only' :
                                                                 //search all of right
