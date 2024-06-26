@@ -310,9 +310,9 @@ trait NodeList {
                                     }
                                 }
                                 $list = $result;
+                                unset($result);
                             }
                             $count = $total;
-                            unset($result);
                         } elseif($options['limit'] !== '*'){
                             $count = 0;
                             foreach($record as $value){
