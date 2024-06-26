@@ -108,6 +108,11 @@ trait NodeList {
             $result = [];
             $result['page'] = $options['page'];
             $result['limit'] = $options['limit'];
+            if($options['parallel'] === true){
+                $result['thread'] = $options['thread'];
+            } else {
+                $result['thread'] = 1;
+            }
             $result['count'] = 0;
             $result['max'] = 0;
             $result['list'] = $list;
@@ -198,6 +203,11 @@ trait NodeList {
             $result = [];
             $result['page'] = $options['page'];
             $result['limit'] = $options['limit'];
+            if($options['parallel'] === true){
+                $result['thread'] = $options['thread'];
+            } else {
+                $result['thread'] = 1;
+            }
             $result['count'] = 0;
             $result['max'] = 0;
             $result['list'] = $list;
@@ -391,7 +401,7 @@ trait NodeList {
             $result = [];
             $result['page'] = $options['page'];
             $result['limit'] = $options['limit'];
-            if($options['parallel']){
+            if($options['parallel'] === true){
                 $result['thread'] = $options['thread'];
             } else {
                 $result['thread'] = 1;
@@ -1174,6 +1184,11 @@ trait NodeList {
                     $result = [];
                     $result['page'] = $options['page'] ?? 1;
                     $result['limit'] = $options['limit'] ?? $limit;
+                    if($options['parallel'] === true){
+                        $result['thread'] = $options['thread'];
+                    } else {
+                        $result['thread'] = 1;
+                    }
                     $result['count'] = count($list_sort);
                     $result['max'] = $max;
                     $result['list'] = $this->nodelist_output_filter($object, $list_sort, $options);
@@ -1279,6 +1294,11 @@ trait NodeList {
                 $result = [];
                 $result['page'] = $page;
                 $result['limit'] = $limit;
+                if($options['parallel'] === true){
+                    $result['thread'] = $options['thread'];
+                } else {
+                    $result['thread'] = 1;
+                }
                 $result['count'] = $list_count;
                 $result['max'] = $max;
                 $result['list'] = $this->nodelist_output_filter($object, $list, $options);
@@ -1366,6 +1386,11 @@ trait NodeList {
         $result = [];
         $result['page'] = $options['page'] ?? 1;
         $result['limit'] = $options['limit'] ?? 1000;
+        if($options['parallel'] === true){
+            $result['thread'] = $options['thread'];
+        } else {
+            $result['thread'] = 1;
+        }
         $result['count'] = 0;
         $result['max'] = 0;
         $result['list'] = $list;
