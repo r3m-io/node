@@ -293,24 +293,24 @@ trait NodeList {
                             foreach($record as $value){
                                 $list[] = $value;
                             }
-                            d($list);
-                            ddd($options['thread']);
-                            $partition = Core::array_partition($list, $options['thread']);
                             $total = 0;
-                            $result = [];
-                            foreach($partition as $nr => $list){
-                                if($options['limit'] !== '*'){
-                                    $list = Limit::list($list)->with([
-                                        'limit' => $options['limit'],
-                                        'page' => $options['page']
-                                    ]);
+                            if(array_key_exists(0, $list)){
+                                $partition = Core::array_partition($list, $options['thread']);
+                                $result = [];
+                                foreach($partition as $nr => $list){
+                                    if($options['limit'] !== '*'){
+                                        $list = Limit::list($list)->with([
+                                            'limit' => $options['limit'],
+                                            'page' => $options['page']
+                                        ]);
+                                    }
+                                    foreach($list as $record){
+                                        $result[] = $record;
+                                        $total++;
+                                    }
                                 }
-                                foreach($list as $record){
-                                    $result[] = $record;
-                                    $total++;
-                                }
+                                $list = $result;
                             }
-                            $list = $result;
                             $count = $total;
                             unset($result);
                         } elseif($options['limit'] !== '*'){
