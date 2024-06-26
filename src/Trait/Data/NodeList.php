@@ -305,7 +305,7 @@ trait NodeList {
                                         ]);
                                     }
                                     foreach($list as $record){
-                                        $result[] = $record;
+                                        $result[] = new Storage($record);
                                         $total++;
                                     }
                                 }
@@ -322,11 +322,14 @@ trait NodeList {
                                 'limit' => $options['limit'],
                                 'page' => $options['page']
                             ], [], $count);
+                            foreach($list as $nr => $record){
+                                $list[$nr] = new Storage($record);
+                            }
                         }
                         $record = false;
                     }
                     elseif($options['page'] === 1) {
-                        $list[] = $record;
+                        $list[] = new Storage($record);
                         $count++;
                     }
                     if(
