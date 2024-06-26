@@ -1419,7 +1419,9 @@ trait Index {
                                                                                     foreach($data as $nr => $uuid){
                                                                                         $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
                                                                                         if(File::exist($url_ramdisk_record)){
-                                                                                            $result[] = $object->data_read($url_ramdisk_record);
+                                                                                            $result[] = File::read($url_ramdisk_record);
+                                                                                            //slow, try file read
+//                                                                                            $result[] = $object->data_read($url_ramdisk_record);
                                                                                             $size = File::size($url_ramdisk_record);
                                                                                             $count++;
                                                                                             if ($count % 100 === 0) {
@@ -1503,6 +1505,7 @@ trait Index {
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
+                                                                ddd($result);
                                                                 return $result;
                                                             break;
                                                             case 'right-only' :
