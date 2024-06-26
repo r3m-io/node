@@ -1510,7 +1510,7 @@ trait Index {
                                                                 $object->config('node.record.leftsearch', $leftSearch);
                                                                 $result[] = ']';
                                                                 $result[] = '}';
-                                                                $result = implode('', $result);
+                                                                $result = implode(PHP_EOL, $result);
                                                                 $result = Core::object($result, Core::OBJECT_OBJECT);
                                                                 ddd($result);
                                                                 return $result;
