@@ -1277,6 +1277,7 @@ trait Index {
                                                                 //search all of left
                                                                 $leftSearch--;
                                                                 $result = [];
+                                                                $result[] = '{';
                                                                 $count = 0;
                                                                 $size_total = 0;
 //                                                                d($leftSearch);
@@ -1472,7 +1473,8 @@ trait Index {
                                                                                 $size = 0;
                                                                                 $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
                                                                                 if (File::exist($url_ramdisk_record)) {
-                                                                                    $result[] = $object->data_read($url_ramdisk_record);
+                                                                                    $result[] = File::read($url_ramdisk_record);
+//                                                                                    $result[] = $object->data_read($url_ramdisk_record);
                                                                                     $size = File::size($url_ramdisk_record);
                                                                                     $size_total += $size;
                                                                                 }
@@ -1505,6 +1507,9 @@ trait Index {
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
+                                                                $result[] = '}';
+                                                                $result = implode('', $result);
+                                                                $result = (array) Core::object($result, Core::OBJECT_OBJECT);
                                                                 ddd($result);
                                                                 return $result;
                                                             break;
