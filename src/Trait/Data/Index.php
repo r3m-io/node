@@ -1376,7 +1376,7 @@ trait Index {
                                                                                         $record->uuid = $value;
                                                                                         $record_where = $this->where($record, $options['where'], $options);
                                                                                         if ($record_where) {
-                                                                                            if($limit === 1){
+                                                                                            if($limit === 1 && $options['page'] === 1){
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
                                                                                                 break;
@@ -1490,7 +1490,7 @@ trait Index {
                                                                                     $size_format = $item_per_second * $size;
                                                                                     echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                 }
-                                                                                if($options['limit'] === 1){
+                                                                                if($options['limit'] === 1 && $options['page'] === 1){
                                                                                     break 2;
                                                                                 }
                                                                                 /* can't limit, sort needs to happen at the end...
