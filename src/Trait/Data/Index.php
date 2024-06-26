@@ -1482,7 +1482,7 @@ trait Index {
                                                                                 }
                                                                                 $count++;
 //                                                                                d('count: ' . $count . ' size: ' . $size_total);
-                                                                                if ($count % 100 === 0) {
+                                                                                if ($count % 1000 === 0) {
                                                                                     echo Cli::tput('cursor.up');
                                                                                     echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
                                                                                     echo Cli::tput('cursor.up');
