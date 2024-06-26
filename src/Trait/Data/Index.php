@@ -1277,8 +1277,9 @@ trait Index {
                                                                 //search all of left
                                                                 $leftSearch--;
                                                                 $result = [];
-                                                                $result[] = '{';
-                                                                $result[] = '"result" : [';
+                                                                $json = [];
+                                                                $json[] = '{';
+                                                                $json[] = '"result" : [';
                                                                 $count = 0;
                                                                 $size_total = 0;
 //                                                                d($leftSearch);
@@ -1508,11 +1509,11 @@ trait Index {
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
-                                                                $result[] = ']';
-                                                                $result[] = '}';
-                                                                $result = implode(',', $result);
-                                                                $result = Core::object($result, Core::OBJECT_OBJECT);
-                                                                ddd($result);
+                                                                $json[] = implode(',', $result);
+                                                                $json[] = ']';
+                                                                $json[] = '}';
+                                                                $json = Core::object($json, Core::OBJECT_OBJECT);
+                                                                ddd($json);
                                                                 return $result;
                                                             break;
                                                             case 'right-only' :
