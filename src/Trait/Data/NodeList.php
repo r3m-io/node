@@ -937,12 +937,14 @@ trait NodeList {
                                         continue;
                                     }
                                     $result[$nr] = 1;
+                                    /* cannot limit here, need sort first
                                     if(
                                         $limit !== '*' &&
                                         $count === ($options['page'] * $limit)
                                     ){
                                         break;
                                     }
+                                    */
                                     $count++;
                                 }
                             } else {
@@ -952,12 +954,14 @@ trait NodeList {
                                         continue;
                                     }
                                     $result[$nr] = 1;
+                                    /* cannot limit here, need sort first
                                     if(
                                         $limit !== '*' &&
                                         $count === ($options['page'] * $limit)
                                     ){
                                         break;
                                     }
+                                    */
                                     $count++;
                                 }
                             }
@@ -1034,6 +1038,7 @@ trait NodeList {
                     } else {
                         $list_sort = $list;
                     }
+                    ddd($list_sort);
                     $limit = '*'; //handler
                 } else {
                     $expose = false;
@@ -1156,8 +1161,8 @@ trait NodeList {
                         }
                         $list_count++;
                     }
-                    if($options['limit'] !== '*'){
-                        if($options['parallel'] === true){
+                    if($options['limit'] !== '*') {
+                        if ($options['parallel'] === true) {
                             $list_sort = Limit::list($list_sort)->with([
                                 'page' => $options['page'],
                                 'limit' => $options['limit'] * $options['thread']
@@ -1168,9 +1173,7 @@ trait NodeList {
                                 'limit' => $options['limit']
                             ]);
                         }
-
                     }
-
                     if(array_key_exists('view', $options)){
 //                        d($list_sort);
                     }
