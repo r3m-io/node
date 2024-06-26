@@ -1278,6 +1278,7 @@ trait Index {
                                                                 $leftSearch--;
                                                                 $result = [];
                                                                 $result[] = '{';
+                                                                $result[] = '"result" : [';
                                                                 $count = 0;
                                                                 $size_total = 0;
 //                                                                d($leftSearch);
@@ -1507,9 +1508,10 @@ trait Index {
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
+                                                                $result[] = ']';
                                                                 $result[] = '}';
                                                                 $result = implode('', $result);
-                                                                $result = (array) Core::object($result, Core::OBJECT_OBJECT);
+                                                                $result = Core::object($result, Core::OBJECT_OBJECT);
                                                                 ddd($result);
                                                                 return $result;
                                                             break;
