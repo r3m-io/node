@@ -46,104 +46,6 @@ trait Index {
      * @throws ObjectException
      * @throws Exception
      */
-    private function index_record_expose($class, $role, $record, $options): mixed
-    {
-        $start = false;
-        if(
-            array_key_exists('duration', $options) &&
-            $options['duration'] === true
-        ){
-            $start = microtime(true);
-        }
-        $object = $this->object();
-        $name = Controller::name($class);
-        $dir_data = $object->config('project.dir.node') .
-            'Data' .
-            $object->config('ds')
-        ;
-        $url_data = $dir_data . $name . $object->config('extension.json');
-        $url_mtime = File::mtime($url_data);
-        $cache = $object->data(App::CACHE);
-        $data = $cache->get(sha1($url_data) . '_index');
-        if (
-            is_object($data) &&
-            property_exists($data, $record->uuid)
-        ) {
-            $record = $data->{$record->uuid};
-        } elseif (
-            is_array($data) &&
-            array_key_exists($record->uuid, $data)
-        ) {
-            $record = $data[$record->uuid];
-        }
-        if($start){
-            $after_cache = microtime(true);
-            $duration_from_cache = ($after_cache - $start) * 1000;
-        }
-        if(!property_exists($record, '#class')){
-            return false;
-        }
-        $expose = $this->expose_get(
-            $object,
-            $record->{'#class'},
-            $record->{'#class'} . '.' . $options['function'] . '.output'
-        );
-        if($start){
-            $after_expose_get = microtime(true);
-            $duration_expose_get = ($after_expose_get - $after_cache) * 1000;
-        }
-        $node = new Storage($record);
-        $node = $this->expose(
-            $node,
-            $expose,
-            $record->{'#class'},
-            $options['function'],
-            $role
-        );
-        if($start){
-            $after_expose = microtime(true);
-            $duration_expose = ($after_expose - $after_expose_get) * 1000;
-        }
-        $record = $node->data();
-        if($start){
-            $after_data = microtime(true);
-            $duration_data = ($after_data - $after_expose) * 1000;
-        }
-        if ($options['relation'] === true) {
-            ddd('need object_data from cache?');
-//                                                $record = $this->relation($record, $object_data, $role, $options);
-            //collect relation mtime
-        }
-        if($start){
-            if(property_exists($record, '#duration')){
-                $record->{'#duration'} = Core::object_merge(
-                    $record->{'#duration'},
-                    (object) [
-                        'start' => $start,
-                        'from_cache' => $duration_from_cache,
-                        'expose_get' => $duration_expose_get,
-                        'expose' => $duration_expose,
-                        'data' => $duration_data,
-                    ]
-                );
-            } else {
-                $record->{'#duration'} = (object) [
-                    'start' => $start,
-                    'from_cache' => $duration_from_cache,
-                    'expose_get' => $duration_expose_get,
-                    'expose_function' => $duration_expose,
-                    'data' => $duration_data,
-                ];
-            }
-        }
-        return $record;
-    }
-
-    /**
-     * @throws AuthorizationException
-     * @throws ObjectException
-     * @throws Exception
-     */
     private function index_list_expose($class, $role, $nodeList, $options): mixed
     {
         $start = false;
@@ -190,63 +92,10 @@ trait Index {
         foreach($nodeList as $nr => $record){
             $nodeList[$nr] = $record->data();
         }
-//        d($nodeList);
         return $nodeList;
-
-
-        /*
-        if(!property_exists($record, '#class')){
-            return false;
-        }
-
-        $node = new Storage($record);
-        $node = $this->expose(
-            $node,
-            $expose,
-            $record->{'#class'},
-            $options['function'],
-            $role
-        );
-        if($start){
-            $after_expose = microtime(true);
-            $duration_expose = ($after_expose - $after_expose_get) * 1000;
-        }
-        $record = $node->data();
-        if($start){
-            $after_data = microtime(true);
-            $duration_data = ($after_data - $after_expose) * 1000;
-        }
-        if ($options['relation'] === true) {
-            ddd('need object_data from cache?');
-//                                                $record = $this->relation($record, $object_data, $role, $options);
-            //collect relation mtime
-        }
-        if($start){
-            if(property_exists($record, '#duration')){
-                $record->{'#duration'} = Core::object_merge(
-                    $record->{'#duration'},
-                    (object) [
-                        'start' => $start,
-                        'from_cache' => $duration_from_cache,
-                        'expose_get' => $duration_expose_get,
-                        'expose' => $duration_expose,
-                        'data' => $duration_data,
-                    ]
-                );
-            } else {
-                $record->{'#duration'} = (object) [
-                    'start' => $start,
-                    'from_cache' => $duration_from_cache,
-                    'expose_get' => $duration_expose_get,
-                    'expose_function' => $duration_expose,
-                    'data' => $duration_data,
-                ];
-            }
-        }
-        return $record;
-        */
     }
 
+    /*
     private function list_index($class, $role, $options=[]): bool | array
     {
         $object = $this->object();
@@ -295,10 +144,6 @@ trait Index {
                         break;
                     }
                     d($line);
-//                    $debug = debug_backtrace(1);
-//                    d($debug[0]['line'] . ' ' . $debug[0]['file'] . ' ' . $debug[0]['function']);
-//                    d($debug[1]['line'] . ' ' . $debug[1]['file'] . ' ' . $debug[1]['function']);
-//                    d($debug[2]['line'] . ' ' . $debug[2]['file'] . ' ' . $debug[2]['function']);
                     $record = $this->index_record($line, $options);
                     $old_seek = $seek;
                     $list = [];
@@ -793,6 +638,7 @@ trait Index {
         d($options);
         return false;
     }
+    */
 
     public function index_record_next($found=[], $options=[]){
         $where = [];
@@ -952,15 +798,7 @@ trait Index {
                         if(!$set_init){
                             $set_init = $set;
                         }
-//                        d($set);
-//                        d($where_process);
                         $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
-//                        d($set) ;
-//                        d($deepest);
-//                        d($operator);
-//                        d($index_where);
-//                        d($where_process);
-
                         if(
                             empty($set) &&
                             empty($where_process) &&
@@ -1421,13 +1259,15 @@ trait Index {
 //                                                                                            $result[] = $object->data_read($url_ramdisk_record);
                                                                                             $size = File::size($url_ramdisk_record);
                                                                                             $count++;
-                                                                                            if ($count % 1000 === 0) {
-                                                                                                echo Cli::tput('cursor.up');
-                                                                                                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                                                                                                echo Cli::tput('cursor.up');
-                                                                                                $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                                                                                                $size_format = $item_per_second * $size;
-                                                                                                echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                            if($options['counter'] === true){
+                                                                                                if ($count % 1000 === 0) {
+                                                                                                    echo Cli::tput('cursor.up');
+                                                                                                    echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                                    echo Cli::tput('cursor.up');
+                                                                                                    $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                                                    $size_format = $item_per_second * $size;
+                                                                                                    echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                                }
                                                                                             }
                                                                                         }
                                                                                     }
@@ -1439,12 +1279,14 @@ trait Index {
                                                                             pcntl_waitpid($child, $status);
                                 
                                                                         }
-                                                                        echo Cli::tput('cursor.up');
-                                                                        echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                                                                        echo Cli::tput('cursor.up');
-                                                                        $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                                                                        $size_format = $item_per_second * $size;
-                                                                        echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                        if($options['counter'] === true){
+                                                                            echo Cli::tput('cursor.up');
+                                                                            echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                            echo Cli::tput('cursor.up');
+                                                                            $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                            $size_format = $item_per_second * $size;
+                                                                            echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                        }
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
@@ -1477,15 +1319,17 @@ trait Index {
                                                                                     $size_total += $size;
                                                                                 }
                                                                                 $count++;
-//                                                                                d('count: ' . $count . ' size: ' . $size_total);
-                                                                                if ($count % 1000 === 0) {
-                                                                                    echo Cli::tput('cursor.up');
-                                                                                    echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                                                                                    echo Cli::tput('cursor.up');
-                                                                                    $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                                                                                    $size_format = $item_per_second * $size;
-                                                                                    echo 'count 2: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                if($options['counter'] === true){
+                                                                                    if ($count % 1000 === 0) {
+                                                                                        echo Cli::tput('cursor.up');
+                                                                                        echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                        echo Cli::tput('cursor.up');
+                                                                                        $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                                        $size_format = $item_per_second * $size;
+                                                                                        echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                    }
                                                                                 }
+//                                                                                d('count: ' . $count . ' size: ' . $size_total);
                                                                                 /* can't limit, sort needs to happen at the end...
                                                                                 if($options['limit'] === 1 && $options['page'] === 1){
                                                                                     break 2;
@@ -1664,13 +1508,15 @@ trait Index {
 //                                                                                            $result[] = $object->data_read($url_ramdisk_record);
                                                                                             $size = File::size($url_ramdisk_record);
                                                                                             $count++;
-                                                                                            if ($count % 1000 === 0) {
-                                                                                                echo Cli::tput('cursor.up');
-                                                                                                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                                                                                                echo Cli::tput('cursor.up');
-                                                                                                $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                                                                                                $size_format = $item_per_second * $size;
-                                                                                                echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                            if($options['counter'] === true){
+                                                                                                if ($count % 1000 === 0) {
+                                                                                                    echo Cli::tput('cursor.up');
+                                                                                                    echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                                    echo Cli::tput('cursor.up');
+                                                                                                    $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                                                    $size_format = $item_per_second * $size;
+                                                                                                    echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                                }
                                                                                             }
                                                                                         }
                                                                                     }
@@ -1682,12 +1528,15 @@ trait Index {
                                                                             pcntl_waitpid($child, $status);
 
                                                                         }
-                                                                        echo Cli::tput('cursor.up');
-                                                                        echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                                                                        echo Cli::tput('cursor.up');
-                                                                        $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                                                                        $size_format = $item_per_second * $size;
-                                                                        echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                        if($options['counter'] === true){
+                                                                            echo Cli::tput('cursor.up');
+                                                                            echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                            echo Cli::tput('cursor.up');
+                                                                            $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                            $size_format = $item_per_second * $size;
+                                                                            echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                        }
+
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
