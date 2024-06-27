@@ -1230,7 +1230,7 @@ trait NodeList {
                                 ]);
                             }
                         } else {
-                            $relatiKon_mtime = $this->relation_mtime($object_data);
+                            $relation_mtime = $this->relation_mtime($object_data);
                             $ramdisk = new Storage();
                             $ramdisk->set('mtime', $mtime);
                             $ramdisk->set('response', $result);
