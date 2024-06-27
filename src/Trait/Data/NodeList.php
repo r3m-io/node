@@ -1202,34 +1202,35 @@ trait NodeList {
                             $options['parallel'] === true
                         ){
                             $result_ramdisk = $result;
-                            $result_ramdisk['list'] = Core::array_partition($result['list'], $options['thread']);
-                            $relation_mtime = $this->relation_mtime($object_data);
-                            foreach($ramdisk_url_nodelist as $i => $ramdisk_url_nodelist_item){
-                                $ramdisk_data = $result_ramdisk;
-                                if(
-                                    array_key_exists('list', $result_ramdisk) &&
-                                    is_array($result_ramdisk['list']) &&
-                                    array_key_exists($i, $result_ramdisk['list'])
-                                ){
-                                    $ramdisk_data['list'] = $result_ramdisk['list'][$i];
-                                    $ramdisk = new Storage();
-                                    $ramdisk->set('mtime', $mtime);
-                                    $ramdisk->set('response', $ramdisk_data);
-                                    $ramdisk->set('relation', $relation_mtime);
-                                    $ramdisk->write($ramdisk_url_nodelist_item);
-                                    File::permission($object, [
-                                        'ramdisk_url_nodelist_item' => $ramdisk_url_nodelist_item,
-                                    ]);
+                            if(array_key_exists(0, $result['list'])){
+                                $result_ramdisk['list'] = Core::array_partition($result['list'], $options['thread']);
+                                $relation_mtime = $this->relation_mtime($object_data);
+                                foreach($ramdisk_url_nodelist as $i => $ramdisk_url_nodelist_item){
+                                    $ramdisk_data = $result_ramdisk;
+                                    if(
+                                        array_key_exists('list', $result_ramdisk) &&
+                                        is_array($result_ramdisk['list']) &&
+                                        array_key_exists($i, $result_ramdisk['list'])
+                                    ){
+                                        $ramdisk_data['list'] = $result_ramdisk['list'][$i];
+                                        $ramdisk = new Storage();
+                                        $ramdisk->set('mtime', $mtime);
+                                        $ramdisk->set('response', $ramdisk_data);
+                                        $ramdisk->set('relation', $relation_mtime);
+                                        $ramdisk->write($ramdisk_url_nodelist_item);
+                                        File::permission($object, [
+                                            'ramdisk_url_nodelist_item' => $ramdisk_url_nodelist_item,
+                                        ]);
+                                    }
                                 }
+                                File::permission($object, [
+                                    'ramdisk_dir' => $ramdisk_dir,
+                                    'ramdisk_dir_node' => $ramdisk_dir_node,
+                                    'ramdisk_dir_list' => $ramdisk_dir_list,
+                                ]);
                             }
-                            File::permission($object, [
-                                'ramdisk_dir' => $ramdisk_dir,
-                                'ramdisk_dir_node' => $ramdisk_dir_node,
-                                'ramdisk_dir_list' => $ramdisk_dir_list,
-                            ]);
-
                         } else {
-                            $relation_mtime = $this->relation_mtime($object_data);
+                            $relatiKon_mtime = $this->relation_mtime($object_data);
                             $ramdisk = new Storage();
                             $ramdisk->set('mtime', $mtime);
                             $ramdisk->set('response', $result);
