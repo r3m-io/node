@@ -1972,7 +1972,6 @@ trait Index {
         if(!array_key_exists('counter', $options)){
             $options['counter'] = false;
         }
-        ddd($options);
         $filter_name = $this->index_filter_name($name, $options);
         $where_name = $this->index_where_name($name, $options);
         $dir_index = $object->config('ramdisk.url') .
@@ -2058,7 +2057,8 @@ trait Index {
                                 'transaction' => true,
                                 'limit' => '*',
                                 'page' => 1,
-                                'index' => 'create'
+                                'index' => 'create',
+                                'counter' => $options['counter']
                             ]
                         );
                     }
