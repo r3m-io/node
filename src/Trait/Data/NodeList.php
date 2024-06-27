@@ -56,9 +56,6 @@ trait NodeList {
         if (!array_key_exists('function', $options)) {
             $options['function'] = __FUNCTION__;
         }
-        if (!array_key_exists('counter', $options)) {
-            $options['relation'] = false;
-        }
         if (!array_key_exists('relation', $options)) {
             $options['relation'] = false;
         }
@@ -787,8 +784,7 @@ trait NodeList {
                 if($options['index'] === 'create'){
                     $data = $object->data_read($data_url, sha1($data_url), [
                         'index' => 'create',
-                        'class' => $name,
-                        'counter' => $options['counter'],
+                        'class' => $name
                     ]);
                 } else {
                     $data = $object->data_read($data_url, sha1($data_url));
