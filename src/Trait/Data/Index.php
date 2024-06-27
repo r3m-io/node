@@ -696,6 +696,9 @@ trait Index {
         if(!array_key_exists('count', $options['index'])){
             return false;
         }
+        if(!array_key_exists('counter', $options)){
+            $options['counter'] = false;
+        }
         $name = Controller::name($class);
         $object = $this->object();
         $record = (object) [];
