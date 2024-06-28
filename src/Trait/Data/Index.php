@@ -747,6 +747,7 @@ trait Index {
             $object->config('ds')
         ;
 //        d('find record');
+        $options['index']['min'] = $options['index']['max'] + 1;
         while($options['index']['min'] <= $options['index']['max']) {
             $seek = $options['index']['min'] +
                 floor(
