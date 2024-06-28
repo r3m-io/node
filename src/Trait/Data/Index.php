@@ -996,125 +996,6 @@ trait Index {
 //                                                        d($rightSearch);
                                                         switch(strtolower($strategy)){
                                                             case 'left' :
-                                                                $leftSearch--;
-                                                                //search all of left , then right
-                                                                while ($leftSearch >= $options['index']['min']) {
-                                                                    foreach ($options['index']['where'] as $nr => $attribute){
-                                                                        $file[$nr]->seek($leftSearch);
-                                                                        $line = $file[$nr]->current();
-                                                                        $value = rtrim($line, PHP_EOL);
-                                                                        $record->{$attribute} = $value;
-                                                                    }
-                                                                    $file['uuid']->seek($leftSearch);
-                                                                    $line = $file['uuid']->current();
-                                                                    $value = rtrim($line, PHP_EOL);
-                                                                    $record->uuid = $value;
-                                                                    $record_where = $this->where($record, $options['where'], $options);
-                                                                    if($record_where){
-                                                                        $object->config('node.record.leftsearch', $leftSearch);
-                                                                        $url_ramdisk_record = $dir_ramdisk_record .
-                                                                            $record->uuid .
-                                                                            $object->config('extension.json')
-                                                                        ;
-                                                                        $record = $object->data_read($url_ramdisk_record);
-                                                                        return $record;
-                                                                    }
-                                                                    elseif($leftSearch >= 0){
-                                                                        $leftSearch--;
-                                                                    }
-                                                                }
-                                                                $object->config('node.record.leftsearch', $leftSearch);
-                                                                $rightSearch++;
-                                                                while ($rightSearch <= $options['index']['max']) {
-                                                                    foreach ($options['index']['where'] as $nr => $attribute){
-                                                                        $file[$nr]->seek($rightSearch);
-                                                                        $line = $file[$nr]->current();
-                                                                        $value = rtrim($line, PHP_EOL);
-                                                                        $record->{$attribute} = $value;
-                                                                    }
-                                                                    $file['uuid']->seek($rightSearch);
-                                                                    $line = $file['uuid']->current();
-                                                                    $value = rtrim($line, PHP_EOL);
-                                                                    $record->uuid = $value;
-                                                                    $record_where = $this->where($record, $options['where'], $options);
-                                                                    if($record_where){
-                                                                        $object->config('node.record.rightsearch', $rightSearch);
-                                                                        $url_ramdisk_record = $dir_ramdisk_record .
-                                                                            $record->uuid .
-                                                                            $object->config('extension.json')
-                                                                        ;
-                                                                        $record = $object->data_read($url_ramdisk_record);
-                                                                        return $record;
-                                                                    }
-                                                                    elseif ($rightSearch < PHP_INT_MAX){
-                                                                        $rightSearch++;
-                                                                    } else {
-                                                                        break;
-                                                                    }
-                                                                }
-                                                                $object->config('node.record.rightsearch', $rightSearch);
-                                                            break;
-                                                            case 'right' :
-                                                                //search all of right, then left
-                                                                $rightSearch++;
-                                                                while ($rightSearch <= $options['index']['max']) {
-                                                                    foreach ($options['index']['where'] as $nr => $attribute){
-                                                                        $file[$nr]->seek($rightSearch);
-                                                                        $line = $file[$nr]->current();
-                                                                        $value = rtrim($line, PHP_EOL);
-                                                                        $record->{$attribute} = $value;
-                                                                    }
-                                                                    $file['uuid']->seek($rightSearch);
-                                                                    $line = $file['uuid']->current();
-                                                                    $value = rtrim($line, PHP_EOL);
-                                                                    $record->uuid = $value;
-                                                                    $record_where = $this->where($record, $options['where'], $options);
-                                                                    if($record_where){
-                                                                        $object->config('node.record.rightsearch', $rightSearch);
-                                                                        $url_ramdisk_record = $dir_ramdisk_record .
-                                                                            $record->uuid .
-                                                                            $object->config('extension.json')
-                                                                        ;
-                                                                        $record = $object->data_read($url_ramdisk_record);
-                                                                        return $record;
-                                                                    }
-                                                                    elseif($rightSearch < PHP_INT_MAX) {
-                                                                        $rightSearch++;
-                                                                    } else {
-                                                                        break;
-                                                                    }
-                                                                }
-                                                                $object->config('node.record.rightsearch', $rightSearch);
-                                                                $leftSearch--;
-                                                                while ($leftSearch >= $options['index']['min']) {
-                                                                    foreach ($options['index']['where'] as $nr => $attribute){
-                                                                        $file[$nr]->seek($leftSearch);
-                                                                        $line = $file[$nr]->current();
-                                                                        $value = rtrim($line, PHP_EOL);
-                                                                        $record->{$attribute} = $value;
-                                                                    }
-                                                                    $file['uuid']->seek($leftSearch);
-                                                                    $line = $file['uuid']->current();
-                                                                    $value = rtrim($line, PHP_EOL);
-                                                                    $record->uuid = $value;
-                                                                    $record_where = $this->where($record, $options['where'], $options);
-                                                                    if($record_where){
-                                                                        $object->config('node.record.leftsearch', $leftSearch);
-                                                                        $url_ramdisk_record = $dir_ramdisk_record .
-                                                                            $record->uuid .
-                                                                            $object->config('extension.json')
-                                                                        ;
-                                                                        $record = $object->data_read($url_ramdisk_record);
-                                                                        return $record;
-                                                                    }
-                                                                    elseif($leftSearch >= 0) {
-                                                                        $leftSearch--;
-                                                                    }
-                                                                }
-                                                                $object->config('node.record.leftsearch', $leftSearch);
-                                                            break;
-                                                            case 'left-only' :
-//                                                                set_time_limit(600);
                                                                 //search all of left
                                                                 $leftSearch--;
                                                                 $result = [];
@@ -1135,7 +1016,7 @@ trait Index {
                                                                         $partition = Core::array_partition($left, $options['thread'] ?? 8);
                                                                         $pipes = [];
                                                                         $children = [];
-// Create pipes and fork processes
+                                                                        // Create pipes and fork processes
                                                                         for ($i = 0; $i < $options['thread']; $i++) {
                                                                             // Create a pipe
                                                                             $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
@@ -1280,7 +1161,7 @@ trait Index {
                                                                         // Wait for all children to exit
                                                                         foreach ($children as $child) {
                                                                             pcntl_waitpid($child, $status);
-                                
+
                                                                         }
                                                                         if($options['counter'] === true){
                                                                             echo Cli::tput('cursor.up');
@@ -1293,10 +1174,6 @@ trait Index {
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
-                                                                        d($count);
-                                                                        d($leftSearch);
-                                                                        d($options['index']['min']);
-                                                                        trace();
                                                                         for($i = $leftSearch; $i >= $options['index']['min']; $i--) {
                                                                             $record = (object)[];
                                                                             foreach ($options['index']['where'] as $nr => $attribute) {
@@ -1356,23 +1233,19 @@ trait Index {
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
                                                                 $json[] = implode(',', $result);
-                                                                $json[] = ']';
-                                                                $json[] = '}';
-                                                                $json = Core::object(implode('', $json), Core::OBJECT_OBJECT);
+//                                                                $json[] = ']';
+//                                                                $json[] = '}';
+//                                                                $json = Core::object(implode('', $json), Core::OBJECT_OBJECT);
+                                                                /*
                                                                 if(property_exists($json, 'result')){
                                                                     return $json->result;
                                                                 }
-                                                            break;
-                                                            case 'right-only' :
+                                                                */
+                                                                $object->config('node.record.leftsearch', $leftSearch);
                                                                 $rightSearch++;
                                                                 $result = [];
-                                                                $json = [];
-                                                                $json[] = '{';
-                                                                $json[] = '"result" : [';
                                                                 $count = 0;
                                                                 $size_total = 0;
-//                                                                d($leftSearch);
-//                                                                d($options['index']['min']);
                                                                 while ($rightSearch <= $options['index']['max']) {
                                                                     if($options['parallel'] === true){
                                                                         $right = [];
@@ -1383,7 +1256,7 @@ trait Index {
                                                                         $partition = Core::array_partition($right, $options['thread'] ?? 8);
                                                                         $pipes = [];
                                                                         $children = [];
-// Create pipes and fork processes
+                                                                        // Create pipes and fork processes
                                                                         for ($i = 0; $i < $options['thread']; $i++) {
                                                                             // Create a pipe
                                                                             $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
@@ -1598,7 +1471,553 @@ trait Index {
                                                                         break;
                                                                     }
                                                                 }
+                                                                $object->config('node.record.rightsearch', $rightSearch);
+                                                                $json[] = implode(',', $result);
+                                                                $json[] = ']';
+                                                                $json[] = '}';
+                                                                $json = Core::object(implode('', $json), Core::OBJECT_OBJECT);
+                                                                if(property_exists($json, 'result')){
+                                                                    return $json->result;
+                                                                }
+                                                            break;
+                                                            case 'right' :
+                                                                //search all of right, then left
+                                                                $rightSearch++;
+                                                                while ($rightSearch <= $options['index']['max']) {
+                                                                    foreach ($options['index']['where'] as $nr => $attribute){
+                                                                        $file[$nr]->seek($rightSearch);
+                                                                        $line = $file[$nr]->current();
+                                                                        $value = rtrim($line, PHP_EOL);
+                                                                        $record->{$attribute} = $value;
+                                                                    }
+                                                                    $file['uuid']->seek($rightSearch);
+                                                                    $line = $file['uuid']->current();
+                                                                    $value = rtrim($line, PHP_EOL);
+                                                                    $record->uuid = $value;
+                                                                    $record_where = $this->where($record, $options['where'], $options);
+                                                                    if($record_where){
+                                                                        $object->config('node.record.rightsearch', $rightSearch);
+                                                                        $url_ramdisk_record = $dir_ramdisk_record .
+                                                                            $record->uuid .
+                                                                            $object->config('extension.json')
+                                                                        ;
+                                                                        $record = $object->data_read($url_ramdisk_record);
+                                                                        return $record;
+                                                                    }
+                                                                    elseif($rightSearch < PHP_INT_MAX) {
+                                                                        $rightSearch++;
+                                                                    } else {
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                $object->config('node.record.rightsearch', $rightSearch);
+                                                                $leftSearch--;
+                                                                while ($leftSearch >= $options['index']['min']) {
+                                                                    foreach ($options['index']['where'] as $nr => $attribute){
+                                                                        $file[$nr]->seek($leftSearch);
+                                                                        $line = $file[$nr]->current();
+                                                                        $value = rtrim($line, PHP_EOL);
+                                                                        $record->{$attribute} = $value;
+                                                                    }
+                                                                    $file['uuid']->seek($leftSearch);
+                                                                    $line = $file['uuid']->current();
+                                                                    $value = rtrim($line, PHP_EOL);
+                                                                    $record->uuid = $value;
+                                                                    $record_where = $this->where($record, $options['where'], $options);
+                                                                    if($record_where){
+                                                                        $object->config('node.record.leftsearch', $leftSearch);
+                                                                        $url_ramdisk_record = $dir_ramdisk_record .
+                                                                            $record->uuid .
+                                                                            $object->config('extension.json')
+                                                                        ;
+                                                                        $record = $object->data_read($url_ramdisk_record);
+                                                                        return $record;
+                                                                    }
+                                                                    elseif($leftSearch >= 0) {
+                                                                        $leftSearch--;
+                                                                    }
+                                                                }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
+                                                            break;
+                                                            case 'left-only' :
+                                                                //search all of left
+                                                                $leftSearch--;
+                                                                $result = [];
+                                                                $json = [];
+                                                                $json[] = '{';
+                                                                $json[] = '"result" : [';
+                                                                $count = 0;
+                                                                $size_total = 0;
+//                                                                d($leftSearch);
+//                                                                d($options['index']['min']);
+                                                                while ($leftSearch >= $options['index']['min']) {
+                                                                    if($options['parallel'] === true){
+                                                                        $left = [];
+                                                                        $closures = [];
+                                                                        for($i = $leftSearch; $i >= $options['index']['min']; $i--) {
+                                                                            $left[] = $i;
+                                                                        }
+                                                                        $partition = Core::array_partition($left, $options['thread'] ?? 8);
+                                                                        $pipes = [];
+                                                                        $children = [];
+                                                                        // Create pipes and fork processes
+                                                                        for ($i = 0; $i < $options['thread']; $i++) {
+                                                                            // Create a pipe
+                                                                            $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+                                                                            if ($sockets === false) {
+                                                                                die("Unable to create socket pair for child $i");
+                                                                            }
+                                                                            stream_set_blocking($sockets[0], false);
+                                                                            $pid = pcntl_fork();
+                                                                            if ($pid == -1) {
+                                                                                die("Could not fork for child $i");
+                                                                            } elseif ($pid) {
+                                                                                // Parent process
+                                                                                // Close the child's socket
+                                                                                fclose($sockets[0]);
+
+                                                                                // Store the parent socket and child PID
+                                                                                $pipes[$i] = $sockets[1];
+                                                                                $children[$i] = $pid;
+                                                                            } else {
+                                                                                // Child process
+                                                                                // Close the parent's socket
+                                                                                fclose($sockets[1]);
+                                                                                $url_store = $object->config('ramdisk.url') .
+                                                                                    $object->config(Config::POSIX_ID) .
+                                                                                    $object->config('ds') .
+                                                                                    'Node' .
+                                                                                    $object->config('ds') .
+                                                                                    'Index' .
+                                                                                    $object->config('ds') .
+                                                                                    $name .
+                                                                                    '.' .
+                                                                                    'Response' .
+                                                                                    '.' .
+                                                                                    $i .
+                                                                                    '.' .
+                                                                                    Core::uuid() .
+                                                                                    $object->config('extension.json');
+                                                                                $file = [];
+                                                                                if (!array_key_exists('url_uuid', $options['index'])) {
+                                                                                    return false;
+                                                                                }
+                                                                                if (!File::exist($options['index']['url_uuid'])) {
+                                                                                    return false;
+                                                                                }
+                                                                                $file['uuid'] = $this->index_read($options['index']['url_uuid']);
+                                                                                foreach ($options['index']['url'] as $nr => $url) {
+                                                                                    $file[$nr] = $this->index_read($url);
+                                                                                }
+                                                                                $result = [];
+                                                                                if (array_key_exists($i, $partition)) {
+                                                                                    $chunk = $partition[$i];
+                                                                                    $count = 0;
+                                                                                    $limit = $options['limit'];
+                                                                                    if(
+                                                                                        $options['limit'] !== '*' &&
+                                                                                        $i === 0 &&
+                                                                                        $options['page'] === 1
+                                                                                    ){
+                                                                                        //we already have the first hit, so we need to align the limit
+                                                                                        //after page 1 the  record will be filter out
+                                                                                        $limit = $options['limit'] - 1;
+                                                                                        if($limit < 1 ){
+                                                                                            $limit = 1;
+                                                                                        }
+                                                                                    }
+                                                                                    foreach ($chunk as $chunk_nr => $pointer) {
+                                                                                        $record = (object)[];
+                                                                                        foreach ($options['index']['where'] as $nr => $attribute) {
+                                                                                            if(!array_key_exists($pointer, $file[$nr])){
+                                                                                                continue;
+                                                                                            }
+                                                                                            $value = $file[$nr][$pointer];
+                                                                                            $record->{$attribute} = $value;
+                                                                                        }
+                                                                                        if(!array_key_exists($pointer, $file['uuid'])){
+                                                                                            continue;
+                                                                                        }
+                                                                                        $value = $file['uuid'][$pointer];
+                                                                                        $record->uuid = $value;
+                                                                                        $record_where = $this->where($record, $options['where'], $options);
+                                                                                        if ($record_where) {
+                                                                                            $result[$pointer] = $record->uuid;
+                                                                                            $count++;
+                                                                                            /* can't limit, sort needs to happen at the end...
+                                                                                            elseif($count < ($options['page'] * $limit)){
+                                                                                                $result[$pointer] = $record->uuid;
+                                                                                                $count++;
+                                                                                            }
+                                                                                            else {
+                                                                                                break;
+                                                                                            }
+                                                                                            */
+                                                                                        } else {
+                                                                                            break;
+                                                                                        }
+                                                                                    }
+                                                                                    File::write($url_store, Core::object($result, Core::OBJECT_JSON_LINE));
+                                                                                    try {
+                                                                                        $result = fwrite($sockets[0], $url_store);
+                                                                                    }
+                                                                                    catch(Exception | ErrorException $exception){
+                                                                                        echo $exception;
+                                                                                    }
+                                                                                    fclose($sockets[0]);
+                                                                                    exit(0);
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        $count = 0;
+                                                                        $size = 0;
+                                                                        foreach ($pipes as $i => $pipe) {
+                                                                            // Read serialized data from the pipe
+                                                                            $data_url = stream_get_contents($pipe);
+                                                                            fclose($pipe);
+                                                                            if($data_url && File::exist($data_url)){
+                                                                                $data = $object->data_read($data_url);
+                                                                                if($data){
+                                                                                    $data = $data->data();
+                                                                                    foreach($data as $nr => $uuid){
+                                                                                        $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
+                                                                                        if(File::exist($url_ramdisk_record)){
+                                                                                            $result[] = File::read($url_ramdisk_record);
+                                                                                            //slow, try file read
+//                                                                                            $result[] = $object->data_read($url_ramdisk_record);
+                                                                                            $size = File::size($url_ramdisk_record);
+                                                                                            $count++;
+                                                                                            if($options['counter'] === true){
+                                                                                                if ($count % 1000 === 0) {
+                                                                                                    echo Cli::tput('cursor.up');
+                                                                                                    echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                                    echo Cli::tput('cursor.up');
+                                                                                                    $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                                                    $size_format = $item_per_second * $size;
+                                                                                                    echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        // Wait for all children to exit
+                                                                        foreach ($children as $child) {
+                                                                            pcntl_waitpid($child, $status);
+                                
+                                                                        }
+                                                                        if($options['counter'] === true){
+                                                                            echo Cli::tput('cursor.up');
+                                                                            echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                            echo Cli::tput('cursor.up');
+                                                                            $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                            $size_format = $item_per_second * $size;
+                                                                            echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                        }
+                                                                        break;
+//                                                                        return $this->index_list_expose($class, $role, $result, $options);
+                                                                    } else {
+                                                                        for($i = $leftSearch; $i >= $options['index']['min']; $i--) {
+                                                                            $record = (object)[];
+                                                                            foreach ($options['index']['where'] as $nr => $attribute) {
+                                                                                if (!array_key_exists($i, $file[$nr])) {
+                                                                                    continue;
+                                                                                }
+                                                                                $value = $file[$nr][$i];
+                                                                                $record->{$attribute} = $value;
+                                                                            }
+                                                                            if (!array_key_exists($i, $file['uuid'])) {
+                                                                                continue;
+                                                                            }
+                                                                            $value = $file['uuid'][$i];
+                                                                            $record->uuid = $value;
+                                                                            $record_where = $this->where($record, $options['where'], $options);
+                                                                            if ($record_where) {
+                                                                                $size = 0;
+                                                                                $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
+                                                                                if (File::exist($url_ramdisk_record)) {
+                                                                                    $result[] = File::read($url_ramdisk_record);
+//                                                                                    $result[] = $object->data_read($url_ramdisk_record);
+                                                                                    $size = File::size($url_ramdisk_record);
+                                                                                    $size_total += $size;
+                                                                                }
+                                                                                $count++;
+                                                                                if($options['counter'] === true){
+                                                                                    if ($count % 1000 === 0) {
+                                                                                        echo Cli::tput('cursor.up');
+                                                                                        echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                        echo Cli::tput('cursor.up');
+                                                                                        $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                                        $size_format = $item_per_second * $size;
+                                                                                        echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                    }
+                                                                                }
+//                                                                                d('count: ' . $count . ' size: ' . $size_total);
+                                                                                /* can't limit, sort needs to happen at the end...
+                                                                                if($options['limit'] === 1 && $options['page'] === 1){
+                                                                                    break 2;
+                                                                                }
+                                                                                */
+                                                                                /* can't limit, sort needs to happen at the end...
+                                                                                if (
+                                                                                    $options['limit'] !== '*' &&
+                                                                                    $count === ($options['page'] * $options['limit'])
+                                                                                ) {
+//                                                                                    d('count: ' . $count . ' size: ' . $size_total);
+                                                                                    break 2;
+                                                                                }
+                                                                                */
+                                                                            } else {
+                                                                                break 2;
+                                                                            }
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                $object->config('node.record.leftsearch', $leftSearch);
+                                                                $json[] = implode(',', $result);
+                                                                $json[] = ']';
+                                                                $json[] = '}';
+                                                                $json = Core::object(implode('', $json), Core::OBJECT_OBJECT);
+                                                                if(property_exists($json, 'result')){
+                                                                    return $json->result;
+                                                                }
+                                                            break;
+                                                            case 'right-only' :
+                                                                $rightSearch++;
+                                                                $result = [];
+                                                                $json = [];
+                                                                $json[] = '{';
+                                                                $json[] = '"result" : [';
+                                                                $count = 0;
+                                                                $size_total = 0;
+                                                                while ($rightSearch <= $options['index']['max']) {
+                                                                    if($options['parallel'] === true){
+                                                                        $right = [];
+                                                                        $closures = [];
+                                                                        for($i = $rightSearch; $i <= $options['index']['max']; $i++) {
+                                                                            $right[] = $i;
+                                                                        }
+                                                                        $partition = Core::array_partition($right, $options['thread'] ?? 8);
+                                                                        $pipes = [];
+                                                                        $children = [];
+                                                                        // Create pipes and fork processes
+                                                                        for ($i = 0; $i < $options['thread']; $i++) {
+                                                                            // Create a pipe
+                                                                            $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+                                                                            if ($sockets === false) {
+                                                                                die("Unable to create socket pair for child $i");
+                                                                            }
+                                                                            stream_set_blocking($sockets[0], false);
+                                                                            $pid = pcntl_fork();
+                                                                            if ($pid == -1) {
+                                                                                die("Could not fork for child $i");
+                                                                            } elseif ($pid) {
+                                                                                // Parent process
+                                                                                // Close the child's socket
+                                                                                fclose($sockets[0]);
+
+                                                                                // Store the parent socket and child PID
+                                                                                $pipes[$i] = $sockets[1];
+                                                                                $children[$i] = $pid;
+                                                                            } else {
+                                                                                // Child process
+                                                                                // Close the parent's socket
+                                                                                fclose($sockets[1]);
+                                                                                $url_store = $object->config('ramdisk.url') .
+                                                                                    $object->config(Config::POSIX_ID) .
+                                                                                    $object->config('ds') .
+                                                                                    'Node' .
+                                                                                    $object->config('ds') .
+                                                                                    'Index' .
+                                                                                    $object->config('ds') .
+                                                                                    $name .
+                                                                                    '.' .
+                                                                                    'Response' .
+                                                                                    '.' .
+                                                                                    $i .
+                                                                                    '.' .
+                                                                                    Core::uuid() .
+                                                                                    $object->config('extension.json');
+                                                                                $file = [];
+                                                                                if (!array_key_exists('url_uuid', $options['index'])) {
+                                                                                    return false;
+                                                                                }
+                                                                                if (!File::exist($options['index']['url_uuid'])) {
+                                                                                    return false;
+                                                                                }
+                                                                                $file['uuid'] = $this->index_read($options['index']['url_uuid']);
+                                                                                foreach ($options['index']['url'] as $nr => $url) {
+                                                                                    $file[$nr] = $this->index_read($url);
+                                                                                }
+                                                                                $result = [];
+                                                                                if (array_key_exists($i, $partition)) {
+                                                                                    $chunk = $partition[$i];
+                                                                                    $count = 0;
+                                                                                    $limit = $options['limit'];
+                                                                                    if(
+                                                                                        $options['limit'] !== '*' &&
+                                                                                        $i === 0 &&
+                                                                                        $options['page'] === 1
+                                                                                    ){
+                                                                                        //we already have the first hit, so we need to align the limit
+                                                                                        //after page 1 the  record will be filter out
+                                                                                        $limit = $options['limit'] - 1;
+                                                                                        if($limit < 1 ){
+                                                                                            $limit = 1;
+                                                                                        }
+                                                                                    }
+                                                                                    foreach ($chunk as $chunk_nr => $pointer) {
+                                                                                        $record = (object)[];
+                                                                                        foreach ($options['index']['where'] as $nr => $attribute) {
+                                                                                            if(!array_key_exists($pointer, $file[$nr])){
+                                                                                                continue;
+                                                                                            }
+                                                                                            $value = $file[$nr][$pointer];
+                                                                                            $record->{$attribute} = $value;
+                                                                                        }
+                                                                                        if(!array_key_exists($pointer, $file['uuid'])){
+                                                                                            continue;
+                                                                                        }
+                                                                                        $value = $file['uuid'][$pointer];
+                                                                                        $record->uuid = $value;
+                                                                                        $record_where = $this->where($record, $options['where'], $options);
+                                                                                        if ($record_where) {
+                                                                                            $result[$pointer] = $record->uuid;
+                                                                                            $count++;
+                                                                                            /* can't limit, sort needs to happen at the end...
+                                                                                            elseif($count < ($options['page'] * $limit)){
+                                                                                                $result[$pointer] = $record->uuid;
+                                                                                                $count++;
+                                                                                            }
+                                                                                            else {
+                                                                                                break;
+                                                                                            }
+                                                                                            */
+                                                                                        } else {
+                                                                                            break;
+                                                                                        }
+                                                                                    }
+                                                                                    File::write($url_store, Core::object($result, Core::OBJECT_JSON_LINE));
+                                                                                    try {
+                                                                                        $result = fwrite($sockets[0], $url_store);
+                                                                                    }
+                                                                                    catch(Exception | ErrorException $exception){
+                                                                                        echo $exception;
+                                                                                    }
+                                                                                    fclose($sockets[0]);
+                                                                                    exit(0);
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        $count = 0;
+                                                                        $size = 0;
+                                                                        foreach ($pipes as $i => $pipe) {
+                                                                            // Read serialized data from the pipe
+                                                                            $data_url = stream_get_contents($pipe);
+                                                                            fclose($pipe);
+                                                                            if($data_url && File::exist($data_url)){
+                                                                                $data = $object->data_read($data_url);
+                                                                                if($data){
+                                                                                    $data = $data->data();
+                                                                                    foreach($data as $nr => $uuid){
+                                                                                        $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
+                                                                                        if(File::exist($url_ramdisk_record)){
+                                                                                            //fast (around 10.000 record a second on a ssd)
+                                                                                            $result[] = File::read($url_ramdisk_record);
+                                                                                            //slow and getting slower for no reason
+//                                                                                            $result[] = $object->data_read($url_ramdisk_record);
+                                                                                            $size = File::size($url_ramdisk_record);
+                                                                                            $count++;
+                                                                                            if($options['counter'] === true){
+                                                                                                if ($count % 1000 === 0) {
+                                                                                                    echo Cli::tput('cursor.up');
+                                                                                                    echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                                    echo Cli::tput('cursor.up');
+                                                                                                    $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                                                    $size_format = $item_per_second * $size;
+                                                                                                    echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        // Wait for all children to exit
+                                                                        foreach ($children as $child) {
+                                                                            pcntl_waitpid($child, $status);
+
+                                                                        }
+                                                                        if($options['counter'] === true){
+                                                                            echo Cli::tput('cursor.up');
+                                                                            echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                            echo Cli::tput('cursor.up');
+                                                                            $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                            $size_format = $item_per_second * $size;
+                                                                            echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                        }
+
+                                                                        break;
+//                                                                        return $this->index_list_expose($class, $role, $result, $options);
+                                                                    } else {
+                                                                        for($i = $rightSearch; $i <= $options['index']['max']; $i++) {
+                                                                            $record = (object)[];
+                                                                            foreach ($options['index']['where'] as $nr => $attribute) {
+                                                                                if (!array_key_exists($i, $file[$nr])) {
+                                                                                    continue;
+                                                                                }
+                                                                                $value = $file[$nr][$i];
+                                                                                $record->{$attribute} = $value;
+                                                                            }
+                                                                            if (!array_key_exists($i, $file['uuid'])) {
+                                                                                continue;
+                                                                            }
+                                                                            $value = $file['uuid'][$i];
+                                                                            $record->uuid = $value;
+                                                                            $record_where = $this->where($record, $options['where'], $options);
+                                                                            if ($record_where) {
+                                                                                $size = 0;
+                                                                                $url_ramdisk_record = $dir_ramdisk_record . $record->uuid . $object->config('extension.json');
+                                                                                if (File::exist($url_ramdisk_record)) {
+                                                                                    $result[] = File::read($url_ramdisk_record);
+//                                                                                    $result[] = $object->data_read($url_ramdisk_record);
+                                                                                    $size = File::size($url_ramdisk_record);
+                                                                                    $size_total += $size;
+                                                                                }
+                                                                                $count++;
+//                                                                                d('count: ' . $count . ' size: ' . $size_total);
+                                                                                if ($count % 1000 === 0) {
+                                                                                    echo Cli::tput('cursor.up');
+                                                                                    echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                    echo Cli::tput('cursor.up');
+                                                                                    $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                                    $size_format = $item_per_second * $size;
+                                                                                    echo 'count 2: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                }
+                                                                                /* can't limit, sort needs to happen at the end...
+                                                                                if($options['limit'] === 1 && $options['page'] === 1){
+                                                                                    break 2;
+                                                                                }
+                                                                                */
+                                                                                /* can't limit, sort needs to happen at the end...
+                                                                                if (
+                                                                                    $options['limit'] !== '*' &&
+                                                                                    $count === ($options['page'] * $options['limit'])
+                                                                                ) {
+//                                                                                    d('count: ' . $count . ' size: ' . $size_total);
+                                                                                    break 2;
+                                                                                }
+                                                                                */
+                                                                            } else {
+                                                                                break 2;
+                                                                            }
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                $object->config('node.record.rightsearch', $rightSearch);
                                                                 $json[] = implode(',', $result);
                                                                 $json[] = ']';
                                                                 $json[] = '}';
@@ -2162,7 +2581,6 @@ trait Index {
                         'list' => $cache_select->get($name)
                     ];
                 } else {
-                    d('yes123');
                     $select = $this->list(
                         $name,
                         $role,

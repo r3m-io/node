@@ -780,7 +780,6 @@ trait NodeList {
                 $data = $object->data_read($view_url, sha1($view_url));
             }
             if(!$data){
-//                d($options);
                 if($options['index'] === 'create'){
                     $data = $object->data_read($data_url, sha1($data_url), [
                         'index' => 'create',
