@@ -1706,18 +1706,8 @@ trait Index {
             }
             $seek_old = $seek;
         }
-        if($record){
-            $record_class = get_class($record);
-            if($record_class === 'stdClass'){
-                ddd($record);
-                $record = new Storage($record);
-            }
-        }
-//        d($options['index']['min']);
-//        d($options['index']['max']);
         d('found: 28');
-        d($record);
-        return $record;
+        return false;
     }
 
     /**
