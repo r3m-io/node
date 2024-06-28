@@ -1236,14 +1236,6 @@ trait Index {
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
                                                                 $left = implode(',', $result);
-//                                                                $json[] = ']';
-//                                                                $json[] = '}';
-//                                                                $json = Core::object(implode('', $json), Core::OBJECT_OBJECT);
-                                                                /*
-                                                                if(property_exists($json, 'result')){
-                                                                    return $json->result;
-                                                                }
-                                                                */
                                                                 $object->config('node.record.leftsearch', $leftSearch);
                                                                 $rightSearch++;
                                                                 $result = [];
@@ -1449,7 +1441,7 @@ trait Index {
                                                                                     echo Cli::tput('cursor.up');
                                                                                     $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
                                                                                     $size_format = $item_per_second * $size;
-                                                                                    echo 'count 2: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                    echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                 }
                                                                                 /* can't limit, sort needs to happen at the end...
                                                                                 if($options['limit'] === 1 && $options['page'] === 1){
