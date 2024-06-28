@@ -1150,7 +1150,7 @@ trait Index {
                                                                                                     echo Cli::tput('cursor.up');
                                                                                                     $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
                                                                                                     $size_format = $item_per_second * $size;
-                                                                                                    echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                                    echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                                 }
                                                                                             }
                                                                                         }
@@ -1169,7 +1169,7 @@ trait Index {
                                                                             echo Cli::tput('cursor.up');
                                                                             $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
                                                                             $size_format = $item_per_second * $size;
-                                                                            echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                            echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                         }
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
@@ -1206,7 +1206,7 @@ trait Index {
                                                                                         echo Cli::tput('cursor.up');
                                                                                         $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
                                                                                         $size_format = $item_per_second * $size;
-                                                                                        echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                        echo 'count: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                     }
                                                                                 }
 //                                                                                d('count: ' . $count . ' size: ' . $size_total);
@@ -1391,7 +1391,7 @@ trait Index {
                                                                                                     echo Cli::tput('cursor.up');
                                                                                                     $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
                                                                                                     $size_format = $item_per_second * $size;
-                                                                                                    echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                                    echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                                 }
                                                                                             }
                                                                                         }
@@ -1410,7 +1410,7 @@ trait Index {
                                                                             echo Cli::tput('cursor.up');
                                                                             $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
                                                                             $size_format = $item_per_second * $size;
-                                                                            echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                            echo 'count: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ' %, item per second: ' . round($item_per_second,2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                         }
                                                                         break;
                                                                     } else {
@@ -1446,7 +1446,7 @@ trait Index {
                                                                                     echo Cli::tput('cursor.up');
                                                                                     $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
                                                                                     $size_format = $item_per_second * $size;
-                                                                                    echo 'count 2: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ', item per second: ' . $item_per_second . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
+                                                                                    echo 'count 2: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                 }
                                                                                 /* can't limit, sort needs to happen at the end...
                                                                                 if($options['limit'] === 1 && $options['page'] === 1){
