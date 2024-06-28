@@ -1705,6 +1705,10 @@ trait Index {
             }
             $seek_old = $seek;
         }
+        if($record){
+            $record_class = get_class($record);
+            ddd($record_class);
+        }
 //        d($options['index']['min']);
 //        d($options['index']['max']);
         d('found: 28');
