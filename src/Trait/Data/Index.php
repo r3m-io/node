@@ -1708,7 +1708,9 @@ trait Index {
         }
         if($record){
             $record_class = get_class($record);
-            ddd($record_class);
+            if($record_class === 'stdClass'){
+                $record = new Storage($record);
+            }
         }
 //        d($options['index']['min']);
 //        d($options['index']['max']);
