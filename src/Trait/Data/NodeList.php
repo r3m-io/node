@@ -75,7 +75,7 @@ trait NodeList {
             $options['memory'] = false; //true
         }
         if(!array_key_exists('strategy', $options)){
-            $options['strategy'] = 'around';
+            $options['strategy'] = 'left';
         }
         if (!array_key_exists('parallel', $options)) {
             $options['parallel'] = false; //true
