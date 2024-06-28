@@ -1708,6 +1708,7 @@ trait Index {
 //        d($options['index']['min']);
 //        d($options['index']['max']);
         d('found: 28');
+        d($record);
         return $record;
     }
 
