@@ -1709,6 +1709,7 @@ trait Index {
         if($record){
             $record_class = get_class($record);
             if($record_class === 'stdClass'){
+                ddd($record);
                 $record = new Storage($record);
             }
         }
