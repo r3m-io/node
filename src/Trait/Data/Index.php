@@ -1235,7 +1235,7 @@ trait Index {
                                                                     }
                                                                 }
                                                                 $object->config('node.record.leftsearch', $leftSearch);
-                                                                $json[] = implode(',', $result);
+                                                                $left = implode(',', $result);
 //                                                                $json[] = ']';
 //                                                                $json[] = '}';
 //                                                                $json = Core::object(implode('', $json), Core::OBJECT_OBJECT);
@@ -1473,8 +1473,15 @@ trait Index {
                                                                     }
                                                                 }
                                                                 $object->config('node.record.rightsearch', $rightSearch);
-                                                                $json[] = ',';
-                                                                $json[] = implode(',', $result);
+                                                                if($left){
+                                                                    $json[] = $left;
+                                                                }
+                                                                if(array_key_exists(0, $result)){
+                                                                    if($left){
+                                                                        $json[] = ',';
+                                                                    }
+                                                                    $json[] = implode(',', $result);
+                                                                }
                                                                 $json[] = ']';
                                                                 $json[] = '}';
                                                                 $json = Core::object(implode('', $json), Core::OBJECT_OBJECT);
