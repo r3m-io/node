@@ -1472,6 +1472,7 @@ trait Index {
                                                                     }
                                                                 }
                                                                 $object->config('node.record.rightsearch', $rightSearch);
+                                                                $json[] = ',';
                                                                 $json[] = implode(',', $result);
                                                                 $json[] = ']';
                                                                 $json[] = '}';
