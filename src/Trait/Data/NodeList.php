@@ -74,9 +74,6 @@ trait NodeList {
         if (!array_key_exists('memory', $options)) {
             $options['memory'] = false; //true
         }
-        if(!array_key_exists('strategy', $options)){
-            $options['strategy'] = 'left';
-        }
         if (!array_key_exists('parallel', $options)) {
             $options['parallel'] = false; //true
         }
@@ -263,7 +260,6 @@ trait NodeList {
                     $total = $options['index']['count'] / $options['thread'];
                 } else {
                     $total = $options['limit'] * $options['thread'] * $options['page'];
-                    d($total);
                 }
             }
             elseif($options['parallel'] === false) {
@@ -273,7 +269,6 @@ trait NodeList {
                     $total = $options['limit'] * $options['page'];
                 }
             }
-            d($total);
             $count = 0;
             $list = [];
             if(
