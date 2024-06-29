@@ -582,6 +582,7 @@ trait NodeList {
                         }
                         $count = $total;
                     } else {
+                        $count = 0;
                         foreach($record as $value){
                             $list[] = $value;
                         }
