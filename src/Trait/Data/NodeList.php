@@ -581,8 +581,7 @@ trait NodeList {
                             unset($result);
                         }
                         $count = $total;
-                    }
-                    elseif($options['limit'] !== '*'){
+                    } else {
                         $count = 0;
                         foreach($record as $value){
                             $list[] = $value;
@@ -635,7 +634,6 @@ trait NodeList {
                 } else {
                     $index = ($options['limit'] * $options['page']) - $options['limit'];
                 }
-
             }
             foreach($list as $nr => $record){
                 $record->{'#index'} = $index;
