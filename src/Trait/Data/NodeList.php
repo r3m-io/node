@@ -587,12 +587,11 @@ trait NodeList {
                             $list[] = $value;
                         }
                         trace();
-                        ddd($list);
-
                         $list = Limit::list($list)->with([
                             'limit' => $options['limit'],
                             'page' => $options['page']
                         ], [], $count);
+                        ddd($list);
                         foreach($list as $nr => $record){
                             $list[$nr] = new Storage($record);
                         }
