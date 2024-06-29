@@ -546,98 +546,72 @@ trait NodeList {
             }
             $count = 0;
             $list = [];
-            if(
-                $options['limit'] === 1 &&
-                $options['page'] === 1 &&
-                $options['parallel'] === false
-            ){
-                $record = $this->index_list_record($class, $role, $options);
-                if($record){
-//                    $record = $this->index_record_expose($class, $role, $record, $options);
+            echo Cli::tput('cursor.up');
+            echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+            echo Cli::tput('cursor.up');
+            echo 'indexing' . PHP_EOL;
+            $local_options = $options;
+            $local_options['limit'] = 1;
+            $local_options['page'] = 1;
+            $record = $this->index_list_record($class, $role, $local_options);
+            while($record !== false){
+                if(is_array($record)){
+                    //one record to much, the binarysearch start
+                    if($options['parallel'] === true){
+                        foreach($record as $value){
+                            $list[] = $value;
+                        }
+                        $total = 0;
+                        if(array_key_exists(0, $list)){
+                            $partition = Core::array_partition($list, $options['thread']);
+                            $result = [];
+                            foreach($partition as $nr => $list){
+                                if($options['limit'] !== '*'){
+                                    $list = Limit::list($list)->with([
+                                        'limit' => $options['limit'],
+                                        'page' => $options['page']
+                                    ]);
+                                }
+                                foreach($list as $record){
+                                    $result[] = new Storage($record);
+                                    $total++;
+                                }
+                            }
+                            $list = $result;
+                            unset($result);
+                        }
+                        $count = $total;
+                    }
+                    elseif($options['limit'] !== '*'){
+                        $count = 0;
+                        foreach($record as $value){
+                            $list[] = $value;
+                        }
+                        $list = Limit::list($list)->with([
+                            'limit' => $options['limit'],
+                            'page' => $options['page']
+                        ], [], $count);
+                        foreach($list as $nr => $record){
+                            $list[$nr] = new Storage($record);
+                        }
+                    }
+                    $record = false;
+                } else {
                     $list[] = new Storage($record);
                     $count++;
                 }
-            } else {
-                echo Cli::tput('cursor.up');
-                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                echo Cli::tput('cursor.up');
-                echo 'indexing' . PHP_EOL;
-                $local_options = $options;
-                $local_options['limit'] = 1;
-                $local_options['page'] = 1;
-                $record = $this->index_list_record($class, $role, $local_options);
-                while($record !== false){
-                    if(is_array($record)){
-                        //one record to much, the binarysearch start
-                        if($options['parallel'] === true){
-                            foreach($record as $value){
-                                $list[] = $value;
-                            }
-                            $total = 0;
-                            if(array_key_exists(0, $list)){
-                                $partition = Core::array_partition($list, $options['thread']);
-                                $result = [];
-                                foreach($partition as $nr => $list){
-                                    if($options['limit'] !== '*'){
-                                        $list = Limit::list($list)->with([
-                                            'limit' => $options['limit'],
-                                            'page' => $options['page']
-                                        ]);
-                                    }
-                                    foreach($list as $record){
-                                        $result[] = new Storage($record);
-                                        $total++;
-                                    }
-                                }
-                                $list = $result;
-                                unset($result);
-                            }
-                            $count = $total;
-                        }
-                        elseif($options['limit'] !== '*'){
-                            $count = 0;
-                            foreach($record as $value){
-                                $list[] = $value;
-                            }
-                            $list = Limit::list($list)->with([
-                                'limit' => $options['limit'],
-                                'page' => $options['page']
-                            ], [], $count);
-                            foreach($list as $nr => $record){
-                                $list[$nr] = new Storage($record);
-                            }
-                        }
-                        $record = false;
-                    }
-                    elseif($options['page'] === 1) {
-                        $list[] = new Storage($record);
-                        $count++;
-                    }
-                    if(
-                        $options['parallel'] === true &&
-                        $options['limit'] !== '*' &&
-                        $count >= ($options['page'] * $options['limit'] * $options['thread'])
-                    ){
-                        break;
-                    } elseif(
-                        $options['parallel'] === false &&
-                        $options['limit'] !== '*' &&
-                        $count >= ($options['page'] * $options['limit'])
-                    ){
-                        break;
-                    } elseif($record){
-                        $found = [];
-                        $found[] = $record->get('uuid');
-                        $options_where = $this->index_record_next($found, $options);
-                        $local_options['where'] = $options_where;
-                        $local_options['limit'] = $options['limit'];
-                        $local_options['page'] = $options['page'];
-                        $record = $this->index_list_record($class, $role, $local_options);
-                    }
+                if($record){
+                    $found = [];
+                    $found[] = $record->get('uuid');
+                    $options_where = $this->index_record_next($found, $options);
+                    $local_options['where'] = $options_where;
+                    $local_options['limit'] = $options['limit'];
+                    $local_options['page'] = $options['page'];
+                    $record = $this->index_list_record($class, $role, $local_options);
                 }
-                $object->config('delete', 'node.record.leftsearch');
-                $object->config('delete', 'node.record.rightsearch');
             }
+            $object->config('delete', 'node.record.leftsearch');
+            $object->config('delete', 'node.record.rightsearch');
             $list = $this->index_list_expose($class, $role, $list, $options);
             $list = Sort::list($list)->with(
                 $options['sort'],
