@@ -586,7 +586,6 @@ trait NodeList {
                         foreach($record as $value){
                             $list[] = $value;
                         }
-                        trace();
                         if($options['limit'] !== '*'){
                             $list = Limit::list($list)->with([
                                 'limit' => $options['limit'],
@@ -699,8 +698,6 @@ trait NodeList {
             $result['ramdisk'] = $options['ramdisk'] ?? false;
             $result['mtime'] = $mtime;
             $result['transaction'] = $options['transaction'] ?? false;
-
-            /*
             $object_url = $object->config('project.dir.node') .
                 'Object' .
                 $object->config('ds') .
@@ -729,7 +726,6 @@ trait NodeList {
                     'ramdisk_url_node' => $ramdisk_url_node,
                 ]);
             }
-            */
             if($start){
                 $result['#duration'] = (object) [
                     'boot' => ($start - $object->config('time.start')) * 1000,
