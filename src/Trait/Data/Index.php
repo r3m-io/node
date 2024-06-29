@@ -1164,7 +1164,6 @@ trait Index {
                                                                         // Wait for all children to exit
                                                                         foreach ($children as $child) {
                                                                             pcntl_waitpid($child, $status);
-
                                                                         }
                                                                         if($options['counter'] === true){
                                                                             echo Cli::tput('cursor.up');
