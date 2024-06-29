@@ -726,7 +726,7 @@ trait Index {
                 $total = $options['limit'];
             }
         }
-        d($options['index']);
+//        d($options['index']);
         /*
         $file['uuid'] = new SplFileObject($options['index']['url_uuid']);
         foreach($options['index']['url'] as $nr => $url){
