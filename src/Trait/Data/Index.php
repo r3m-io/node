@@ -1478,7 +1478,6 @@ trait Index {
                                                                 $json[] = '}';
                                                                 $json = Core::object(implode('', $json), Core::OBJECT_OBJECT);
                                                                 if(property_exists($json, 'result')){
-                                                                    ddd(count($json->result));
                                                                     return $json->result;
                                                                 }
                                                             break;
