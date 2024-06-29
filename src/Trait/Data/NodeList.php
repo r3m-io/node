@@ -232,6 +232,234 @@ trait NodeList {
             return $result;
         }
         $mtime = File::mtime($data_url);
+        if(
+            $options['index'] !== false &&
+            $options['index'] !== 'create' &&
+            array_key_exists('url', $options['index']) &&
+            array_key_exists('url_uuid', $options['index']) &&
+            array_key_exists('count', $options['index']) &&
+            array_key_exists('filter', $options['index']) &&
+            array_key_exists('where', $options['index'])
+        ){
+            if($options['index']['count'] === 0){
+                $dir_ramdisk_count = $object->config('ramdisk.url') .
+                    $object->config(Config::POSIX_ID) .
+                    $object->config('ds') .
+                    'Node' .
+                    $object->config('ds') .
+                    'Count' .
+                    $object->config('ds')
+                ;
+                $count = File::read($dir_ramdisk_count . sha1($data_url) . $object->config('extension.txt'));
+                if($count){
+                    $options['index']['count'] = $count;
+                }
+            }
+            if($options['parallel'] === true){
+                if($options['limit'] === '*'){
+                    $total = $options['index']['count'] / $options['thread'];
+                } else {
+                    $total = $options['limit'] * $options['thread'] * $options['page'];
+                    d($total);
+                }
+            }
+            elseif($options['parallel'] === false) {
+                if($options['limit'] === '*'){
+                    $total = $options['index']['count'];
+                } else {
+                    $total = $options['limit'] * $options['page'];
+                }
+            }
+            d($total);
+            $count = 0;
+            $list = [];
+            if(
+                $options['limit'] === 1 &&
+                $options['page'] === 1 &&
+                $options['parallel'] === false
+            ){
+                $record = $this->index_list_record($class, $role, $options);
+                if($record){
+//                    $record = $this->index_record_expose($class, $role, $record, $options);
+                    $list[] = new Storage($record);
+                    $count++;
+                }
+            } else {
+                echo Cli::tput('cursor.up');
+                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                echo Cli::tput('cursor.up');
+                echo 'indexing' . PHP_EOL;
+                $local_options = $options;
+                $local_options['limit'] = 1;
+                $local_options['page'] = 1;
+                $record = $this->index_list_record($class, $role, $local_options);
+                while($record !== false){
+                    if(is_array($record)){
+                        //one record to much, the binarysearch start
+                        if($options['parallel'] === true){
+                            foreach($record as $value){
+                                $list[] = $value;
+                            }
+                            $total = 0;
+                            if(array_key_exists(0, $list)){
+                                $partition = Core::array_partition($list, $options['thread']);
+                                $result = [];
+                                foreach($partition as $nr => $list){
+                                    if($options['limit'] !== '*'){
+                                        $list = Limit::list($list)->with([
+                                            'limit' => $options['limit'],
+                                            'page' => $options['page']
+                                        ]);
+                                    }
+                                    foreach($list as $record){
+                                        $result[] = new Storage($record);
+                                        $total++;
+                                    }
+                                }
+                                $list = $result;
+                                unset($result);
+                            }
+                            $count = $total;
+                        } elseif($options['limit'] !== '*'){
+                            $count = 0;
+                            foreach($record as $value){
+                                $list[] = $value;
+                            }
+                            $list = Limit::list($list)->with([
+                                'limit' => $options['limit'],
+                                'page' => $options['page']
+                            ], [], $count);
+                            foreach($list as $nr => $record){
+                                $list[$nr] = new Storage($record);
+                            }
+                        }
+                        $record = false;
+                    }
+                    elseif($options['page'] === 1) {
+                        $list[] = new Storage($record);
+                        $count++;
+                    }
+                    if(
+                        $options['parallel'] === true &&
+                        $options['limit'] !== '*' &&
+                        $count >= ($options['page'] * $options['limit'] * $options['thread'])
+                    ){
+                        break;
+                    } elseif(
+                        $options['parallel'] === false &&
+                        $options['limit'] !== '*' &&
+                        $count >= ($options['page'] * $options['limit'])
+                    ){
+                        break;
+                    } elseif($record){
+                        $found = [];
+                        $found[] = $record->get('uuid');
+                        $options_where = $this->index_record_next($found, $options);
+                        $local_options['where'] = $options_where;
+                        $local_options['limit'] = $options['limit'];
+                        $local_options['page'] = $options['page'];
+                        $record = $this->index_list_record($class, $role, $local_options);
+                    }
+                }
+                $object->config('delete', 'node.record.leftsearch');
+                $object->config('delete', 'node.record.rightsearch');
+            }
+            $list = $this->index_list_expose($class, $role, $list, $options);
+            $list = Sort::list($list)->with(
+                $options['sort'],
+                [
+                    'key_reset' => true,
+                ]
+            );
+            if($options['limit'] === '*'){
+                $index = 0;
+            } else {
+                if($options['parallel'] === true){
+                    $index = (
+                        $options['limit'] *
+                        $options['page'] *
+                        $options['thread']
+                    ) -
+                    (
+                        $options['limit'] *
+                        $options['thread']
+                    );
+                } else {
+                    $index = ($options['limit'] * $options['page']) - $options['limit'];
+                }
+
+            }
+            foreach($list as $nr => $record){
+                $record->{'#index'} = $index;
+                $index++;
+            }
+            //add sort
+            d('from index:' . $name);
+            $result = [];
+            $result['page'] = $options['page'];
+            $result['limit'] = $options['limit'];
+            if($options['parallel'] === true){
+                $result['thread'] = $options['thread'];
+            } else {
+                $result['thread'] = 1;
+            }
+            $result['count'] = $count;
+            $result['max'] = $options['index']['count'];
+            if($options['limit'] !== '*'){
+                if($options['parallel']){
+                    $result['range'] = [
+                        (
+                            $options['page'] *
+                            $options['limit'] *
+                            $options['thread']
+                        ) -
+                        (
+                            $options['limit'] *
+                            $options['thread']
+                        ),
+                        (
+                            $options['page'] *
+                            $options['limit'] *
+                            $options['thread']
+                        ) -
+                        (
+                            $options['limit']  *
+                            $options['thread']
+                        ) +
+                        $count
+                    ];
+                } else {
+                    $result['range'] = [
+                        ($options['page'] * $options['limit']) - $options['limit'],
+                        ($options['page'] * $options['limit']) - $options['limit'] + $count
+                    ];
+                }
+
+            }
+            $result['list'] = $list;
+            $result['sort'] = $options['sort'] ?? [];
+            if (!empty($options['filter'])) {
+                $result['filter'] = $options['filter'];
+            }
+            if (!empty($options['where'])) {
+                $result['where'] = $options['where'];
+            }
+            $result['relation'] = $options['relation'];
+            $result['parse'] = $options['parse'];
+            $result['ramdisk'] = $options['ramdisk'] ?? false;
+            $result['mtime'] = $mtime;
+            $result['transaction'] = $options['transaction'] ?? false;
+            if($start){
+                $result['#duration'] = (object) [
+                    'boot' => ($start - $object->config('time.start')) * 1000,
+                    'total' => (microtime(true) - $object->config('time.start')) * 1000,
+                    'nodelist' => (microtime(true) - $start) * 1000
+                ];
+                $result['#duration']->item_per_second = ($count / $result['#duration']->total) * 1000;
+                $result['#duration']->item_per_second_nodelist = ($count / $result['#duration']->nodelist) * 1000;
+            }
+            return $result;
+        }
         $ramdisk_dir = false;
         $ramdisk_dir_node = false;
         $ramdisk_dir_list = false;
@@ -298,13 +526,15 @@ trait NodeList {
                 if(File::exist($ramdisk_url_nodelist[0])){
                     $pipes = [];
                     $children = [];
-                    // Create pipes and fork processes
+
+// Create pipes and fork processes
                     for ($i = 0; $i < $options['thread']; $i++) {
                         // Create a pipe
                         $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
                         if ($sockets === false) {
                             die("Unable to create socket pair for child $i");
                         }
+
                         $pid = pcntl_fork();
                         if ($pid == -1) {
                             die("Could not fork for child $i");
@@ -312,6 +542,7 @@ trait NodeList {
                             // Parent process
                             // Close the child's socket
                             fclose($sockets[0]);
+
                             // Store the parent socket and child PID
                             $pipes[$i] = $sockets[1];
                             $children[$i] = $pid;
@@ -319,15 +550,29 @@ trait NodeList {
                             // Child process
                             // Close the parent's socket
                             fclose($sockets[1]);
+
                             $data = File::read($ramdisk_url_nodelist[$i]);
+
                             // Prepare data to send o the parent
+                            /*
+                            $data = [
+                                'message' => "Hello from child $i",
+                                'timestamp' => time(),
+                                'pid' => posix_getpid()
+                            ];
+                            */
+                            // Serialize the data
+//                            $serializedData = serialize($data);
+
                             // Send serialized data to the parent
                             fwrite($sockets[0], $data);
                             fclose($sockets[0]);
+
                             exit(0);
                         }
                     }
-                    // Parent process: read data from each child
+
+// Parent process: read data from each child
                     $list = [];
                     $response = false;
                     foreach ($pipes as $i => $pipe) {
@@ -344,7 +589,7 @@ trait NodeList {
                             }
                         }
                     }
-                    // Wait for all children to exit
+// Wait for all children to exit
                     foreach ($children as $child) {
                         pcntl_waitpid($child, $status);
                     }
@@ -367,6 +612,8 @@ trait NodeList {
                         }
                         return $response;
                     }
+
+
                     //fix transaction
                     $is_cache_miss = [];
                     $ramdisk = [];
@@ -507,265 +754,6 @@ trait NodeList {
                 }
             }
         }
-        if(
-            $options['index'] !== false &&
-            $options['index'] !== 'create' &&
-            array_key_exists('url', $options['index']) &&
-            array_key_exists('url_uuid', $options['index']) &&
-            array_key_exists('count', $options['index']) &&
-            array_key_exists('filter', $options['index']) &&
-            array_key_exists('where', $options['index'])
-        ){
-            if($options['index']['count'] === 0){
-                $dir_ramdisk_count = $object->config('ramdisk.url') .
-                    $object->config(Config::POSIX_ID) .
-                    $object->config('ds') .
-                    'Node' .
-                    $object->config('ds') .
-                    'Count' .
-                    $object->config('ds')
-                ;
-                $count = File::read($dir_ramdisk_count . sha1($data_url) . $object->config('extension.txt'));
-                if($count){
-                    $options['index']['count'] = $count;
-                }
-            }
-            if($options['parallel'] === true){
-                if($options['limit'] === '*'){
-                    $total = $options['index']['count'] / $options['thread'];
-                } else {
-                    $total = $options['limit'] * $options['thread'] * $options['page'];
-                }
-            }
-            elseif($options['parallel'] === false) {
-                if($options['limit'] === '*'){
-                    $total = $options['index']['count'];
-                } else {
-                    $total = $options['limit'] * $options['page'];
-                }
-            }
-            $count = 0;
-            $list = [];
-            if(
-                $options['limit'] === 1 &&
-                $options['page'] === 1 &&
-                $options['parallel'] === false
-            ){
-                $record = $this->index_list_record($class, $role, $options);
-                if($record){
-//                    $record = $this->index_record_expose($class, $role, $record, $options);
-                    $list[] = new Storage($record);
-                    $count++;
-                }
-            } else {
-                echo Cli::tput('cursor.up');
-                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                echo Cli::tput('cursor.up');
-                echo 'indexing' . PHP_EOL;
-                $local_options = $options;
-                $local_options['limit'] = 1;
-                $local_options['page'] = 1;
-                $record = $this->index_list_record($class, $role, $local_options);
-                while($record !== false){
-                    if(is_array($record)){
-                        //one record to much, the binarysearch start
-                        if($options['parallel'] === true){
-                            foreach($record as $value){
-                                $list[] = $value;
-                            }
-                            $total = 0;
-                            if(array_key_exists(0, $list)){
-                                $partition = Core::array_partition($list, $options['thread']);
-                                $result = [];
-                                foreach($partition as $nr => $list){
-                                    if($options['limit'] !== '*'){
-                                        $list = Limit::list($list)->with([
-                                            'limit' => $options['limit'],
-                                            'page' => $options['page']
-                                        ]);
-                                    }
-                                    foreach($list as $record){
-                                        $result[] = new Storage($record);
-                                        $total++;
-                                    }
-                                }
-                                $list = $result;
-                                unset($result);
-                            }
-                            $count = $total;
-                        }
-                        elseif($options['limit'] !== '*'){
-                            $count = 0;
-                            foreach($record as $value){
-                                $list[] = $value;
-                            }
-                            $list = Limit::list($list)->with([
-                                'limit' => $options['limit'],
-                                'page' => $options['page']
-                            ], [], $count);
-                            foreach($list as $nr => $record){
-                                $list[$nr] = new Storage($record);
-                            }
-                        }
-                        $record = false;
-                    }
-                    elseif($options['page'] === 1) {
-                        $list[] = new Storage($record);
-                        $count++;
-                    }
-                    if(
-                        $options['parallel'] === true &&
-                        $options['limit'] !== '*' &&
-                        $count >= ($options['page'] * $options['limit'] * $options['thread'])
-                    ){
-                        break;
-                    } elseif(
-                        $options['parallel'] === false &&
-                        $options['limit'] !== '*' &&
-                        $count >= ($options['page'] * $options['limit'])
-                    ){
-                        break;
-                    } elseif($record){
-                        $found = [];
-                        $found[] = $record->get('uuid');
-                        $options_where = $this->index_record_next($found, $options);
-                        $local_options['where'] = $options_where;
-                        $local_options['limit'] = $options['limit'];
-                        $local_options['page'] = $options['page'];
-                        $record = $this->index_list_record($class, $role, $local_options);
-                    }
-                }
-                $object->config('delete', 'node.record.leftsearch');
-                $object->config('delete', 'node.record.rightsearch');
-            }
-            $list = $this->index_list_expose($class, $role, $list, $options);
-            $list = Sort::list($list)->with(
-                $options['sort'],
-                [
-                    'key_reset' => true,
-                ]
-            );
-            if($options['limit'] === '*'){
-                $index = 0;
-            } else {
-                if($options['parallel'] === true){
-                    $index = (
-                            $options['limit'] *
-                            $options['page'] *
-                            $options['thread']
-                        ) -
-                        (
-                            $options['limit'] *
-                            $options['thread']
-                        );
-                } else {
-                    $index = ($options['limit'] * $options['page']) - $options['limit'];
-                }
-
-            }
-            foreach($list as $nr => $record){
-                $record->{'#index'} = $index;
-                $index++;
-            }
-            //add sort
-            d('from index:' . $name);
-            $result = [];
-            $result['page'] = $options['page'];
-            $result['limit'] = $options['limit'];
-            if($options['parallel'] === true){
-                $result['thread'] = $options['thread'];
-            } else {
-                $result['thread'] = 1;
-            }
-            $result['count'] = $count;
-            $result['max'] = $options['index']['count'];
-            if($options['limit'] !== '*'){
-                if($options['parallel']){
-                    $result['range'] = [
-                        (
-                            $options['page'] *
-                            $options['limit'] *
-                            $options['thread']
-                        ) -
-                        (
-                            $options['limit'] *
-                            $options['thread']
-                        ),
-                        (
-                            $options['page'] *
-                            $options['limit'] *
-                            $options['thread']
-                        ) -
-                        (
-                            $options['limit']  *
-                            $options['thread']
-                        ) +
-                        $count
-                    ];
-                } else {
-                    $result['range'] = [
-                        ($options['page'] * $options['limit']) - $options['limit'],
-                        ($options['page'] * $options['limit']) - $options['limit'] + $count
-                    ];
-                }
-
-            }
-            $result['list'] = $list;
-            $result['sort'] = $options['sort'] ?? [];
-            if (!empty($options['filter'])) {
-                $result['filter'] = $options['filter'];
-            }
-            if (!empty($options['where'])) {
-                $result['where'] = $options['where'];
-            }
-            $result['relation'] = $options['relation'];
-            $result['parse'] = $options['parse'];
-            $result['ramdisk'] = $options['ramdisk'] ?? false;
-            $result['mtime'] = $mtime;
-            $result['transaction'] = $options['transaction'] ?? false;
-
-            /*
-            $object_url = $object->config('project.dir.node') .
-                'Object' .
-                $object->config('ds') .
-                $name .
-                $object->config('extension.json')
-            ;
-            if($options['ramdisk'] === true){
-                if (
-                    $options['transaction'] === true ||
-                    $options['memory'] === true
-                ) {
-                    $object_data = $object->data_read($object_url, sha1($object_url));
-                } else {
-                    $object_data = $object->data_read($object_url);
-                }
-                $relation_mtime = $this->relation_mtime($object_data);
-                $ramdisk = new Storage();
-                $ramdisk->set('mtime', $mtime);
-                $ramdisk->set('response', $result);
-                $ramdisk->set('relation', $relation_mtime);
-                $ramdisk->write($ramdisk_url_node);
-                File::permission($object, [
-                    'ramdisk_dir' => $ramdisk_dir,
-                    'ramdisk_dir_node' => $ramdisk_dir_node,
-                    'ramdisk_dir_list' => $ramdisk_dir_list,
-                    'ramdisk_url_node' => $ramdisk_url_node,
-                ]);
-            }
-            */
-            if($start){
-                $result['#duration'] = (object) [
-                    'boot' => ($start - $object->config('time.start')) * 1000,
-                    'total' => (microtime(true) - $object->config('time.start')) * 1000,
-                    'nodelist' => (microtime(true) - $start) * 1000
-                ];
-                $result['#duration']->item_per_second = ($count / $result['#duration']->total) * 1000;
-                $result['#duration']->item_per_second_nodelist = ($count / $result['#duration']->nodelist) * 1000;
-            }
-            return $result;
-        }
-
         if (
             $options['transaction'] === true ||
             $options['memory'] === true
@@ -980,7 +968,8 @@ trait NodeList {
                             exit(0);
                         }
                     }
-                    // Parent process: read data from each child
+
+// Parent process: read data from each child
                     $result = [];
                     foreach ($pipes as $i => $pipe) {
                         // Read serialized data from the pipe
@@ -1011,7 +1000,7 @@ trait NodeList {
                             ddd($data);
                         }
                     }
-                    // Wait for all children to exit
+// Wait for all children to exit
                     foreach ($children as $child) {
                         pcntl_waitpid($child, $status);
                     }
