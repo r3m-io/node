@@ -719,7 +719,6 @@ trait NodeList {
                     $options['parallel'] === true
                 ){
                     $result_ramdisk = $result;
-                    ddd($ramdisk_url_nodelist);
                     if(array_key_exists(0, $result['list'])){
                         $result_ramdisk['list'] = Core::array_partition($result['list'], $options['thread']);
                         $relation_mtime = $this->relation_mtime($object_data);
