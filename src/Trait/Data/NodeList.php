@@ -587,6 +587,7 @@ trait NodeList {
                         foreach($record as $value){
                             $list[] = $value;
                         }
+                        ddd(count($list));
                         $list = Limit::list($list)->with([
                             'limit' => $options['limit'],
                             'page' => $options['page']
