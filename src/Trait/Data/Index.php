@@ -1704,6 +1704,9 @@ trait Index {
             }
             $seek_old = $seek;
         }
+        d('min: ' .$options['index']['min']);
+        d('max: ' .$options['index']['max']);
+        d($record);
         d('found: 28');
         return false;
     }
