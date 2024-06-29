@@ -582,18 +582,19 @@ trait NodeList {
                         }
                         $count = $total;
                     } else {
-                        $count = 0;
                         foreach($record as $value){
                             $list[] = $value;
                         }
                         trace();
-                        $list = Limit::list($list)->with([
-                            'limit' => $options['limit'],
-                            'page' => $options['page']
-                        ], [], $count);
-                        ddd($list);
+                        if($options['limit'] !== '*'){
+                            $list = Limit::list($list)->with([
+                                'limit' => $options['limit'],
+                                'page' => $options['page']
+                            ]);
+                        }
                         foreach($list as $nr => $record){
                             $list[$nr] = new Storage($record);
+                            $count++;
                         }
                     }
                     $record = false;
