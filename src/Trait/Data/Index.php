@@ -39,8 +39,6 @@ trait Index {
         $mtime = File::mtime($url);
         $size = File::size($url) + strlen($mtime) + 1;
         $sm = SharedMemory::open(ftok($url, 'i') , 'n', File::CHMOD, $size);
-        SharedMemory::delete($sm);
-        $sm = null;
         if($sm){
             $read = SharedMemory::read($sm);
             $read = explode(';', $read, 2);
@@ -63,8 +61,7 @@ trait Index {
             SharedMemory::delete($sm);
         }
         $data = File::read($url);
-        ddd($size);
-        $sm = SharedMemory::open(ftok($url, 'i') , 'c', File::CHMOD, $size);
+        $sm = SharedMemory::open(ftok($url, 'i') , 'n', File::CHMOD, $size);
         SharedMemory::write($sm, $mtime . ';' . $data);
         $data = explode(PHP_EOL, $data);
         foreach($data as $nr => $line){
