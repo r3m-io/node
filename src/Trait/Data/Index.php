@@ -63,8 +63,17 @@ trait Index {
         }
         $data = File::read($url);
         try {
-            $sm = SharedMemory::open(ftok($url, 'i') , 'n', File::CHMOD, $size);
-            SharedMemory::write($sm, $mtime . ';' . $data);
+            $sm_new = SharedMemory::open(ftok($url, 'i') , 'n', File::CHMOD, $size);
+            if($sm_new === false){
+                if($sm){
+                    SharedMemory::delete($sm);
+                }
+                $sm_new = SharedMemory::open(ftok($url, 'i') , 'n', File::CHMOD, $size);
+            }
+            if($sm_new === false){
+                throw new Exception('Cannot create shared memory');
+            }
+            SharedMemory::write($sm_new, $mtime . ';' . $data);
         }
         catch(ErrorException | Exception $exception){
             $exception = (string) $exception;
