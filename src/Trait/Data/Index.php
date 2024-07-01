@@ -83,6 +83,7 @@ trait Index {
             if($sm_new === false){
                 throw new Exception('Cannot create shared memory');
             }
+            ddd($mtime);
             SharedMemory::write($sm_new, $mtime . ';' . $data);
         }
         catch(ErrorException | Exception $exception){
