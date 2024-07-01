@@ -64,7 +64,7 @@ trait Index {
             if($sm){
                 SharedMemory::delete($sm);
             }
-            $sm_new = SharedMemory::open(ftok($url, 'p') , 'n', File::CHMOD, $size);
+            $sm_new = SharedMemory::open(ftok($url, 'p') , 'c', File::CHMOD, $size);
             /*
             if($sm_new === false){
                 $sm_new = SharedMemory::open(ftok($url, 'i') , 'n', File::CHMOD, $size);
