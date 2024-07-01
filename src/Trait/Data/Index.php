@@ -67,7 +67,7 @@ trait Index {
         }
         catch(ErrorException | Exception $exception){
             $exception = (string) $exception;
-            d($exception);
+            ddd($exception);
         }
         $data = explode(PHP_EOL, $data);
         foreach($data as $nr => $line){
