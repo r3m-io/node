@@ -35,21 +35,24 @@ trait Index {
             return false;
         }
         $data = '';
-        $is_new = false;
+        $is_new = true;
         $mtime = File::mtime($url);
         $sm = SharedMemory::open(ftok($url, 'i') , 'c', 0644, (File::size($url) + strlen($mtime) + 1));
         if($sm){
             $read = SharedMemory::read($sm);
             $read = explode(';', $read, 2);
-            ddd($read);
+            $read_mtime = $read[0];
+            $data = $read[1];
+            d($read_mtime);
+            d($mtime);
+            d($data);
 //            $data = File::read($url);
-            if($read !== $mtime){
-                $is_new = true;
+            if($read_mtime === $mtime){
+                $is_new = false;
             }
         } else {
             $data = File::read($url);
         }
-
         if($is_new){
             SharedMemory::write($sm, $mtime . ';' . $data);
         }
