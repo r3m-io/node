@@ -37,25 +37,30 @@ trait Index {
         $data = '';
         $is_new = true;
         $mtime = File::mtime($url);
-        $sm = SharedMemory::open(ftok($url, 'i') , 'c', 0644, (File::size($url) + strlen($mtime) + 1));
+        $sm = SharedMemory::open(ftok($url, 'i') , 'c', File::CHMOD, (File::size($url) + strlen($mtime) + 1));
         if($sm){
             $read = SharedMemory::read($sm);
             $read = explode(';', $read, 2);
-            $read_mtime = $read[0];
-            $data = $read[1];
-            d($read_mtime);
-            d($mtime);
-            d($data);
-//            $data = File::read($url);
-            if($read_mtime === $mtime){
-                $is_new = false;
+            if(array_key_exists(1, $read)){
+                $read_mtime = $read[0];
+                $data = $read[1];
+                d($read_mtime);
+                d($mtime);
+                d($data);
+                if($read_mtime === $mtime){
+                    $is_new = false;
+                    $data = explode(PHP_EOL, $data);
+                    foreach($data as $nr => $line){
+                        $data[$nr] = rtrim($line);
+                    }
+                    return $data;
+                }
             }
-        } else {
-            $data = File::read($url);
+            SharedMemory::delete($sm);
         }
-        if($is_new){
-            SharedMemory::write($sm, $mtime . ';' . $data);
-        }
+        $data = File::read($url);
+        $sm = SharedMemory::open(ftok($url, 'i') , 'c', File::CHMOD, (File::size($url) + strlen($mtime) + 1));
+        SharedMemory::write($sm, $mtime . ';' . $data);
         $data = explode(PHP_EOL, $data);
         foreach($data as $nr => $line){
             $data[$nr] = rtrim($line);
