@@ -49,6 +49,7 @@ trait Index {
         $mtime = File::mtime($url);
         $size = File::size($url) + strlen($mtime) + 1;
         try {
+            ddd($mtime);
             $sm = SharedMemory::open(ftok($url, 'p') , 'c', File::CHMOD, $size);
         } catch (ErrorException | Exception $exception) {
             $sm = false;
@@ -57,10 +58,9 @@ trait Index {
             $read = SharedMemory::read($sm, 0, $size);
             $read = explode(';', $read, 2);
             d($mtime);
-            ddd($read[0]);
-
             if(array_key_exists(1, $read)){
                 $read_mtime = (int) $read[0];
+                d($read_mtime);
                 $data = $read[1];
                 if($read_mtime === $mtime){
                     $data = explode(PHP_EOL, $data);
@@ -83,7 +83,7 @@ trait Index {
             if($sm_new === false){
                 throw new Exception('Cannot create shared memory');
             }
-            ddd($mtime);
+            d($mtime);
             SharedMemory::write($sm_new, $mtime . ';' . $data);
         }
         catch(ErrorException | Exception $exception){
