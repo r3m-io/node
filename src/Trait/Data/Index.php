@@ -50,7 +50,8 @@ trait Index {
                 $read_mtime = $read[0];
                 $data = $read[1];
                 if($read_mtime === $mtime){
-                    $is_new = false;
+
+                    SharedMemory::delete($sm);
                     $data = explode(PHP_EOL, $data);
                     foreach($data as $nr => $line){
                         $data[$nr] = rtrim($line);
