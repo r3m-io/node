@@ -72,11 +72,6 @@ trait Index {
                 SharedMemory::delete($sm);
             }
             $sm_new = SharedMemory::open(ftok($url, 'p') , 'c', File::CHMOD, $size);
-            /*
-            if($sm_new === false){
-                $sm_new = SharedMemory::open(ftok($url, 'i') , 'n', File::CHMOD, $size);
-            }
-            */
             if($sm_new === false){
                 throw new Exception('Cannot create shared memory');
             }
@@ -84,7 +79,7 @@ trait Index {
         }
         catch(ErrorException | Exception $exception){
             $exception = (string) $exception;
-            ddd($exception);
+            //can be added to some logger...
         }
         $data = explode(PHP_EOL, $data);
         foreach($data as $nr => $line){
