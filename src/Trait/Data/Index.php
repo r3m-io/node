@@ -2,7 +2,7 @@
 
 namespace R3m\Io\Node\Trait\Data;
 
-use ErrorException;
+
 use R3m\Io\App;
 use R3m\Io\Config;
 
@@ -25,23 +25,27 @@ use R3m\Io\Module\Sort;
 use R3m\Io\Node\Service\Security;
 
 use Exception;
+use ErrorException;
 use SplFileObject;
 
 trait Index {
 
+    /**
+     * @throws Exception
+     */
     public function index_read($url): array | bool
     {
         if(!File::exist($url)){
             return false;
         }
         $object = $this->object();
+        $logger_error = $object->config('project.log.error');
         $cache = $object->data(App::CACHE);
         $data = $cache->get(sha1($url));
         if($data){
             return $data;
         }
         $data = '';
-        $is_new = true;
         $mtime = File::mtime($url);
         $size = File::size($url) + strlen($mtime) + 1;
         try {
@@ -61,6 +65,7 @@ trait Index {
                         $data[$nr] = rtrim($line);
                     }
                     $cache->set(sha1($url), $data);
+                    d('yes');
                     return $data;
                 }
             }
@@ -79,6 +84,9 @@ trait Index {
         }
         catch(ErrorException | Exception $exception){
             $exception = (string) $exception;
+            if($logger_error){
+                $object->logger($logger_error)->error($exception);
+            }
             //can be added to some logger...
         }
         $data = explode(PHP_EOL, $data);
