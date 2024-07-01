@@ -19,6 +19,7 @@ use R3m\Io\Module\Filter;
 use R3m\Io\Module\Limit;
 use R3m\Io\Module\Parallel;
 use R3m\Io\Module\Route;
+use R3m\Io\Module\SharedMemory;
 use R3m\Io\Module\Sort;
 
 use R3m\Io\Node\Service\Security;
@@ -33,7 +34,25 @@ trait Index {
         if(!File::exist($url)){
             return false;
         }
-        $data = File::read($url);
+        $data = '';
+        $is_new = false;
+        $mtime = File::mtime($url);
+        $sm = SharedMemory::open(ftok($url, 'i') , 'c', 0644, (File::size($url) + strlen($mtime) + 1));
+        if($sm){
+            $read = SharedMemory::read($sm);
+            $read = explode(';', $read, 2);
+            ddd($read);
+//            $data = File::read($url);
+            if($read !== $mtime){
+                $is_new = true;
+            }
+        } else {
+            $data = File::read($url);
+        }
+
+        if($is_new){
+            SharedMemory::write($sm, $mtime . ';' . $data);
+        }
         $data = explode(PHP_EOL, $data);
         foreach($data as $nr => $line){
             $data[$nr] = rtrim($line);
