@@ -39,7 +39,7 @@ trait Index {
         $mtime = File::mtime($url);
         $size = File::size($url) + strlen($mtime) + 1;
         try {
-            $sm = SharedMemory::open(ftok($url, 'i') , 'c', File::CHMOD, $size);
+            $sm = SharedMemory::open(ftok($url, 'p') , 'c', File::CHMOD, $size);
         } catch (ErrorException | Exception $exception) {
             $sm = false;
         }
@@ -64,7 +64,7 @@ trait Index {
             if($sm){
                 SharedMemory::delete($sm);
             }
-            $sm_new = SharedMemory::open(ftok($url, 'i') , 'n', File::CHMOD, $size);
+            $sm_new = SharedMemory::open(ftok($url, 'p') , 'n', File::CHMOD, $size);
             /*
             if($sm_new === false){
                 $sm_new = SharedMemory::open(ftok($url, 'i') , 'n', File::CHMOD, $size);
