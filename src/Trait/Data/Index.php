@@ -61,6 +61,7 @@ trait Index {
         }
         $data = File::read($url);
         try {
+            ddd($sm);
             $sm_new = SharedMemory::open(ftok($url, 'i') , 'n', File::CHMOD, $size);
             if($sm_new === false){
                 if($sm){
