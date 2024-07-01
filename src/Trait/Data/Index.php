@@ -61,7 +61,6 @@ trait Index {
         }
         $data = File::read($url);
         try {
-            ddd($sm);
             if($sm){
                 SharedMemory::delete($sm);
             }
