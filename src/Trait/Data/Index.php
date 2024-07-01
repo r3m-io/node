@@ -34,6 +34,12 @@ trait Index {
         if(!File::exist($url)){
             return false;
         }
+        $object = $this->object();
+        $cache = $object->data(App::CACHE);
+        $data = $cache->get(sha1($url));
+        if($data){
+            return $data;
+        }
         $data = '';
         $is_new = true;
         $mtime = File::mtime($url);
@@ -54,6 +60,7 @@ trait Index {
                     foreach($data as $nr => $line){
                         $data[$nr] = rtrim($line);
                     }
+                    $cache->set(sha1($url), $data);
                     return $data;
                 }
             }
@@ -83,6 +90,7 @@ trait Index {
         foreach($data as $nr => $line){
             $data[$nr] = rtrim($line);
         }
+        $cache->set(sha1($url), $data);
         return $data;
     }
 
