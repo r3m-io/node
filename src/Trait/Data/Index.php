@@ -43,8 +43,6 @@ trait Index {
         $cache = $object->data(App::CACHE);
         $data = $cache->get(sha1($url));
         if($data){
-            d('index_read');
-            d('2bd');
             return $data;
         }
         $data = '';
@@ -66,6 +64,8 @@ trait Index {
                     foreach($data as $nr => $line){
                         $data[$nr] = rtrim($line);
                     }
+                    d('index_read');
+                    d('2bd');
                     $cache->set(sha1($url), $data);
                     return $data;
                 }
