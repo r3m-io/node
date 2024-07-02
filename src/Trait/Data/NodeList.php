@@ -595,8 +595,11 @@ trait NodeList {
                     $index = ($options['limit'] * $options['page']) - $options['limit'];
                 }
             }
+            $list_unparsed = [];
             foreach($list as $nr => $record){
+                $record->{'#index'} = $index;
                 if($options['parse'] === true){
+                    $list_unparsed[$nr] = $record;
                     if(
                         $options['parse'] === true &&
                         $parse !== false
@@ -610,7 +613,6 @@ trait NodeList {
                     }
                     */
                 }
-                $record->{'#index'} = $index;
                 $index++;
             }
             //add sort
@@ -685,12 +687,12 @@ trait NodeList {
                     $object_data = $object->data_read($object_url);
                 }
                 $relation_mtime = $this->relation_mtime($object_data);
-
-                if(
-                    $options['parallel'] === true
-                ){
+                if($options['parallel'] === true){
                     $result_ramdisk = $result;
                     if(array_key_exists(0, $result['list'])){
+                        if($options['parse'] === true){
+                            $result['list'] = $list_unparsed;
+                        }
                         $result_ramdisk['list'] = Core::array_partition($result['list'], $options['thread']);
                         $relation_mtime = $this->relation_mtime($object_data);
                         foreach($ramdisk_url_nodelist as $i => $ramdisk_url_nodelist_item){
