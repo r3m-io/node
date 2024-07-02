@@ -56,8 +56,8 @@ trait Index {
         }
         if($sm){
             $read = SharedMemory::read($sm, 0, $size);
-            $read = explode(';', $read, 2);
-            d(substr($read, 0, 100));
+//            $read = explode(';', $read, 2);
+            ddd(substr($read, 0, 100));
             d($mtime);
 
             if(array_key_exists(1, $read)){
