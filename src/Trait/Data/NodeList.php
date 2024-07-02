@@ -566,6 +566,7 @@ trait NodeList {
                             $partition = Core::array_partition($list, $options['thread']);
                             $result = [];
                             foreach($partition as $nr => $list){
+                                d($list);
                                 if($options['limit'] !== '*'){
                                     $list = Limit::list($list)->with([
                                         'limit' => $options['limit'],
