@@ -622,7 +622,6 @@ trait NodeList {
             }
             //add sort
             d('from index:' . $name);
-            ddd($list[$nr]);
             $result = [];
             $result['page'] = $options['page'];
             $result['limit'] = $options['limit'];
