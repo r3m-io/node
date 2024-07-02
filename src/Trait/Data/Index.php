@@ -1301,7 +1301,6 @@ trait Index {
 //                                                                $object->config('node.record.leftsearch', $leftSearch);
                                                                 $rightSearch++;
                                                                 $result = [];
-                                                                d($count);
                                                                 $count = 0;
                                                                 $size_total = 0;
                                                                 while ($rightSearch <= $options['index']['max']) {
