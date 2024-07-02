@@ -1351,6 +1351,7 @@ trait Index {
                                                                                     '.' .
                                                                                     Core::uuid() .
                                                                                     $object->config('extension.json');
+                                                                                /*
                                                                                 $file = [];
                                                                                 if (!array_key_exists('url_uuid', $options['index'])) {
                                                                                     return false;
@@ -1362,6 +1363,7 @@ trait Index {
                                                                                 foreach ($options['index']['url'] as $nr => $url) {
                                                                                     $file[$nr] = $this->index_read($url);
                                                                                 }
+                                                                                */
                                                                                 $result = [];
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
@@ -1441,6 +1443,7 @@ trait Index {
 //                                                                                            $result[] = $object->data_read($url_ramdisk_record);
                                                                                             $size = File::size($url_ramdisk_record);
                                                                                             $count++;
+                                                                                            /*
                                                                                             if($options['counter'] === true){
                                                                                                 if ($count % 1000 === 0) {
                                                                                                     echo Cli::tput('cursor.up');
@@ -1451,6 +1454,7 @@ trait Index {
                                                                                                     echo 'count 4: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                                 }
                                                                                             }
+                                                                                            */
                                                                                         }
                                                                                     }
                                                                                 }
