@@ -74,6 +74,7 @@ trait Index {
                     return $data;
                 }
             } else {
+                d(substr($read, 0, 100));
                 ddd('strange');
             }
             SharedMemory::delete($sm);
