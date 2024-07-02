@@ -49,7 +49,6 @@ trait Index {
         $mtime = File::mtime($url);
         $size = File::size($url) + strlen($mtime) + 1;
         try {
-            d($mtime);
             $sm = SharedMemory::open(ftok($url, 'p') , 'c', File::CHMOD, $size);
         } catch (ErrorException | Exception $exception) {
             $sm = false;
@@ -62,6 +61,7 @@ trait Index {
 
             if(array_key_exists(1, $read)){
                 $read_mtime = (int) $read[0];
+                d($mtime);
                 ddd($read_mtime);
                 $data = $read[1];
                 if($read_mtime === $mtime){
@@ -73,6 +73,8 @@ trait Index {
                     d('yes');
                     return $data;
                 }
+            } else {
+                ddd('strange');
             }
             SharedMemory::delete($sm);
         }
