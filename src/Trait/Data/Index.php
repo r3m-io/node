@@ -1113,6 +1113,7 @@ trait Index {
                                                                                     Core::uuid() .
                                                                                     $object->config('extension.json');
                                                                                 d($file);
+                                                                                /*
                                                                                 $file = [];
                                                                                 if (!array_key_exists('url_uuid', $options['index'])) {
                                                                                     return false;
@@ -1124,6 +1125,7 @@ trait Index {
                                                                                 foreach ($options['index']['url'] as $nr => $url) {
                                                                                     $file[$nr] = $this->index_read($url);
                                                                                 }
+                                                                                */
                                                                                 $result = [];
                                                                                 if (array_key_exists($i, $partition)) {
                                                                                     $chunk = $partition[$i];
