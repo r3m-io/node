@@ -557,50 +557,14 @@ trait NodeList {
             while($record !== false){
                 if(is_array($record)){
                     //one record to much, the binarysearch start
-                    if($options['parallel'] === true){
-                        foreach($record as $value){
-                            $list[] = $value;
-                        }
-                        $count = 0;
-                        if(array_key_exists(0, $list)){
-                            if($options['limit'] !== '*'){
-                                $list = Limit::list($list)->with([
-                                    'limit' => $options['limit'] * $options['thread'],
-                                    'page' => $options['page']
-                                ]);
-                            }
-                            foreach($list as $nr => $record){
-                                $list[$nr] = new Storage($record);
-                                $count++;
-                            }
-                            /*
-                            $partition = Core::array_partition($list, $options['thread']);
-                            $result = [];
-                            foreach($partition as $nr => $list){
-                                d($list);
-                                if($options['limit'] !== '*'){
-                                    $list = Limit::list($list)->with([
-                                        'limit' => $options['limit'],
-                                        'page' => $options['page']
-                                    ]);
-                                }
-                                foreach($list as $record){
-                                    $result[] = new Storage($record);
-                                    $total++;
-                                }
-                            }
-                            $list = $result;
-                            unset($result);
-                            */
-                        }
-                    } else {
-                        $count = 0;
-                        foreach($record as $value){
-                            $list[] = $value;
-                        }
+                    foreach($record as $value){
+                        $list[] = $value;
+                    }
+                    $count = 0;
+                    if(array_key_exists(0, $list)){
                         if($options['limit'] !== '*'){
                             $list = Limit::list($list)->with([
-                                'limit' => $options['limit'],
+                                'limit' => $options['limit'] * $options['thread'],
                                 'page' => $options['page']
                             ]);
                         }
