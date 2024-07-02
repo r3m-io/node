@@ -35,8 +35,6 @@ trait Index {
      */
     public function index_read($url): array | bool
     {
-        d('index_read');
-        d('2bd');
         if(!File::exist($url)){
             return false;
         }
@@ -45,6 +43,8 @@ trait Index {
         $cache = $object->data(App::CACHE);
         $data = $cache->get(sha1($url));
         if($data){
+            d('index_read');
+            d('2bd');
             return $data;
         }
         $data = '';
