@@ -563,6 +563,15 @@ trait NodeList {
                         }
                         $total = 0;
                         if(array_key_exists(0, $list)){
+                            if($options['limit'] !== '*'){
+                                $list = Limit::list($list)->with([
+                                    'limit' => $options['limit'],
+                                    'page' => $options['page']
+                                ], [], $total);
+                            } else {
+                                $total = count($list);
+                            }
+                            /*
                             $partition = Core::array_partition($list, $options['thread']);
                             $result = [];
                             foreach($partition as $nr => $list){
@@ -580,6 +589,7 @@ trait NodeList {
                             }
                             $list = $result;
                             unset($result);
+                            */
                         }
                         $count = $total;
                     } else {
