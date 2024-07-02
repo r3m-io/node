@@ -599,7 +599,7 @@ trait NodeList {
             foreach($list as $nr => $record){
                 $record->{'#index'} = $index;
                 if($options['parse'] === true){
-                    $list_unparsed[$nr] = $record;
+                    $list_unparsed[$nr] = clone $record;
                     if(
                         $options['parse'] === true &&
                         $parse !== false
