@@ -55,14 +55,9 @@ trait Index {
         }
         if($sm){
             $read = SharedMemory::read($sm, 0, $size);
-//            d(substr($read, 0, 100));
             $read = explode(';', $read, 2);
-
-
             if(array_key_exists(1, $read)){
                 $read_mtime = (int) $read[0];
-                d($mtime);
-                d($read_mtime);
                 $data = $read[1];
                 if($read_mtime === $mtime){
                     $data = explode(PHP_EOL, $data);
@@ -70,12 +65,8 @@ trait Index {
                         $data[$nr] = rtrim($line);
                     }
                     $cache->set(sha1($url), $data);
-                    d('yes');
                     return $data;
                 }
-            } else {
-                d(substr($read[0], 0, 100));
-                d('strange');
             }
             SharedMemory::delete($sm);
         }
@@ -88,10 +79,7 @@ trait Index {
             if($sm_new === false){
                 throw new Exception('Cannot create shared memory');
             }
-//            d($mtime);
             SharedMemory::write($sm_new, $mtime . ';' . $data);
-//            $read = SharedMemory::read($sm_new, 0, $size);
-//            d(substr($read, 0, 100));
         }
         catch(ErrorException | Exception $exception){
             $exception = (string) $exception;
