@@ -172,29 +172,8 @@ trait NodeList {
             'Data' .
             $object->config('ds') .
             $name .
-            $object->config('extension.json');
-        /*
-        if(stristr($name, 'account.permission')){
-            $data = $object->data_read($data_url);
-            if($data){
-                $start = 0;
-                $limit = 100000;
-                $list = [];
-                for($i=$start; $i < $limit; $i++){
-                    $record = (object) [
-                        'uuid' => Core::uuid(),
-                        '#class' => $name,
-                        'name' => 'permission:' . $i,
-                    ];
-                    $list[]= $record;
-                }
-                $data->data($name, $list);
-                $data->write($data_url);
-            }
-            ddd($data_url);
-        }
-        */
-
+            $object->config('extension.json')
+        ;
         if (!File::exist($data_url)) {
             $list = [];
             $result = [];
@@ -616,8 +595,18 @@ trait NodeList {
             }
             foreach($list as $nr => $record){
                 if($options['parse'] === true){
-                    d('parse record');
-                    ddd($record);
+                    if(
+                        $options['parse'] === true &&
+                        $parse !== false
+                    ){
+                        $list[$nr] = $parse->compile($record, $object->data(), $parse->storage());
+                    }
+                    /*
+                    if ($has_relation) {
+                        $list[$nr] = $this->relation($record, $object_data, $role, $options);
+                        //collect relation mtime
+                    }
+                    */
                 }
                 $record->{'#index'} = $index;
                 $index++;
