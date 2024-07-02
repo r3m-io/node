@@ -767,7 +767,6 @@ trait Index {
         if(!File::exist($options['index']['url_uuid'])){
             return false;
         }
-        d('here1');
         $file['uuid'] = $this->index_read($options['index']['url_uuid']);
         foreach ($options['index']['url'] as $nr => $url) {
             $file[$nr] = $this->index_read($url);
