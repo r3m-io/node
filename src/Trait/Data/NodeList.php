@@ -143,6 +143,9 @@ trait NodeList {
             Core::interactive();
             $options['index'] = $this->index_create($name, $role, $options);
         }
+        if(!array_key_exists('ramdisk', $options)){
+            $options['ramdisk'] = false;
+        }
         if(
             $options['parse'] === true ||
             (
@@ -217,7 +220,6 @@ trait NodeList {
         $ramdisk_url_node = false;
         $data = null;
         if (
-            array_key_exists('ramdisk', $options) &&
             $options['ramdisk'] === true &&
             (
                 !empty($object->config('ramdisk.url')) ||
