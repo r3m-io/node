@@ -565,7 +565,7 @@ trait NodeList {
                         if(array_key_exists(0, $list)){
                             if($options['limit'] !== '*'){
                                 $list = Limit::list($list)->with([
-                                    'limit' => $options['limit'],
+                                    'limit' => $options['limit'] * $options['thread'],
                                     'page' => $options['page']
                                 ]);
                             }
