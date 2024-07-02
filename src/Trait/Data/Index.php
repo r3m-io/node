@@ -49,7 +49,7 @@ trait Index {
         $mtime = File::mtime($url);
         $size = File::size($url) + strlen($mtime) + 1;
         try {
-            ddd($mtime);
+            d($mtime);
             $sm = SharedMemory::open(ftok($url, 'p') , 'c', File::CHMOD, $size);
         } catch (ErrorException | Exception $exception) {
             $sm = false;
