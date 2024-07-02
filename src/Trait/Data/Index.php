@@ -56,10 +56,10 @@ trait Index {
         }
         if($sm){
             $read = SharedMemory::read($sm, 0, $size);
+            d(substr($read, 0, 100));
 //            $read = explode(';', $read, 2);
-            ddd(substr($read, 0, 100));
-            d($mtime);
 
+            /*
             if(array_key_exists(1, $read)){
                 $read_mtime = (int) $read[0];
                 d($read_mtime);
@@ -75,6 +75,7 @@ trait Index {
                 }
             }
             SharedMemory::delete($sm);
+            */
         }
         $data = File::read($url);
         try {
@@ -87,6 +88,8 @@ trait Index {
             }
             d($mtime);
             SharedMemory::write($sm_new, $mtime . ';' . $data);
+            $read = SharedMemory::read($sm_new, 0, $size);
+            d(substr($read, 0, 100));
         }
         catch(ErrorException | Exception $exception){
             $exception = (string) $exception;
