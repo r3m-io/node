@@ -35,6 +35,7 @@ trait Index {
      */
     public function index_read($url): array | bool
     {
+        d('index_read');
         if(!File::exist($url)){
             return false;
         }
