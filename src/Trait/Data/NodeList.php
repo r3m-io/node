@@ -615,6 +615,10 @@ trait NodeList {
                 }
             }
             foreach($list as $nr => $record){
+                if($options['parse'] === true){
+                    d('parse record');
+                    ddd($record);
+                }
                 $record->{'#index'} = $index;
                 $index++;
             }
