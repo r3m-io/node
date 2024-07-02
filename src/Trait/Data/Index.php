@@ -1461,6 +1461,7 @@ trait Index {
                                                                             pcntl_waitpid($child, $status);
 
                                                                         }
+                                                                        /*
                                                                         if($options['counter'] === true){
                                                                             echo Cli::tput('cursor.up');
                                                                             echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
@@ -1469,6 +1470,7 @@ trait Index {
                                                                             $size_format = $item_per_second * $size;
                                                                             echo 'count 5: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ' %, item per second: ' . round($item_per_second,2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                         }
+                                                                        */
                                                                         break;
                                                                     } else {
                                                                         for($i = $rightSearch; $i <= $options['index']['max']; $i++) {
@@ -1497,6 +1499,7 @@ trait Index {
                                                                                     $size_total += $size;
                                                                                 }
                                                                                 $count++;
+                                                                                /*
                                                                                 if ($count % 1000 === 0) {
                                                                                     echo Cli::tput('cursor.up');
                                                                                     echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
@@ -1505,6 +1508,7 @@ trait Index {
                                                                                     $size_format = $item_per_second * $size;
                                                                                     echo 'count 6: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                 }
+                                                                                */
                                                                                 /* can't limit, sort needs to happen at the end...
                                                                                 if($options['limit'] === 1 && $options['page'] === 1){
                                                                                     break 2;
