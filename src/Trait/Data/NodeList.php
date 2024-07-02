@@ -169,7 +169,6 @@ trait NodeList {
                 );
             }
             $parse = new Parse($object);
-
         }
         $data_url = $object->config('project.dir.node') .
             'Data' .
@@ -537,17 +536,23 @@ trait NodeList {
             $record = $this->index_list_record($class, $role, $local_options);
             while($record !== false){
                 if(is_array($record)){
-                    //one record to much, the binarysearch start
                     foreach($record as $value){
                         $list[] = $value;
                     }
                     $count = 0;
                     if(array_key_exists(0, $list)){
                         if($options['limit'] !== '*'){
-                            $list = Limit::list($list)->with([
-                                'limit' => $options['limit'] * $options['thread'],
-                                'page' => $options['page']
-                            ]);
+                            if($options['parallel'] === true){
+                                $list = Limit::list($list)->with([
+                                    'limit' => $options['limit'] * $options['thread'],
+                                    'page' => $options['page']
+                                ]);
+                            } else {
+                                $list = Limit::list($list)->with([
+                                    'limit' => $options['limit'],
+                                    'page' => $options['page']
+                                ]);
+                            }
                         }
                         foreach($list as $nr => $record){
                             $list[$nr] = new Storage($record);
@@ -617,6 +622,7 @@ trait NodeList {
             }
             //add sort
             d('from index:' . $name);
+            ddd($list[$nr]);
             $result = [];
             $result['page'] = $options['page'];
             $result['limit'] = $options['limit'];
