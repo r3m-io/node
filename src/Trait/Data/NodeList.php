@@ -469,6 +469,15 @@ trait NodeList {
                     }
                     if ($is_cache_miss === false) {
                         $response = (array) $ramdisk->get('response');
+                        if(
+                            $options['parse'] === true &&
+                            $parse !== false &&
+                            array_key_exists('list', $response)
+                        ){
+                            foreach($response['list'] as $nr => $record){
+                                $response['list'][$nr] = $parse->compile($record, $object->data(), $parse->storage());
+                            }
+                        }
                         if ($response) {
                             if($start){
                                 $response['#duration'] = (object) [
