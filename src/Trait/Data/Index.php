@@ -39,7 +39,6 @@ trait Index {
             return false;
         }
         $object = $this->object();
-        $logger_error = $object->config('project.log.error');
         $cache = $object->data(App::CACHE);
         $data = $cache->get(sha1($url));
         if($data){
@@ -64,8 +63,6 @@ trait Index {
                     foreach($data as $nr => $line){
                         $data[$nr] = rtrim($line);
                     }
-                    d('index_read');
-                    d('2bd');
                     $cache->set(sha1($url), $data);
                     return $data;
                 }
@@ -73,6 +70,7 @@ trait Index {
             SharedMemory::delete($sm);
         }
         $data = File::read($url);
+        $logger_error = $object->config('project.log.error');
         try {
             if($sm){
                 SharedMemory::delete($sm);
@@ -1114,6 +1112,7 @@ trait Index {
                                                                                     '.' .
                                                                                     Core::uuid() .
                                                                                     $object->config('extension.json');
+                                                                                d($file);
                                                                                 $file = [];
                                                                                 if (!array_key_exists('url_uuid', $options['index'])) {
                                                                                     return false;
@@ -1203,6 +1202,7 @@ trait Index {
 //                                                                                            $result[] = $object->data_read($url_ramdisk_record);
                                                                                             $size = File::size($url_ramdisk_record);
                                                                                             $count++;
+                                                                                            /*
                                                                                             if($options['counter'] === true){
                                                                                                 if ($count % 1000 === 0) {
                                                                                                     echo Cli::tput('cursor.up');
@@ -1213,6 +1213,7 @@ trait Index {
                                                                                                     echo 'count 1: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                                 }
                                                                                             }
+                                                                                            */
                                                                                         }
                                                                                     }
                                                                                 }
@@ -1222,6 +1223,7 @@ trait Index {
                                                                         foreach ($children as $child) {
                                                                             pcntl_waitpid($child, $status);
                                                                         }
+                                                                        /*
                                                                         if($options['counter'] === true){
                                                                             echo Cli::tput('cursor.up');
                                                                             echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
@@ -1230,6 +1232,7 @@ trait Index {
                                                                             $size_format = $item_per_second * $size;
                                                                             echo 'count 2: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                         }
+                                                                        */
                                                                         break;
 //                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
@@ -1258,6 +1261,7 @@ trait Index {
                                                                                     $size_total += $size;
                                                                                 }
                                                                                 $count++;
+                                                                                /*
                                                                                 if($options['counter'] === true){
                                                                                     if ($count % 1000 === 0) {
                                                                                         echo Cli::tput('cursor.up');
@@ -1268,6 +1272,7 @@ trait Index {
                                                                                         echo 'count 3: ' . $count . '/', $total . ', percentage: ' . round(($count / $total) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                     }
                                                                                 }
+                                                                                */
 //                                                                                d('count: ' . $count . ' size: ' . $size_total);
                                                                                 /* can't limit, sort needs to happen at the end...
                                                                                 if($options['limit'] === 1 && $options['page'] === 1){
