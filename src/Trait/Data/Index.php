@@ -816,6 +816,20 @@ trait Index {
             'Record' .
             $object->config('ds')
         ;
+        $dir_ramdisk_response = $object->config('ramdisk.url') .
+            $object->config(Config::POSIX_ID) .
+            $object->config('ds') .
+            'Node' .
+            $object->config('ds') .
+            'Response' .
+            $object->config('ds')
+        ;
+        if(!Dir::exist($dir_ramdisk_response)){
+            Dir::create($dir_ramdisk_response, Dir::CHMOD);
+            File::permission($object, [
+                'dir_ramdisk_response' => $dir_ramdisk_response,
+            ]);
+        }
         while($options['index']['min'] <= $options['index']['max']) {
             $seek = $options['index']['min'] +
                 floor(
@@ -1091,18 +1105,12 @@ trait Index {
                                                                         $url = [];
                                                                         // Create pipes and fork processes
                                                                         for ($i = 0; $i < $options['thread']; $i++) {
-                                                                            $url[$i] = $object->config('ramdisk.url') .
-                                                                                $object->config(Config::POSIX_ID) .
-                                                                                $object->config('ds') .
-                                                                                'Node' .
-                                                                                $object->config('ds') .
-                                                                                'Index' .
-                                                                                $object->config('ds') .
+                                                                            $url[$i] = $dir_ramdisk_response .
                                                                                 $name .
                                                                                 '.' .
-                                                                                'Response' .
-                                                                                '.' .
                                                                                 $key_options .
+                                                                                '.' .
+                                                                                'Left' .
                                                                                 '.' .
                                                                                 $i .
                                                                                 $object->config('extension.json');
@@ -1338,16 +1346,10 @@ trait Index {
                                                                         $url = [];
                                                                         // Create pipes and fork processes
                                                                         for ($i = 0; $i < $options['thread']; $i++) {
-                                                                            $url[$i] = $object->config('ramdisk.url') .
-                                                                                $object->config(Config::POSIX_ID) .
-                                                                                $object->config('ds') .
-                                                                                'Node' .
-                                                                                $object->config('ds') .
-                                                                                'Index' .
-                                                                                $object->config('ds') .
+                                                                            $url[$i] = $dir_ramdisk_response .
                                                                                 $name .
                                                                                 '.' .
-                                                                                'Response' .
+                                                                                'Right' .
                                                                                 '.' .
                                                                                 $key_options .
                                                                                 '.' .
