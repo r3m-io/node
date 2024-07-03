@@ -1215,6 +1215,13 @@ trait NodeList {
                     if(array_key_exists('view', $options)){
 //                        d($list_sort);
                     }
+                    $list_sort = $this->nodelist_output_filter($object, $list_sort, $options);
+                    if(
+                        $options['parse'] === true &&
+                        $parse
+                    ){
+                        ddd($list_sort);
+                    }
                     $result = [];
                     $result['page'] = $options['page'] ?? 1;
                     $result['limit'] = $options['limit'] ?? $limit;
@@ -1225,10 +1232,7 @@ trait NodeList {
                     }
                     $result['count'] = count($list_sort);
                     $result['max'] = $max;
-
-                    ddd($list_sort);
-
-                    $result['list'] = $this->nodelist_output_filter($object, $list_sort, $options);
+                    $result['list'] = $list_sort;
                     $result['sort'] = $options['sort'] ?? [];
                     $result['filter'] = $options['filter'] ?? [];
                     $result['where'] = $options['where'] ?? [];
