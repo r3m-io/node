@@ -910,12 +910,20 @@ trait NodeList {
                     }
                     $pipes = [];
                     $children = [];
+                    $url = [];
                     for ($i = 0; $i < $options['thread']; $i++) {
                         // Create a pipe
                         $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
                         if ($sockets === false) {
                             die("Unable to create socket pair for child $i");
                         }
+                        $url[$i] = $ramdisk_dir_parallel .
+                            $name .
+                            '.' .
+                            $key .
+                            '.' .
+                            $i .
+                            $object->config('extension.json');
                         $chunk = $chunks[$i];
                         $pid = pcntl_fork();
                         if ($pid == -1) {
@@ -932,14 +940,6 @@ trait NodeList {
                             // Child process
                             // Close the parent's socket
                             fclose($sockets[1]);
-                            $url_store = $ramdisk_dir_parallel .
-                                $name .
-                                '.' .
-                                $key .
-                                '.' .
-                                $i .
-                                $object->config('extension.json');
-
                             $result = [];
                             if($is_filter){
                                 foreach($chunk as $nr => $record){
@@ -997,8 +997,8 @@ trait NodeList {
                                 }
                             }
                             // Send serialized data to the parent
-                            File::write($url_store, Core::object($result, Core::OBJECT_JSON_LINE));
-                            fwrite($sockets[0], true);
+                            File::write($url[$i], Core::object($result, Core::OBJECT_JSON_LINE));
+                            fwrite($sockets[0], 1);
                             fclose($sockets[0]);
                             exit(0);
                         }
