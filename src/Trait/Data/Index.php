@@ -1204,6 +1204,7 @@ trait Index {
                                                                         $size = 0;
                                                                         foreach ($pipes as $i => $pipe) {
                                                                             if($pipe === true){
+                                                                                d('yes1');
                                                                                 $read = '1';
                                                                             } else {
                                                                                 $read = stream_get_contents($pipe);
@@ -1450,6 +1451,7 @@ trait Index {
                                                                         $size = 0;
                                                                         foreach ($pipes as $i => $pipe) {
                                                                             if($pipe === true){
+                                                                                d('yes2');
                                                                                 $read = '1';
                                                                             } else {
                                                                                 // Read serialized data from the pipe
