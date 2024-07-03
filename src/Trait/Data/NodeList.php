@@ -1223,6 +1223,7 @@ trait NodeList {
                         $options['parse'] === true &&
                         $parse
                     ){
+                        d($count);
                         ddd($list_sort);
                     }
                     $result = [];
