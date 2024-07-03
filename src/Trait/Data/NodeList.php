@@ -332,13 +332,11 @@ trait NodeList {
                         if(
                             $options['parse'] === true &&
                             $parse !== false &&
-                            array_key_exists('list', $response)
+                            array_key_exists(0, $list)
                         ){
-                            foreach($list as $nr => $record){
-                                $response['list'][$nr] = $parse->compile($record, $object->data(), $parse->storage());
-                            }
+                            $list = $parse->compile($list, $object->data(), $parse->storage());
                         }
-//                        $response['list'] = $list;
+                        $response['list'] = $list;
                         if ($start) {
                             $response['#duration'] = (object) [
                                 'boot' => ($start - $object->config('time.start')) * 1000,
@@ -356,99 +354,6 @@ trait NodeList {
                         }
                         return $response;
                     }
-                    //fix transaction
-                    $is_cache_miss = [];
-                    $ramdisk = [];
-
-
-
-                    /*
-                    $closures = [];
-
-                    foreach($ramdisk_url_nodelist as $i => $ramdisk_url_nodelist_item) {
-                        $closures[] = function () use (
-                            $object,
-                            $options,
-                            $mtime,
-                            $ramdisk_url_nodelist_item
-                        ) {
-                            $data = $object->data_read($ramdisk_url_nodelist_item);
-                            if ($data) {
-                                $is_cache_miss = false;
-                                if ($mtime === $data->get('mtime')) {
-                                    $relations = $data->get('relation');
-                                    if ($relations) {
-                                        foreach ($relations as $relation_url => $relation_mtime) {
-                                            if (!File::exist($relation_url)) {
-                                                $is_cache_miss = true;
-                                                break;
-                                            }
-                                            if ($relation_mtime !== File::mtime($relation_url)) {
-                                                $is_cache_miss = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    $is_cache_miss = true;
-                                }
-                                if($is_cache_miss){
-                                    return false;
-                                }
-                                $shm = SharedMemory::open(ftok($ramdisk_url_nodelist_item, 'a'), 'n');
-                                if($shm !== false){
-                                    SharedMemory::delete($shm);
-                                }
-                                $size = SharedMemory::write($shm, Core::object($data->data(), Core::OBJECT_JSON_LINE));
-                                return [
-                                    'url' => $ramdisk_url_nodelist_item,
-                                    'size' => $size
-                                ];
-                            } else {
-                                return false;
-                            }
-                        };
-                    }
-                    $list_parallel = Parallel::new()->execute($closures);
-                    $is_ok = true;
-                    $list = [];
-                    foreach($list_parallel as $i => $item){
-                        if(!$item){
-                            $is_ok = false;
-                            break;
-                        }
-                        try {
-                            ddd($item);
-                            $shm = SharedMemory::open(ftok($item['url'], 'a'), 'a');
-                            $data = SharedMemory::read($shm, 0, $item['size']);
-                            ddd($data);
-                            $response = (array) $item->response;
-                            if(array_key_exists('list', $response)) {
-                                foreach($response['list'] as $item){
-                                    $list[] = $item;
-                                }
-                            }
-                        }
-                        catch(ErrorException $exception){
-                            ddd($list_parallel[$i]);
-                        }
-                    }
-                    if($is_ok && $response){
-                        $response['list'] = $list;
-                        if ($start) {
-                            $response['#duration'] = (object)[
-                                'boot' => ($start - $object->config('time.start')) * 1000,
-                                'total' => (microtime(true) - $object->config('time.start')) * 1000,
-                                'nodelist' => (microtime(true) - $start) * 1000
-                            ];
-                            if (array_key_exists('count', $response)) {
-                                $response['#duration']->item_per_second = ($response['count'] / $response['#duration']->total) * 1000;
-                                $response['#duration']->item_per_second_nodelist = ($response['count'] / $response['#duration']->nodelist) * 1000;
-                            }
-                        }
-                        return $response;
-                    }
-                    */
                 }
             }
             if (File::exist($ramdisk_url_node)) {
