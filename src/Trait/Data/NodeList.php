@@ -938,8 +938,6 @@ trait NodeList {
                                 $key .
                                 '.' .
                                 $i .
-                                '.' .
-                                Core::uuid() .
                                 $object->config('extension.json');
 
                             ddd($url_store);
