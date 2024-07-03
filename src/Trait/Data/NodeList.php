@@ -1214,7 +1214,9 @@ trait NodeList {
                         $options['parse'] === true &&
                         $parse
                     ){
-                        $list_ramdisk = $list_sort;
+                        foreach($list_sort as $nr => $record){
+                            $list_ramdisk[$nr] = clone($record);
+                        }
                         $list_sort = $parse->compile($list_sort, $object->data(), $parse->storage());
                     }
                     $result = [];
