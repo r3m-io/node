@@ -1248,6 +1248,7 @@ trait NodeList {
                             $result_ramdisk = $result;
                             if(array_key_exists(0, $result['list'])){
                                 if($list_ramdisk !== null){
+                                    d($list_ramdisk);
                                     ddd('yes');
                                     $result_ramdisk['list'] = Core::array_partition($list_ramdisk, $options['thread']);
                                 } else {
