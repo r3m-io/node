@@ -146,6 +146,18 @@ trait NodeList {
         if(!array_key_exists('ramdisk', $options)){
             $options['ramdisk'] = false;
         }
+        $key_options = $options;
+        if (
+            is_object($role) &&
+            property_exists($role, 'uuid')
+        ) {
+            //per role cache
+            $key_options['role'] = $role->uuid;
+        } else {
+            throw new Exception('Role not set for ramdisk');
+        }
+        //cache key
+        $key = sha1(Core::object($key_options, Core::OBJECT_JSON));
         if(
             $options['parse'] === true ||
             (
@@ -225,18 +237,6 @@ trait NodeList {
                 array_key_exists('ramdisk_dir', $options)
             )
         ) {
-            $key_options = $options;
-            if (
-                is_object($role) &&
-                property_exists($role, 'uuid')
-            ) {
-                //per role cache
-                $key_options['role'] = $role->uuid;
-            } else {
-                throw new Exception('Role not set for ramdisk');
-            }
-            //cache key
-            $key = sha1(Core::object($key_options, Core::OBJECT_JSON));
             if (
                 array_key_exists('ramdisk_dir', $options) &&
                 $options['ramdisk_dir'] !== false
@@ -932,33 +932,17 @@ trait NodeList {
                             // Child process
                             // Close the parent's socket
                             fclose($sockets[1]);
-
-                            /*
-                            $key_options = $options;
-                            if (
-                                is_object($role) &&
-                                property_exists($role, 'uuid')
-                            ) {
-                                //per role cache
-                                $key_options['role'] = $role->uuid;
-                            } else {
-                                throw new Exception('Role not set for ramdisk');
-                            }
-                            //cache key
-                            $key = sha1(Core::object($key_options, Core::OBJECT_JSON));
-                            */
-                            ddd($key);
-
                             $url_store = $ramdisk_dir_parallel .
                                 $name .
                                 '.' .
-                                'Response' .
+                                $key .
                                 '.' .
                                 $i .
                                 '.' .
                                 Core::uuid() .
                                 $object->config('extension.json');
 
+                            ddd($url_store);
 
                             $result = [];
                             if($is_filter){
