@@ -876,7 +876,10 @@ trait NodeList {
                 }
                 $limit = $options['limit'] ?? 4096;
                 $options_limit = $limit;
-                if ($options['parallel'] === true && Core::is_cli()) {
+                if (
+                    $options['parallel'] === true &&
+                    Core::is_cli()
+                ) {
                     $threads = $options['thread'];
                     $chunks = array_chunk($list, ceil(count($list) / $threads));
                     $chunk_count = count($chunks);
@@ -1070,6 +1073,7 @@ trait NodeList {
                     } else {
                         $list_sort = $list;
                     }
+                    unset($list);
                     $limit = '*'; //handler
                 } else {
                     $expose = false;
@@ -1121,12 +1125,14 @@ trait NodeList {
                                     continue;
                                 }
                             }
+                            /*
                             if(
                                 $options['parse'] === true &&
                                 $parse !== false
                             ){
                                 $record = $parse->compile($record, $object->data(), $parse->storage());
                             }
+                            */
                             $count++;
                             if($options['key'] === null){
                                 $list_filtered[] = $record;
@@ -1214,6 +1220,7 @@ trait NodeList {
                         $options['parse'] === true &&
                         $parse
                     ){
+                        $list_ramdisk = [];
                         foreach($list_sort as $nr => $record){
                             $list_ramdisk[$nr] = clone($record);
                         }
@@ -1280,10 +1287,14 @@ trait NodeList {
                                 ]);
                             }
                         } else {
+                            $result_ramdisk = $result;
+                            if($list_ramdisk !== null){
+                                $result_ramdisk['list'] = $list_ramdisk;
+                            }
                             $relation_mtime = $this->relation_mtime($object_data);
                             $ramdisk = new Storage();
                             $ramdisk->set('mtime', $mtime);
-                            $ramdisk->set('response', $result);
+                            $ramdisk->set('response', $result_ramdisk);
                             $ramdisk->set('relation', $relation_mtime);
                             $ramdisk->write($ramdisk_url_node);
                             File::permission($object, [
@@ -1333,7 +1344,19 @@ trait NodeList {
                     }
                     $index_counter++;
                 }
-                $list = $list_temp;
+                $list = $this->nodelist_output_filter($object, $list_temp, $options);
+                $list_ramdisk = null;
+                if(
+                    $options['parse'] === true &&
+                    $parse
+                ){
+                    $list_ramdisk = [];
+                    foreach($list as $nr => $record){
+                        $list_ramdisk[$nr] = clone($record);
+                    }
+                    $list = $parse->compile($list, $object->data(), $parse->storage());
+                }
+                unset($list_temp);
                 $result = [];
                 $result['page'] = $page;
                 $result['limit'] = $limit;
@@ -1344,7 +1367,7 @@ trait NodeList {
                 }
                 $result['count'] = $list_count;
                 $result['max'] = $max;
-                $result['list'] = $this->nodelist_output_filter($object, $list, $options);
+                $result['list'] = $list;
                 $result['sort'] = $options['sort'] ?? [];
                 $result['filter'] = $options['filter'] ?? [];
                 $result['where'] = $options['where'] ?? [];
@@ -1365,7 +1388,11 @@ trait NodeList {
                         $options['parallel'] === true
                     ){
                         $result_ramdisk = $result;
-                        $result_ramdisk['list'] = Core::array_partition($result['list'], $options['thread']);
+                        if($list_ramdisk !== null){
+                            $result_ramdisk['list'] = Core::array_partition($list_ramdisk, $options['thread']);
+                        } else {
+                            $result_ramdisk['list'] = Core::array_partition($result['list'], $options['thread']);
+                        }
                         $relation_mtime = $this->relation_mtime($object_data);
                         foreach($ramdisk_url_nodelist as $i => $ramdisk_url_nodelist_item){
                             $ramdisk_data = $result_ramdisk;
@@ -1385,27 +1412,22 @@ trait NodeList {
                             'ramdisk_dir_list' => $ramdisk_dir_list,
                         ]);
                     } else {
+                        $result_ramdisk = $result;
+                        if($list_ramdisk !== null){
+                            $result_ramdisk['list'] = $list_ramdisk;
+                        }
                         $relation_mtime = $this->relation_mtime($object_data);
                         $ramdisk = new Storage();
                         $ramdisk->set('mtime', $mtime);
-                        $ramdisk->set('response', $result);
+                        $ramdisk->set('response', $result_ramdisk);
                         $ramdisk->set('relation', $relation_mtime);
                         $ramdisk->write($ramdisk_url_node);
-                        if($object->config('posix.id') === 0){
-                            //nothing
-                            /*
-                            File::permission($object, [
-                                'ramdisk_dir' => $ramdisk_dir
-                            ]);
-                            */
-                        } else {
-                            File::permission($object, [
-                                'ramdisk_dir' => $ramdisk_dir,
-                                'ramdisk_dir_node' => $ramdisk_dir_node,
-                                'ramdisk_dir_list' => $ramdisk_dir_list,
-                                'ramdisk_url_node' => $ramdisk_url_node,
-                            ]);
-                        }
+                        File::permission($object, [
+                            'ramdisk_dir' => $ramdisk_dir,
+                            'ramdisk_dir_node' => $ramdisk_dir_node,
+                            'ramdisk_dir_list' => $ramdisk_dir_list,
+                            'ramdisk_url_node' => $ramdisk_url_node,
+                        ]);
                     }
 
                 }
