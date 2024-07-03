@@ -621,6 +621,7 @@ trait NodeList {
             $list_unparsed = [];
             foreach($list as $nr => $record){
                 $record->{'#index'} = $index;
+                /*
                 if($options['parse'] === true){
                     $list_unparsed[$nr] = clone $record;
                     if(
@@ -629,16 +630,27 @@ trait NodeList {
                     ){
                         $list[$nr] = $parse->compile($record, $object->data(), $parse->storage());
                     }
-                    /*
                     if ($has_relation) {
                         $list[$nr] = $this->relation($record, $object_data, $role, $options);
                         //collect relation mtime
                     }
-                    */
+
                 }
+                */
                 $index++;
             }
-            //add sort
+            $list = $this->nodelist_output_filter($object, $list, $options);
+            $list_ramdisk = null;
+            if(
+                $options['parse'] === true &&
+                $parse
+            ){
+                $list_ramdisk = [];
+                foreach($list as $nr => $record){
+                    $list_ramdisk[$nr] = clone($record);
+                }
+                $list = $parse->compile($list, $object->data(), $parse->storage());
+            }
             d('from index:' . $name);
             $result = [];
             $result['page'] = $options['page'];
@@ -713,8 +725,8 @@ trait NodeList {
                 if($options['parallel'] === true){
                     $result_ramdisk = $result;
                     if(array_key_exists(0, $result['list'])){
-                        if($options['parse'] === true){
-                            $result_ramdisk['list'] = Core::array_partition($list_unparsed, $options['thread']);
+                        if($list_ramdisk !== null){
+                            $result_ramdisk['list'] = Core::array_partition($list_ramdisk, $options['thread']);
                         } else {
                             $result_ramdisk['list'] = Core::array_partition($result['list'], $options['thread']);
                         }
@@ -744,9 +756,13 @@ trait NodeList {
                         ]);
                     }
                 } else {
+                    $result_ramdisk = $result;
+                    if($list_ramdisk !== null){
+                        $result_ramdisk['list'] = $list_ramdisk;
+                    }
                     $ramdisk = new Storage();
                     $ramdisk->set('mtime', $mtime);
-                    $ramdisk->set('response', $result);
+                    $ramdisk->set('response', $result_ramdisk);
                     $ramdisk->set('relation', $relation_mtime);
                     $ramdisk->write($ramdisk_url_node);
                     File::permission($object, [
