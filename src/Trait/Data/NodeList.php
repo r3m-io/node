@@ -886,7 +886,7 @@ trait NodeList {
                     $expose = false;
                     $closures = [];
                     $ramdisk_dir_parallel = false;
-                    $ramdisk_dir_parallel_name = false;
+//                    $ramdisk_dir_parallel_name = false;
                     if (
                         array_key_exists('ramdisk', $options) &&
                         $options['ramdisk'] === true
@@ -895,12 +895,21 @@ trait NodeList {
                             'Parallel' .
                             $object->config('ds')
                         ;
+                        if(!Dir::exist($ramdisk_dir_parallel)){
+                            Dir::create($ramdisk_dir_parallel, Dir::CHMOD);
+                            File::permission($object, [
+                                'ramdisk_dir_parallel' => $ramdisk_dir_parallel,
+                            ]);
+                        }
+                        /*
                         $ramdisk_dir_parallel_name = $ramdisk_dir_parallel .
                             $name .
                             $object->config('ds')
                         ;
+                        */
                     }
                     $pipes = [];
+                    $children = [];
                     for ($i = 0; $i < $options['thread']; $i++) {
                         // Create a pipe
                         $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
@@ -923,6 +932,34 @@ trait NodeList {
                             // Child process
                             // Close the parent's socket
                             fclose($sockets[1]);
+
+                            /*
+                            $key_options = $options;
+                            if (
+                                is_object($role) &&
+                                property_exists($role, 'uuid')
+                            ) {
+                                //per role cache
+                                $key_options['role'] = $role->uuid;
+                            } else {
+                                throw new Exception('Role not set for ramdisk');
+                            }
+                            //cache key
+                            $key = sha1(Core::object($key_options, Core::OBJECT_JSON));
+                            */
+                            ddd($key);
+
+                            $url_store = $ramdisk_dir_parallel .
+                                $name .
+                                '.' .
+                                'Response' .
+                                '.' .
+                                $i .
+                                '.' .
+                                Core::uuid() .
+                                $object->config('extension.json');
+
+
                             $result = [];
                             if($is_filter){
                                 foreach($chunk as $nr => $record){
