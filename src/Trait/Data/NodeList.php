@@ -1218,9 +1218,7 @@ trait NodeList {
                     if(array_key_exists('view', $options)){
 //                        d($list_sort);
                     }
-                    ddd($count);
                     $list_sort = $this->nodelist_output_filter($object, $list_sort, $options);
-                    ddd($list_sort);
                     if(
                         $options['parse'] === true &&
                         $parse
@@ -1235,7 +1233,7 @@ trait NodeList {
                     } else {
                         $result['thread'] = 1;
                     }
-                    $result['count'] = count($list_sort);
+                    $result['count'] = $count;
                     $result['max'] = $max;
                     $result['list'] = $list_sort;
                     $result['sort'] = $options['sort'] ?? [];
