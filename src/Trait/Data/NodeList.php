@@ -1009,9 +1009,10 @@ trait NodeList {
                         // Read serialized data from the pipe
                         $data = stream_get_contents($pipe);
                         fclose($pipe);
-                        d($data);
-                        continue;
-                        $array = Core::object($data, Core::OBJECT_ARRAY);
+                        if($data !== '1'){
+                            continue;
+                        }
+                        $array = $object->data_read($url[$i]);
                         $chunk = $chunks[$i];
                         if(is_array($array)){
                             foreach($chunk as $nr => $record){
@@ -1040,7 +1041,6 @@ trait NodeList {
                     foreach ($children as $child) {
                         pcntl_waitpid($child, $status);
                     }
-                    die;
                     $list = $result;
                     if (!$expose) {
                         $expose = $this->expose_get(
