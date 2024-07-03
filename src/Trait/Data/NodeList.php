@@ -1199,22 +1199,26 @@ trait NodeList {
                         }
                         $list_count++;
                     }
+                    $count = 0;
                     if($options['limit'] !== '*') {
                         if ($options['parallel'] === true) {
                             $list_sort = Limit::list($list_sort)->with([
                                 'page' => $options['page'],
                                 'limit' => $options['limit'] * $options['thread']
-                            ]);
+                            ], [], $count);
                         } else {
                             $list_sort = Limit::list($list_sort)->with([
                                 'page' => $options['page'],
                                 'limit' => $options['limit']
-                            ]);
+                            ], [], $count);
                         }
+                    } else {
+                        $count = $list_count;
                     }
                     if(array_key_exists('view', $options)){
 //                        d($list_sort);
                     }
+                    ddd($count);
                     $list_sort = $this->nodelist_output_filter($object, $list_sort, $options);
                     ddd($list_sort);
                     if(
