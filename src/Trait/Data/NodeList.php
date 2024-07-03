@@ -1219,12 +1219,12 @@ trait NodeList {
 //                        d($list_sort);
                     }
                     $list_sort = $this->nodelist_output_filter($object, $list_sort, $options);
+                    $list_ramdisk = $list_sort;
                     if(
                         $options['parse'] === true &&
                         $parse
                     ){
-                        d($count);
-                        ddd($list_sort);
+                        $list_sort = $parse->compile($list_sort, $object->data(), $parse->storage());
                     }
                     $result = [];
                     $result['page'] = $options['page'] ?? 1;
