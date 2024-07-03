@@ -1108,7 +1108,6 @@ trait Index {
                                                                                 $object->config('extension.json');
 
                                                                             if(!File::exist($url[$i])){
-
                                                                                 // Create a pipe
                                                                                 $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
                                                                                 if ($sockets === false) {
@@ -1198,10 +1197,7 @@ trait Index {
                                                                                     }
                                                                                 }
                                                                             } else {
-                                                                                $pipes = [];
-                                                                                for($i=0; $i < $options['thread']; $i++){
-                                                                                    $pipes[$i] = true;
-                                                                                }
+                                                                                $pipes[$i] = true;
                                                                             }
                                                                         }
                                                                         $count = 0;
