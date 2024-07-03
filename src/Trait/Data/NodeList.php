@@ -1012,7 +1012,11 @@ trait NodeList {
                         if($data !== '1'){
                             continue;
                         }
-                        $array = $object->data_read($url[$i]);
+                        $read = $object->data_read($url[$i]);
+                        $array = [];
+                        if($read){
+                            $array = $read->data();
+                        }
                         $chunk = $chunks[$i];
                         if(is_array($array)){
                             foreach($chunk as $nr => $record){
