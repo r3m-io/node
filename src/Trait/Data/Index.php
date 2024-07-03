@@ -1198,15 +1198,23 @@ trait Index {
                                                                                     }
                                                                                 }
                                                                             } else {
-                                                                                ddd('here');
+                                                                                $pipes = [];
+                                                                                for($i=0; $i < $options['thread']; $i++){
+                                                                                    $pipes[$i] = true;
+                                                                                }
                                                                             }
                                                                         }
                                                                         $count = 0;
                                                                         $size = 0;
                                                                         foreach ($pipes as $i => $pipe) {
+                                                                            if($pipe === true){
+                                                                                $read = '1';
+                                                                            } else {
+                                                                                $read = stream_get_contents($pipe);
+                                                                                fclose($pipe);
+                                                                            }
                                                                             // Read serialized data from the pipe
-                                                                            $read = stream_get_contents($pipe);
-                                                                            fclose($pipe);
+
                                                                             if($read !== '1'){
                                                                                 continue;
                                                                             }
