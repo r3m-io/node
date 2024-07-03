@@ -791,6 +791,20 @@ trait Index {
 
         $options['index']['min'] = 0;
         $options['index']['max'] = $options['index']['count'] - 1;
+
+        $key_options = $options;
+        if (
+            is_object($role) &&
+            property_exists($role, 'uuid')
+        ) {
+            //per role cache
+            $key_options['role'] = $role->uuid;
+        } else {
+            throw new Exception('Role not set for ramdisk');
+        }
+        //cache key
+        $key_options = sha1(Core::object($key_options, Core::OBJECT_JSON));
+
         $counter = 0;
         $max = 4096;
         $seek_old = null;
@@ -1074,8 +1088,24 @@ trait Index {
                                                                         $partition = Core::array_partition($left, $options['thread'] ?? 8);
                                                                         $pipes = [];
                                                                         $children = [];
+                                                                        $url = [];
                                                                         // Create pipes and fork processes
                                                                         for ($i = 0; $i < $options['thread']; $i++) {
+                                                                            $url[$i] = $object->config('ramdisk.url') .
+                                                                                $object->config(Config::POSIX_ID) .
+                                                                                $object->config('ds') .
+                                                                                'Node' .
+                                                                                $object->config('ds') .
+                                                                                'Index' .
+                                                                                $object->config('ds') .
+                                                                                $name .
+                                                                                '.' .
+                                                                                'Response' .
+                                                                                '.' .
+                                                                                $key_options .
+                                                                                '.' .
+                                                                                $i .
+                                                                                $object->config('extension.json');
                                                                             // Create a pipe
                                                                             $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
                                                                             if ($sockets === false) {
@@ -1097,21 +1127,6 @@ trait Index {
                                                                                 // Child process
                                                                                 // Close the parent's socket
                                                                                 fclose($sockets[1]);
-                                                                                $url_store = $object->config('ramdisk.url') .
-                                                                                    $object->config(Config::POSIX_ID) .
-                                                                                    $object->config('ds') .
-                                                                                    'Node' .
-                                                                                    $object->config('ds') .
-                                                                                    'Index' .
-                                                                                    $object->config('ds') .
-                                                                                    $name .
-                                                                                    '.' .
-                                                                                    'Response' .
-                                                                                    '.' .
-                                                                                    $i .
-                                                                                    '.' .
-                                                                                    Core::uuid() .
-                                                                                    $object->config('extension.json');
                                                                                 /*
                                                                                 $file = [];
                                                                                 if (!array_key_exists('url_uuid', $options['index'])) {
@@ -1173,13 +1188,8 @@ trait Index {
                                                                                             break;
                                                                                         }
                                                                                     }
-                                                                                    File::write($url_store, Core::object($result, Core::OBJECT_JSON_LINE));
-                                                                                    try {
-                                                                                        $result = fwrite($sockets[0], $url_store);
-                                                                                    }
-                                                                                    catch(Exception | ErrorException $exception){
-                                                                                        echo $exception;
-                                                                                    }
+                                                                                    File::write($url[$i], Core::object($result, Core::OBJECT_JSON_LINE));
+                                                                                    fwrite($sockets[0], 1);
                                                                                     fclose($sockets[0]);
                                                                                     exit(0);
                                                                                 }
@@ -1189,33 +1199,34 @@ trait Index {
                                                                         $size = 0;
                                                                         foreach ($pipes as $i => $pipe) {
                                                                             // Read serialized data from the pipe
-                                                                            $data_url = stream_get_contents($pipe);
+                                                                            $read = stream_get_contents($pipe);
                                                                             fclose($pipe);
-                                                                            if($data_url && File::exist($data_url)){
-                                                                                $data = $object->data_read($data_url);
-                                                                                if($data){
-                                                                                    $data = $data->data();
-                                                                                    foreach($data as $nr => $uuid){
-                                                                                        $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
-                                                                                        if(File::exist($url_ramdisk_record)){
-                                                                                            $result[] = File::read($url_ramdisk_record);
-                                                                                            //slow, try file read
+                                                                            if($read !== '1'){
+                                                                                continue;
+                                                                            }
+                                                                            $data = $object->data_read($url[$i]);
+                                                                            if($data){
+                                                                                $data = $data->data();
+                                                                                foreach($data as $nr => $uuid){
+                                                                                    $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
+                                                                                    if(File::exist($url_ramdisk_record)){
+                                                                                        $result[] = File::read($url_ramdisk_record);
+                                                                                        //slow, try file read
 //                                                                                            $result[] = $object->data_read($url_ramdisk_record);
-                                                                                            $size = File::size($url_ramdisk_record);
-                                                                                            $count++;
-                                                                                            /*
-                                                                                            if($options['counter'] === true){
-                                                                                                if ($count % 1000 === 0) {
-                                                                                                    echo Cli::tput('cursor.up');
-                                                                                                    echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                                                                                                    echo Cli::tput('cursor.up');
-                                                                                                    $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                                                                                                    $size_format = $item_per_second * $size;
-                                                                                                    echo 'count 1: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
-                                                                                                }
+                                                                                        $size = File::size($url_ramdisk_record);
+                                                                                        $count++;
+                                                                                        /*
+                                                                                        if($options['counter'] === true){
+                                                                                            if ($count % 1000 === 0) {
+                                                                                                echo Cli::tput('cursor.up');
+                                                                                                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                                echo Cli::tput('cursor.up');
+                                                                                                $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                                                $size_format = $item_per_second * $size;
+                                                                                                echo 'count 1: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                             }
-                                                                                            */
                                                                                         }
+                                                                                        */
                                                                                     }
                                                                                 }
                                                                             }
@@ -1313,8 +1324,24 @@ trait Index {
                                                                         $partition = Core::array_partition($right, $options['thread'] ?? 8);
                                                                         $pipes = [];
                                                                         $children = [];
+                                                                        $url = [];
                                                                         // Create pipes and fork processes
                                                                         for ($i = 0; $i < $options['thread']; $i++) {
+                                                                            $url[$i] = $object->config('ramdisk.url') .
+                                                                                $object->config(Config::POSIX_ID) .
+                                                                                $object->config('ds') .
+                                                                                'Node' .
+                                                                                $object->config('ds') .
+                                                                                'Index' .
+                                                                                $object->config('ds') .
+                                                                                $name .
+                                                                                '.' .
+                                                                                'Response' .
+                                                                                '.' .
+                                                                                $key_options .
+                                                                                '.' .
+                                                                                $i .
+                                                                                $object->config('extension.json');
                                                                             // Create a pipe
                                                                             $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
                                                                             if ($sockets === false) {
@@ -1336,21 +1363,6 @@ trait Index {
                                                                                 // Child process
                                                                                 // Close the parent's socket
                                                                                 fclose($sockets[1]);
-                                                                                $url_store = $object->config('ramdisk.url') .
-                                                                                    $object->config(Config::POSIX_ID) .
-                                                                                    $object->config('ds') .
-                                                                                    'Node' .
-                                                                                    $object->config('ds') .
-                                                                                    'Index' .
-                                                                                    $object->config('ds') .
-                                                                                    $name .
-                                                                                    '.' .
-                                                                                    'Response' .
-                                                                                    '.' .
-                                                                                    $i .
-                                                                                    '.' .
-                                                                                    Core::uuid() .
-                                                                                    $object->config('extension.json');
                                                                                 /*
                                                                                 $file = [];
                                                                                 if (!array_key_exists('url_uuid', $options['index'])) {
@@ -1412,13 +1424,8 @@ trait Index {
                                                                                             break;
                                                                                         }
                                                                                     }
-                                                                                    File::write($url_store, Core::object($result, Core::OBJECT_JSON_LINE));
-                                                                                    try {
-                                                                                        $result = fwrite($sockets[0], $url_store);
-                                                                                    }
-                                                                                    catch(Exception | ErrorException $exception){
-                                                                                        echo $exception;
-                                                                                    }
+                                                                                    File::write($url[$i], Core::object($result, Core::OBJECT_JSON_LINE));
+                                                                                    fwrite($sockets[0], 1);
                                                                                     fclose($sockets[0]);
                                                                                     exit(0);
                                                                                 }
@@ -1428,34 +1435,35 @@ trait Index {
                                                                         $size = 0;
                                                                         foreach ($pipes as $i => $pipe) {
                                                                             // Read serialized data from the pipe
-                                                                            $data_url = stream_get_contents($pipe);
+                                                                            $read = stream_get_contents($pipe);
                                                                             fclose($pipe);
-                                                                            if($data_url && File::exist($data_url)){
-                                                                                $data = $object->data_read($data_url);
-                                                                                if($data){
-                                                                                    $data = $data->data();
-                                                                                    foreach($data as $nr => $uuid){
-                                                                                        $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
-                                                                                        if(File::exist($url_ramdisk_record)){
-                                                                                            //fast (around 10.000 record a second on a ssd)
-                                                                                            $result[] = File::read($url_ramdisk_record);
-                                                                                            //slow and getting slower for no reason
+                                                                            if($read !== '1'){
+                                                                                continue;
+                                                                            }
+                                                                            $data = $object->data_read($url[$i]);
+                                                                            if($data){
+                                                                                $data = $data->data();
+                                                                                foreach($data as $nr => $uuid){
+                                                                                    $url_ramdisk_record = $dir_ramdisk_record . $uuid . $object->config('extension.json');
+                                                                                    if(File::exist($url_ramdisk_record)){
+                                                                                        //fast (around 10.000 record a second on a ssd)
+                                                                                        $result[] = File::read($url_ramdisk_record);
+                                                                                        //slow and getting slower for no reason
 //                                                                                            $result[] = $object->data_read($url_ramdisk_record);
-                                                                                            $size = File::size($url_ramdisk_record);
-                                                                                            $count++;
-                                                                                            /*
-                                                                                            if($options['counter'] === true){
-                                                                                                if ($count % 1000 === 0) {
-                                                                                                    echo Cli::tput('cursor.up');
-                                                                                                    echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
-                                                                                                    echo Cli::tput('cursor.up');
-                                                                                                    $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
-                                                                                                    $size_format = $item_per_second * $size;
-                                                                                                    echo 'count 4: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
-                                                                                                }
+                                                                                        $size = File::size($url_ramdisk_record);
+                                                                                        $count++;
+                                                                                        /*
+                                                                                        if($options['counter'] === true){
+                                                                                            if ($count % 1000 === 0) {
+                                                                                                echo Cli::tput('cursor.up');
+                                                                                                echo str_repeat(' ', Cli::tput('columns')) . PHP_EOL;
+                                                                                                echo Cli::tput('cursor.up');
+                                                                                                $item_per_second = $count / ((microtime(true) - $object->config('time.start')));
+                                                                                                $size_format = $item_per_second * $size;
+                                                                                                echo 'count 4: ' . $count . '/', ($total * $options['page']) . ', percentage: ' . round(($count / ($total * $options['page'])) * 100, 2) . ' %, item per second: ' . round($item_per_second, 2) . ', ' . File::size_format($size_format) . '/sec' . PHP_EOL;
                                                                                             }
-                                                                                            */
                                                                                         }
+                                                                                        */
                                                                                     }
                                                                                 }
                                                                             }
