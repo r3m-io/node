@@ -329,7 +329,16 @@ trait NodeList {
                         pcntl_waitpid($child, $status);
                     }
                     if($response){
-                        $response['list'] = $list;
+                        if(
+                            $options['parse'] === true &&
+                            $parse !== false &&
+                            array_key_exists('list', $response)
+                        ){
+                            foreach($list as $nr => $record){
+                                $response['list'][$nr] = $parse->compile($record, $object->data(), $parse->storage());
+                            }
+                        }
+//                        $response['list'] = $list;
                         if ($start) {
                             $response['#duration'] = (object) [
                                 'boot' => ($start - $object->config('time.start')) * 1000,
