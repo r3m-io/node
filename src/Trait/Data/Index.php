@@ -1108,9 +1108,9 @@ trait Index {
                                                                             $url[$i] = $dir_ramdisk_response .
                                                                                 $name .
                                                                                 '.' .
-                                                                                'Left' .
-                                                                                '.' .
                                                                                 $key_options .
+                                                                                '.' .
+                                                                                'Left' .
                                                                                 '.' .
                                                                                 $i .
                                                                                 $object->config('extension.json');
@@ -1212,14 +1212,12 @@ trait Index {
                                                                         $size = 0;
                                                                         foreach ($pipes as $i => $pipe) {
                                                                             if($pipe === true){
-                                                                                d('yes1');
                                                                                 $read = '1';
                                                                             } else {
+                                                                                // Read serialized data from the pipe
                                                                                 $read = stream_get_contents($pipe);
                                                                                 fclose($pipe);
                                                                             }
-                                                                            // Read serialized data from the pipe
-
                                                                             if($read !== '1'){
                                                                                 continue;
                                                                             }
@@ -1232,8 +1230,8 @@ trait Index {
                                                                                         $result[] = File::read($url_ramdisk_record);
                                                                                         //slow, try file read
 //                                                                                            $result[] = $object->data_read($url_ramdisk_record);
-                                                                                        $size = File::size($url_ramdisk_record);
-                                                                                        $count++;
+//                                                                                        $size = File::size($url_ramdisk_record);
+//                                                                                        $count++;
                                                                                         /*
                                                                                         if($options['counter'] === true){
                                                                                             if ($count % 1000 === 0) {
@@ -1265,7 +1263,6 @@ trait Index {
                                                                         }
                                                                         */
                                                                         break;
-//                                                                        return $this->index_list_expose($class, $role, $result, $options);
                                                                     } else {
                                                                         for($i = $leftSearch; $i >= $options['index']['min']; $i--) {
                                                                             $record = (object)[];
@@ -1288,10 +1285,10 @@ trait Index {
                                                                                 if (File::exist($url_ramdisk_record)) {
                                                                                     $result[] = File::read($url_ramdisk_record);
 //                                                                                    $result[] = $object->data_read($url_ramdisk_record);
-                                                                                    $size = File::size($url_ramdisk_record);
-                                                                                    $size_total += $size;
+//                                                                                    $size = File::size($url_ramdisk_record);
+//                                                                                    $size_total += $size;
                                                                                 }
-                                                                                $count++;
+//                                                                                $count++;
                                                                                 /*
                                                                                 if($options['counter'] === true){
                                                                                     if ($count % 1000 === 0) {
@@ -1349,9 +1346,9 @@ trait Index {
                                                                             $url[$i] = $dir_ramdisk_response .
                                                                                 $name .
                                                                                 '.' .
-                                                                                'Right' .
-                                                                                '.' .
                                                                                 $key_options .
+                                                                                '.' .
+                                                                                'Right' .
                                                                                 '.' .
                                                                                 $i .
                                                                                 $object->config('extension.json');
