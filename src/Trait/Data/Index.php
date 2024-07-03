@@ -1106,93 +1106,99 @@ trait Index {
                                                                                 '.' .
                                                                                 $i .
                                                                                 $object->config('extension.json');
-                                                                            // Create a pipe
-                                                                            $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
-                                                                            if ($sockets === false) {
-                                                                                die("Unable to create socket pair for child $i");
-                                                                            }
-                                                                            stream_set_blocking($sockets[0], false);
-                                                                            $pid = pcntl_fork();
-                                                                            if ($pid == -1) {
-                                                                                die("Could not fork for child $i");
-                                                                            } elseif ($pid) {
-                                                                                // Parent process
-                                                                                // Close the child's socket
-                                                                                fclose($sockets[0]);
 
-                                                                                // Store the parent socket and child PID
-                                                                                $pipes[$i] = $sockets[1];
-                                                                                $children[$i] = $pid;
-                                                                            } else {
-                                                                                // Child process
-                                                                                // Close the parent's socket
-                                                                                fclose($sockets[1]);
-                                                                                /*
-                                                                                $file = [];
-                                                                                if (!array_key_exists('url_uuid', $options['index'])) {
-                                                                                    return false;
+                                                                            if(!File::exist($url)){
+
+                                                                                // Create a pipe
+                                                                                $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+                                                                                if ($sockets === false) {
+                                                                                    die("Unable to create socket pair for child $i");
                                                                                 }
-                                                                                if (!File::exist($options['index']['url_uuid'])) {
-                                                                                    return false;
-                                                                                }
-                                                                                $file['uuid'] = $this->index_read($options['index']['url_uuid']);
-                                                                                foreach ($options['index']['url'] as $nr => $url) {
-                                                                                    $file[$nr] = $this->index_read($url);
-                                                                                }
-                                                                                */
-                                                                                $result = [];
-                                                                                if (array_key_exists($i, $partition)) {
-                                                                                    $chunk = $partition[$i];
-                                                                                    $count = 0;
-                                                                                    $limit = $options['limit'];
-                                                                                    if(
-                                                                                        $options['limit'] !== '*' &&
-                                                                                        $i === 0 &&
-                                                                                        $options['page'] === 1
-                                                                                    ){
-                                                                                        //we already have the first hit, so we need to align the limit
-                                                                                        //after page 1 the  record will be filter out
-                                                                                        $limit = $options['limit'] - 1;
-                                                                                        if($limit < 1 ){
-                                                                                            $limit = 1;
-                                                                                        }
+                                                                                stream_set_blocking($sockets[0], false);
+                                                                                $pid = pcntl_fork();
+                                                                                if ($pid == -1) {
+                                                                                    die("Could not fork for child $i");
+                                                                                } elseif ($pid) {
+                                                                                    // Parent process
+                                                                                    // Close the child's socket
+                                                                                    fclose($sockets[0]);
+
+                                                                                    // Store the parent socket and child PID
+                                                                                    $pipes[$i] = $sockets[1];
+                                                                                    $children[$i] = $pid;
+                                                                                } else {
+                                                                                    // Child process
+                                                                                    // Close the parent's socket
+                                                                                    fclose($sockets[1]);
+                                                                                    /*
+                                                                                    $file = [];
+                                                                                    if (!array_key_exists('url_uuid', $options['index'])) {
+                                                                                        return false;
                                                                                     }
-                                                                                    foreach ($chunk as $chunk_nr => $pointer) {
-                                                                                        $record = (object)[];
-                                                                                        foreach ($options['index']['where'] as $nr => $attribute) {
-                                                                                            if(!array_key_exists($pointer, $file[$nr])){
+                                                                                    if (!File::exist($options['index']['url_uuid'])) {
+                                                                                        return false;
+                                                                                    }
+                                                                                    $file['uuid'] = $this->index_read($options['index']['url_uuid']);
+                                                                                    foreach ($options['index']['url'] as $nr => $url) {
+                                                                                        $file[$nr] = $this->index_read($url);
+                                                                                    }
+                                                                                    */
+                                                                                    $result = [];
+                                                                                    if (array_key_exists($i, $partition)) {
+                                                                                        $chunk = $partition[$i];
+                                                                                        $count = 0;
+                                                                                        $limit = $options['limit'];
+                                                                                        if (
+                                                                                            $options['limit'] !== '*' &&
+                                                                                            $i === 0 &&
+                                                                                            $options['page'] === 1
+                                                                                        ) {
+                                                                                            //we already have the first hit, so we need to align the limit
+                                                                                            //after page 1 the  record will be filter out
+                                                                                            $limit = $options['limit'] - 1;
+                                                                                            if ($limit < 1) {
+                                                                                                $limit = 1;
+                                                                                            }
+                                                                                        }
+                                                                                        foreach ($chunk as $chunk_nr => $pointer) {
+                                                                                            $record = (object)[];
+                                                                                            foreach ($options['index']['where'] as $nr => $attribute) {
+                                                                                                if (!array_key_exists($pointer, $file[$nr])) {
+                                                                                                    continue;
+                                                                                                }
+                                                                                                $value = $file[$nr][$pointer];
+                                                                                                $record->{$attribute} = $value;
+                                                                                            }
+                                                                                            if (!array_key_exists($pointer, $file['uuid'])) {
                                                                                                 continue;
                                                                                             }
-                                                                                            $value = $file[$nr][$pointer];
-                                                                                            $record->{$attribute} = $value;
-                                                                                        }
-                                                                                        if(!array_key_exists($pointer, $file['uuid'])){
-                                                                                            continue;
-                                                                                        }
-                                                                                        $value = $file['uuid'][$pointer];
-                                                                                        $record->uuid = $value;
-                                                                                        $record_where = $this->where($record, $options['where'], $options);
-                                                                                        if ($record_where) {
-                                                                                            $result[$pointer] = $record->uuid;
-                                                                                            $count++;
-                                                                                            /* can't limit, sort needs to happen at the end...
-                                                                                            elseif($count < ($options['page'] * $limit)){
+                                                                                            $value = $file['uuid'][$pointer];
+                                                                                            $record->uuid = $value;
+                                                                                            $record_where = $this->where($record, $options['where'], $options);
+                                                                                            if ($record_where) {
                                                                                                 $result[$pointer] = $record->uuid;
                                                                                                 $count++;
-                                                                                            }
-                                                                                            else {
+                                                                                                /* can't limit, sort needs to happen at the end...
+                                                                                                elseif($count < ($options['page'] * $limit)){
+                                                                                                    $result[$pointer] = $record->uuid;
+                                                                                                    $count++;
+                                                                                                }
+                                                                                                else {
+                                                                                                    break;
+                                                                                                }
+                                                                                                */
+                                                                                            } else {
                                                                                                 break;
                                                                                             }
-                                                                                            */
-                                                                                        } else {
-                                                                                            break;
                                                                                         }
+                                                                                        File::write($url[$i], Core::object($result, Core::OBJECT_JSON_LINE));
+                                                                                        fwrite($sockets[0], 1);
+                                                                                        fclose($sockets[0]);
+                                                                                        exit(0);
                                                                                     }
-                                                                                    File::write($url[$i], Core::object($result, Core::OBJECT_JSON_LINE));
-                                                                                    fwrite($sockets[0], 1);
-                                                                                    fclose($sockets[0]);
-                                                                                    exit(0);
                                                                                 }
+                                                                            } else {
+                                                                                ddd('here');
                                                                             }
                                                                         }
                                                                         $count = 0;
