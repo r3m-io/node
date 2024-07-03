@@ -1108,9 +1108,9 @@ trait Index {
                                                                             $url[$i] = $dir_ramdisk_response .
                                                                                 $name .
                                                                                 '.' .
-                                                                                $key_options .
-                                                                                '.' .
                                                                                 'Left' .
+                                                                                '.' .
+                                                                                $key_options .
                                                                                 '.' .
                                                                                 $i .
                                                                                 $object->config('extension.json');
