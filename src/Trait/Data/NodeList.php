@@ -940,8 +940,6 @@ trait NodeList {
                                 $i .
                                 $object->config('extension.json');
 
-                            ddd($url_store);
-
                             $result = [];
                             if($is_filter){
                                 foreach($chunk as $nr => $record){
@@ -951,12 +949,14 @@ trait NodeList {
                                         continue;
                                     }
                                     $result[$nr] = 1;
+                                    /*  cannot limit here, need sort first
                                     if(
                                         $limit !== '*' &&
                                         $count === ($options['page'] * $limit)
                                     ){
                                         break;
                                     }
+                                    */
                                     $count++;
                                 }
                             }
@@ -997,7 +997,8 @@ trait NodeList {
                                 }
                             }
                             // Send serialized data to the parent
-                            fwrite($sockets[0], Core::object($result, Core::OBJECT_JSON_LINE));
+                            File::write($url_store, Core::object($result, Core::OBJECT_JSON_LINE));
+                            fwrite($sockets[0], true);
                             fclose($sockets[0]);
                             exit(0);
                         }
@@ -1008,6 +1009,8 @@ trait NodeList {
                         // Read serialized data from the pipe
                         $data = stream_get_contents($pipe);
                         fclose($pipe);
+                        d($data);
+                        continue;
                         $array = Core::object($data, Core::OBJECT_ARRAY);
                         $chunk = $chunks[$i];
                         if(is_array($array)){
@@ -1037,6 +1040,7 @@ trait NodeList {
                     foreach ($children as $child) {
                         pcntl_waitpid($child, $status);
                     }
+                    die;
                     $list = $result;
                     if (!$expose) {
                         $expose = $this->expose_get(
