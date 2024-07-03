@@ -1216,6 +1216,7 @@ trait NodeList {
 //                        d($list_sort);
                     }
                     $list_sort = $this->nodelist_output_filter($object, $list_sort, $options);
+                    ddd($list_sort);
                     if(
                         $options['parse'] === true &&
                         $parse
