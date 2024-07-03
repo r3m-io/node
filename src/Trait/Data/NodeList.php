@@ -1024,12 +1024,14 @@ trait NodeList {
                                     break;
                                 }
                                 if($array[$nr] === 1){
+                                    /*
                                     if(
                                         $options['parse'] === true &&
                                         $parse !== false
                                     ){
                                         $record = $parse->compile($record, $object->data(), $parse->storage());
                                     }
+                                    */
                                     if ($has_relation) {
                                         $record = $this->relation($record, $object_data, $role, $options);
                                         //collect relation mtime
@@ -1077,6 +1079,7 @@ trait NodeList {
                         $list_sort = $list;
                     }
                     $limit = '*'; //handler
+                    ddd($list_sort);
                 } else {
                     $expose = false;
                     foreach($list as $nr => $record) {
