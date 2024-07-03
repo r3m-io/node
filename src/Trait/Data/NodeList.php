@@ -1005,6 +1005,7 @@ trait NodeList {
                     }
                     // Parent process: read data from each child
                     $result = [];
+                    $list_ramdisk = [];
                     foreach ($pipes as $i => $pipe) {
                         // Read serialized data from the pipe
                         $data = stream_get_contents($pipe);
@@ -1024,18 +1025,19 @@ trait NodeList {
                                     break;
                                 }
                                 if($array[$nr] === 1){
-
-                                    if(
-                                        $options['parse'] === true &&
-                                        $parse !== false
-                                    ){
-                                        $record = $parse->compile($record, $object->data(), $parse->storage());
-                                    }
-
                                     if ($has_relation) {
                                         $record = $this->relation($record, $object_data, $role, $options);
                                         //collect relation mtime
                                     }
+                                    /*
+                                    if(
+                                        $options['parse'] === true &&
+                                        $parse !== false
+                                    ){
+                                        $list_ramdisk[] = new Storage($record);
+                                        $record = $parse->compile($record, $object->data(), $parse->storage());
+                                    }
+                                    */
                                     $result[] = new Storage($record);
                                 }
                             }
@@ -1223,6 +1225,9 @@ trait NodeList {
                     }
                     $result['count'] = count($list_sort);
                     $result['max'] = $max;
+
+                    ddd($list_sort);
+
                     $result['list'] = $this->nodelist_output_filter($object, $list_sort, $options);
                     $result['sort'] = $options['sort'] ?? [];
                     $result['filter'] = $options['filter'] ?? [];
