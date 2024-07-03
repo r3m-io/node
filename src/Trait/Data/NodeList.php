@@ -848,83 +848,85 @@ trait NodeList {
                             '.' .
                             $i .
                             $object->config('extension.json');
-                        $chunk = $chunks[$i];
-                        $pid = pcntl_fork();
-                        if ($pid == -1) {
-                            die("Could not fork for child $i");
-                        } elseif ($pid) {
-                            // Parent process
-                            // Close the child's socket
-                            fclose($sockets[0]);
+                        if(array_key_exists($i, $chunks)){
+                            $chunk = $chunks[$i];
+                            $pid = pcntl_fork();
+                            if ($pid == -1) {
+                                die("Could not fork for child $i");
+                            } elseif ($pid) {
+                                // Parent process
+                                // Close the child's socket
+                                fclose($sockets[0]);
 
-                            // Store the parent socket and child PID
-                            $pipes[$i] = $sockets[1];
-                            $children[$i] = $pid;
-                        } else {
-                            // Child process
-                            // Close the parent's socket
-                            fclose($sockets[1]);
-                            $result = [];
-                            if($is_filter){
-                                foreach($chunk as $nr => $record){
-                                    $record = $this->filter($record, $options['filter'], $options);
-                                    if (!$record) {
-                                        $result[$nr] = 0;
-                                        continue;
-                                    }
-                                    $result[$nr] = 1;
-                                    /*  cannot limit here, need sort first
-                                    if(
-                                        $limit !== '*' &&
-                                        $count === ($options['page'] * $limit)
-                                    ){
-                                        break;
-                                    }
-                                    */
-                                    $count++;
-                                }
-                            }
-                            elseif ($is_where) {
-                                foreach($chunk as $nr => $record){
-                                    $record = $this->where($record, $options['where'], $options);
-                                    if (!$record) {
-                                        $result[$nr] = 0;
-                                        continue;
-                                    }
-                                    $result[$nr] = 1;
-                                    /* cannot limit here, need sort first
-                                    if(
-                                        $limit !== '*' &&
-                                        $count === ($options['page'] * $limit)
-                                    ){
-                                        break;
-                                    }
-                                    */
-                                    $count++;
-                                }
+                                // Store the parent socket and child PID
+                                $pipes[$i] = $sockets[1];
+                                $children[$i] = $pid;
                             } else {
-                                foreach($chunk as $nr => $record){
-                                    if (!$record) {
-                                        $result[$nr] = 0;
-                                        continue;
+                                // Child process
+                                // Close the parent's socket
+                                fclose($sockets[1]);
+                                $result = [];
+                                if($is_filter){
+                                    foreach($chunk as $nr => $record){
+                                        $record = $this->filter($record, $options['filter'], $options);
+                                        if (!$record) {
+                                            $result[$nr] = 0;
+                                            continue;
+                                        }
+                                        $result[$nr] = 1;
+                                        /*  cannot limit here, need sort first
+                                        if(
+                                            $limit !== '*' &&
+                                            $count === ($options['page'] * $limit)
+                                        ){
+                                            break;
+                                        }
+                                        */
+                                        $count++;
                                     }
-                                    $result[$nr] = 1;
-                                    /* cannot limit here, need sort first
-                                    if(
-                                        $limit !== '*' &&
-                                        $count === ($options['page'] * $limit)
-                                    ){
-                                        break;
-                                    }
-                                    */
-                                    $count++;
                                 }
+                                elseif ($is_where) {
+                                    foreach($chunk as $nr => $record){
+                                        $record = $this->where($record, $options['where'], $options);
+                                        if (!$record) {
+                                            $result[$nr] = 0;
+                                            continue;
+                                        }
+                                        $result[$nr] = 1;
+                                        /* cannot limit here, need sort first
+                                        if(
+                                            $limit !== '*' &&
+                                            $count === ($options['page'] * $limit)
+                                        ){
+                                            break;
+                                        }
+                                        */
+                                        $count++;
+                                    }
+                                } else {
+                                    foreach($chunk as $nr => $record){
+                                        if (!$record) {
+                                            $result[$nr] = 0;
+                                            continue;
+                                        }
+                                        $result[$nr] = 1;
+                                        /* cannot limit here, need sort first
+                                        if(
+                                            $limit !== '*' &&
+                                            $count === ($options['page'] * $limit)
+                                        ){
+                                            break;
+                                        }
+                                        */
+                                        $count++;
+                                    }
+                                }
+                                // Send serialized data to the parent
+                                File::write($url[$i], Core::object($result, Core::OBJECT_JSON_LINE));
+                                fwrite($sockets[0], 1);
+                                fclose($sockets[0]);
+                                exit(0);
                             }
-                            // Send serialized data to the parent
-                            File::write($url[$i], Core::object($result, Core::OBJECT_JSON_LINE));
-                            fwrite($sockets[0], 1);
-                            fclose($sockets[0]);
-                            exit(0);
                         }
                     }
                     // Parent process: read data from each child
