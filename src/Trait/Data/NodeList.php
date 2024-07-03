@@ -1005,7 +1005,6 @@ trait NodeList {
                     }
                     // Parent process: read data from each child
                     $result = [];
-                    $list_ramdisk = [];
                     foreach ($pipes as $i => $pipe) {
                         // Read serialized data from the pipe
                         $data = stream_get_contents($pipe);
@@ -1029,15 +1028,6 @@ trait NodeList {
                                         $record = $this->relation($record, $object_data, $role, $options);
                                         //collect relation mtime
                                     }
-                                    /*
-                                    if(
-                                        $options['parse'] === true &&
-                                        $parse !== false
-                                    ){
-                                        $list_ramdisk[] = new Storage($record);
-                                        $record = $parse->compile($record, $object->data(), $parse->storage());
-                                    }
-                                    */
                                     $result[] = new Storage($record);
                                 }
                             }
@@ -1219,11 +1209,12 @@ trait NodeList {
 //                        d($list_sort);
                     }
                     $list_sort = $this->nodelist_output_filter($object, $list_sort, $options);
-                    $list_ramdisk = $list_sort;
+                    $list_ramdisk = null;
                     if(
                         $options['parse'] === true &&
                         $parse
                     ){
+                        $list_ramdisk = $list_sort;
                         $list_sort = $parse->compile($list_sort, $object->data(), $parse->storage());
                     }
                     $result = [];
@@ -1256,7 +1247,11 @@ trait NodeList {
                         ){
                             $result_ramdisk = $result;
                             if(array_key_exists(0, $result['list'])){
-                                $result_ramdisk['list'] = Core::array_partition($result['list'], $options['thread']);
+                                if($list_ramdisk !== null){
+                                    $result_ramdisk['list'] = Core::array_partition($list_ramdisk, $options['thread']);
+                                } else {
+                                    $result_ramdisk['list'] = Core::array_partition($result['list'], $options['thread']);
+                                }
                                 $relation_mtime = $this->relation_mtime($object_data);
                                 foreach($ramdisk_url_nodelist as $i => $ramdisk_url_nodelist_item){
                                     $ramdisk_data = $result_ramdisk;
