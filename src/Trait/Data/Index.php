@@ -1106,7 +1106,7 @@ trait Index {
                                                                                 '.' .
                                                                                 $i .
                                                                                 $object->config('extension.json');
-
+                                                                            d($url[$i]);
                                                                             if(!File::exist($url[$i])){
                                                                                 // Create a pipe
                                                                                 $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
@@ -1353,6 +1353,8 @@ trait Index {
                                                                                 '.' .
                                                                                 $i .
                                                                                 $object->config('extension.json');
+
+                                                                            d($url[$i]);
 
                                                                             if(!File::exist($url[$i])){
                                                                                 // Create a pipe
