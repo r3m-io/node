@@ -142,7 +142,6 @@ trait NodeList {
         elseif($options['index'] === true){
             Core::interactive();
             $options['index'] = $this->index_create($name, $role, $options);
-            ddd($options['index']);
         }
         if(!array_key_exists('ramdisk', $options)){
             $options['ramdisk'] = false;
