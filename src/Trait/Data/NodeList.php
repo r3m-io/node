@@ -337,7 +337,8 @@ trait NodeList {
                             array_key_exists(0, $list)
                         ){
                             $start = microtime(true);
-                            d($list);
+                            $parse->storage()->data('r3m.io.parse.view.url', $data_url);
+                            $parse->storage()->data('r3m.io.parse.view.mtime', $mtime);
                             $list = $parse->compile($list, $object->data(), $parse->storage());
                             $duration = microtime(true) - $start;
                             ddd($duration);
@@ -394,9 +395,9 @@ trait NodeList {
                             $parse !== false &&
                             array_key_exists('list', $response)
                         ){
-                            foreach($response['list'] as $nr => $record){
-                                $response['list'][$nr] = $parse->compile($record, $object->data(), $parse->storage());
-                            }
+                            $parse->storage()->data('r3m.io.parse.view.url', $data_url);
+                            $parse->storage()->data('r3m.io.parse.view.mtime', $mtime);
+                            $response['list'] = $parse->compile($response['list'], $object->data(), $parse->storage());
                         }
                         if ($response) {
                             if($start){
@@ -560,6 +561,8 @@ trait NodeList {
                 foreach($list as $nr => $record){
                     $list_ramdisk[$nr] = clone($record);
                 }
+                $parse->storage()->data('r3m.io.parse.view.url', $data_url);
+                $parse->storage()->data('r3m.io.parse.view.mtime', $mtime);
                 $list = $parse->compile($list, $object->data(), $parse->storage());
             }
             d('from index:' . $name);
@@ -1037,6 +1040,8 @@ trait NodeList {
                                 $options['pre-compile'] === true &&
                                 $parse !== false
                             ){
+                                $parse->storage()->data('r3m.io.parse.view.url', $data_url);
+                                $parse->storage()->data('r3m.io.parse.view.mtime', $mtime);
                                 $record = $parse->compile($record, $object->data(), $parse->storage());
                             }
                             if($is_filter){
@@ -1152,6 +1157,8 @@ trait NodeList {
                         foreach($list_sort as $nr => $record){
                             $list_ramdisk[$nr] = clone($record);
                         }
+                        $parse->storage()->data('r3m.io.parse.view.url', $data_url);
+                        $parse->storage()->data('r3m.io.parse.view.mtime', $mtime);
                         $list_sort = $parse->compile($list_sort, $object->data(), $parse->storage());
                     }
                     $result = [];
@@ -1280,6 +1287,8 @@ trait NodeList {
                     foreach($list as $nr => $record){
                         $list_ramdisk[$nr] = clone($record);
                     }
+                    $parse->storage()->data('r3m.io.parse.view.url', $data_url);
+                    $parse->storage()->data('r3m.io.parse.view.mtime', $mtime);
                     $list = $parse->compile($list, $object->data(), $parse->storage());
                 }
                 unset($list_temp);
