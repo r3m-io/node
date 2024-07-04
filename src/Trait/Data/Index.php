@@ -1508,6 +1508,7 @@ trait Index {
                     File::permission($object, $permission);
                 }
             } else {
+                d(File::exist($dir_count));
                 d($dir_count);
                 ddd($count);
             }
