@@ -1483,6 +1483,8 @@ trait Index {
                         File::touch($url_index, $url_mtime);
                     }
                 }
+            } else {
+                ddd($count);
             }
         }
         return [
