@@ -336,12 +336,9 @@ trait NodeList {
                             $parse !== false &&
                             array_key_exists(0, $list)
                         ){
-                            $start = microtime(true);
                             $parse->storage()->data('r3m.io.parse.view.url', $data_url);
                             $parse->storage()->data('r3m.io.parse.view.mtime', $mtime);
                             $list = $parse->compile($list, $object->data(), $parse->storage());
-                            $duration = microtime(true) - $start;
-                            d(round($duration, 2) . 'sec');
                         }
                         $response['list'] = $list;
                         if ($start) {
