@@ -337,6 +337,7 @@ trait NodeList {
                             array_key_exists(0, $list)
                         ){
                             $start = microtime(true);
+                            d($list);
                             $list = $parse->compile($list, $object->data(), $parse->storage());
                             $duration = microtime(true) - $start;
                             ddd($duration);
