@@ -1238,6 +1238,14 @@ trait Index {
             'Index' .
             $object->config('ds')
         ;
+        $dir_count = $object->config('ramdisk.url') .
+            $object->config(Config::POSIX_ID) .
+            $object->config('ds') .
+            'Node' .
+            $object->config('ds') .
+            'Count' .
+            $object->config('ds')
+        ;
         $dir_data = $object->config('project.dir.node') .
             'Data' .
             $object->config('ds')
@@ -1361,6 +1369,9 @@ trait Index {
                         }
                         if(!Dir::exist($dir_index)){
                             Dir::create($dir_index, Dir::CHMOD);
+                            File::permission($object, [
+                                'dir_index' => $dir_index
+                            ]);
                         }
                         File::write($url_uuid, implode(PHP_EOL, $data['uuid']));
                         File::touch($url_uuid, $url_mtime);
@@ -1368,6 +1379,15 @@ trait Index {
                             File::write($url_index, implode(PHP_EOL, $data[$nr]));
                             File::touch($url_index, $url_mtime);
                         }
+                        $permission = [
+                            $url_uuid,
+                            ...$url
+                        ];
+                        ddd($permission);
+
+                        File::permission($object, [
+
+                        ]);
                     }
                 }
             }
