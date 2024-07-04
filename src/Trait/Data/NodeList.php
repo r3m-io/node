@@ -146,8 +146,8 @@ trait NodeList {
         if(!array_key_exists('ramdisk', $options)){
             $options['ramdisk'] = false;
         }
-        d($name);
-        d($options);
+//        d($name);
+//        d($options);
         $key_options = $options;
         if (
             is_object($role) &&
