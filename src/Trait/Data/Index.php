@@ -1383,11 +1383,7 @@ trait Index {
                             $url_uuid,
                             ...$url
                         ];
-                        ddd($permission);
-
-                        File::permission($object, [
-
-                        ]);
+                        File::permission($object, $permission);
                     }
                 }
             }
@@ -1509,7 +1505,7 @@ trait Index {
                         $url_uuid,
                         ...$url
                     ];
-                    ddd($permission);
+                    File::permission($object, $permission);
                 }
             } else {
                 ddd($count);
