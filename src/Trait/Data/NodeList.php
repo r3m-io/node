@@ -341,7 +341,7 @@ trait NodeList {
                             $parse->storage()->data('r3m.io.parse.view.mtime', $mtime);
                             $list = $parse->compile($list, $object->data(), $parse->storage());
                             $duration = microtime(true) - $start;
-                            ddd($duration);
+                            d(round($duration, 2) . 'sec');
                         }
                         $response['list'] = $list;
                         if ($start) {
