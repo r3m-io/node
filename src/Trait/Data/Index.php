@@ -1495,6 +1495,9 @@ trait Index {
                     }
                     if(!Dir::exist($dir_index)){
                         Dir::create($dir_index, Dir::CHMOD);
+                        File::permission($object, [
+                            'dir_index' => $dir_index
+                        ]);
                     }
                     File::write($url_uuid, implode(PHP_EOL, $data['uuid']));
                     File::touch($url_uuid, $url_mtime);
@@ -1502,6 +1505,11 @@ trait Index {
                         File::write($url_index, implode(PHP_EOL, $data[$nr]));
                         File::touch($url_index, $url_mtime);
                     }
+                    $permission = [
+                        $url_uuid,
+                        ...$url
+                    ];
+                    ddd($permission);
                 }
             } else {
                 ddd($count);
