@@ -146,6 +146,7 @@ trait NodeList {
         if(!array_key_exists('ramdisk', $options)){
             $options['ramdisk'] = false;
         }
+        ddd($options);
         $key_options = $options;
         if (
             is_object($role) &&
@@ -229,6 +230,7 @@ trait NodeList {
         $ramdisk_dir_node = false;
         $ramdisk_dir_list = false;
         $ramdisk_url_node = false;
+        $ramdisk_url_nodelist = [];
         $data = null;
         if (
             $options['ramdisk'] === true &&
@@ -264,7 +266,6 @@ trait NodeList {
                 $key .
                 $object->config('extension.json');
 
-            $ramdisk_url_nodelist = [];
             if($options['parallel'] === true){
                 for($i=0; $i < $options['thread']; $i++){
                     $ramdisk_url_nodelist[] = $ramdisk_dir_list .
@@ -860,7 +861,6 @@ trait NodeList {
                                 // Parent process
                                 // Close the child's socket
                                 fclose($sockets[0]);
-
                                 // Store the parent socket and child PID
                                 $pipes[$i] = $sockets[1];
                                 $children[$i] = $pid;
@@ -1177,9 +1177,7 @@ trait NodeList {
                         $options['ramdisk'] === true &&
                         $ramdisk_url_node !== false
                     ){
-                        if(
-                            $options['parallel'] === true
-                        ){
+                        if($options['parallel'] === true){
                             $result_ramdisk = $result;
                             if(array_key_exists(0, $result['list'])){
                                 if($list_ramdisk !== null){
