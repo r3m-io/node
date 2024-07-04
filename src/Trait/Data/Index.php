@@ -1508,7 +1508,8 @@ trait Index {
                     File::permission($object, $permission);
                 }
             } else {
-                d(File::exist($dir_count));
+                $count = File::read($dir_count . sha1($url_data) . $object->config('extension.txt'));
+//                d(File::exist($dir_count));
                 d($dir_count);
                 ddd($count);
             }
