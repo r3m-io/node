@@ -357,7 +357,6 @@ trait Index {
                                     d($set_init);
                                     d($index_where);
                                     d($set);
-                                    break;
                                 }
                             }
                         }
