@@ -294,7 +294,10 @@ trait Index {
                     $record->uuid .
                     $object->config('extension.json')
                 ;
-                return $object->data_read($url_ramdisk_record);
+                $read = $object->data_read($url_ramdisk_record);
+                if($read){
+                    return $read->data();
+                }
             } else {
                 $where = $options['where'];
                 $deepest = $this->where_get_depth($where);
