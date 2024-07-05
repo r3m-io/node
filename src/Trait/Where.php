@@ -837,6 +837,7 @@ trait Where {
 //                            d($set);
                             break;
                         case 'or':
+                            d($set);
                             if(
                                 array_key_exists('match', $set[0]) &&
                                 array_key_exists('match', $set[2]) &&
