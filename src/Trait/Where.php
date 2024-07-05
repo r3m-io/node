@@ -381,15 +381,20 @@ trait Where {
             switch($set[1]) {
                 case 'or':
                     $operator = 'or';
-                    if ($set[0]['match'] === true || $set[2]['match'] === true) {
-                        if($set[0]['match'] === true){
-                            $where[$key] = $set[0];
-                            unset($where[$key]['match']);
-                        } else {
-                            $where[$key] = $set[2];
-                            unset($where[$key]['match']);
-                        }
+                    if (
+                        array_key_exists('match', $set[0]) &&
+                        $set[0]['match'] === true
+                    ) {
+                        $where[$key] = $set[0];
+                        unset($where[$key]['match']);
                         return $set;
+                    }
+                    elseif(
+                        array_key_exists('match', $set[2]) &&
+                        $set[2]['match'] === true
+                    ){
+                        $where[$key] = $set[2];
+                        unset($where[$key]['match']);
                     }
                     $list = [];
                     $list[] = $record;
