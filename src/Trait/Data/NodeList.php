@@ -493,7 +493,7 @@ trait NodeList {
                 }
                 if($record){
                     $found = [];
-                    if(property_exists('uuid', $record)){
+                    if(property_exists($record, 'uuid')){
                         $found[] = $record->uuid;
                     }
                     $options_where = $this->index_record_next($found, $options);
