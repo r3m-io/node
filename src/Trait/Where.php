@@ -800,7 +800,7 @@ trait Where {
                     return $record;
                 }
                 $count_set = count($set);
-//                d($set);
+                d($set);
                 if($count_set === 1){
                     if(
                         array_key_exists('match', $set[0]) &&
