@@ -196,12 +196,15 @@ trait Index {
         if(!File::exist($options['index']['url_uuid'])){
             return false;
         }
-        if(in_array('or', $options['where'])){
+        if(
+            in_array(
+                'or',
+                $options['where'],
+                true
+            )
+        ){
             ddd('split up and do per piece...');
         }
-
-
-
         $file['uuid'] = $this->index_read($options['index']['url_uuid']);
         foreach ($options['index']['url'] as $nr => $url) {
             $file[$nr] = $this->index_read($url);
