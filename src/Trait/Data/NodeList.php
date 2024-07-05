@@ -493,7 +493,9 @@ trait NodeList {
                 }
                 if($record){
                     $found = [];
-                    $found[] = $record->get('uuid');
+                    if(property_exists('uuid', $record)){
+                        $found[] = $record->uuid;
+                    }
                     $options_where = $this->index_record_next($found, $options);
                     $local_options['where'] = $options_where;
                     $local_options['limit'] = $options['limit'];
