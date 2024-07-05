@@ -500,6 +500,7 @@ trait NodeList {
                     $local_options['page'] = $options['page'];
                     d($record);
                     $record = $this->index_list_record($class, $role, $local_options);
+                    ddd($record);
                 }
             }
             $object->config('delete', 'node.record.leftsearch');
