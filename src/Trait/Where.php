@@ -847,6 +847,7 @@ trait Where {
                             ){
                                 array_shift($set);
                                 array_shift($set);
+                                $set[0]['match'] = true;
                             } else {
                                 array_shift($set);
                                 array_shift($set);
