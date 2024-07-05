@@ -461,8 +461,6 @@ trait NodeList {
             $local_options['limit'] = 1;
             $local_options['page'] = 1;
             $record = $this->index_list_record($class, $role, $local_options);
-            d($record);
-            ddd('found');
             while($record !== false){
                 if(is_array($record)){
                     foreach($record as $value){
@@ -500,6 +498,7 @@ trait NodeList {
                     $local_options['where'] = $options_where;
                     $local_options['limit'] = $options['limit'];
                     $local_options['page'] = $options['page'];
+                    ddd($local_options);
                     $record = $this->index_list_record($class, $role, $local_options);
                 }
             }
