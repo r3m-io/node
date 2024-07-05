@@ -1033,15 +1033,16 @@ trait Index {
                                         case 'or':
                                             $logger = $object->config('project.log.debug');
                                             if($logger){
-                                                $object->logger($logger)->debug('Unknown behavior: index or', [ $record, $set_index, $set_index_where, $index_where]);
+                                                $object->logger($logger)->debug('Unknown behavior: index or', [ $record, $index_where]);
                                             }
+                                            d($set);
                                             //first or is true so return
                                             break;
                                         case 'xor':
                                             //first xor is true so check next
                                             $logger = $object->config('project.log.debug');
                                             if($logger){
-                                                $object->logger($logger)->debug('Unknown behavior: index xor', [ $record, $set_index, $set_index_where, $index_where]);
+                                                $object->logger($logger)->debug('Unknown behavior: index xor', [ $record, $index_where]);
                                             }
                                             break;
                                     }
