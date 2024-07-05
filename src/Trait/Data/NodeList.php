@@ -498,7 +498,7 @@ trait NodeList {
                     $local_options['where'] = $options_where;
                     $local_options['limit'] = $options['limit'];
                     $local_options['page'] = $options['page'];
-                    ddd($local_options);
+                    d($local_options);
                     $record = $this->index_list_record($class, $role, $local_options);
                 }
             }
