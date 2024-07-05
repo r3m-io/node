@@ -811,8 +811,8 @@ trait Where {
                     return $record;
                 }
                 $count_set = count($set);
-                d($record);
-                d($set);
+//                d($record);
+//                d($set);
                 if($count_set === 1){
                     if(
                         array_key_exists('match', $set[0]) &&
@@ -848,7 +848,7 @@ trait Where {
 //                            d($set);
                             break;
                         case 'or':
-                            d($set);
+//                            d($set);
                             if(
                                 array_key_exists('match', $set[0]) &&
                                 $set[0]['match'] === true
