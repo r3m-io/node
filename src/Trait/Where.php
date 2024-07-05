@@ -398,7 +398,10 @@ trait Where {
                     }
                     $list = [];
                     $list[] = $record;
-                    if ($set[0]['match'] === false) {
+                    if (
+                        array_key_exists('match', $set[0]) &&
+                        $set[0]['match'] === false
+                    ) {
                         $left = $set[0];
                     } elseif (
                         is_array($set[0]) &&
@@ -416,7 +419,10 @@ trait Where {
                         $left = Filter::list($list)->where($filter_where);
                     }
                     if(is_array($set[2])){
-                        if ($set[2]['match'] === false) {
+                        if (
+                            array_key_exists('match', $set[2]) &&
+                            $set[2]['match'] === false
+                        ) {
                             $right = $set[2];
                         } elseif (
                             array_key_exists('attribute', $set[2]) &&
