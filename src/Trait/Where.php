@@ -840,15 +840,22 @@ trait Where {
                             if(
                                 array_key_exists('match', $set[0]) &&
                                 array_key_exists('match', $set[2]) &&
-                                (
-                                    $set[0]['match'] === true ||
-                                    $set[2]['match'] === true
-                                )
+                                $set[0]['match'] === true
                             ){
                                 array_shift($set);
                                 array_shift($set);
                                 $set[0]['match'] = true;
-                            } else {
+                            }
+                            elseif(
+                                array_key_exists('match', $set[0]) &&
+                                array_key_exists('match', $set[2]) &&
+                                $set[2]['match'] === true
+                            ){
+                                array_shift($set);
+                                array_shift($set);
+                                $set[0]['match'] = true;
+                            }
+                            else {
                                 array_shift($set);
                                 array_shift($set);
                                 $set[0]['match'] = false;
