@@ -351,6 +351,7 @@ trait Index {
                                     }
                                 }
                                 if($operator === null && $set[0]['match'] === false) {
+                                    d($record);
                                     d($deepest);
                                     d($where_process);
                                     d($set_init);
