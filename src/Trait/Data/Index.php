@@ -272,7 +272,7 @@ trait Index {
                         )
                     ){
                         $operator[$split_nr] = $item;
-                        $operator[$split_nr + 1] = $item;
+                        $operator[$split_nr + 1] = $item; //needed for xor
                         $split_nr++;
                         continue;
                     }
