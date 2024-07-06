@@ -305,8 +305,9 @@ trait Where {
 //        d($set);
         $count = count($set);
         $set_init = $set;
-//        d($record);
-//        d($set_init);
+        d($record);
+        d($set_init);
+        d($count);
         if(
             array_key_exists(0, $set) &&
             $count === 1
@@ -387,6 +388,7 @@ trait Where {
                     ) {
                         $where[$key] = $set[0];
                         unset($where[$key]['match']);
+                        d('match true 1');
                         return $set;
                     }
                     elseif(
@@ -395,6 +397,7 @@ trait Where {
                     ){
                         $where[$key] = $set[2];
                         unset($where[$key]['match']);
+                        d('match true 2');
                         return $set; //@2024-07-06 added
                     }
                     $list = [];
