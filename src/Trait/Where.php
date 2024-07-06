@@ -507,7 +507,7 @@ trait Where {
                     $where = array_values($where);
                     if(array_key_exists('debug', $options)){
                         d($where);
-                        ddd($set);
+                        d($set);
                     }
                     return $set;
                 case 'and':
