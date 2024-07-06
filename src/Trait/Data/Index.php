@@ -196,34 +196,7 @@ trait Index {
         if(!File::exist($options['index']['url_uuid'])){
             return false;
         }
-        if(
-            in_array(
-                'or',
-                $options['where'],
-                true
-            )
-        ){
-            $where = $options['where'];
-            $deepest = $this->where_get_depth($where);
-            $max_deep = 0;
-            while($deepest >= 0) {
-                if ($max_deep > 1024) {
-                    // add logger
-                    break;
-                }
-                $set = $this->where_get_set($where, $key, $deepest);
-                $set_init = null;
-                $where_process = $where;
-                while ($record !== false) {
-                    if (!$set_init) {
-                        $set_init = $set;
-                    }
-                    $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
-                    ddd($set);
-                }
-                $max_deep++;
-            }
-        }
+
         $file['uuid'] = $this->index_read($options['index']['url_uuid']);
         foreach ($options['index']['url'] as $nr => $url) {
             $file[$nr] = $this->index_read($url);
@@ -316,6 +289,39 @@ trait Index {
             }
             $value = $file['uuid'][$seek];
             $record->uuid = $value;
+
+            if(
+                in_array(
+                    'or',
+                    $options['where'],
+                    true
+                )
+            ){
+                $where = $options['where'];
+                $deepest = $this->where_get_depth($where);
+                $max_deep = 0;
+                while($deepest >= 0) {
+                    if ($max_deep > 1024) {
+                        // add logger
+                        break;
+                    }
+                    $set = $this->where_get_set($where, $key, $deepest);
+                    $set_init = null;
+                    $where_process = $where;
+                    while ($record !== false) {
+                        if (!$set_init) {
+                            $set_init = $set;
+                        }
+                        $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
+                        ddd($set);
+                    }
+                    $max_deep++;
+                }
+                ddd('here');
+            }
+
+
+
             $record_where = $this->where($record, $options['where'], $options);
             if($record_where){
                 $url_ramdisk_record = $dir_ramdisk_record .
