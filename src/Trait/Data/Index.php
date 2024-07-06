@@ -263,6 +263,7 @@ trait Index {
                 d($set);
                 d($deepest);
                 d($split);
+                $is_add = false;
                 foreach($split as $nr => $set){
                     $local_options = $options;
                     $local_options['limit'] = 1;
@@ -271,7 +272,24 @@ trait Index {
                     $record = $this->index_list_record($class, $role, $local_options);
                     if($record){
                         $result[] = $record;
+                        $is_add = true;
                     }
+                }
+                if($is_add === true && $deepest > 0){
+                    $where[0] = [
+                        'attribute' => 'uuid',
+                        'operator' => '===',
+                        'value' => $record->uuid,
+                        'match' => true
+                    ];
+                }
+                elseif($deepest > 0) {
+                    $where[0] = [
+                        'attribute' => 'uuid',
+                        'operator' => '===',
+                        'value' => 1,
+                        'match' => false
+                    ];
                 }
                 if($deepest === 0){
                     break;
