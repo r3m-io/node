@@ -250,7 +250,6 @@ trait Index {
                     break;
                 }
                 $set = $this->where_get_set($where, $key, $deepest);
-
                 $split = [];
                 $split_nr = 0;
                 foreach($set as $nr =>$item){
@@ -260,7 +259,7 @@ trait Index {
                     }
                     $split[$split_nr][] = $item;
                 }
-                $set_init = null;
+                d($split);
                 foreach($split as $nr => $set){
                     $local_options = $options;
                     $local_options['limit'] = 1;
