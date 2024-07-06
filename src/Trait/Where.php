@@ -404,7 +404,7 @@ trait Where {
                         array_key_exists('match', $set[0]) &&
                         $set[0]['match'] === false
                     ) {
-                        $left = $set[0];
+                        $left = [];
                     }
                     elseif (
                         is_array($set[0]) &&
@@ -426,7 +426,7 @@ trait Where {
                             array_key_exists('match', $set[2]) &&
                             $set[2]['match'] === false
                         ) {
-                            $right = $set[2];
+                            $right = [];
                         } elseif (
                             array_key_exists('attribute', $set[2]) &&
                             array_key_exists('value', $set[2]) &&
