@@ -281,20 +281,33 @@ trait Index {
 //                d($deepest);
 //                d($split);
                 $is_add = false;
+                $xor = false;
                 foreach($split as $nr => $set){
                     $local_options = $options;
                     $local_options['limit'] = 1;
                     $local_options['page'] = 1;
                     $local_options['where'] = $set;
-                    d($set);
                     $record = $this->index_list_record($class, $role, $local_options);
-                    if($record){
-                        $result[$count] = $record;
-                        $is_add = true;
+                    $op = $operator[$nr] ?? null;
+
+                    if($op === 'xor'){
+                        if($record){
+                            if($xor === false){
+                                $xor = true;
+                                $result[] = $record;
+                                $is_add = true;
+                            } else {
+                                $xor = false;
+                                //was added to result, so remove it
+                                array_pop($result);
+                            }
+                        }
                     } else {
-                        $result[$count] = false;
+                        if($record){
+                            $result[] = $record;
+                            $is_add = true;
+                        }
                     }
-                    $count++;
                 }
                 if($is_add === true && $deepest > 0){
                     $where[0] = [
