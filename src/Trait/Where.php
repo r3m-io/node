@@ -307,7 +307,7 @@ trait Where {
         $set_init = $set;
         if(array_key_exists('debug', $options)){
             d($record);
-            d($set_init);
+            d($set);
             d($count);
         }
         if(
@@ -441,6 +441,10 @@ trait Where {
                             ];
                             $right = Filter::list($list)->where($filter_where);
                         }
+                    }
+                    if(array_key_exists('debug', $options)){
+                        d($left);
+                        d($right);
                     }
                     if (!empty($left)) {
                         $where[$key] = $set[0];
@@ -831,7 +835,7 @@ trait Where {
 //                d($where);
                 if(array_key_exists('debug', $options)){
                     d($where);
-                    d($index_where);
+//                    d($index_where);
                     d($set);
                 }
 
