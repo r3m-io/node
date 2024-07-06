@@ -276,6 +276,7 @@ trait Index {
                     }
                     $split[$split_nr][] = $item;
                 }
+                d($operator);
 //                d($where);
 //                d($set);
 //                d($deepest);
