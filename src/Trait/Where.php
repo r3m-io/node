@@ -819,7 +819,7 @@ trait Where {
                 d($set);
             }
             if($record->uuid === '3cd80fdf-38fe-40e8-9bfe-4d1d4f281bf1' && $deepest === 0){
-                ddd($set);
+                d($set);
             }
 
 //            d($where);
@@ -828,6 +828,11 @@ trait Where {
                     d($set);
                 }
                 $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $options);
+                if($record->uuid === '3cd80fdf-38fe-40e8-9bfe-4d1d4f281bf1' && $deepest === 0){
+                    d($set);
+                    d($where);
+                    ddd($operator);
+                }
 //                d($where);
                 if(array_key_exists('debug', $options)){
                     d($where);
