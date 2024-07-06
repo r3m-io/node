@@ -838,6 +838,12 @@ trait Where {
                 }
 
                 if($count_set === 1){
+                    if($record->uuid === '3cd80fdf-38fe-40e8-9bfe-4d1d4f281bf1'){
+                        d($operator);
+                        d($deepest);
+                        d($set);
+                        ddd($set);
+                    }
                     if(
                         array_key_exists('match', $set[0]) &&
                         $operator === null &&
@@ -891,7 +897,7 @@ trait Where {
                                 if($record->uuid === '3cd80fdf-38fe-40e8-9bfe-4d1d4f281bf1'){
                                     d($key);
                                     d($where);
-                                    ddd($set);
+                                    d($set);
                                 }
                             }
                             else {
