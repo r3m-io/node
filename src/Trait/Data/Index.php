@@ -269,6 +269,7 @@ trait Index {
                     $local_options['limit'] = 1;
                     $local_options['page'] = 1;
                     $local_options['where'] = $set;
+                    d($set);
                     $record = $this->index_list_record($class, $role, $local_options);
                     if($record){
                         $result[] = $record;
