@@ -305,9 +305,11 @@ trait Where {
 //        d($set);
         $count = count($set);
         $set_init = $set;
-        d($record);
-        d($set_init);
-        d($count);
+        if(array_key_exists('debug', $options)){
+            d($record);
+            d($set_init);
+            d($count);
+        }
         if(
             array_key_exists(0, $set) &&
             $count === 1
