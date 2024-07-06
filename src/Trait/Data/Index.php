@@ -306,7 +306,19 @@ trait Index {
                         break;
                     }
                     $set = $this->where_get_set($where, $key, $deepest);
-                    d($set);
+
+                    $split = [];
+                    $split_nr = 0;
+                    foreach($set as $nr =>$item){
+                        if($item === 'or'){
+                            $split_nr++;
+                            continue;
+                        }
+                        $split[$split_nr][] = $item;
+                    }
+
+
+                    ddd($split);
                     $set_init = null;
                     $where_process = $where;
                     while ($record !== false) {
