@@ -259,6 +259,7 @@ trait Index {
                     }
                     $split[$split_nr][] = $item;
                 }
+                d($deepest);
                 d($split);
                 foreach($split as $nr => $set){
                     $local_options = $options;
@@ -269,6 +270,9 @@ trait Index {
                     if($record){
                         $result[] = $record;
                     }
+                }
+                if($deepest === 0){
+                    break;
                 }
                 $max_deep++;
             }
