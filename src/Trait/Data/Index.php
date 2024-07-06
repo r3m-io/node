@@ -278,11 +278,6 @@ trait Index {
                     }
                     $split[$split_nr][] = $item;
                 }
-                d($operator);
-//                d($where);
-//                d($set);
-//                d($deepest);
-                d($split);
                 $is_add = false;
                 foreach($split as $nr => $set){
                     $local_options = $options;
@@ -291,7 +286,6 @@ trait Index {
                     $local_options['where'] = $set;
                     $record = $this->index_list_record($class, $role, $local_options);
                     $op = $operator[$nr] ?? null;
-d($op);
                     if($op === 'xor'){
                         if($record){
                             if($xor === false){
@@ -335,7 +329,6 @@ d($op);
                 $where = array_values($where);
                 $deepest = $this->where_get_depth($where);
             }
-            ddd($result);
             return $result;
         }
         $counter = 0;
