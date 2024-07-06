@@ -870,6 +870,7 @@ trait Where {
                                 array_shift($set);
                                 $set[0]['match'] = false;
                             }
+                            d($set);
                             break;
                         default:
                             throw new Exception('Unknown operator: ' . $operator);
@@ -877,6 +878,7 @@ trait Where {
                 }
                 $counter++;
                 if($counter > 1024){
+                    d('counter break');
                     break 2;
                 }
             }
