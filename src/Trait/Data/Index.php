@@ -238,6 +238,11 @@ trait Index {
                 'or',
                 $options['where'],
                 true
+            ) ||
+            in_array(
+                'xor',
+                $options['where'],
+                true
             )
         ){
             $where = $options['where'];
@@ -251,9 +256,20 @@ trait Index {
                 }
                 $set = $this->where_get_set($where, $key, $deepest);
                 $split = [];
+                $operator = [];
                 $split_nr = 0;
                 foreach($set as $nr =>$item){
-                    if($item === 'or'){
+                    if(
+                        in_array(
+                            $item,
+                            [
+                                'or',
+                                'xor'
+                            ],
+                            true
+                        )
+                    ){
+                        $operator[$split_nr] = $item;
                         $split_nr++;
                         continue;
                     }
@@ -265,9 +281,6 @@ trait Index {
 //                d($split);
                 $is_add = false;
                 foreach($split as $nr => $set){
-                    if(array_key_exists('match', $set)){
-                        continue;
-                    }
                     $local_options = $options;
                     $local_options['limit'] = 1;
                     $local_options['page'] = 1;
@@ -275,8 +288,10 @@ trait Index {
                     d($set);
                     $record = $this->index_list_record($class, $role, $local_options);
                     if($record){
-                        $result[] = $record;
+                        $result[$nr] = $record;
                         $is_add = true;
+                    } else {
+                        $result[$nr] = false;
                     }
                 }
                 if($is_add === true && $deepest > 0){
@@ -301,6 +316,7 @@ trait Index {
                 $where = array_values($where);
                 $deepest = $this->where_get_depth($where);
             }
+            ddd($result);
             return $result;
         }
         $counter = 0;
