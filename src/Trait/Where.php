@@ -929,6 +929,11 @@ trait Where {
             $deepest = $this->where_get_depth($where);
             unset($key);
             $counter++;
+            if($record->uuid === '3cd80fdf-38fe-40e8-9bfe-4d1d4f281bf1'){
+                d($deepest);
+                d($where);
+                ddd($set);
+            }
         }
         if(array_key_exists('debug', $options)){
 //            d($record);
