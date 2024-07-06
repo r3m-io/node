@@ -830,7 +830,7 @@ trait Where {
                 if($record->uuid === '3cd80fdf-38fe-40e8-9bfe-4d1d4f281bf1' && $deepest === 0){
                     d($set);
                     d($where);
-                    ddd($operator);
+                    d($operator);
                 }
 //                d($where);
                 if(array_key_exists('debug', $options)){
@@ -894,9 +894,9 @@ trait Where {
                                 array_key_exists('match', $set[0]) &&
                                 $set[0]['match'] === true
                             ){
+                                $temp = array_shift($set);
                                 array_shift($set);
-                                array_shift($set);
-                                $set[0]['match'] = true;
+                                $set[0] = $temp;
                             }
                             elseif(
                                 array_key_exists('match', $set[2]) &&
