@@ -872,11 +872,6 @@ trait Where {
 //                            d($set);
                             break;
                         case 'or':
-                            if($record->uuid === '3cd80fdf-38fe-40e8-9bfe-4d1d4f281bf1'){
-                                d($key);
-                                d($where);
-                                ddd($set);
-                            }
 //                            d($set);
                             if(
                                 array_key_exists('match', $set[0]) &&
@@ -893,6 +888,11 @@ trait Where {
                                 array_shift($set);
                                 array_shift($set);
                                 $set[0]['match'] = true;
+                                if($record->uuid === '3cd80fdf-38fe-40e8-9bfe-4d1d4f281bf1'){
+                                    d($key);
+                                    d($where);
+                                    ddd($set);
+                                }
                             }
                             else {
                                 array_shift($set);
