@@ -259,10 +259,10 @@ trait Index {
                     }
                     $split[$split_nr][] = $item;
                 }
-                d($where);
-                d($set);
-                d($deepest);
-                d($split);
+//                d($where);
+//                d($set);
+//                d($deepest);
+//                d($split);
                 $is_add = false;
                 foreach($split as $nr => $set){
                     $local_options = $options;
@@ -295,6 +295,8 @@ trait Index {
                     break;
                 }
                 $max_deep++;
+                $where = array_values($where);
+                d($where);
                 $deepest = $this->where_get_depth($where);
             }
             ddd($result);
