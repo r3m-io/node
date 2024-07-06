@@ -126,13 +126,13 @@ trait NodeList {
             $result['mtime'] = $mtime;
             $result['transaction'] = $options['transaction'] ?? false;
             if($start){
-                $result['#duration'] = (object) [
+                $result['duration'] = (object) [
                     'boot' => ($start - $object->config('time.start')) * 1000,
                     'total' => (microtime(true) - $object->config('time.start')) * 1000,
                     'nodelist' => (microtime(true) - $start) * 1000
                 ];
-                $result['#duration']->item_per_second = 0;
-                $result['#duration']->item_per_second_nodelist = 0;
+                $result['duration']->item_per_second = 0;
+                $result['duration']->item_per_second_nodelist = 0;
             }
             return $result;
         }
@@ -216,13 +216,13 @@ trait NodeList {
             $result['mtime'] = $mtime;
             $result['transaction'] = $options['transaction'] ?? false;
             if($start){
-                $result['#duration'] = (object) [
+                $result['duration'] = (object) [
                     'boot' => ($start - $object->config('time.start')) * 1000,
                     'total' => (microtime(true) - $object->config('time.start')) * 1000,
                     'nodelist' => (microtime(true) - $start) * 1000
                 ];
-                $result['#duration']->item_per_second = 0;
-                $result['#duration']->item_per_second_nodelist = 0;
+                $result['duration']->item_per_second = 0;
+                $result['duration']->item_per_second_nodelist = 0;
             }
             return $result;
         }
@@ -342,18 +342,18 @@ trait NodeList {
                         }
                         $response['list'] = $list;
                         if ($start) {
-                            $response['#duration'] = (object) [
+                            $response['duration'] = (object) [
                                 'boot' => ($start - $object->config('time.start')) * 1000,
                                 'total' => (microtime(true) - $object->config('time.start')) * 1000,
                                 'nodelist' => (microtime(true) - $start) * 1000
                             ];
                             if (array_key_exists('count', $response)) {
-                                $response['#duration']->item_per_second = ($response['count'] / $response['#duration']->total) * 1000;
-                                $response['#duration']->item_per_second_nodelist = ($response['count'] / $response['#duration']->nodelist) * 1000;
+                                $response['duration']->item_per_second = ($response['count'] / $response['duration']->total) * 1000;
+                                $response['duration']->item_per_second_nodelist = ($response['count'] / $response['duration']->nodelist) * 1000;
                             } else {
-                                $response['#duration']->item_per_second_with_limit = true;
-                                $response['#duration']->item_per_second = ( (int) $options['limit'] / $response['#duration']->total) * 1000;
-                                $response['#duration']->item_per_second_nodelist = ( (int) $options['limit'] / $response['#duration']->nodelist) * 1000;
+                                $response['duration']->item_per_second_with_limit = true;
+                                $response['duration']->item_per_second = ( (int) $options['limit'] / $response['duration']->total) * 1000;
+                                $response['duration']->item_per_second_nodelist = ( (int) $options['limit'] / $response['duration']->nodelist) * 1000;
                             }
                         }
                         return $response;
@@ -398,14 +398,14 @@ trait NodeList {
                         }
                         if ($response) {
                             if($start){
-                                $response['#duration'] = (object) [
+                                $response['duration'] = (object) [
                                     'boot' => ($start - $object->config('time.start')) * 1000,
                                     'total' => (microtime(true) - $object->config('time.start')) * 1000,
                                     'nodelist' => (microtime(true) - $start) * 1000
                                 ];
                                 if(array_key_exists('count', $response)){
-                                    $response['#duration']->item_per_second = ($response['count'] / $response['#duration']->total) * 1000;
-                                    $response['#duration']->item_per_second_nodelist = ($response['count'] / $response['#duration']->nodelist) * 1000;    
+                                    $response['duration']->item_per_second = ($response['count'] / $response['duration']->total) * 1000;
+                                    $response['duration']->item_per_second_nodelist = ($response['count'] / $response['duration']->nodelist) * 1000;
                                 }
                             }
                             return $response;
@@ -694,13 +694,13 @@ trait NodeList {
                 }
             }
             if($start){
-                $result['#duration'] = (object) [
+                $result['duration'] = (object) [
                     'boot' => ($start - $object->config('time.start')) * 1000,
                     'total' => (microtime(true) - $object->config('time.start')) * 1000,
                     'nodelist' => (microtime(true) - $start) * 1000
                 ];
-                $result['#duration']->item_per_second = ($count / $result['#duration']->total) * 1000;
-                $result['#duration']->item_per_second_nodelist = ($count / $result['#duration']->nodelist) * 1000;
+                $result['duration']->item_per_second = ($count / $result['duration']->total) * 1000;
+                $result['duration']->item_per_second_nodelist = ($count / $result['duration']->nodelist) * 1000;
             }
             return $result;
         }
@@ -1245,13 +1245,13 @@ trait NodeList {
                         }
                     }
                     if($start){
-                        $result['#duration'] = (object) [
+                        $result['duration'] = (object) [
                             'boot' => ($start - $object->config('time.start')) * 1000,
                             'total' => (microtime(true) - $object->config('time.start')) * 1000,
                             'nodelist' => (microtime(true) - $start) * 1000
                         ];
-                        $result['#duration']->item_per_second = ($list_count / $result['#duration']->total) * 1000;
-                        $result['#duration']->item_per_second_nodelist = ($list_count / $result['#duration']->nodelist) * 1000;
+                        $result['duration']->item_per_second = ($list_count / $result['duration']->total) * 1000;
+                        $result['duration']->item_per_second_nodelist = ($list_count / $result['duration']->nodelist) * 1000;
                     }
                     return $result;
                 }
@@ -1373,13 +1373,13 @@ trait NodeList {
 
                 }
                 if($start){
-                    $result['#duration'] = (object) [
+                    $result['duration'] = (object) [
                         'boot' => ($start - $object->config('time.start')) * 1000,
                         'total' => (microtime(true) - $object->config('time.start')) * 1000,
                         'nodelist' => (microtime(true) - $start) * 1000
                     ];
-                    $result['#duration']->item_per_second = ($list_count / $result['#duration']->total) * 1000;
-                    $result['#duration']->item_per_second_nodelist = ($list_count / $result['#duration']->nodelist) * 1000;
+                    $result['duration']->item_per_second = ($list_count / $result['duration']->total) * 1000;
+                    $result['duration']->item_per_second_nodelist = ($list_count / $result['duration']->nodelist) * 1000;
                 }
                 return $result;
             }
@@ -1410,13 +1410,13 @@ trait NodeList {
         $result['mtime'] = $mtime;
         $result['transaction'] = $options['transaction'] ?? false;
         if($start){
-            $result['#duration'] = (object) [
+            $result['duration'] = (object) [
                 'boot' => ($start - $object->config('time.start')) * 1000,
                 'total' => (microtime(true) - $object->config('time.start')) * 1000,
                 'nodelist' => (microtime(true) - $start) * 1000
             ];
-            $result['#duration']->item_per_second = 0;
-            $result['#duration']->item_per_second_nodelist = 0;
+            $result['duration']->item_per_second = 0;
+            $result['duration']->item_per_second_nodelist = 0;
         }
         return $result;
     }
