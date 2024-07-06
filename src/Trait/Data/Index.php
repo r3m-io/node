@@ -241,9 +241,9 @@ trait Index {
             )
         ){
             $where = $options['where'];
-            $deepest = $this->where_get_depth($where);
             $max_deep = 0;
             $result = [];
+            $deepest = $this->where_get_depth($where);
             while($deepest >= 0) {
                 if ($max_deep > 1024) {
                     // add logger
@@ -277,6 +277,7 @@ trait Index {
                     break;
                 }
                 $max_deep++;
+                $deepest = $this->where_get_depth($where);
             }
             ddd($result);
             ddd('here');
