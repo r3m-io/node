@@ -301,9 +301,7 @@ trait Index {
                 $where = array_values($where);
                 $deepest = $this->where_get_depth($where);
             }
-            trace();
-            ddd($result);
-            ddd('here');
+            return $result;
         }
         $counter = 0;
         $max = 4096;
