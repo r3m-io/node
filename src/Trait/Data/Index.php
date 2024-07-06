@@ -259,6 +259,7 @@ trait Index {
                     }
                     $split[$split_nr][] = $item;
                 }
+                d($set);
                 d($deepest);
                 d($split);
                 foreach($split as $nr => $set){
