@@ -817,7 +817,7 @@ trait Where {
                 if(array_key_exists('debug', $options)){
                     d($where);
                     d($index_where);
-                    ddd($set);
+                    d($set);
                 }
 
                 if(empty($set) && $deepest === 0){
