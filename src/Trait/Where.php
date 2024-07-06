@@ -492,7 +492,8 @@ trait Where {
                         if(empty($left)){
                             $where[$key] = $set[0];
                             $where[$key]['match'] = false;
-                        } else {
+                        }
+                        if(empty($right)){
                             $where[$key] = $set[2];
                             $where[$key]['match'] = false;
                         }
