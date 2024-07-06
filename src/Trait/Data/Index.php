@@ -295,8 +295,8 @@ trait Index {
                     break;
                 }
                 $max_deep++;
+                ksort($where, SORT_NATURAL);
                 $where = array_values($where);
-                d($where);
                 $deepest = $this->where_get_depth($where);
             }
             ddd($result);
