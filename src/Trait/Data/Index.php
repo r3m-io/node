@@ -272,6 +272,7 @@ trait Index {
                         )
                     ){
                         $operator[$split_nr] = $item;
+                        $operator[$split_nr + 1] = $item;
                         $split_nr++;
                         continue;
                     }
