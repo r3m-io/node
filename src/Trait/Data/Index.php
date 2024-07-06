@@ -280,7 +280,7 @@ trait Index {
 //                d($where);
 //                d($set);
 //                d($deepest);
-//                d($split);
+                d($split);
                 $is_add = false;
                 $xor = false;
                 foreach($split as $nr => $set){
