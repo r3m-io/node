@@ -249,6 +249,8 @@ trait Index {
             $max_deep = 0;
             $result = [];
             $deepest = $this->where_get_depth($where);
+            $operator = [];
+            $count = 0;
             while($deepest >= 0) {
                 if ($max_deep > 1024) {
                     // add logger
@@ -256,7 +258,6 @@ trait Index {
                 }
                 $set = $this->where_get_set($where, $key, $deepest);
                 $split = [];
-                $operator = [];
                 $split_nr = 0;
                 foreach($set as $nr =>$item){
                     if(
@@ -288,11 +289,12 @@ trait Index {
                     d($set);
                     $record = $this->index_list_record($class, $role, $local_options);
                     if($record){
-                        $result[$nr] = $record;
+                        $result[$count] = $record;
                         $is_add = true;
                     } else {
-                        $result[$nr] = false;
+                        $result[$count] = false;
                     }
+                    $count++;
                 }
                 if($is_add === true && $deepest > 0){
                     $where[0] = [
