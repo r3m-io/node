@@ -440,12 +440,6 @@ trait Where {
                             $right = Filter::list($list)->where($filter_where);
                         }
                     }
-                    if(array_key_exists('debug', $options)){
-                        d($set);
-                        d($left);
-                        d($right);
-                        dd('yte');
-                    }
                     if (!empty($left)) {
                         $where[$key] = $set[0];
 //                        $where[$key]['match'] = true;
@@ -505,8 +499,12 @@ trait Where {
                     }
                     ksort($where, SORT_NATURAL);
                     $where = array_values($where);
-                    d($where);
-                    d($set);
+                    if(array_key_exists('debug', $options)){
+                        d($where);
+                        ddd($set);
+                    }
+//                    d($where);
+
                     return $set;
                 case 'and':
                     $operator = 'and';
