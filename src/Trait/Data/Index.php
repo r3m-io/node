@@ -300,6 +300,7 @@ d($op);
                                 $xor = false;
                                 //was added to result, so remove it
                                 array_pop($result);
+                                $is_add = false;
                             }
                         }
                     } else {
