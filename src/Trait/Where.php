@@ -501,12 +501,12 @@ trait Where {
                             $where[$key]['match'] = false;
                         }
                     }
+                    ksort($where, SORT_NATURAL);
+                    $where = array_values($where);
                     if(array_key_exists('debug', $options)){
                         d($where);
                         ddd($set);
                     }
-                    ksort($where, SORT_NATURAL);
-                    $where = array_values($where);
                     return $set;
                 case 'and':
                     $operator = 'and';
