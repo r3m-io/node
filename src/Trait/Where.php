@@ -383,11 +383,6 @@ trait Where {
         ){
             switch($set[1]) {
                 case 'or':
-                    if($record->uuid === '891eea78-a5f2-46dd-9271-b134b283ae9b'){
-                        d($key);
-                        d($where);
-                        ddd($set);
-                    }
                     $operator = 'or';
                     if (
                         array_key_exists('match', $set[0]) &&
@@ -510,6 +505,14 @@ trait Where {
                     }
                     ksort($where, SORT_NATURAL);
                     $where = array_values($where);
+
+                    if($record->uuid === '891eea78-a5f2-46dd-9271-b134b283ae9b'){
+                        d($key);
+                        d($where);
+                        ddd($set);
+                    }
+
+
                     if(array_key_exists('debug', $options)){
                         d($where);
                         d($set);
