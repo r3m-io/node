@@ -316,16 +316,13 @@ trait Index {
                         }
                         $split[$split_nr][] = $item;
                     }
-
-
-                    ddd($split);
                     $set_init = null;
                     $where_process = $where;
                     while ($record !== false) {
                         if (!$set_init) {
                             $set_init = $set;
                         }
-                        $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
+                        $set = $this->where_process($record, $split[$split_nr], $where_process, $key, $operator, $index_where, $options);
                         ddd($set);
                     }
                     $max_deep++;
