@@ -440,6 +440,12 @@ trait Where {
                             $right = Filter::list($list)->where($filter_where);
                         }
                     }
+                    if(array_key_exists('debug', $options)){
+                        d($set);
+                        d($left);
+                        d($right);
+                        dd('yte');
+                    }
                     if (!empty($left)) {
                         $where[$key] = $set[0];
 //                        $where[$key]['match'] = true;
