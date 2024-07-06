@@ -203,7 +203,26 @@ trait Index {
                 true
             )
         ){
-           d('split up and do per piece...');
+            $where = $options['where'];
+            $deepest = $this->where_get_depth($where);
+            $max_deep = 0;
+            while($deepest >= 0) {
+                if ($max_deep > 1024) {
+                    // add logger
+                    break;
+                }
+                $set = $this->where_get_set($where, $key, $deepest);
+                $set_init = null;
+                $where_process = $where;
+                while ($record !== false) {
+                    if (!$set_init) {
+                        $set_init = $set;
+                    }
+                    $set = $this->where_process($record, $set, $where_process, $key, $operator, $index_where, $options);
+                    ddd($set);
+                }
+                $max_deep++;
+            }
         }
         $file['uuid'] = $this->index_read($options['index']['url_uuid']);
         foreach ($options['index']['url'] as $nr => $url) {
