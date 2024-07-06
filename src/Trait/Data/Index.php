@@ -203,7 +203,7 @@ trait Index {
                 true
             )
         ){
-            ddd('split up and do per piece...');
+           d('split up and do per piece...');
         }
         $file['uuid'] = $this->index_read($options['index']['url_uuid']);
         foreach ($options['index']['url'] as $nr => $url) {
