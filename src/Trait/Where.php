@@ -395,6 +395,7 @@ trait Where {
                     ){
                         $where[$key] = $set[2];
                         unset($where[$key]['match']);
+                        return $set; //@2024-07-06 added
                     }
                     $list = [];
                     $list[] = $record;
@@ -498,6 +499,8 @@ trait Where {
                     }
                     ksort($where, SORT_NATURAL);
                     $where = array_values($where);
+                    d($where);
+                    d($set);
                     return $set;
                 case 'and':
                     $operator = 'and';
