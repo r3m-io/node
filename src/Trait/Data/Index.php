@@ -251,6 +251,7 @@ trait Index {
             $deepest = $this->where_get_depth($where);
             $operator = [];
             $count = 0;
+            $xor = false;
             while($deepest >= 0) {
                 if ($max_deep > 1024) {
                     // add logger
@@ -282,7 +283,6 @@ trait Index {
 //                d($deepest);
                 d($split);
                 $is_add = false;
-                $xor = false;
                 foreach($split as $nr => $set){
                     $local_options = $options;
                     $local_options['limit'] = 1;
@@ -309,6 +309,7 @@ d($op);
                             $result[] = $record;
                             $is_add = true;
                         }
+                        $xor = false;
                     }
                 }
                 if($is_add === true && $deepest > 0){
