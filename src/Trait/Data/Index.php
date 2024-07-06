@@ -265,6 +265,9 @@ trait Index {
 //                d($split);
                 $is_add = false;
                 foreach($split as $nr => $set){
+                    if(array_key_exists('match', $set)){
+                        continue;
+                    }
                     $local_options = $options;
                     $local_options['limit'] = 1;
                     $local_options['page'] = 1;
@@ -281,7 +284,6 @@ trait Index {
                         'attribute' => 'uuid',
                         'operator' => '===',
                         'value' => $record->uuid,
-                        'match' => true
                     ];
                 }
                 elseif($deepest > 0) {
@@ -289,7 +291,6 @@ trait Index {
                         'attribute' => 'uuid',
                         'operator' => '===',
                         'value' => 1,
-                        'match' => false
                     ];
                 }
                 if($deepest === 0){
