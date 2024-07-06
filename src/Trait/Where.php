@@ -798,7 +798,7 @@ trait Where {
             $set = $this->where_get_set($where, $key, $deepest);
 //            d($where);
             while($record !== false){
-//                d($set);
+                d($set);
                 $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $options);
 //                d($where);
                 if(array_key_exists('debug', $options)){
@@ -811,8 +811,8 @@ trait Where {
                     return $record;
                 }
                 $count_set = count($set);
-//                d($record);
-//                d($set);
+                d($record);
+                d($set);
                 if($count_set === 1){
                     if(
                         array_key_exists('match', $set[0]) &&
