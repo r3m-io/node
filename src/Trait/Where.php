@@ -390,8 +390,6 @@ trait Where {
                     ) {
                         $where[$key] = $set[0];
                         unset($where[$key]['match']);
-                        d('match true 1');
-                        return $set;
                     }
                     elseif(
                         array_key_exists('match', $set[2]) &&
@@ -399,8 +397,6 @@ trait Where {
                     ){
                         $where[$key] = $set[2];
                         unset($where[$key]['match']);
-                        d('match true 2');
-                        return $set; //@2024-07-06 added
                     }
                     $list = [];
                     $list[] = $record;
@@ -409,7 +405,8 @@ trait Where {
                         $set[0]['match'] === false
                     ) {
                         $left = $set[0];
-                    } elseif (
+                    }
+                    elseif (
                         is_array($set[0]) &&
                         array_key_exists('attribute', $set[0]) &&
                         array_key_exists('value', $set[0]) &&
@@ -511,8 +508,6 @@ trait Where {
                         d($where);
                         d($set);
                     }
-
-
                     if(array_key_exists('debug', $options)){
                         d($where);
                         d($set);
