@@ -842,7 +842,7 @@ trait Where {
                         d($operator);
                         d($deepest);
                         d($set);
-                        ddd($set);
+                        d($set);
                     }
                     if(
                         array_key_exists('match', $set[0]) &&
