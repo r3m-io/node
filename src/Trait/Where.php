@@ -798,7 +798,7 @@ trait Where {
             $set = $this->where_get_set($where, $key, $deepest);
 //            d($where);
             while($record !== false){
-                d($set);
+                ddd($set);
                 $set = $this->where_process($record, $set, $where, $key, $operator, $index_where, $options);
 //                d($where);
                 if(array_key_exists('debug', $options)){
