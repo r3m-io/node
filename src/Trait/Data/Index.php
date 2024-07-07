@@ -303,8 +303,14 @@ trait Index {
 
                     $op = $operator[$nr] ?? null;
                     if($op === 'xor'){
-                        if(!empty($extra)){
-
+                        if($extra !== false){
+                            if($xor === true){
+                                $xor = false;
+                                array_pop($result);
+                                $is_add = false;
+                            } else {
+                                $is_add = false;
+                            }
                         }
                         elseif($record){
                             if($xor === false){
@@ -321,6 +327,11 @@ trait Index {
                     } else {
                         if($record){
                             $result[] = $record;
+                            if($extra !== false){
+                                foreach($extra as $extra_record){
+                                    $result[] = $extra_record;
+                                }
+                            }
                             $is_add = true;
                         }
                         $xor = false;
