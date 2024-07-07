@@ -287,7 +287,10 @@ trait Index {
                     $record = $this->index_list_record($class, $role, $local_options);
 
                     $found = [];
-                    if(property_exists($record, 'uuid')){
+                    if(
+                        is_object($record) &&
+                        property_exists($record, 'uuid')
+                    ){
                         $found[] = $record->uuid;
                     }
                     $options_where = $this->index_record_next($found, $local_options);
