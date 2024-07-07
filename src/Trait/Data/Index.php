@@ -297,14 +297,14 @@ trait Index {
                     $local_options['where'] = $options_where;
                     $local_options['limit'] = $options['limit'];
                     $local_options['page'] = $options['page'];
-                    $record = $this->index_list_record($class, $role, $local_options);
-                    if(is_array($record)){
-                        ddd($record);
-                    }
-                    d($record);
+                    d($local_options);
+                    $extra = $this->index_list_record($class, $role, $local_options);
                     $op = $operator[$nr] ?? null;
                     if($op === 'xor'){
-                        if($record){
+                        if(!empty($extra)){
+
+                        }
+                        elseif($record){
                             if($xor === false){
                                 $xor = true;
                                 $result[] = $record;
