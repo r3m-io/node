@@ -285,6 +285,7 @@ trait Index {
                     $local_options['page'] = 1;
                     $local_options['where'] = $set;
                     $record = $this->index_list_record($class, $role, $local_options);
+                    d($record);
                     $op = $operator[$nr] ?? null;
                     if($op === 'xor'){
                         if($record){
