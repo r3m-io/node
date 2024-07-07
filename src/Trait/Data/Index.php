@@ -285,20 +285,22 @@ trait Index {
                     $local_options['page'] = 1;
                     $local_options['where'] = $set;
                     $record = $this->index_list_record($class, $role, $local_options);
-
+                    $extra = false;
                     $found = [];
                     if(
                         is_object($record) &&
                         property_exists($record, 'uuid')
                     ){
                         $found[] = $record->uuid;
+                        $options_where = $this->index_record_next($found, $local_options);
+                        $local_options['where'] = $options_where;
+                        $local_options['limit'] = $options['limit'];
+                        $local_options['page'] = $options['page'];
+                        d($local_options);
+                        $extra = $this->index_list_record($class, $role, $local_options);
+                        d($extra);
                     }
-                    $options_where = $this->index_record_next($found, $local_options);
-                    $local_options['where'] = $options_where;
-                    $local_options['limit'] = $options['limit'];
-                    $local_options['page'] = $options['page'];
-                    d($local_options);
-                    $extra = $this->index_list_record($class, $role, $local_options);
+
                     $op = $operator[$nr] ?? null;
                     if($op === 'xor'){
                         if(!empty($extra)){
