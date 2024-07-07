@@ -281,7 +281,7 @@ trait Index {
                 $is_add = false;
                 foreach($split as $nr => $set){
                     $local_options = $options;
-                    $local_options['limit'] = 1;
+                    $local_options['limit'] = 1000;
                     $local_options['page'] = 1;
                     $local_options['where'] = $set;
                     $record = $this->index_list_record($class, $role, $local_options);
