@@ -777,7 +777,7 @@ trait NodeList {
         $has_relation = false;
         $count = 0;
         $list_filtered = [];
-        d('no-index:' . $name);
+//        d('no-index:' . $name);
 //        trace();
         if ($data) {
             $list = $data->data($name);
