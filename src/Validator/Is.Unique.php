@@ -144,7 +144,7 @@ function validate_is_unique(App $object, $value='', $attribute='', $validate='',
     $node = new Node($object);
     if(str_ends_with($options['function'], '_many')){
         //create index
-        $options['index'] = $node->index($name, $node->role_system(), $options);
+//        $options['index'] = $node->index($name, $node->role_system(), $options);
         //add index as options to record
     }
     $response = $node->record($name, $node->role_system(), $options);
