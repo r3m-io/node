@@ -100,6 +100,7 @@ trait Create {
         $result = [];
         $error = [];
         $object_data = null;
+        $count = 0;
         foreach($nodeList as $nr => $node){
             if(
                 is_object($node) &&
@@ -233,7 +234,7 @@ trait Create {
                                 }
                             }
                         }
-
+                        $count++;
                     }
                 } else {
                     $error[] = $validate->test;
@@ -272,6 +273,7 @@ trait Create {
         $data->set($name, $list);
         $response = [];
         $response['list'] = $result;
+        $response['count'] = $count;
         if ($transaction === true){
             $cache = $object->data(App::CACHE);
             $cache->set(sha1($url), $data);
@@ -294,10 +296,9 @@ trait Create {
                 'total' => (microtime(true) - $object->config('time.start')) * 1000,
                 'nodelist' => (microtime(true) - $start) * 1000
             ];
-            $response['duration']->item_per_second = 0;
-            $response['duration']->item_per_second_nodelist = 0;
+            $response['duration']->item_per_second = ($response['count'] / $response['duration']->total) * 1000;
+            $response['duration']->item_per_second_nodelist = ($response['count'] / $response['duration']->nodelist) * 1000;
         }
-//        $response['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
         return $response;
     }
 }
