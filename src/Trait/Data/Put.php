@@ -19,6 +19,7 @@ trait Put {
      */
     public function put($class, $role, $node=[], $options=[]): false | array
     {
+        $options = Core::object($options, Core::OBJECT_ARRAY);
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
@@ -34,6 +35,14 @@ trait Put {
     {
         $name = Controller::name($class);
         $object = $this->object();
+        $options = Core::object($options, Core::OBJECT_ARRAY);
+        $start = false;
+        if(
+            array_key_exists('duration', $options) &&
+            $options['duration'] === true
+        ){
+            $start = microtime(true);
+        }
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
@@ -106,6 +115,7 @@ trait Put {
         $error = [];
         $result = [];
         $object_data = null;
+        $count = 0;
         foreach($nodeList as $nr => $node){
             if(
                 is_object($node) &&
@@ -226,6 +236,7 @@ trait Put {
                                         }
                                     }
                                 }
+                                $count++;
                             }
                         }
                     }
@@ -249,6 +260,7 @@ trait Put {
         $data->set($name, $list);
         $response = [];
         $response['list'] = $result;
+        $response['count'] = $count;
         if($transaction === true){
             $object->data(sha1($url), $data);
             $response['transaction'] = true;
@@ -260,8 +272,15 @@ trait Put {
                 $this->unlock($class);
             }
         }
-        $duration = (microtime(true) - $start) * 1000;
-        $response['duration'] = $duration;
+        if($start){
+            $response['duration'] = (object) [
+                'boot' => ($start - $object->config('time.start')) * 1000,
+                'total' => (microtime(true) - $object->config('time.start')) * 1000,
+                'nodelist' => (microtime(true) - $start) * 1000
+            ];
+            $response['duration']->item_per_second = ($response['count'] / $response['duration']->total) * 1000;
+            $response['duration']->item_per_second_nodelist = ($response['count'] / $response['duration']->nodelist) * 1000;
+        }
         return $response;
     }
 }
