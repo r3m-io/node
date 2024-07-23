@@ -38,6 +38,13 @@ trait Create {
         $name = Controller::name($class);
         $object = $this->object();
         $options = Core::object($options, Core::OBJECT_ARRAY);
+        $start = false;
+        if(
+            array_key_exists('duration', $options) &&
+            $options['duration'] === true
+        ){
+            $start = microtime(true);
+        }
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
@@ -281,7 +288,16 @@ trait Create {
                 $this->unlock($name);
             }
         }
-        $response['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
+        if($start){
+            $result['duration'] = (object) [
+                'boot' => ($start - $object->config('time.start')) * 1000,
+                'total' => (microtime(true) - $object->config('time.start')) * 1000,
+                'nodelist' => (microtime(true) - $start) * 1000
+            ];
+            $result['duration']->item_per_second = 0;
+            $result['duration']->item_per_second_nodelist = 0;
+        }
+//        $response['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
         return $response;
     }
 }
