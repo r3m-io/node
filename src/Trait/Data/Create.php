@@ -37,6 +37,7 @@ trait Create {
     {
         $name = Controller::name($class);
         $object = $this->object();
+        $options = Core::object($options, Core::OBJECT_ARRAY);
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
         }
