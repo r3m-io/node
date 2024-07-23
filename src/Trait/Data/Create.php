@@ -44,7 +44,6 @@ trait Create {
             $options['duration'] === true
         ){
             $start = microtime(true);
-            ddd($start);
         }
         if(!array_key_exists('function', $options)){
             $options['function'] = __FUNCTION__;
