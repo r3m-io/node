@@ -289,13 +289,13 @@ trait Create {
             }
         }
         if($start){
-            $result['duration'] = (object) [
+            $response['duration'] = (object) [
                 'boot' => ($start - $object->config('time.start')) * 1000,
                 'total' => (microtime(true) - $object->config('time.start')) * 1000,
                 'nodelist' => (microtime(true) - $start) * 1000
             ];
-            $result['duration']->item_per_second = 0;
-            $result['duration']->item_per_second_nodelist = 0;
+            $response['duration']->item_per_second = 0;
+            $response['duration']->item_per_second_nodelist = 0;
         }
 //        $response['duration'] = (microtime(true) - $object->config('time.start')) * 1000;
         return $response;
