@@ -111,7 +111,6 @@ trait Role {
                                     ){
                                         if(!in_array($permission->name, $list, true)){
                                             $permissions[] = $permission;
-                                            d($permission->name);
                                         }
                                     }
                                 }
