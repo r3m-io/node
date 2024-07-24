@@ -1365,7 +1365,11 @@ trait NodeList {
                         d($ramdisk_url_node);
                         if(str_contains($ramdisk_url_node, 'System.Autoload')){
 
-                        } else {
+                        }
+                        elseif(str_contains($ramdisk_url_node, 'System.Doctrine')){
+
+                        }
+                        else {
                             ddd($mtime);
                         }
 
