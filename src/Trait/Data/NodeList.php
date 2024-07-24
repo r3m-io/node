@@ -1240,6 +1240,9 @@ trait NodeList {
                             elseif(str_contains($ramdisk_url_node, 'System.Server')) {
 
                             }
+                            elseif(str_contains($ramdisk_url_node, 'System.Route')) {
+
+                            }
 
                             else {
 //                                d($result);
