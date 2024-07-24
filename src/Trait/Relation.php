@@ -452,6 +452,10 @@ trait Relation {
         }
         $object = $this->object();
         $relations = $object_data->get('relation');
+        $loaded = $object->config('r3m.io.node.relation.mtime.loaded');
+        if(!$loaded){
+            $loaded = [];
+        }
         if(
             !empty($relations) &&
             is_array($relations)
@@ -460,6 +464,8 @@ trait Relation {
                 if(!property_exists($relation, 'class')){
                     continue;
                 }
+                $loaded[] = $relation->class;
+                $object->config('r3m.io.node.relation.mtime.loaded', $loaded);
                 echo 'Relation class: ' . $relation->class . PHP_EOL;
                 $object_url = $object->config('project.dir.node') .
                     'Object' .
@@ -484,6 +490,7 @@ trait Relation {
                 }
             }
         }
+        $object->config('r3m.io.node.relation.mtime.loaded', $loaded);
         d($mtime);
         return $mtime;
     }
