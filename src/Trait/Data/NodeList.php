@@ -1373,7 +1373,7 @@ trait NodeList {
                             $result_ramdisk['list'] = $list_ramdisk;
                         }
                         if(str_contains($ramdisk_url_node, 'Account.User')) {
-                            ddd('found4');
+                            d('found4');
                         }
                         $relation_mtime = $this->relation_mtime($object_data, $is_debug);
 

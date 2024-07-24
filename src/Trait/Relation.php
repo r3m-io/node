@@ -460,6 +460,7 @@ trait Relation {
                 if(!property_exists($relation, 'class')){
                     continue;
                 }
+                echo 'Relation class: ' . $relation->class . PHP_EOL;
                 $object_url = $object->config('project.dir.node') .
                     'Object' .
                     $object->config('ds') .
