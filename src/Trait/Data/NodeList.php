@@ -39,6 +39,7 @@ trait NodeList {
     public function list($class, $role, $options=[]): array
     {
         set_time_limit(30 * 60 * 60);
+        Core::interactive();
         $mtime = false;
         $name = Controller::name($class);
         $options = Core::object($options, Core::OBJECT_ARRAY);
@@ -1226,7 +1227,7 @@ trait NodeList {
                                 ]);
                             }
                         } else {
-                            ddd($result);
+                            d($result);
                             $result_ramdisk = $result;
                             if($list_ramdisk !== null){
                                 $result_ramdisk['list'] = $list_ramdisk;
