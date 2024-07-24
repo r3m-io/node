@@ -1368,14 +1368,11 @@ trait NodeList {
                             'ramdisk_dir_list' => $ramdisk_dir_list,
                         ]);
                     } else {
-                        if($is_debug){
-                            ddd($object_data);
-                        }
                         $result_ramdisk = $result;
                         if($list_ramdisk !== null){
                             $result_ramdisk['list'] = $list_ramdisk;
                         }
-                        $relation_mtime = $this->relation_mtime($object_data);
+                        $relation_mtime = $this->relation_mtime($object_data, $is_debug);
 
                         if(str_contains($ramdisk_url_node, 'Account.User')) {
                             ddd('found2');

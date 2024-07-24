@@ -444,7 +444,7 @@ trait Relation {
         return $record;
     }
 
-    public function relation_mtime($object_data): array
+    public function relation_mtime($object_data, $is_debug=false): array
     {
         $mtime = [];
         if(empty($object_data)) {
@@ -483,6 +483,7 @@ trait Relation {
                 }
             }
         }
+        d($mtime);
         return $mtime;
     }
 }
