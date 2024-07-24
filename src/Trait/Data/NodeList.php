@@ -1366,19 +1366,11 @@ trait NodeList {
                         elseif(str_contains($ramdisk_url_node, 'System.Doctrine')){
 
                         }
-                        elseif(str_contains($ramdisk_url_node, 'System.Config.Framework')){
+                        elseif(str_contains($ramdisk_url_node, 'System.Config')){
 
                         }
-                        elseif(str_contains($ramdisk_url_node, 'System.Config.Ramdisk')){
 
-                        }
-                        elseif(str_contains($ramdisk_url_node, 'System.Config.Response')) {
-
-                        }
                         elseif(str_contains($ramdisk_url_node, 'System.Server')) {
-
-                        }
-                        elseif(str_contains($ramdisk_url_node, 'System.Config.Service')) {
 
                         }
 
