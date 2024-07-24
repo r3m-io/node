@@ -1354,15 +1354,12 @@ trait NodeList {
                             'ramdisk_dir_list' => $ramdisk_dir_list,
                         ]);
                     } else {
-                        d($result);
                         $result_ramdisk = $result;
                         if($list_ramdisk !== null){
                             $result_ramdisk['list'] = $list_ramdisk;
                         }
                         $relation_mtime = $this->relation_mtime($object_data);
-                        d($relation_mtime);
-                        d($result_ramdisk);
-                        d($ramdisk_url_node);
+
                         if(str_contains($ramdisk_url_node, 'System.Autoload')){
 
                         }
@@ -1375,8 +1372,11 @@ trait NodeList {
                         elseif(str_contains($ramdisk_url_node, 'System.Config.Ramdisk')){
 
                         }
-
                         else {
+                            d($result);
+                            d($relation_mtime);
+                            d($result_ramdisk);
+                            d($ramdisk_url_node);
                             ddd($mtime);
                         }
 
