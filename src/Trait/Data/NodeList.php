@@ -1363,7 +1363,12 @@ trait NodeList {
                         d($relation_mtime);
                         d($result_ramdisk);
                         d($ramdisk_url_node);
-                        ddd($mtime);
+                        if(str_contains($ramdisk_url_node, 'System.Autoload')){
+
+                        } else {
+                            ddd($mtime);
+                        }
+
                         $ramdisk = new Storage();
                         $ramdisk->set('mtime', $mtime);
                         $ramdisk->set('response', $result_ramdisk);
