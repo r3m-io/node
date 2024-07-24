@@ -1374,6 +1374,7 @@ trait NodeList {
                         }
                         //can have circular reference
                         $relation_mtime = $this->relation_mtime($object_data);
+                        d($object->config('r3m.io.node.relation.mtime.loaded'));
                         $object->config('delete', 'r3m.io.node.relation.mtime.loaded');
                         if(str_contains($ramdisk_url_node, 'Account.User')) {
                             d('found2');
