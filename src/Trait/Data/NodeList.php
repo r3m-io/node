@@ -1243,7 +1243,9 @@ trait NodeList {
                             elseif(str_contains($ramdisk_url_node, 'System.Route')) {
 
                             }
+                            elseif(str_contains($ramdisk_url_node, 'System.Log')) {
 
+                            }
                             else {
 //                                d($result);
 //                                d($relation_mtime);
