@@ -1242,9 +1242,9 @@ trait NodeList {
                             }
 
                             else {
-                                d($result);
+//                                d($result);
                                 d($relation_mtime);
-                                d($result_ramdisk);
+//                                d($result_ramdisk);
                                 d($ramdisk_url_node);
                                 ddd($mtime);
                             }
