@@ -1234,13 +1234,11 @@ trait NodeList {
                                 ]);
                             }
                         } else {
-                            if(str_contains($ramdisk_url_node, 'Account.User')) {
-                                ddd('found');
-                            }
                             $result_ramdisk = $result;
                             if($list_ramdisk !== null){
                                 $result_ramdisk['list'] = $list_ramdisk;
                             }
+                            //can have circular reference
                             $relation_mtime = $this->relation_mtime($object_data);
                             $ramdisk = new Storage();
                             $ramdisk->set('mtime', $mtime);
@@ -1374,7 +1372,6 @@ trait NodeList {
                         }
                         //can have circular reference
                         $relation_mtime = $this->relation_mtime($object_data);
-                        d($object->config('r3m.io.node.relation.mtime.loaded'));
                         if(str_contains($ramdisk_url_node, 'Account.User')) {
                             d('found2');
                         }
@@ -1390,7 +1387,6 @@ trait NodeList {
                             'ramdisk_dir_list' => $ramdisk_dir_list,
                             'ramdisk_url_node' => $ramdisk_url_node,
                         ]);
-                        d('done1');
                     }
                 }
                 if($start){
@@ -1402,7 +1398,6 @@ trait NodeList {
                     $result['duration']->item_per_second = ($list_count / $result['duration']->total) * 1000;
                     $result['duration']->item_per_second_nodelist = ($list_count / $result['duration']->nodelist) * 1000;
                 }
-                d('done2');
                 return $result;
             }
         }
