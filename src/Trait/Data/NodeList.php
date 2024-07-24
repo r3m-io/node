@@ -1375,6 +1375,10 @@ trait NodeList {
                         elseif(str_contains($ramdisk_url_node, 'System.Config.Response')) {
 
                         }
+                        elseif(str_contains($ramdisk_url_node, 'System.Server')) {
+
+                        }
+
                         else {
                             d($result);
                             d($relation_mtime);
