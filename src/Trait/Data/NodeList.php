@@ -367,7 +367,7 @@ trait NodeList {
             }
             if($is_debug === true){
                 d($ramdisk_url_node);
-                ddd(File::exist($ramdisk_url_node));
+                d(File::exist($ramdisk_url_node));
             }
             if (File::exist($ramdisk_url_node)) {
                 if ($options['transaction'] === true) {
@@ -470,7 +470,6 @@ trait NodeList {
             $local_options['limit'] = 1;
             $local_options['page'] = 1;
             $record = $this->index_list_record($class, $role, $local_options);
-            d($record);
             while($record !== false){
                 if(is_array($record)){
                     foreach($record as $value){
@@ -1235,35 +1234,8 @@ trait NodeList {
                                 ]);
                             }
                         } else {
-                            if(str_contains($ramdisk_url_node, 'System.Autoload')){
-
-                            }
-                            elseif(str_contains($ramdisk_url_node, 'System.Doctrine')){
-
-                            }
-                            elseif(str_contains($ramdisk_url_node, 'System.Config')){
-
-                            }
-
-                            elseif(str_contains($ramdisk_url_node, 'System.Server')) {
-
-                            }
-                            elseif(str_contains($ramdisk_url_node, 'System.Route')) {
-
-                            }
-                            elseif(str_contains($ramdisk_url_node, 'System.Log')) {
-
-                            }
-                            elseif(str_contains($ramdisk_url_node, 'System.Event')) {
-
-                            }
-
-                            else {
-//                                d($result);
-//                                d($relation_mtime);
-//                                d($result_ramdisk);
-                                d($ramdisk_url_node);
-                                ddd($mtime);
+                            if(str_contains($ramdisk_url_node, 'Account.User')) {
+                                ddd('found');
                             }
                             $result_ramdisk = $result;
                             if($list_ramdisk !== null){
@@ -1398,26 +1370,8 @@ trait NodeList {
                         }
                         $relation_mtime = $this->relation_mtime($object_data);
 
-                        if(str_contains($ramdisk_url_node, 'System.Autoload')){
-
-                        }
-                        elseif(str_contains($ramdisk_url_node, 'System.Doctrine')){
-
-                        }
-                        elseif(str_contains($ramdisk_url_node, 'System.Config')){
-
-                        }
-
-                        elseif(str_contains($ramdisk_url_node, 'System.Server')) {
-
-                        }
-
-                        else {
-                            d($result);
-                            d($relation_mtime);
-                            d($result_ramdisk);
-                            d($ramdisk_url_node);
-                            ddd($mtime);
+                        if(str_contains($ramdisk_url_node, 'Account.User')) {
+                            ddd('found2');
                         }
 
                         $ramdisk = new Storage();
