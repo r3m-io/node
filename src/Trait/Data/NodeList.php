@@ -1354,7 +1354,7 @@ trait NodeList {
                             'ramdisk_dir_list' => $ramdisk_dir_list,
                         ]);
                     } else {
-                        ddd($result);
+                        d($result);
                         $result_ramdisk = $result;
                         if($list_ramdisk !== null){
                             $result_ramdisk['list'] = $list_ramdisk;
