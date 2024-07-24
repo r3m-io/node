@@ -464,6 +464,9 @@ trait Relation {
                 if(!property_exists($relation, 'class')){
                     continue;
                 }
+                if(in_array($relation->class, $loaded, true)){
+                    continue;
+                }
                 $loaded[] = $relation->class;
                 $object->config('r3m.io.node.relation.mtime.loaded', $loaded);
                 echo 'Relation class: ' . $relation->class . PHP_EOL;
