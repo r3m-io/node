@@ -1369,6 +1369,10 @@ trait NodeList {
                         elseif(str_contains($ramdisk_url_node, 'System.Doctrine')){
 
                         }
+                        elseif(str_contains($ramdisk_url_node, 'System.Config.Framework')){
+
+                        }
+
                         else {
                             ddd($mtime);
                         }
