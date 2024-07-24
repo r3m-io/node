@@ -1297,7 +1297,7 @@ trait NodeList {
                 $list = $this->nodelist_output_filter($object, $list_temp, $options);
                 if($is_debug) {
                     d($options);
-                    ddd('found3');
+                    ddd($list);
                 }
                 $list_ramdisk = null;
                 if(
