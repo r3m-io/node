@@ -50,6 +50,10 @@ trait NodeList {
         ){
             $start = microtime(true);
         }
+        $is_debug = false;
+        if($name === 'Account.User'){
+            $is_debug = true;
+        }
 //        d($options);
 //        d($name);
         $object = $this->object();
@@ -360,6 +364,10 @@ trait NodeList {
                         return $response;
                     }
                 }
+            }
+            if($is_debug === true){
+                d($ramdisk_url_node);
+                ddd(File::exist($ramdisk_url_node));
             }
             if (File::exist($ramdisk_url_node)) {
                 if ($options['transaction'] === true) {
