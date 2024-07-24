@@ -138,7 +138,7 @@ trait Expose {
                                                 $node->has($property)
                                             ) {
                                                 $array = $node->get($property);
-
+d($array);
                                                 if (is_array($array) || is_object($array)) {
                                                     $record[$property] = [];
                                                     foreach ($array as $child) {
