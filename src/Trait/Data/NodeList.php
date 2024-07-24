@@ -1297,7 +1297,7 @@ trait NodeList {
                 $list = $this->nodelist_output_filter($object, $list_temp, $options);
                 if($is_debug) {
                     d($options);
-                    ddd($list);
+                    d($list);
                 }
                 $list_ramdisk = null;
                 if(
@@ -1368,6 +1368,9 @@ trait NodeList {
                             'ramdisk_dir_list' => $ramdisk_dir_list,
                         ]);
                     } else {
+                        if($is_debug){
+                            ddd($object_data);
+                        }
                         $result_ramdisk = $result;
                         if($list_ramdisk !== null){
                             $result_ramdisk['list'] = $list_ramdisk;
