@@ -1360,6 +1360,10 @@ trait NodeList {
                             $result_ramdisk['list'] = $list_ramdisk;
                         }
                         $relation_mtime = $this->relation_mtime($object_data);
+                        d($relation_mtime);
+                        d($result_ramdisk);
+                        d($ramdisk_url_node);
+                        ddd($mtime);
                         $ramdisk = new Storage();
                         $ramdisk->set('mtime', $mtime);
                         $ramdisk->set('response', $result_ramdisk);
