@@ -1246,6 +1246,10 @@ trait NodeList {
                             elseif(str_contains($ramdisk_url_node, 'System.Log')) {
 
                             }
+                            elseif(str_contains($ramdisk_url_node, 'System.Event')) {
+
+                            }
+
                             else {
 //                                d($result);
 //                                d($relation_mtime);
