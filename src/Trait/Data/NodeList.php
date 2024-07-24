@@ -1371,8 +1371,8 @@ trait NodeList {
                             'ramdisk_dir_list' => $ramdisk_dir_list,
                             'ramdisk_url_node' => $ramdisk_url_node,
                         ]);
+                        d('done1');
                     }
-
                 }
                 if($start){
                     $result['duration'] = (object) [
@@ -1383,6 +1383,7 @@ trait NodeList {
                     $result['duration']->item_per_second = ($list_count / $result['duration']->total) * 1000;
                     $result['duration']->item_per_second_nodelist = ($list_count / $result['duration']->nodelist) * 1000;
                 }
+                d('done2');
                 return $result;
             }
         }
