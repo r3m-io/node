@@ -1227,6 +1227,27 @@ trait NodeList {
                                 ]);
                             }
                         } else {
+                            if(str_contains($ramdisk_url_node, 'System.Autoload')){
+
+                            }
+                            elseif(str_contains($ramdisk_url_node, 'System.Doctrine')){
+
+                            }
+                            elseif(str_contains($ramdisk_url_node, 'System.Config')){
+
+                            }
+
+                            elseif(str_contains($ramdisk_url_node, 'System.Server')) {
+
+                            }
+
+                            else {
+                                d($result);
+                                d($relation_mtime);
+                                d($result_ramdisk);
+                                d($ramdisk_url_node);
+                                ddd($mtime);
+                            }
                             $result_ramdisk = $result;
                             if($list_ramdisk !== null){
                                 $result_ramdisk['list'] = $list_ramdisk;
