@@ -138,10 +138,13 @@ trait Expose {
                                                 $node->has($property)
                                             ) {
                                                 $array = $node->get($property);
-d($array);
                                                 if (is_array($array) || is_object($array)) {
                                                     $record[$property] = [];
                                                     foreach ($array as $child) {
+                                                        if(Core::is_uuid($child)){
+                                                            $record[$property][] = $child;
+                                                            continue;
+                                                        }
                                                         $child = new Storage($child);
                                                         $child_expose = [];
                                                         if (
