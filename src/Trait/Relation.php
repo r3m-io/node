@@ -444,7 +444,11 @@ trait Relation {
         return $record;
     }
 
-    public function relation_mtime($object_data, $is_debug=false): array
+    /**
+     * @throws ObjectException
+     * @throws Exception
+     */
+    public function relation_mtime($object_data): array
     {
         $mtime = [];
         if(empty($object_data)) {
@@ -453,7 +457,9 @@ trait Relation {
         $object = $this->object();
         $relations = $object_data->get('relation');
         $loaded = $object->config('r3m.io.node.relation.mtime.loaded');
+        $is_outer = false;
         if(!$loaded){
+            $is_outer = true;
             $loaded = [];
         }
         if(
@@ -493,6 +499,9 @@ trait Relation {
             }
         }
         $object->config('r3m.io.node.relation.mtime.loaded', $loaded);
+        if($is_outer){
+            $object->config('delete', 'r3m.io.node.relation.mtime.loaded');
+        }
         return $mtime;
     }
 }
