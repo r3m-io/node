@@ -1372,13 +1372,11 @@ trait NodeList {
                         if($list_ramdisk !== null){
                             $result_ramdisk['list'] = $list_ramdisk;
                         }
+                        //can have circular reference
+                        $relation_mtime = $this->relation_mtime($object_data);
+                        $object->config('delete', 'r3m.io.node.relation.mtime.loaded');
                         if(str_contains($ramdisk_url_node, 'Account.User')) {
-                            d('found4');
-                        }
-                        $relation_mtime = $this->relation_mtime($object_data, $is_debug);
-
-                        if(str_contains($ramdisk_url_node, 'Account.User')) {
-                            ddd('found2');
+                            d('found2');
                         }
 
                         $ramdisk = new Storage();

@@ -469,7 +469,6 @@ trait Relation {
                 }
                 $loaded[] = $relation->class;
                 $object->config('r3m.io.node.relation.mtime.loaded', $loaded);
-                echo 'Relation class: ' . $relation->class . PHP_EOL;
                 $object_url = $object->config('project.dir.node') .
                     'Object' .
                     $object->config('ds') .
@@ -494,7 +493,6 @@ trait Relation {
             }
         }
         $object->config('r3m.io.node.relation.mtime.loaded', $loaded);
-        d($mtime);
         return $mtime;
     }
 }
