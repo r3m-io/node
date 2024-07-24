@@ -1238,7 +1238,7 @@ trait NodeList {
                             if($list_ramdisk !== null){
                                 $result_ramdisk['list'] = $list_ramdisk;
                             }
-                            //can have circular reference
+                            //can handle circular reference
                             $relation_mtime = $this->relation_mtime($object_data);
                             $ramdisk = new Storage();
                             $ramdisk->set('mtime', $mtime);
@@ -1293,10 +1293,6 @@ trait NodeList {
                     $index_counter++;
                 }
                 $list = $this->nodelist_output_filter($object, $list_temp, $options);
-                if($is_debug) {
-                    d($options);
-                    d($list);
-                }
                 $list_ramdisk = null;
                 if(
                     $options['parse'] === true &&
@@ -1370,12 +1366,8 @@ trait NodeList {
                         if($list_ramdisk !== null){
                             $result_ramdisk['list'] = $list_ramdisk;
                         }
-                        //can have circular reference
+                        //can handle circular reference
                         $relation_mtime = $this->relation_mtime($object_data);
-                        if(str_contains($ramdisk_url_node, 'Account.User')) {
-                            d('found2');
-                        }
-
                         $ramdisk = new Storage();
                         $ramdisk->set('mtime', $mtime);
                         $ramdisk->set('response', $result_ramdisk);
