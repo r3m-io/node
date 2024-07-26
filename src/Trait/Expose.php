@@ -52,6 +52,7 @@ trait Expose {
         $roles = [];
         if ($internalRole) {
             $roles[] = $internalRole; //same as parent
+            d($roles);
         } else {
 //            $roles = Permission::getAccessControl($object, $class, $function);
             try {
