@@ -198,7 +198,9 @@ trait Relation {
                                         array_key_exists('list', $response)
                                     ){
                                         $output_filter_options = $options;
-                                        $output_filter_options['output'] = $relation->output ?? false;
+                                        if(property_exists($relation, 'output')){
+                                            $output_filter_options['output'] = Core::object($relation->output, Core::OBJECT_ARRAY);
+                                        }
                                         $response['list'] = $this->nodelist_output_filter($object, $response['list'], $output_filter_options);
                                         $node->set($relation->attribute, $response['list']);
                                     } else {
