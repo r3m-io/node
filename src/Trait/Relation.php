@@ -163,7 +163,6 @@ trait Relation {
                                             ];
                                         }
                                     }
-                                    ddd($one_many);
                                     if(
                                         property_exists($one_many, 'output') &&
                                         !empty($one_many->output) &&
@@ -226,6 +225,7 @@ trait Relation {
                                         if(property_exists($relation, 'output')){
                                             $output_filter_options['output'] = $output_filter;
                                         }
+                                        ddd($output_filter_options);
                                         $response['list'] = $this->nodelist_output_filter($object, $response['list'], $output_filter_options);
                                         $node->set($relation->attribute, $response['list']);
                                     } else {
