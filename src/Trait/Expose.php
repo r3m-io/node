@@ -70,6 +70,7 @@ trait Expose {
         }
         $is_expose = false;
         foreach ($roles as $role) {
+            d($role);
             if (
                 property_exists($role, 'name') &&
                 property_exists($role, 'permission') &&
