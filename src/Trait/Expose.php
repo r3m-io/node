@@ -77,7 +77,10 @@ trait Expose {
             ) {
 
                 foreach ($role->permission as $permission) {
-                    d($permission);
+                    if(is_string($permission)){
+                        trace();
+                        die;
+                    }
                     foreach ($expose as $action) {
                         if (
                             (
