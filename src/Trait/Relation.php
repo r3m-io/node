@@ -197,6 +197,7 @@ trait Relation {
                                         !empty($response) &&
                                         array_key_exists('list', $response)
                                     ){
+                                        d($relation);
                                         d($options);
                                         $response['list'] = $this->nodelist_output_filter($object, $response['list'], $options);
                                         $node->set($relation->attribute, $response['list']);
