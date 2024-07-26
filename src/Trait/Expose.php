@@ -75,12 +75,12 @@ trait Expose {
                 property_exists($role, 'permission') &&
                 is_array($role->permission)
             ) {
-                d($role->permission);
                 foreach ($role->permission as $permission) {
                     if (is_array($permission)) {
                         ddd($permission);
                     }
                     foreach ($expose as $action) {
+                        d($action);
                         if (
                             (
                                 property_exists($permission, 'name') &&
