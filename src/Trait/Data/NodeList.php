@@ -1586,7 +1586,6 @@ trait NodeList {
         $output_filter = $options['output']['filter'];
         if($output_filter){
             foreach($output_filter as $output_filter_data){
-                echo $output_filter_data . PHP_EOL;
                 $route = (object) [
                     'controller' => $output_filter_data
                 ];
