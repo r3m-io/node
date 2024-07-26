@@ -65,6 +65,16 @@ trait Relation {
                             }
                         }
                     }
+                    if(
+                        property_exists($relation, 'output') &&
+                        !empty($relation->output) &&
+                        is_object($relation->output) &&
+                        property_exists($relation->output, 'filter') &&
+                        !empty($relation->output->filter) &&
+                        is_array($relation->output->filter)
+                    ){
+                        $output_filter = $relation->output->filter;
+                    }
                     switch(strtolower($relation->type)){
                         case 'one-one':
                             if(
@@ -95,7 +105,7 @@ trait Relation {
                                     ){
                                         $output_filter_options = $options;
                                         if(property_exists($relation, 'output')){
-                                            $output_filter_options['output'] = Core::object($relation->output, Core::OBJECT_ARRAY);
+                                            $output_filter_options['output'] = $output_filter;
                                         }
                                         $response['list'] = $this->nodelist_output_filter($object,  [ $response['node'] ], $output_filter_options);
                                         $node->set($relation->attribute, $response['list'][0]);
@@ -117,7 +127,12 @@ trait Relation {
                                         array_key_exists('node', $read) &&
                                         property_exists($read['node'], 'uuid')
                                     ){
-                                        $node->set($relation->attribute, $read['node']);
+                                        $output_filter_options = $options;
+                                        if(property_exists($relation, 'output')){
+                                            $output_filter_options['output'] = $output_filter;
+                                        }
+                                        $response['list'] = $this->nodelist_output_filter($object,  [ $response['node'] ], $output_filter_options);
+                                        $node->set($relation->attribute, $response['list'][0]);
                                     }
                                 }
                             }
@@ -148,6 +163,7 @@ trait Relation {
                                             ];
                                         }
                                     }
+                                    ddd($one_many);
                                     if(
                                         property_exists($one_many, 'output') &&
                                         !empty($one_many->output) &&
@@ -170,6 +186,11 @@ trait Relation {
                                         !empty($response) &&
                                         array_key_exists('list', $response)
                                     ){
+                                        $output_filter_options = $options;
+                                        if(property_exists($relation, 'output')){
+                                            $output_filter_options['output'] = $output_filter;
+                                        }
+                                        $response['list'] = $this->nodelist_output_filter($object, $response['list'], $output_filter_options);
                                         $node->set($relation->attribute, $response['list']);
                                     } else {
                                         $node->set($relation->attribute, []);
@@ -203,7 +224,7 @@ trait Relation {
                                     ){
                                         $output_filter_options = $options;
                                         if(property_exists($relation, 'output')){
-                                            $output_filter_options['output'] = Core::object($relation->output, Core::OBJECT_ARRAY);
+                                            $output_filter_options['output'] = $output_filter
                                         }
                                         $response['list'] = $this->nodelist_output_filter($object, $response['list'], $output_filter_options);
                                         $node->set($relation->attribute, $response['list']);
@@ -280,7 +301,7 @@ trait Relation {
                                         ){
                                             $output_filter_options = $options;
                                             if(property_exists($relation, 'output')){
-                                                $output_filter_options['output'] = Core::object($relation->output, Core::OBJECT_ARRAY);
+                                                $output_filter_options['output'] = $output_filter;
                                             }
                                             $response['list'] = $this->nodelist_output_filter($object, $response['list'], $output_filter_options);
                                             $node->set($relation->attribute, $response['list']);
