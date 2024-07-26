@@ -1586,6 +1586,7 @@ trait NodeList {
             return $list;
         }
         $output_filter = $options['output']['filter'];
+        d($output_filter);
         if($output_filter){
             foreach($output_filter as $output_filter_data){
                 echo $output_filter_data . PHP_EOL;
