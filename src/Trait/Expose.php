@@ -77,9 +77,6 @@ trait Expose {
             ) {
 
                 foreach ($role->permission as $permission) {
-                    if (is_array($permission)) {
-                        ddd($permission);
-                    }
                     foreach ($expose as $action) {
                         if (
                             (
