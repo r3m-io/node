@@ -229,11 +229,16 @@ trait Expose {
             }
         }
         if($is_expose === false){
+            $exception_role = [];
+            foreach($roles as $role){
+                $exception_role[] = $role->name;
+            }
             throw new Exception(
                 'No permission found for ' .
                 str_replace('.', ':', Controller::name($class)) .
                 ':' .
-                str_replace('_', '.', $function)
+                str_replace('_', '.', $function) .
+                ' for roles: ' . implode(', ', $exception_role)
             );
         }
         return $nodeList;
