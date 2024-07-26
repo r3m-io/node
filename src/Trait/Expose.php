@@ -52,8 +52,6 @@ trait Expose {
         $roles = [];
         if ($internalRole) {
             $roles[] = $internalRole; //same as parent
-            trace();
-            d($roles);
         } else {
 //            $roles = Permission::getAccessControl($object, $class, $function);
             try {
@@ -77,7 +75,12 @@ trait Expose {
                 property_exists($role, 'permission') &&
                 is_array($role->permission)
             ) {
+
                 foreach ($role->permission as $permission) {
+                    if($permission->name === 'Account:User:login'){
+                        trace();
+                        die;
+                    }
                     if (is_array($permission)) {
                         ddd($permission);
                     }
