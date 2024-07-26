@@ -1579,6 +1579,9 @@ trait NodeList {
         if(!array_key_exists('output', $options)){
             return $list;
         }
+        if($options['output'] === false){
+            return $list;
+        }
         if(!array_key_exists('filter', $options['output'])){
             return $list;
         }
