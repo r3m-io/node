@@ -229,7 +229,6 @@ trait Relation {
                                             $output_filter_options['output'] = [];
                                             $output_filter_options['output']['filter'] = $output_filter;
                                         }
-                                        d($output_filter_options);
                                         $response['list'] = $this->nodelist_output_filter($object, $response['list'], $output_filter_options);
                                         $node->set($relation->attribute, $response['list']);
                                     } else {

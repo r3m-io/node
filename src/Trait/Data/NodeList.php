@@ -1046,8 +1046,6 @@ trait NodeList {
                             $record = $node->data();
                             */
                             if($has_relation){
-                                d($object_data);
-                                d($record);
                                 $record = $this->relation($record, $object_data, $role, $options);
                                 //collect relation mtime
                             }
@@ -1586,7 +1584,6 @@ trait NodeList {
             return $list;
         }
         $output_filter = $options['output']['filter'];
-        d($output_filter);
         if($output_filter){
             foreach($output_filter as $output_filter_data){
                 echo $output_filter_data . PHP_EOL;
