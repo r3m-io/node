@@ -77,11 +77,6 @@ trait Expose {
             ) {
 
                 foreach ($role->permission as $permission) {
-                    if($permission->name === 'Account:User:login'){
-                        trace();
-                        ddd($expose);
-                        die;
-                    }
                     if (is_array($permission)) {
                         ddd($permission);
                     }
