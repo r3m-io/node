@@ -105,7 +105,8 @@ trait Relation {
                                     ){
                                         $output_filter_options = $options;
                                         if(property_exists($relation, 'output')){
-                                            $output_filter_options['output'] = $output_filter;
+                                            $output_filter_options['output'] = [];
+                                            $output_filter_options['output']['filter'] = $output_filter;
                                         }
                                         $response['list'] = $this->nodelist_output_filter($object,  [ $response['node'] ], $output_filter_options);
                                         $node->set($relation->attribute, $response['list'][0]);
@@ -129,7 +130,8 @@ trait Relation {
                                     ){
                                         $output_filter_options = $options;
                                         if(property_exists($relation, 'output')){
-                                            $output_filter_options['output'] = $output_filter;
+                                            $output_filter_options['output'] = [];
+                                            $output_filter_options['output']['filter'] = $output_filter;
                                         }
                                         $response['list'] = $this->nodelist_output_filter($object,  [ $response['node'] ], $output_filter_options);
                                         $node->set($relation->attribute, $response['list'][0]);
@@ -187,7 +189,8 @@ trait Relation {
                                     ){
                                         $output_filter_options = $options;
                                         if(property_exists($relation, 'output')){
-                                            $output_filter_options['output'] = $output_filter;
+                                            $output_filter_options['output'] = [];
+                                            $output_filter_options['output']['filter'] = $output_filter;
                                         }
                                         $response['list'] = $this->nodelist_output_filter($object, $response['list'], $output_filter_options);
                                         $node->set($relation->attribute, $response['list']);
@@ -223,7 +226,8 @@ trait Relation {
                                     ){
                                         $output_filter_options = $options;
                                         if(property_exists($relation, 'output')){
-                                            $output_filter_options['output'] = $output_filter;
+                                            $output_filter_options['output'] = [];
+                                            $output_filter_options['output']['filter'] = $output_filter;
                                         }
                                         ddd($output_filter_options);
                                         $response['list'] = $this->nodelist_output_filter($object, $response['list'], $output_filter_options);
