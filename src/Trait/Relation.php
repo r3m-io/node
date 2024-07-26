@@ -193,7 +193,7 @@ trait Relation {
                                         $this->role_system(),
                                         $one_many
                                     );
-                                    d($response);
+                                    d($relation);
                                     if(
                                         !empty($response) &&
                                         array_key_exists('list', $response)
