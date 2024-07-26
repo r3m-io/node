@@ -93,7 +93,8 @@ trait Relation {
                                         !empty($response) &&
                                         array_key_exists('node', $response)
                                     ){
-                                        $node->set($relation->attribute, $response['node']);
+                                        $response['list'] = $this->nodelist_output_filter($object,  [ $response['node'] ], $options);
+                                        $node->set($relation->attribute, $response['list'][0]);
                                     } else {
                                         $node->set($relation->attribute, false);
                                     }
@@ -161,7 +162,6 @@ trait Relation {
                                         $this->role_system(),
                                         $one_many
                                     );
-                                    d($response);
                                     if(
                                         !empty($response) &&
                                         array_key_exists('list', $response)
@@ -193,11 +193,11 @@ trait Relation {
                                         $this->role_system(),
                                         $one_many
                                     );
-                                    d($relation);
                                     if(
                                         !empty($response) &&
                                         array_key_exists('list', $response)
                                     ){
+                                        $response['list'] = $this->nodelist_output_filter($object, $response['list'], $options);
                                         $node->set($relation->attribute, $response['list']);
                                     } else {
                                         $node->set($relation->attribute, []);
@@ -270,6 +270,7 @@ trait Relation {
                                             !empty($response) &&
                                             array_key_exists('list', $response)
                                         ){
+                                            $response['list'] = $this->nodelist_output_filter($object, $response['list'], $options);
                                             $node->set($relation->attribute, $response['list']);
                                         } else {
                                             $node->set($relation->attribute, []);
@@ -300,6 +301,7 @@ trait Relation {
                                     !empty($response) &&
                                     array_key_exists('list', $response)
                                 ){
+                                    $response['list'] = $this->nodelist_output_filter($object, $response['list'], $options);
                                     $index = new Storage();
                                     foreach($response['list'] as $nr => $record){
                                         if(
