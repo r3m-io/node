@@ -93,7 +93,11 @@ trait Relation {
                                         !empty($response) &&
                                         array_key_exists('node', $response)
                                     ){
-                                        $response['list'] = $this->nodelist_output_filter($object,  [ $response['node'] ], $options);
+                                        $output_filter_options = $options;
+                                        if(property_exists($relation, 'output')){
+                                            $output_filter_options['output'] = Core::object($relation->output, Core::OBJECT_ARRAY);
+                                        }
+                                        $response['list'] = $this->nodelist_output_filter($object,  [ $response['node'] ], $output_filter_options);
                                         $node->set($relation->attribute, $response['list'][0]);
                                     } else {
                                         $node->set($relation->attribute, false);
@@ -274,7 +278,11 @@ trait Relation {
                                             !empty($response) &&
                                             array_key_exists('list', $response)
                                         ){
-                                            $response['list'] = $this->nodelist_output_filter($object, $response['list'], $options);
+                                            $output_filter_options = $options;
+                                            if(property_exists($relation, 'output')){
+                                                $output_filter_options['output'] = Core::object($relation->output, Core::OBJECT_ARRAY);
+                                            }
+                                            $response['list'] = $this->nodelist_output_filter($object, $response['list'], $output_filter_options);
                                             $node->set($relation->attribute, $response['list']);
                                         } else {
                                             $node->set($relation->attribute, []);
@@ -305,7 +313,11 @@ trait Relation {
                                     !empty($response) &&
                                     array_key_exists('list', $response)
                                 ){
-                                    $response['list'] = $this->nodelist_output_filter($object, $response['list'], $options);
+                                    $output_filter_options = $options;
+                                    if(property_exists($relation, 'output')){
+                                        $output_filter_options['output'] = Core::object($relation->output, Core::OBJECT_ARRAY);
+                                    }
+                                    $response['list'] = $this->nodelist_output_filter($object, $response['list'], $output_filter_options);
                                     $index = new Storage();
                                     foreach($response['list'] as $nr => $record){
                                         if(
