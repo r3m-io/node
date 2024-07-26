@@ -82,6 +82,7 @@ trait Expose {
                         ddd($permission);
                     }
                     foreach ($expose as $action) {
+                        trace();
                         d($action);
                         if (
                             (
