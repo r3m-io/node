@@ -356,7 +356,8 @@ trait Where {
                         is_array($set[0]) &&
                         array_key_exists('attribute', $set[0]) &&
                         array_key_exists('value', $set[0]) &&
-                        array_key_exists('operator', $set[0])
+                        array_key_exists('operator', $set[0]) &&
+                        property_exists($record, $set[0]['attribute'])
                     ){
                         $index_where[0] = [
                             $set[0]['value'],
@@ -477,7 +478,8 @@ trait Where {
                             is_array($set_init[0]) &&
                             array_key_exists('attribute', $set_init[0]) &&
                             array_key_exists('value', $set_init[0]) &&
-                            array_key_exists('operator', $set_init[0])
+                            array_key_exists('operator', $set_init[0]) &&
+                            property_exists($record, $set_init[0]['attribute'])
                         ){
                             $index_where[0] = [
                                 $set_init[0]['value'],
@@ -488,7 +490,8 @@ trait Where {
                             is_array($set_init[2]) &&
                             array_key_exists('attribute', $set_init[2]) &&
                             array_key_exists('value', $set_init[2]) &&
-                            array_key_exists('operator', $set_init[2])
+                            array_key_exists('operator', $set_init[2]) &&
+                            property_exists($record, $set_init[2]['attribute'])
                         ){
                             $index_where[2] = [
                                 $set_init[2]['value'],
@@ -569,7 +572,8 @@ trait Where {
                                 is_array($set[0]) &&
                                 array_key_exists('attribute', $set[0]) &&
                                 array_key_exists('value', $set[0]) &&
-                                array_key_exists('operator', $set[0])
+                                array_key_exists('operator', $set[0]) &&
+                                property_exists($record, $set[0]['attribute'])
                             ){
                                 $index_where[0] = [
                                     $set[0]['value'],
@@ -580,7 +584,8 @@ trait Where {
                                 is_array($set[2]) &&
                                 array_key_exists('attribute', $set[2]) &&
                                 array_key_exists('value', $set[2]) &&
-                                array_key_exists('operator', $set[2])
+                                array_key_exists('operator', $set[2]) &&
+                                property_exists($record, $set[2]['attribute'])
                             ){
                                 $index_where[2] = [
                                     $set[2]['value'],
@@ -658,7 +663,8 @@ trait Where {
                                 is_array($set[0]) &&
                                 array_key_exists('attribute', $set[0]) &&
                                 array_key_exists('value', $set[0]) &&
-                                array_key_exists('operator', $set[0])
+                                array_key_exists('operator', $set[0]) &&
+                                property_exists($record, $set[0]['attribute'])
                             ){
                                 $index_where[0] = [
                                     $set[0]['value'],
@@ -669,7 +675,8 @@ trait Where {
                                 is_array($set[2]) &&
                                 array_key_exists('attribute', $set[2]) &&
                                 array_key_exists('value', $set[2]) &&
-                                array_key_exists('operator', $set[2])
+                                array_key_exists('operator', $set[2]) &&
+                                property_exists($record, $set[2]['attribute'])
                             ){
                                 $index_where[2] = [
                                     $set[2]['value'],
