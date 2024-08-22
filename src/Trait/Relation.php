@@ -114,7 +114,7 @@ trait Relation {
                                         $node->set($relation->attribute, false);
                                     }
                                 } else {
-                                    $read = $this->read(
+                                    $response = $this->read(
                                         $relation->class,
                                         $this->role_system(),
                                         [
@@ -125,8 +125,8 @@ trait Relation {
                                         ]
                                     );
                                     if (
-                                        array_key_exists('node', $read) &&
-                                        property_exists($read['node'], 'uuid')
+                                        array_key_exists('node', $response) &&
+                                        property_exists($response['node'], 'uuid')
                                     ){
                                         $output_filter_options = $options;
                                         if(property_exists($relation, 'output')){
