@@ -455,6 +455,7 @@ trait Relation {
                             $record = $node->data();
                             break;
                     }
+                    /* done already in r3m_io/node nodelist 1575
                     if(
                         empty($output_filter) &&
                         property_exists($relation, 'output') &&
@@ -481,6 +482,7 @@ trait Relation {
                             }
                         }
                     }
+                    */
                 }
             }
         }
